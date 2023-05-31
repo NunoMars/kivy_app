@@ -42,7 +42,7 @@ class MaCarteDeTarotApp(App):
         self.label = Label(
             text=self.card_label,
             size_hint=(None, None),
-            pos_hint={"center_x": 0.5, "center_y": 0.95},
+            pos_hint={"center_x": 0.50, "center_y": 0.90},
             font_size="30sp",
         )
         self.theRoot.add_widget(self.label)
@@ -51,17 +51,17 @@ class MaCarteDeTarotApp(App):
         self.label_states = Label(
             text=self.states_label,
             size_hint=(None, None),
-            pos_hint={"center_x": 0.5, "center_y": 0.48},
+            pos_hint={"center_x": 0.63, "center_y": 0.90},
             font_size="20sp",
         )
-        self.label_states.text_size = (700, 200)
+        self.label_states.text_size = (500, 200)
         self.label_states.multiline = True
         self.theRoot.add_widget(self.label_states)
 
         self.card_image = Image(
             source="tarot_img/Back.jpg",
-            size_hint=(0.5, 0.5),
-            pos_hint={"center_x": 0.5, "center_y": 0.65},
+            size_hint=(0.52, 0.52),
+            pos_hint={"center_x": 0.15, "center_y": 0.60},
         )  # Image par défaut pour commencer
 
         self.theRoot.add_widget(self.card_image)
@@ -70,18 +70,18 @@ class MaCarteDeTarotApp(App):
         self.text_label = Label(
             text=self.states_label,
             size_hint=(None, None),
-            pos_hint={"center_x": 0.5, "center_y": 0.2},
+            pos_hint={"center_x": 0.63, "center_y": 0.90},
             font_size="18sp",
         )
-        self.text_label.text_size = (750, 100)
+        self.text_label.text_size = (500, 600)
         self.text_label.multiline = True
         self.theRoot.add_widget(self.text_label)
 
         draw_button = Button(text="Tirer une carte")
         draw_button.bind(on_press=self.draw_card)
         draw_button.size_hint = (0.43, 0.10)
-        draw_button.pos_hint = {"center_x": 0.5}
-        draw_button.border_radius = (0.2, 0.2, 0.2, 0.2)
+        draw_button.pos_hint = {"center_x": 0.5, "center_y": 0.10}
+        draw_button.border_radius = (2, 2, 2, 2)
 
         self.theRoot.add_widget(draw_button)
 
