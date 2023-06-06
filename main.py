@@ -2,7 +2,6 @@ __version__ = "0.01"
 
 import os
 import random
-import kivy
 
 from kivy.app import App
 from kivy.clock import Clock
@@ -27,7 +26,8 @@ class MaCarteDeTarotApp(App):
         )  # Remplacez par vos cartes de tarot réelles
         self.theRoot = FloatLayout()
         # draw the background
-        with self.theRoot.canvas:
+        with self.theRoot.canvas.before:
+            self.rect_color = Color(1, 1, 1, 1)
             self.rect = Rectangle(
                 source="tarot_img/bg.jpg",
                 size=self.theRoot.size,
@@ -38,7 +38,10 @@ class MaCarteDeTarotApp(App):
 
     def build(self):
         """Build the app"""
-        self.theRoot.bind(on_size=self.update)
+        self.theRoot.bind(
+            size=self.update,
+            pos=self.update,
+        )  # Bind update method to size and pos events
 
         self.card_label = "Cliquez sur le bouton pour une carte de tarot aléatoire"
         self.label = Label(
@@ -62,8 +65,9 @@ class MaCarteDeTarotApp(App):
 
         self.card_image = Image(
             source="tarot_img/Back.jpg",
-            size_hint=(0.52, 0.52),
+            size_hint=(0.60, 0.52),
             pos_hint={"center_x": 0.15, "center_y": 0.60},
+            keep_ratio=True,
         )  # Image par défaut pour commencer
 
         self.theRoot.add_widget(self.card_image)
@@ -72,7 +76,7 @@ class MaCarteDeTarotApp(App):
         self.text_label = Label(
             text=self.states_label,
             size_hint=(None, None),
-            pos_hint={"center_x": 0.63, "center_y": 0.90},
+            pos_hint={"center_x": 0.63, "center_y": 0.85},
             font_size="18sp",
         )
         self.text_label.text_size = (500, 600)
@@ -101,7 +105,6 @@ class MaCarteDeTarotApp(App):
         self.label.text = f"{drawn_card} {state}"
 
         self.label_states.text = str(cards_signification[drawn_card][state])
-        self.text_label.text = str(cards_signification[drawn_card]["signification"])
 
         if state == "a l'envers":
             if f"{drawn_card} {state}.jpg" not in os.listdir(
@@ -119,9 +122,18 @@ class MaCarteDeTarotApp(App):
 
             self.card_image.source = image_path
 
+        self.text_label.text = str(
+            cards_signification[drawn_card][f"signification {state}"]
+        )
+
     def update(self, *args):
         # set the size and position of the background image
         self.rect.size = self.theRoot.size
+        self.rect.pos = self.theRoot.pos
+
+    def on_start(self):
+        # Initialize the app
+        self.update()
 
 
 MaCarteDeTarotApp().run()
