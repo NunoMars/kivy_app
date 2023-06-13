@@ -1,0 +1,113 @@
+<RootScreen>:
+    CardScreen:
+        id: hello
+        name: "hello"
+
+    CardResponseScreen:
+        id: CardResponse
+        name: "response"
+        
+<CardScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        canvas.before:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: "tarot_img/bg.jpg"
+                
+        
+        
+
+        Button:
+            id: draw_button
+            size_hint: 0.5, 1.8
+            pos_hint: {'center_x':0.32, 'y':0.2}
+            halign: 'center'
+            valign: 'middle'
+            padding: [10, 5]
+
+            on_press: root.manager.current = "response"
+			background_color : 0,0,0,0
+            Image:
+                id: card_image
+                source: "tarot_img/Back.jpg"
+                center_x: self.parent.center_x
+				center_y: self.parent.center_y
+                size: self.parent.width, self.parent.height
+                keep_ratio: True
+                allow_stretch: True
+        Label:
+            text: "Cliquez sur la carte\n pour une prediction"
+            font_size: "28sp"
+            multiline: True
+            halign: 'center'
+            valign: 'middle'
+            margin: [5, 5] 
+
+<CardResponseScreen>:
+    card_title: card_title
+    card_image: card_image
+    card_text: card_text
+    states_label: states_label
+    BoxLayout:
+        orientation: "vertical"
+        canvas.before:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: "tarot_img/bg.jpg"
+        Label:
+            id: card_title
+            text: ""
+            size_hint: 1, 0.5
+            font_size: "28sp"
+            multiline: True
+            halign: 'center'
+            pos_hint: {'center_x':0.5, 'center_y':1.8}
+            margin: [0, 0]            
+
+        Image:
+            id: card_image
+            source: ""
+            keep_ratio: True
+            allow_stretch: True
+            size_hint: 0.5, 1.8
+            pos_hint: {'center_x':0.5, 'center_y':0.5}
+            halign: 'center'
+            margin: [0, 0]   
+
+        Label:
+            id: states_label
+            text: ""
+            font_size: "20sp"
+            multiline: True
+            hsize_hint: 1, None 
+            text_size: self.size
+            pos_hint: {'center_x': 0.5, 'y': 0.2} 
+            halign: 'center'
+            valign: 'middle'
+            padding: [10, 0]
+            margin: [5, 0] 
+
+        Label:
+            id: card_text
+            text: ""
+            font_size: "18sp"
+            multiline: True
+            size_hint: 1, None 
+            text_size: self.size
+            pos_hint: {'center_x': 0.5, 'y': 0.8} 
+            halign: 'center'
+            valign: 'middle'
+            padding: [10, 0]
+
+    
+        Button:
+            id: back_button
+            text: "Nouveau tirage"
+            size_hint:0.5, 0.4
+            on_press: root.manager.current = "hello"
+            pos_hint: {'center_x':0.5, 'center_y':0.5}
+            background_color : "grey"
+            margin: [5, 5] 

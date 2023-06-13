@@ -15,7 +15,7 @@ cards_signification = {
         "a l'endroit": "féminité, beauté, créativité, abondance, sensualité",
         "a l'envers": "manque de féminité, manque de beauté, manque de créativité, manque d'abondance, manque de sensualité",
         "signification a l'endroit": "L'Impératrice est la carte du tarot représentant la féminité, la beauté et la créativité. Elle symbolise la fertilité, l'abondance et la sensualité. C'est une carte qui invite à la créativité, à la beauté et à la sensualité. L'Impératrice est une carte qui rappelle l'importance de la féminité et de la beauté pour atteindre ses objectifs.",
-        "signification a l'envres": "L'Impératrice inversée dans le tarot peut indiquer un manque de féminité, de beauté et de créativité. Vous pourriez vous sentir perdu, confus et avoir du mal à trouver votre chemin. Il est important de prendre du temps pour vous, de vous écouter et de vous concentrer sur ce qui est important pour vous. L'Impératrice inversée nécessite de travailler sur vous-même pour surmonter ces obstacles et trouver votre chemin vers la clarté et l'épanouissement.",
+        "signification a l'envers": "L'Impératrice inversée dans le tarot peut indiquer un manque de féminité, de beauté et de créativité. Vous pourriez vous sentir perdu, confus et avoir du mal à trouver votre chemin. Il est important de prendre du temps pour vous, de vous écouter et de vous concentrer sur ce qui est important pour vous. L'Impératrice inversée nécessite de travailler sur vous-même pour surmonter ces obstacles et trouver votre chemin vers la clarté et l'épanouissement.",
     },
     "L'Empereur": {
         "a l'endroit": "autorité, pouvoir, structure, force, stabilité",

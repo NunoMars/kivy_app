@@ -3,16 +3,81 @@ __version__ = "0.01"
 import os
 import random
 
-from kivy.app import App
-from kivy.clock import Clock
+from kivy.app import App, Builder
+from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.image import Image
 from kivy.graphics import *
 
-from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.boxlayout import BoxLayout
 from PIL import Image as PILImage
 from signification import cards_signification
+
+Builder.load_file("macartedetarotapp.kv")
+
+
+class RootScreen(ScreenManager):
+    pass
+
+
+class CardScreen(Screen):
+    """Ecran principal de l'application"""
+
+    def __init__(self, **kwargs):
+        super(CardScreen, self).__init__(**kwargs)
+
+
+class CardResponseScreen(Screen):
+    """Ecran de réponse de l'application"""
+
+    def __init__(self, **kwargs):
+        super(CardResponseScreen, self).__init__(**kwargs)
+        self.path = "tarot_img/MajorArcanaCards"
+        self.cards = list(cards_signification.keys())
+        self.states = ["a l'endroit", "a l'envers"]
+
+    def on_enter(self, *args):
+        self.build()
+
+    def create_card_text(self, text):
+        """
+        insére "\n" tous les 30 caractères
+         d'un texte complet afin de reduire la taille en largeur
+        """
+        list_of_text = [text[i : i + 70] for i in range(0, len(text), 70)]
+        return "\n".join(list_of_text)
+
+    def build(self):
+        """Tire une carte de tarot aléatoire et affiche l'image correspondante"""
+        self.drawn_card = random.choice(self.cards)
+        self.state = random.choice(self.states)
+        self.card_title.text = f"{self.drawn_card} {self.state}"
+        states_label_text = str(cards_signification[self.drawn_card][self.state])
+        self.states_label.text = self.create_card_text(states_label_text)
+
+        if self.state == "a l'envers":
+            if f"{self.drawn_card} {self.state}.jpg" not in os.listdir(
+                "tarot_img/MajorArcanaCards"
+            ):
+                img = PILImage.open(f"tarot_img/MajorArcanaCards/{self.drawn_card}.jpg")
+                img.rotate(180, expand=True).save(
+                    f"tarot_img/MajorArcanaCards/{self.drawn_card} {self.state}.jpg"
+                )
+
+            image_path = (
+                f"tarot_img/MajorArcanaCards/{self.drawn_card} {self.state}.jpg"
+            )
+            self.card_image.source = image_path
+        else:
+            image_path = f"tarot_img/MajorArcanaCards/{self.drawn_card}.jpg"  # Chemin de l'image correspondante
+
+            self.card_image.source = image_path
+
+        self.card_text.text = str(
+            cards_signification[self.drawn_card][f"signification {self.state}"]
+        )
 
 
 class MaCarteDeTarotApp(App):
@@ -20,120 +85,14 @@ class MaCarteDeTarotApp(App):
 
     def __init__(self, **kwargs):
         super(MaCarteDeTarotApp, self).__init__(**kwargs)
-        self.path = "tarot_img/MajorArcanaCards"
-        self.cards = list(
-            cards_signification.keys()
-        )  # Remplacez par vos cartes de tarot réelles
-        self.theRoot = FloatLayout()
-        # draw the background
-        with self.theRoot.canvas.before:
-            self.rect_color = Color(1, 1, 1, 1)
-            self.rect = Rectangle(
-                source="tarot_img/bg.jpg",
-                size=self.theRoot.size,
-                pos=self.theRoot.pos,
-                keep_ratio=False,
-                allow_stretch=True,
-            )
 
     def build(self):
         """Build the app"""
-        self.theRoot.bind(
-            size=self.update,
-            pos=self.update,
-        )  # Bind update method to size and pos events
+        self.title = "Ma Carte de Tarot"
+        self.icon = "tarot_img/icon.png"
 
-        self.card_label = "Cliquez sur le bouton pour une carte de tarot aléatoire"
-        self.label = Label(
-            text=self.card_label,
-            size_hint=(None, None),
-            pos_hint={"center_x": 0.50, "center_y": 0.90},
-            font_size="30sp",
-        )
-        self.theRoot.add_widget(self.label)
-
-        self.states_label = ""
-        self.label_states = Label(
-            text=self.states_label,
-            size_hint=(None, None),
-            pos_hint={"center_x": 0.63, "center_y": 0.90},
-            font_size="20sp",
-        )
-        self.label_states.text_size = (500, 200)
-        self.label_states.multiline = True
-        self.theRoot.add_widget(self.label_states)
-
-        self.card_image = Image(
-            source="tarot_img/Back.jpg",
-            size_hint=(0.60, 0.52),
-            pos_hint={"center_x": 0.15, "center_y": 0.60},
-            keep_ratio=True,
-        )  # Image par défaut pour commencer
-
-        self.theRoot.add_widget(self.card_image)
-
-        self.text_label = ""
-        self.text_label = Label(
-            text=self.states_label,
-            size_hint=(None, None),
-            pos_hint={"center_x": 0.63, "center_y": 0.85},
-            font_size="18sp",
-        )
-        self.text_label.text_size = (500, 600)
-        self.text_label.multiline = True
-        self.theRoot.add_widget(self.text_label)
-
-        draw_button = Button(text="Tirer une carte")
-        draw_button.bind(on_press=self.draw_card)
-        draw_button.size_hint = (0.43, 0.10)
-        draw_button.pos_hint = {"center_x": 0.5, "center_y": 0.10}
-        draw_button.border_radius = (6, 6, 2, 2)
-
-        self.theRoot.add_widget(draw_button)
-
-        Clock.schedule_once(self.update, -1)
-
-        return self.theRoot
-
-    def draw_card(self, instance):
-        """Tire une carte de tarot aléatoire et affiche l'image correspondante"""
-
-        states = ["a l'endroit", "a l'envers"]
-        drawn_card = random.choice(self.cards)
-        state = random.choice(states)
-
-        self.label.text = f"{drawn_card} {state}"
-
-        self.label_states.text = str(cards_signification[drawn_card][state])
-
-        if state == "a l'envers":
-            if f"{drawn_card} {state}.jpg" not in os.listdir(
-                "tarot_img/MajorArcanaCards"
-            ):
-                img = PILImage.open(f"tarot_img/MajorArcanaCards/{drawn_card}.jpg")
-                img.rotate(180, expand=True).save(
-                    f"tarot_img/MajorArcanaCards/{drawn_card} {state}.jpg"
-                )
-
-            image_path = f"tarot_img/MajorArcanaCards/{drawn_card} {state}.jpg"
-            self.card_image.source = image_path
-        else:
-            image_path = f"tarot_img/MajorArcanaCards/{drawn_card}.jpg"  # Chemin de l'image correspondante
-
-            self.card_image.source = image_path
-
-        self.text_label.text = str(
-            cards_signification[drawn_card][f"signification {state}"]
-        )
-
-    def update(self, *args):
-        # set the size and position of the background image
-        self.rect.size = self.theRoot.size
-        self.rect.pos = self.theRoot.pos
-
-    def on_start(self):
-        # Initialize the app
-        self.update()
+        return RootScreen()
 
 
-MaCarteDeTarotApp().run()
+if __name__ == "__main__":
+    MaCarteDeTarotApp().run()
