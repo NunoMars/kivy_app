@@ -1,3 +1,5 @@
+
+
 <RootScreen>:
     CardScreen:
         id: hello
@@ -15,35 +17,38 @@
                 pos: self.pos
                 size: self.size
                 source: "tarot_img/bg.jpg"
-                
-        
-        
 
-        Button:
-            id: draw_button
-            size_hint: 0.5, 1.8
-            pos_hint: {'center_x':0.32, 'y':0.2}
-            halign: 'center'
-            valign: 'middle'
-            padding: [10, 5]
-
-            on_press: root.manager.current = "response"
-			background_color : 0,0,0,0
-            Image:
-                id: card_image
-                source: "tarot_img/Back.jpg"
-                center_x: self.parent.center_x
-				center_y: self.parent.center_y
-                size: self.parent.width, self.parent.height
-                keep_ratio: True
-                allow_stretch: True
         Label:
-            text: "Cliquez sur la carte\n pour une prediction"
+            text: "Bienvenue \ndans le tarot divinatoire"
             font_size: "28sp"
             multiline: True
             halign: 'center'
             valign: 'middle'
-            margin: [5, 5] 
+            bold: True
+            color: 0.6, 0.4, 0.2, 1.0
+            outline_color: 1, 1, 1, 1
+            outline_width: 4
+
+        Button:
+            id: draw_button
+            size_hint: 0.55, 1
+            background_color: 0, 0, 0, 0
+            on_press: root.manager.current = "response"
+            Image:
+                id: card_image
+                source: "tarot_img/Back.jpg"
+                center: self.parent.center
+                size: self.parent.size
+                keep_ratio: True
+                allow_stretch: True
+
+        Label:
+            text: "Cliquez sur la carte\npour une prédiction"
+            font_size: "28sp"
+            multiline: True
+            halign: 'center'
+            valign: 'middle'
+
 
 <CardResponseScreen>:
     card_title: card_title
@@ -76,7 +81,7 @@
             source: ""
             keep_ratio: True
             allow_stretch: True
-            size_hint: 0.5, 1.8
+            size_hint: 0.5, 1
             pos_hint: {'center_x':0.5, 'center_y':0.5}
             halign: 'center'
             margin: [0, 0]   
