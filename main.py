@@ -5,14 +5,12 @@ import random
 
 from kivy.app import App, Builder
 from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
-from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.image import Image
 from kivy.graphics import *
 
 from kivy.uix.boxlayout import BoxLayout
-from PIL import Image as PILImage
 from signification import cards_signification
 
 Builder.load_file("macartedetarotapp.kv")
@@ -61,15 +59,10 @@ class CardResponseScreen(Screen):
             if f"{self.drawn_card} {self.state}.jpg" not in os.listdir(
                 "tarot_img/MajorArcanaCards"
             ):
-                img = PILImage.open(f"tarot_img/MajorArcanaCards/{self.drawn_card}.jpg")
-                img.rotate(180, expand=True).save(
+                image_path = (
                     f"tarot_img/MajorArcanaCards/{self.drawn_card} {self.state}.jpg"
                 )
-
-            image_path = (
-                f"tarot_img/MajorArcanaCards/{self.drawn_card} {self.state}.jpg"
-            )
-            self.card_image.source = image_path
+                self.card_image.source = image_path
         else:
             image_path = f"tarot_img/MajorArcanaCards/{self.drawn_card}.jpg"  # Chemin de l'image correspondante
 
