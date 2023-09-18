@@ -4,13 +4,12 @@ import os
 import random
 
 from kivy.app import App, Builder
-from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
-from kivy.uix.button import Button
-from kivy.uix.label import Label
-from kivy.uix.image import Image
-from kivy.graphics import *
-
+from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.popup import Popup
+from kivy.clock import Clock
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.image import Image
+
 from signification import cards_signification
 
 Builder.load_file("macartedetarotapp.kv")
@@ -27,6 +26,26 @@ class CardScreen(Screen):
         super(CardScreen, self).__init__(**kwargs)
 
 
+class LoadingPopup(Popup):
+    def __init__(self, **kwargs):
+        super(LoadingPopup, self).__init__(**kwargs)
+        self.title = "JE TIRE UNE CARTE..."
+        # self.background = ""
+        self.background = "tarot_img/bg.jpg"
+        content_layout = BoxLayout(orientation="vertical")
+        animated_card = Image(source="tarot_img/carte.gif", anim_delay=0.1)
+        content_layout.add_widget(animated_card)
+        self.content = content_layout
+
+
+class FullScreenImagePopup(BoxLayout):
+    def __init__(self, image_path, **kwargs):
+        super(FullScreenImagePopup, self).__init__(**kwargs)
+        self.orientation = "vertical"
+        self.image = Image(source=image_path, size_hint=(1, 1))
+        self.add_widget(self.image)
+
+
 class CardResponseScreen(Screen):
     """Ecran de réponse de l'application"""
 
@@ -37,40 +56,72 @@ class CardResponseScreen(Screen):
         self.states = ["a l'endroit", "a l'envers"]
 
     def on_enter(self, *args):
-        self.build()
+        self.show_loading_popup()  # Affiche la fenêtre modale d'attente
 
-    def create_card_text(self, text):
-        """
-        insére "\n" tous les 30 caractères
-         d'un texte complet afin de reduire la taille en largeur
-        """
-        list_of_text = [text[i : i + 70] for i in range(0, len(text), 70)]
-        return "\n".join(list_of_text)
+    def show_loading_popup(self):
+        self.loading_popup = LoadingPopup()
+        self.loading_popup.open()
+        Clock.schedule_once(
+            self.load_card_data, 3
+        )  # Appeler load_card_data après un court délai
 
-    def build(self):
-        """Tire une carte de tarot aléatoire et affiche l'image correspondante"""
-        self.drawn_card = random.choice(self.cards)
-        self.state = random.choice(self.states)
-        self.card_title.text = f"{self.drawn_card} {self.state}"
-        states_label_text = str(cards_signification[self.drawn_card][self.state])
-        self.states_label.text = self.create_card_text(states_label_text)
+    def load_card_data(self, dt):
+        """Charge les données de la carte après un court délai simulé (0.1 seconde)"""
+        try:
+            self.drawn_card = random.choice(self.cards)
+            self.state = random.choice(self.states)
+            self.card_title.text = f"{self.drawn_card}\n{self.state}"
+            self.states_label.text = str(
+                cards_signification[self.drawn_card][self.state]
+            )
 
-        if self.state == "a l'envers":
-            if f"{self.drawn_card} {self.state}.jpg" not in os.listdir(
-                "tarot_img/MajorArcanaCards"
-            ):
-                image_path = (
-                    f"tarot_img/MajorArcanaCards/{self.drawn_card} {self.state}.jpg"
-                )
+            if self.state == "a l'envers":
+                image_file_name = f"{self.drawn_card} {self.state}.jpg"
+            else:
+                image_file_name = f"{self.drawn_card}.jpg"
+            image_path = os.path.join(
+                self.path, image_file_name
+            )  # Construct full path
+
+            # Print the image path for debugging
+            # print("Image Path:", image_path)
+
+            if os.path.exists(image_path):
                 self.card_image.source = image_path
-        else:
-            image_path = f"tarot_img/MajorArcanaCards/{self.drawn_card}.jpg"  # Chemin de l'image correspondante
+                self.card_image.bind(
+                    on_touch_down=self.on_image_click
+                )  # Bind the touch event
+            else:
+                print("Image not found:", image_path)
 
-            self.card_image.source = image_path
+            self.card_text.text = str(
+                cards_signification[self.drawn_card][
+                    f"signification {self.state}"
+                ]
+            )
+        except Exception as e:
+            # Handle any exceptions and print the error message
+            print("Error loading card data:", e)
 
-        self.card_text.text = str(
-            cards_signification[self.drawn_card][f"signification {self.state}"]
-        )
+        self.loading_popup.dismiss()  # Close the loading popup
+
+    def on_image_click(self, instance, touch):
+        """Affiche l'image en plein écran si l'utilisateur clique dessus"""
+        if self.card_image.collide_point(*touch.pos):
+            if hasattr(self, "full_screen_popup"):
+                self.remove_widget(self.full_screen_popup)
+                del self.full_screen_popup
+            else:
+                if self.state == "a l'envers":
+                    image_path = f"tarot_img/MajorArcanaCards/{self.drawn_card} {self.state}.jpg"
+                else:
+                    image_path = (
+                        f"tarot_img/MajorArcanaCards/{self.drawn_card}.jpg"
+                    )
+
+                # Create a full-screen popup with the image
+                self.full_screen_popup = FullScreenImagePopup(image_path)
+                self.add_widget(self.full_screen_popup)
 
 
 class MaCarteDeTarotApp(App):

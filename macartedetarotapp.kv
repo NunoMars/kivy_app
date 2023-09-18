@@ -1,15 +1,9 @@
-
-
 <RootScreen>:
-    CardScreen:
-        id: hello
-        name: "hello"
-
+    CardScreen:  
     CardResponseScreen:
-        id: CardResponse
-        name: "response"
-        
+
 <CardScreen>:
+    name: "hello_screen"
     BoxLayout:
         orientation: "vertical"
         canvas.before:
@@ -31,17 +25,15 @@
 
         Button:
             id: draw_button
-            size_hint: 0.55, 1
             background_color: 0, 0, 0, 0
-            on_press: root.manager.current = "response"
+            on_press: root.manager.current = "response_screen"
+            halign: 'center'
+            valign: 'middle'
             Image:
                 id: card_image
                 source: "tarot_img/Back.jpg"
                 center: self.parent.center
                 size: self.parent.size
-                keep_ratio: True
-                allow_stretch: True
-
         Label:
             text: "Cliquez sur la carte\npour une prédiction"
             font_size: "28sp"
@@ -51,12 +43,14 @@
 
 
 <CardResponseScreen>:
+    name: "response_screen"
     card_title: card_title
     card_image: card_image
     card_text: card_text
     states_label: states_label
     BoxLayout:
         orientation: "vertical"
+        spacing: 5
         canvas.before:
             Rectangle:
                 pos: self.pos
@@ -64,59 +58,55 @@
                 source: "tarot_img/bg.jpg"
         Label:
             id: card_title
-            text: ""
             bold: True
             color: 0.6, 0.4, 0.2, 1.0
             outline_color: 1, 1, 1, 1
-            outline_width: 4
+            outline_width: 2
             size_hint: 1, 0.5
-            font_size: "28sp"
+            font_size: "24sp"
             multiline: True
-            halign: 'center'
-            pos_hint: {'center_x':0.5, 'center_y':1.8}
-            margin: [0, 0]            
-
-        Image:
-            id: card_image
-            source: ""
-            keep_ratio: True
-            allow_stretch: True
-            size_hint: 0.5, 1
-            pos_hint: {'center_x':0.5, 'center_y':0.5}
-            halign: 'center'
-            margin: [0, 0]   
-
-        Label:
-            id: states_label
-            text: ""
-            font_size: "20sp"
-            multiline: True
-            hsize_hint: 1, None 
-            text_size: self.size
-            pos_hint: {'center_x': 0.5, 'y': 0.2} 
             halign: 'center'
             valign: 'middle'
-            padding: [10, 0]
-            margin: [5, 0] 
 
-        Label:
-            id: card_text
-            text: ""
-            font_size: "18sp"
-            multiline: True
-            size_hint: 1, None 
-            text_size: self.size
-            pos_hint: {'center_x': 0.5, 'y': 0.8} 
-            halign: 'center'
-            valign: 'middle'
-            padding: [10, 0]
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: 1 
+            
+            Image:
+                id: card_image
+                size_hint: 1, 1
+                pos_hint: {'center_x':0.1,'center_y':0.5}  
+            
+            Label:
+                id: states_label
+                color: 0.6, 0.4, 0.2, 1.0
+                outline_color: 255, 255, 255, 255
+                outline_width: 1
+                font_size: "20sp"
+                multiline: True
+                text_size: self.size
+                halign: 'left'
+                valign: 'middle'
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: 5  
+            Label:
+                id: card_text
+                font_size: "18sp"
+                multiline: True
+                text_size: self.size
+                padding_x: 20
+                halign: 'center'
+                valign: 'middle'
+                outline_color: 255, 255, 255, 255
+                outline_width: 1
 
-    
         Button:
             id: back_button
             text: "Nouveau tirage"
-            size_hint:0.5, 0.4
-            on_press: root.manager.current = "hello"
+            size_hint:0.3, 0.3
+            on_press: root.manager.current = "hello_screen"
+            on_release: root.reset()
             pos_hint: {'center_x':0.5, 'center_y':0.5}
             background_color : "grey"
             margin: [5, 5] 
