@@ -32,7 +32,7 @@ class LoadingPopup(Popup):
         self.background = "tarot_img/bg.jpg"
         content_layout = BoxLayout(orientation="vertical")
         # Maintenant que Pillow est installé, essayons le GIF original
-        gif_path = os.path.join(os.path.dirname(__file__), "tarot_img", "carte.gif")
+        gif_path = os.path.join(os.path.dirname(__file__), "tarot_img", "carte-unscreen.gif")
         animated_card = Image(source=gif_path, anim_delay=0.1)
         content_layout.add_widget(animated_card)
         self.content = content_layout
