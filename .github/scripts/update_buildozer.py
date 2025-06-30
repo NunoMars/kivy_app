@@ -26,7 +26,9 @@ def update_buildozer_spec():
         (r'android\.api = \d+', 'android.api = 33'),
         (r'android\.minapi = \d+', 'android.minapi = 21'),
         (r'android\.ndk = .*', 'android.ndk = 25b'),
-        (r'android\.sdk = \d+', 'android.sdk = 33'),
+        
+        # SUPPRIMER android.sdk car obsolète dans buildozer 1.5.0
+        (r'^android\.sdk = \d+', '# android.sdk = 33  # OBSOLETE in buildozer 1.5.0+'),
         
         # Acceptance des licences
         (r'# android\.accept_sdk_license = False', 'android.accept_sdk_license = True'),

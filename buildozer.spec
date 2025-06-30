@@ -107,7 +107,7 @@ android.api = 33
 android.minapi = 21
 
 # (int) Android SDK version to use
-android.sdk = 33
+# android.sdk = 33  # OBSOLETE in buildozer 1.5.0+
 
 # (str) Android NDK version to use
 android.ndk = 25b
