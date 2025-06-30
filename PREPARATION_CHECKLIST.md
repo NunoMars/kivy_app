@@ -3,12 +3,14 @@
 ## 🎯 Actions à faire MAINTENANT (pendant validation compte)
 
 ### 📱 Préparation technique
-- [ ] Finaliser l'app (déjà fait ✅)
+
+- [X] Finaliser l'app (déjà fait ✅)
 - [ ] Tester sur différents appareils
 - [ ] Optimiser les performances
 - [ ] Vérifier toutes les fonctionnalités
 
 ### 🎨 Assets marketing nécessaires
+
 - [ ] **Icon app** : 512x512px (HD)
 - [ ] **Screenshots** : 4-8 captures d'écran
 - [ ] **Feature graphic** : 1024x500px (bannière store)
@@ -16,11 +18,13 @@
 - [ ] **Description longue** : 4000 caractères max
 
 ### 📄 Documents légaux
-- [ ] **Politique de confidentialité** (obligatoire)
-- [ ] **Conditions d'utilisation**
-- [ ] **Page support** (site web ou email)
+
+- [X] **Politique de confidentialité** (obligatoire)
+- [X] **Conditions d'utilisation**
+- [X] **Page support** (site web ou email)
 
 ### 🔧 Configuration technique
+
 - [ ] Préparer GitHub repository
 - [ ] Configurer buildozer.spec
 - [ ] Tester compilation locale
@@ -30,11 +34,13 @@
 ## 📝 Contenus à préparer
 
 ### Description courte (80 caractères)
+
 ```
 Tirage de tarot authentique - Marseille complet - Prédictions quotidiennes
 ```
 
 ### Description longue (ébauche)
+
 ```
 🔮 MA CARTE DE TAROT - L'authenticité du Tarot de Marseille
 
@@ -69,6 +75,7 @@ Téléchargez maintenant et laissez les cartes révéler votre destin !
 ```
 
 ### Mots-clés ASO
+
 ```
 tarot, marseille, divination, cartes, prédiction, voyance, spiritualité, 
 ésotérisme, oracle, tirage, mystique, avenir, destin, guidance
@@ -79,13 +86,16 @@ tarot, marseille, divination, cartes, prédiction, voyance, spiritualité,
 ## 🎨 Assets à créer
 
 ### Screenshots nécessaires
+
 1. **Écran d'accueil** avec carte dos
-2. **Animation de tirage** 
+2. **Animation de tirage**
 3. **Carte révélée** avec signification
 4. **Exemple de prédiction** complète
 
 ### Feature Graphic (1024x500)
+
 Bannière avec :
+
 - Logo app
 - Cartes du tarot
 - Texte "Tarot de Marseille Authentique"
