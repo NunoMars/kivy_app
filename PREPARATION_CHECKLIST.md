@@ -8,6 +8,7 @@
 - [ ] Tester sur différents appareils
 - [ ] Optimiser les performances
 - [ ] Vérifier toutes les fonctionnalités
+- [ ] Créer une fiche Play Store par défaut
 
 ### 🎨 Assets marketing nécessaires
 
