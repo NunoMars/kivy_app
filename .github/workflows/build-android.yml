@@ -31,40 +31,42 @@ jobs:
       with:
         path: .buildozer
         key: buildozer-${{ hashFiles('buildozer.spec') }}
+        
     - name: Install system dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y git zip unzip openjdk-17-jdk wget sed coreutils grep
         sudo apt-get install -y python3-pip python3-setuptools build-essential
         sudo apt-get install -y libffi-dev libssl-dev autotools-dev automake
-        sudo apt-get install -y libtool pkg-config zlib1g-dev libncurses-dev
+        sudo apt-get install -y libtool pkg-config zlib1g-dev libncurses5-dev
         sudo apt-get install -y libncursesw5-dev libtinfo6 cmake
         
         # Vérifier que les outils de base fonctionnent
-        which git
-        which grep
-        which sed
-        git --version         
+        /usr/bin/which git
+        /usr/bin/which grep
+        /usr/bin/which sed
+        /usr/bin/which ls
+        /usr/bin/which mkdir
+        git --version
 
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
         pip install buildozer==1.5.0
-        pip install cython==0.29.36
-        pip install kivy[base]==2.3.0
+        pip install cython==0.29.33
+        pip install kivy==2.2.0
         pip install python-for-android==2024.1.21
-        pip install colorama
         
     - name: Set up Android SDK manually
       run: |
         # Créer le répertoire SDK
-        mkdir -p $HOME/.buildozer/android/platform
+        /usr/bin/mkdir -p $HOME/.buildozer/android/platform
         cd $HOME/.buildozer/android/platform
         
         # Télécharger et installer Command Line Tools
         wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
         unzip -q commandlinetools-linux-9477386_latest.zip
-        mkdir -p android-sdk/cmdline-tools
+        /usr/bin/mkdir -p android-sdk/cmdline-tools
         mv cmdline-tools android-sdk/cmdline-tools/latest
         
         # Variables d'environnement
@@ -80,7 +82,7 @@ jobs:
         # Vérifier l'installation
         echo "=== Checking Android SDK installation ==="
         if [ -d "$ANDROID_HOME/build-tools/" ]; then
-          /bin/ls -la "$ANDROID_HOME/build-tools/"
+          /usr/bin/ls -la "$ANDROID_HOME/build-tools/"
         else
           echo "Build tools directory not found"
         fi
@@ -90,32 +92,30 @@ jobs:
         # Utiliser le script Python pour mettre à jour buildozer.spec
         python3 .github/scripts/update_buildozer.py
         
+    - name: Prepare python-for-android
+      run: |
+        # Créer les répertoires nécessaires pour éviter les erreurs
+        /usr/bin/mkdir -p $HOME/.buildozer/android/platform/python-for-android
+        /usr/bin/mkdir -p .buildozer/android/platform
+        
     - name: Build APK with Buildozer
       env:
         ANDROID_HOME: /home/runner/.buildozer/android/platform/android-sdk
-        PATH: /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin:/home/runner/.buildozer/android/platform/android-sdk/platform-tools:$PATH
+        PATH: /usr/bin:/bin:/home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin:/home/runner/.buildozer/android/platform/android-sdk/platform-tools:$PATH
       run: |
         # Debug buildozer.spec
         echo "=== Buildozer.spec Android config ==="
-        /bin/grep -E "(android\.(api|sdk|ndk|accept)|sdk_path|ndk_path)" buildozer.spec || echo "No Android config found"
+        /usr/bin/grep -E "(android\.(api|sdk|ndk|accept)|sdk_path|ndk_path)" buildozer.spec || echo "No Android config found"
         
         # Afficher les variables d'environnement
         echo "=== Environment ==="
         echo "ANDROID_HOME: $ANDROID_HOME"
         echo "PATH: $PATH"
         if [ -d "$ANDROID_HOME/build-tools/" ]; then
-          ls -la "$ANDROID_HOME/build-tools/" || echo "Build tools directory exists but ls failed"
+          /usr/bin/ls -la "$ANDROID_HOME/build-tools/" || echo "Build tools directory exists but ls failed"
         else
           echo "Build tools not found"
         fi
-        
-        # Initialiser buildozer (nécessaire pour la première fois)
-        echo "=== Initializing buildozer ==="
-        buildozer init || echo "Init failed (normal if buildozer.spec exists)"
-        
-        # Créer les répertoires nécessaires pour python-for-android
-        echo "=== Preparing python-for-android ==="
-        mkdir -p .buildozer/android/platform/python-for-android
         
         # Build debug APK
         echo "=== Starting buildozer build ==="
@@ -131,9 +131,9 @@ jobs:
     - name: List generated files
       run: |
         echo "=== Generated files ==="
-        find . -name "*.apk" -type f 2>/dev/null || echo "No APK files found"
+        /usr/bin/find . -name "*.apk" -type f 2>/dev/null || echo "No APK files found"
         if [ -d "bin/" ]; then
-          /bin/ls -la bin/
+          /usr/bin/ls -la bin/
         else
           echo "No bin directory"
         fi
