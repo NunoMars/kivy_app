@@ -31,7 +31,10 @@ jobs:
       with:
         path: .buildozer
         key: buildozer-${{ hashFiles('buildozer.spec') }}
-        
+    - name: Install dependencies (git, grep, etc.)
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y git grep    
     - name: Install system dependencies
       run: |
         sudo apt-get update
@@ -43,12 +46,7 @@ jobs:
         which git
         which ls
         which sed
-        git --version
-        
-    - name: Install dependencies (git, grep, etc.)
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y git grep
+        git --version         
 
     - name: Install Python dependencies
       run: |
