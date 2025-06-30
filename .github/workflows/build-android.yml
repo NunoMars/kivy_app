@@ -45,6 +45,11 @@ jobs:
         which sed
         git --version
         
+    - name: Install dependencies (git, grep, etc.)
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y git grep
+
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
