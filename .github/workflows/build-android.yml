@@ -35,8 +35,8 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y git zip unzip openjdk-17-jdk wget
-        sudo apt-get install -y python3-pip python3-setuptools
+        sudo apt-get install -y git zip unzip openjdk-17-jdk wget sed
+        sudo apt-get install -y python3-pip python3-setuptools build-essential
         
     - name: Install Python dependencies
       run: |
@@ -70,28 +70,28 @@ jobs:
         # Vérifier l'installation
         ls -la $ANDROID_HOME/build-tools/
         
+    - name: Update buildozer config
+      run: |
+        # Utiliser le script Python pour mettre à jour buildozer.spec
+        python3 .github/scripts/update_buildozer.py
+        
     - name: Build APK with Buildozer
       env:
         ANDROID_HOME: /home/runner/.buildozer/android/platform/android-sdk
         PATH: /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin:/home/runner/.buildozer/android/platform/android-sdk/platform-tools:$PATH
       run: |
-        # Créer buildozer.spec s'il n'existe pas
-        if [ ! -f buildozer.spec ]; then
-          buildozer init
-        fi
-        
-        # Modifier buildozer.spec pour utiliser les bonnes versions
-        sed -i 's/#android.sdk_path = .*/android.sdk_path = \/home\/runner\/.buildozer\/android\/platform\/android-sdk/' buildozer.spec
-        sed -i 's/#android.ndk_path = .*/android.ndk_path = \/home\/runner\/.buildozer\/android\/platform\/android-ndk/' buildozer.spec
-        sed -i 's/android.api = .*/android.api = 33/' buildozer.spec
-        sed -i 's/android.minapi = .*/android.minapi = 21/' buildozer.spec
-        sed -i 's/android.ndk = .*/android.ndk = 25b/' buildozer.spec
-        
         # Debug buildozer.spec
-        echo "=== Buildozer.spec content ==="
-        cat buildozer.spec | grep -E "(api|sdk|ndk)" || true
+        echo "=== Buildozer.spec Android config ==="
+        grep -E "(android\.(api|sdk|ndk|accept)|sdk_path|ndk_path)" buildozer.spec || echo "No Android config found"
+        
+        # Afficher les variables d'environnement
+        echo "=== Environment ==="
+        echo "ANDROID_HOME: $ANDROID_HOME"
+        echo "PATH: $PATH"
+        ls -la $ANDROID_HOME/build-tools/ || echo "Build tools not found"
         
         # Build debug APK
+        echo "=== Starting buildozer build ==="
         buildozer android debug
         
     - name: Upload APK
