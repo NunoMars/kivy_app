@@ -40,6 +40,9 @@
             multiline: True
             halign: 'center'
             valign: 'middle'
+            color: 0.6, 0.4, 0.2, 1.0
+            outline_color: 1, 1, 1, 1
+            outline_width: 4
 
 
 <CardResponseScreen>:
@@ -80,11 +83,11 @@
             Label:
                 id: states_label
                 color: 0.6, 0.4, 0.2, 1.0
-                outline_color: 255, 255, 255, 255
+                outline_color: 1, 1, 1, 1
                 outline_width: 1
                 font_size: "20sp"
                 multiline: True
-                text_size: self.size
+                text_size: self.width, None
                 halign: 'left'
                 valign: 'middle'
         BoxLayout:
@@ -94,11 +97,11 @@
                 id: card_text
                 font_size: "18sp"
                 multiline: True
-                text_size: self.size
-                padding_x: 20
+                text_size: self.width, None
                 halign: 'center'
                 valign: 'middle'
-                outline_color: 255, 255, 255, 255
+                color: 0.6, 0.4, 0.2, 1.0
+                outline_color: 1, 1, 1, 1
                 outline_width: 1
 
         Button:
