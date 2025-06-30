@@ -1,0 +1,114 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'docs/**'  # Se déclenche quand on modifie le dossier docs
+  workflow_dispatch:  # Permet déclenchement manuel
+
+# Permissions nécessaires pour GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Groupe de concurrence pour éviter les déploiements simultanés
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # Job de build
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        
+      - name: Build site
+        run: |
+          # Créer la structure du site
+          mkdir -p _site
+          
+          # Copier la politique de confidentialité
+          cp docs/privacy-policy.html _site/
+          
+          # Créer une page d'index simple
+          cat > _site/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="fr">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Ma Carte de Tarot - Support</title>
+              <style>
+                  body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+                  .card { background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0; }
+                  .btn { background: #6c5ce7; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; }
+                  .btn:hover { background: #5a4fcf; }
+              </style>
+          </head>
+          <body>
+              <h1>🔮 Ma Carte de Tarot</h1>
+              <p>Application de tirage de Tarot de Marseille authentique</p>
+              
+              <div class="card">
+                  <h2>📱 Télécharger l'application</h2>
+                  <p>Bientôt disponible sur Google Play Store !</p>
+                  <a href="#" class="btn">Télécharger sur Google Play</a>
+              </div>
+              
+              <div class="card">
+                  <h2>📄 Documents légaux</h2>
+                  <ul>
+                      <li><a href="privacy-policy.html">Politique de Confidentialité</a></li>
+                      <li><a href="mailto:tarot.support@gmail.com">Nous contacter</a></li>
+                  </ul>
+              </div>
+              
+              <div class="card">
+                  <h2>🎯 Fonctionnalités</h2>
+                  <ul>
+                      <li>78 cartes du Tarot de Marseille traditionnel</li>
+                      <li>Tirages en position droite et inversée</li>
+                      <li>Significations détaillées et authentiques</li>
+                      <li>Interface moderne et intuitive</li>
+                      <li>Fonctionne entièrement hors-ligne</li>
+                  </ul>
+              </div>
+              
+              <footer style="text-align: center; margin-top: 40px; color: #666;">
+                  <p>&copy; 2025 Ma Carte de Tarot - Tous droits réservés</p>
+              </footer>
+          </body>
+          </html>
+          EOF
+          
+          # Copier les assets s'ils existent
+          if [ -d "store_assets" ]; then
+            cp -r store_assets _site/
+          fi
+          
+          echo "✅ Site built successfully"
+          ls -la _site/
+          
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site'
+
+  # Job de déploiement
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

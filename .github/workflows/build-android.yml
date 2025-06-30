@@ -35,8 +35,15 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y git zip unzip openjdk-17-jdk wget sed
+        sudo apt-get install -y git zip unzip openjdk-17-jdk wget sed coreutils
         sudo apt-get install -y python3-pip python3-setuptools build-essential
+        sudo apt-get install -y libffi-dev libssl-dev
+        
+        # Vérifier que les outils de base fonctionnent
+        which git
+        which ls
+        which sed
+        git --version
         
     - name: Install Python dependencies
       run: |
@@ -68,7 +75,12 @@ jobs:
         $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;33.0.2"
         
         # Vérifier l'installation
-        ls -la $ANDROID_HOME/build-tools/
+        echo "=== Checking Android SDK installation ==="
+        if [ -d "$ANDROID_HOME/build-tools/" ]; then
+          /bin/ls -la "$ANDROID_HOME/build-tools/"
+        else
+          echo "Build tools directory not found"
+        fi
         
     - name: Update buildozer config
       run: |
@@ -88,7 +100,11 @@ jobs:
         echo "=== Environment ==="
         echo "ANDROID_HOME: $ANDROID_HOME"
         echo "PATH: $PATH"
-        ls -la $ANDROID_HOME/build-tools/ || echo "Build tools not found"
+        if [ -d "$ANDROID_HOME/build-tools/" ]; then
+          /bin/ls -la "$ANDROID_HOME/build-tools/" || echo "Build tools directory exists but ls failed"
+        else
+          echo "Build tools not found"
+        fi
         
         # Build debug APK
         echo "=== Starting buildozer build ==="
@@ -104,5 +120,9 @@ jobs:
     - name: List generated files
       run: |
         echo "=== Generated files ==="
-        find . -name "*.apk" -type f
-        ls -la bin/ || echo "No bin directory"
+        find . -name "*.apk" -type f 2>/dev/null || echo "No APK files found"
+        if [ -d "bin/" ]; then
+          /bin/ls -la bin/
+        else
+          echo "No bin directory"
+        fi
