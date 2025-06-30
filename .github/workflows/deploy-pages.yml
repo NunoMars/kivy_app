@@ -37,8 +37,12 @@ jobs:
           # Copier la politique de confidentialité
           cp docs/privacy-policy.html _site/
           
-          # Créer une page d'index simple
-          cat > _site/index.html << 'EOF'
+          # Copier l'index s'il existe, sinon créer
+          if [ -f "docs/index.html" ]; then
+            cp docs/index.html _site/
+          else
+            # Créer une page d'index simple
+            cat > _site/index.html << 'EOF'
           <!DOCTYPE html>
           <html lang="fr">
           <head>
@@ -87,6 +91,7 @@ jobs:
           </body>
           </html>
           EOF
+          fi
           
           # Copier les assets s'ils existent
           if [ -d "store_assets" ]; then
