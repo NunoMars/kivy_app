@@ -26,6 +26,10 @@ def update_buildozer_spec():
         # SUPPRIMER android.sdk car obsolète dans buildozer 1.5.0
         (r'^android\.sdk = \d+', '# android.sdk = 33  # OBSOLETE in buildozer 1.5.0+'),
         
+        # Supprimer Pillow des requirements (cause des erreurs libffi)
+        (r'requirements = python3,kivy==2\.2\.0,pillow==\d+\.\d+\.\d+', 'requirements = python3,kivy==2.2.0'),
+        (r'requirements = python3,kivy,pillow[^,\n]*', 'requirements = python3,kivy'),
+        
         # Acceptance des licences
         (r'# android\.accept_sdk_license = False', 'android.accept_sdk_license = True'),
         (r'android\.accept_sdk_license = False', 'android.accept_sdk_license = True')

@@ -165,25 +165,30 @@ jobs:
           echo "Wrapper script not found or not executable"
         fi
         
-        # Build debug APK (strategy: simplifier requirements pour éviter libffi)
-        echo "=== Starting buildozer build avec requirements simplifiés ==="
+        # Build debug APK avec requirements optimisés pour Android
+        echo "=== Starting buildozer build ==="
         
-        # Simplifier immédiatement les requirements pour éviter les problèmes libffi/pillow
-        echo "Requirements originaux:"
+        # Vérifier les requirements après update_buildozer.py
+        echo "Requirements configurés:"
         grep "requirements =" buildozer.spec
         
-        sed -i 's/requirements = python3,kivy==2.2.0,pillow==10.0.0/requirements = python3,kivy/' buildozer.spec
+        # Vérifier qu'aucun cache ne contient Pillow
+        echo "=== Cleaning any potential Pillow cache ==="
+        if [ -d ".buildozer" ]; then
+          echo "Removing existing .buildozer cache..."
+          rm -rf .buildozer
+        fi
         
-        echo "Requirements simplifiés (sans Pillow):"
-        grep "requirements =" buildozer.spec
+        # Nettoyer le cache global buildozer aussi
+        if [ -d "$HOME/.buildozer" ]; then
+          echo "Cleaning global buildozer cache..."
+          rm -rf "$HOME/.buildozer/android/platform/python-for-android-fork"
+          rm -rf "$HOME/.buildozer/android/platform/python-for-android"
+        fi
         
-        # Build avec requirements simplifiés
-        buildozer android debug --verbose || {
-          echo "❌ Build échoué même avec requirements simplifiés"
-          echo "Tentative avec clean et rebuild..."
-          buildozer android clean
-          buildozer android debug --verbose
-        }
+        # Build avec fresh start
+        echo "=== Building APK with fresh cache ==="
+        buildozer android debug --verbose
         
     - name: Upload APK
       uses: actions/upload-artifact@v4
