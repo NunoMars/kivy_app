@@ -36,6 +36,12 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y git zip unzip openjdk-17-jdk wget sed coreutils grep
+        
+        # Configure Java 17 pour Gradle (requis par Android Gradle Plugin)
+        export JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64
+        echo "JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64" >> $GITHUB_ENV
+        echo "Java version configured:"
+        java -version
         sudo apt-get install -y python3-pip python3-setuptools build-essential
         sudo apt-get install -y libffi-dev libssl-dev libssl3 openssl autotools-dev automake
         sudo apt-get install -y libtool libtool-bin pkg-config zlib1g-dev libncurses5-dev
@@ -124,6 +130,7 @@ jobs:
     - name: Build APK with Buildozer
       env:
         ANDROID_HOME: /home/runner/.buildozer/android/platform/android-sdk
+        JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
         PATH: /usr/bin:/bin:/home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin:/home/runner/.buildozer/android/platform/android-sdk/platform-tools:$PATH
         PKG_CONFIG_PATH: /usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig
         AUTOCONF_VERSION: 2.71
