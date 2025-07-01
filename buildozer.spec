@@ -110,7 +110,7 @@ android.minapi = 21
 # android.sdk = 33  # OBSOLETE in buildozer 1.5.0+
 
 # (str) Android NDK version to use
-android.ndk = 25b
+android.ndk = 27.2.12479018
 
 # (int) Android NDK API to use. This is the minimum API your app will support, it should usually match android.minapi.
 android.ndk_api = 21

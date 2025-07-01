@@ -62,18 +62,17 @@ jobs:
         ls -la $ANDROID_HOME/
         ls -la $ANDROID_NDK_HOME/
         
-    - name: Update buildozer config for GitHub Actions
+    - name: Configure buildozer for GitHub Actions SDK/NDK
+      env:
+        ANDROID_HOME: /usr/local/lib/android/sdk
+        ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/27.2.12479018
       run: |
-        # Utiliser le script Python qui supprime Pillow automatiquement
-        python3 .github/scripts/update_buildozer.py
+        # Utiliser le nouveau script qui force l'utilisation des SDK/NDK système
+        python3 .github/scripts/configure_buildozer_sdk.py
         
-        # Vérifier que Pillow est bien supprimé
-        echo "=== Requirements après script ==="
-        grep "requirements =" buildozer.spec
-        
-        # Vérifier les autres configurations
-        echo "=== Config Android ==="
-        grep -E "(android\.(api|ndk|accept)|sdk_path|ndk_path)" buildozer.spec
+        # Vérifier la configuration finale
+        echo "=== Configuration buildozer finale ==="
+        grep -E "(requirements|android\.(sdk_path|ndk_path|ndk|api))" buildozer.spec
         
     - name: Build AAB (App Bundle) with Buildozer
       env:
@@ -83,22 +82,57 @@ jobs:
         PATH: /usr/lib/jvm/temurin-17-jdk-amd64/bin:/usr/local/lib/android/sdk/cmdline-tools/latest/bin:/usr/local/lib/android/sdk/platform-tools:/usr/bin:/bin
         PKG_CONFIG_PATH: /usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig
       run: |
-        # Forcer Java 17 pour éviter les erreurs Gradle
-        echo "=== Java Configuration ==="
+        # Vérifier l'environnement avant le build
+        echo "=== Environnement de build ==="
+        echo "ANDROID_HOME: $ANDROID_HOME"
+        echo "ANDROID_NDK_HOME: $ANDROID_NDK_HOME"
         echo "JAVA_HOME: $JAVA_HOME"
-        echo "PATH: $PATH"
         which java
         java -version
         
-        # Initialiser buildozer si nécessaire
-        buildozer init || echo "Already initialized"
+        # Vérifier que les SDK/NDK existent
+        echo "=== Vérification SDK/NDK ==="
+        ls -la $ANDROID_HOME/ | head -10
+        ls -la $ANDROID_NDK_HOME/ | head -5
         
-        # Build App Bundle (AAB) au lieu d'APK pour Google Play
-        echo "=== Building Android App Bundle (AAB) ==="
-        buildozer android debug --aab || {
-          echo "❌ AAB build failed, trying APK as fallback..."
-          buildozer android debug --verbose
-        }
+        # Initialiser buildozer avec timeout
+        echo "=== Initialisation buildozer ==="
+        timeout 300 buildozer init || echo "Already initialized or timeout"
+        
+        # Vérifier la configuration buildozer finale
+        echo "=== Configuration buildozer ==="
+        grep -E "(android\.(sdk_path|ndk_path|ndk|api)|requirements)" buildozer.spec
+        
+        # Build App Bundle (AAB) pour Google Play avec gestion d'erreur robuste
+        echo "=== Build Android App Bundle (AAB) ==="
+        
+        # Tentative 1: Build AAB normal
+        if timeout 1800 buildozer android debug --aab; then
+          echo "✅ AAB build successful!"
+          ls -la bin/
+        else
+          echo "❌ AAB build failed, diagnostic..."
+          
+          # Diagnostic des erreurs
+          echo "=== Diagnostic buildozer ==="
+          buildozer android clean || true
+          
+          # Vérifier les logs buildozer
+          if [ -f ".buildozer/logs/buildozer.log" ]; then
+            echo "=== Dernières lignes du log buildozer ==="
+            tail -50 .buildozer/logs/buildozer.log
+          fi
+          
+          # Tentative 2: Build APK en fallback
+          echo "=== Tentative fallback APK ==="
+          if timeout 1800 buildozer android debug --verbose; then
+            echo "✅ APK fallback successful!"
+            ls -la bin/
+          else
+            echo "❌ Build complètement échoué"
+            exit 1
+          fi
+        fi
 
     - name: Build Release AAB (if tagged)
       if: startsWith(github.ref, 'refs/tags/')
@@ -107,15 +141,19 @@ jobs:
         ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/27.2.12479018
         JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
         PATH: /usr/lib/jvm/temurin-17-jdk-amd64/bin:/usr/local/lib/android/sdk/cmdline-tools/latest/bin:/usr/local/lib/android/sdk/platform-tools:/usr/bin:/bin
+        ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       run: |
         echo "=== Building Release AAB for Google Play ==="
         
         # Vérifier si nous avons une clé de signature
-        if [ -n "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" ]; then
+        if [ -n "$ANDROID_KEYSTORE_BASE64" ]; then
           echo "🔑 Clé de signature détectée, construction en mode release..."
           
           # Décoder la clé de signature
-          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > release.keystore
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > release.keystore
           
           # Configurer buildozer pour la signature
           echo "" >> buildozer.spec
