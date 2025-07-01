@@ -165,14 +165,23 @@ jobs:
           echo "Wrapper script not found or not executable"
         fi
         
-        # Build debug APK (avec retry en cas d'échec autotools)
-        echo "=== Starting buildozer build ==="
+        # Build debug APK (strategy: simplifier requirements pour éviter libffi)
+        echo "=== Starting buildozer build avec requirements simplifiés ==="
+        
+        # Simplifier immédiatement les requirements pour éviter les problèmes libffi/pillow
+        echo "Requirements originaux:"
+        grep "requirements =" buildozer.spec
+        
+        sed -i 's/requirements = python3,kivy==2.2.0,pillow==10.0.0/requirements = python3,kivy/' buildozer.spec
+        
+        echo "Requirements simplifiés (sans Pillow):"
+        grep "requirements =" buildozer.spec
+        
+        # Build avec requirements simplifiés
         buildozer android debug --verbose || {
-          echo "❌ Premier build échoué, tentative avec requirements simplifiés..."
-          # Simplifier les requirements pour éviter les problèmes libffi
-          sed -i 's/requirements = python3,kivy==2.2.0,pillow==10.0.0/requirements = python3,kivy/' buildozer.spec
-          echo "Requirements simplifiés:"
-          grep "requirements =" buildozer.spec
+          echo "❌ Build échoué même avec requirements simplifiés"
+          echo "Tentative avec clean et rebuild..."
+          buildozer android clean
           buildozer android debug --verbose
         }
         
