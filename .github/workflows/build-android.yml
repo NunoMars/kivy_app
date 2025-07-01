@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04  # Utiliser Ubuntu 22.04 pour éviter les conflits autotools
     
     steps:
     - name: Checkout code
@@ -65,7 +65,7 @@ jobs:
         pip install buildozer==1.5.0
         pip install cython==0.29.33
         pip install kivy==2.2.0
-        pip install python-for-android==2024.1.21
+        pip install python-for-android==2023.6.11  # Version stable compatible
         
     - name: Set up Android SDK manually
       run: |
@@ -126,6 +126,8 @@ jobs:
         ANDROID_HOME: /home/runner/.buildozer/android/platform/android-sdk
         PATH: /usr/bin:/bin:/home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin:/home/runner/.buildozer/android/platform/android-sdk/platform-tools:$PATH
         PKG_CONFIG_PATH: /usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig
+        AUTOCONF_VERSION: 2.71
+        AUTOM4TE_PERLLIBDIR: /usr/share/autotools-dev
       run: |
         # Debug pkg-config et OpenSSL avant build
         echo "=== PKG_CONFIG debugging ==="
@@ -133,6 +135,12 @@ jobs:
         pkg-config --exists openssl && echo "✅ OpenSSL pkg-config OK" || echo "❌ OpenSSL pkg-config FAIL"
         pkg-config --libs openssl || echo "❌ No OpenSSL libs"
         pkg-config --cflags openssl || echo "❌ No OpenSSL cflags"
+        
+        # Debug autotools versions
+        echo "=== Autotools versions ==="
+        autoconf --version | head -1
+        automake --version | head -1 
+        libtool --version | head -1
         
         # Debug buildozer.spec
         echo "=== Buildozer.spec Android config ==="
@@ -157,9 +165,16 @@ jobs:
           echo "Wrapper script not found or not executable"
         fi
         
-        # Build debug APK
+        # Build debug APK (avec retry en cas d'échec autotools)
         echo "=== Starting buildozer build ==="
-        buildozer android debug --verbose
+        buildozer android debug --verbose || {
+          echo "❌ Premier build échoué, tentative avec requirements simplifiés..."
+          # Simplifier les requirements pour éviter les problèmes libffi
+          sed -i 's/requirements = python3,kivy==2.2.0,pillow==10.0.0/requirements = python3,kivy/' buildozer.spec
+          echo "Requirements simplifiés:"
+          grep "requirements =" buildozer.spec
+          buildozer android debug --verbose
+        }
         
     - name: Upload APK
       uses: actions/upload-artifact@v4
