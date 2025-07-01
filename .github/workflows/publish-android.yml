@@ -27,9 +27,17 @@ jobs:
         sudo apt-get install -y build-essential libffi-dev libssl-dev zlib1g-dev
         sudo apt-get install -y libncurses5-dev libncursesw5-dev cmake autoconf
         
-        # Configure Java 17 pour Gradle (cohérent avec build-android.yml)
+        # Configure Java 17 pour Gradle avec PATH complet
         export JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64
+        export PATH="$JAVA_HOME/bin:$PATH"
         echo "JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64" >> $GITHUB_ENV
+        echo "PATH=$JAVA_HOME/bin:$PATH" >> $GITHUB_ENV
+        
+        # Vérifier Java immédiatement
+        echo "=== Java Configuration Verification ==="
+        which java
+        java -version
+        echo "JAVA_HOME: $JAVA_HOME"
         
         # Configurer pkg-config pour OpenSSL
         export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:$PKG_CONFIG_PATH"
@@ -72,12 +80,14 @@ jobs:
         ANDROID_HOME: /usr/local/lib/android/sdk
         ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/27.2.12479018
         JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
-        PATH: /usr/local/lib/android/sdk/cmdline-tools/latest/bin:/usr/local/lib/android/sdk/platform-tools:$PATH
+        PATH: /usr/lib/jvm/temurin-17-jdk-amd64/bin:/usr/local/lib/android/sdk/cmdline-tools/latest/bin:/usr/local/lib/android/sdk/platform-tools:/usr/bin:/bin
         PKG_CONFIG_PATH: /usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig
       run: |
         # Forcer Java 17 pour éviter les erreurs Gradle
         echo "=== Java Configuration ==="
         echo "JAVA_HOME: $JAVA_HOME"
+        echo "PATH: $PATH"
+        which java
         java -version
         
         # Initialiser buildozer si nécessaire
