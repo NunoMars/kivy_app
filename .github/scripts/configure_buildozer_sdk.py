@@ -43,6 +43,10 @@ def update_buildozer_config():
         (r'requirements = pillow,?(.*)', r'requirements = \1'),
         (r'requirements = (.*),pillow', r'requirements = \1'),
         
+        # Configurer les artefacts correctement (APK debug, AAB release)
+        (r'android\.debug_artifact = .*', 'android.debug_artifact = apk'),
+        (r'android\.release_artifact = .*', 'android.release_artifact = aab'),
+        
         # Nettoyer les virgules doubles
         (r'requirements = ([^,]+),,+([^,]+)', r'requirements = \1,\2'),
         (r'requirements = ,+(.+)', r'requirements = \1'),

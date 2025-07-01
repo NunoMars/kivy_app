@@ -119,10 +119,10 @@ android.ndk_api = 21
 #android.private_storage = True
 
 # (str) Android NDK directory (if empty, it will be automatically downloaded.)
-#android.ndk_path = /usr/local/lib/android/sdk/ndk/25.2.9519653
+android.ndk_path = /usr/local/lib/android/sdk/ndk/25.2.9519653
 
 # (str) Android SDK directory (if empty, it will be automatically downloaded.)
-#android.sdk_path = /usr/local/lib/android/sdk
+android.sdk_path = /usr/local/lib/android/sdk
 
 # (str) ANT directory (if empty, it will be automatically downloaded.)
 #android.ant_path =
@@ -308,7 +308,7 @@ android.allow_backup = True
 android.release_artifact = aab
 
 # (str) The format used to package the app for debug mode (apk or aar).
-android.debug_artifact = aab
+android.debug_artifact = apk
 
 #
 # Python for android (p4a) specific
