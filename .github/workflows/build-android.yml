@@ -38,8 +38,8 @@ jobs:
         sudo apt-get install -y git zip unzip openjdk-17-jdk wget sed coreutils grep
         sudo apt-get install -y python3-pip python3-setuptools build-essential
         sudo apt-get install -y libffi-dev libssl-dev autotools-dev automake
-        sudo apt-get install -y libtool pkg-config zlib1g-dev libncurses5-dev
-        sudo apt-get install -y libncursesw5-dev libtinfo6 cmake
+        sudo apt-get install -y libtool libtool-bin pkg-config zlib1g-dev libncurses5-dev
+        sudo apt-get install -y libncursesw5-dev libtinfo6 cmake autoconf
         
         # Vérifier que les outils de base fonctionnent
         /usr/bin/which git
@@ -47,6 +47,8 @@ jobs:
         /usr/bin/which sed
         /usr/bin/which ls
         /usr/bin/which mkdir
+        /usr/bin/which libtool
+        /usr/bin/which autoconf
         git --version
 
     - name: Install Python dependencies
