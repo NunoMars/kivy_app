@@ -75,7 +75,7 @@ jobs:
         echo "=== Config Android ==="
         grep -E "(android\.(api|ndk|accept)|sdk_path|ndk_path)" buildozer.spec
         
-    - name: Build APK with Buildozer
+    - name: Build AAB (App Bundle) with Buildozer
       env:
         ANDROID_HOME: /usr/local/lib/android/sdk
         ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/27.2.12479018
@@ -93,28 +93,103 @@ jobs:
         # Initialiser buildozer si nécessaire
         buildozer init || echo "Already initialized"
         
-        # Build debug APK avec requirements propres (sans Pillow)
-        buildozer android debug --verbose
+        # Build App Bundle (AAB) au lieu d'APK pour Google Play
+        echo "=== Building Android App Bundle (AAB) ==="
+        buildozer android debug --aab || {
+          echo "❌ AAB build failed, trying APK as fallback..."
+          buildozer android debug --verbose
+        }
 
-    - name: Sign APK for Release
+    - name: Build Release AAB (if tagged)
       if: startsWith(github.ref, 'refs/tags/')
+      env:
+        ANDROID_HOME: /usr/local/lib/android/sdk
+        ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/27.2.12479018
+        JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
+        PATH: /usr/lib/jvm/temurin-17-jdk-amd64/bin:/usr/local/lib/android/sdk/cmdline-tools/latest/bin:/usr/local/lib/android/sdk/platform-tools:/usr/bin:/bin
       run: |
-        # Conversion en AAB pour Google Play (nécessite keystore configuré)
-        echo "Building release APK..."
-        buildozer android release || echo "Release build failed - keystore needed"
+        echo "=== Building Release AAB for Google Play ==="
         
-    - name: Upload APK as artifact
+        # Vérifier si nous avons une clé de signature
+        if [ -n "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" ]; then
+          echo "🔑 Clé de signature détectée, construction en mode release..."
+          
+          # Décoder la clé de signature
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > release.keystore
+          
+          # Configurer buildozer pour la signature
+          echo "" >> buildozer.spec
+          echo "[app:android.gradle_dependencies]" >> buildozer.spec
+          echo "android.gradle_dependencies = " >> buildozer.spec
+          
+          # Build release AAB signé
+          buildozer android release
+        else
+          echo "⚠️  Pas de clé de signature configurée"
+          echo "   Pour publier sur Google Play, il faut :"
+          echo "   1. Générer une clé de signature Android"
+          echo "   2. L'encoder en base64 et l'ajouter comme secret ANDROID_KEYSTORE_BASE64"
+          echo "   3. Ajouter les secrets KEYSTORE_PASSWORD, KEY_ALIAS, KEY_PASSWORD"
+          echo ""
+          echo "   Pour l'instant, le debug AAB sera utilisé."
+        fi
+        
+    - name: Upload App Bundle (AAB) as artifact
       uses: actions/upload-artifact@v4
       with:
-        name: tarot-app-apk
-        path: bin/*.apk
+        name: tarot-app-bundle
+        path: |
+          bin/*.aab
+          bin/*.apk
+        retention-days: 30
         
     - name: Upload to Google Play Console
-      if: startsWith(github.ref, 'refs/tags/')
+      if: startsWith(github.ref, 'refs/tags/') && success()
       uses: r0adkll/upload-google-play@v1.1.3
       with:
         serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT }}
-        packageName: Ma carte de Tarot
+        packageName: org.tarot.macartedetarot  # Nom de package cohérent
         releaseFiles: bin/*.aab
-        track: internal  # ou 'production' pour publication directe
+        track: internal  # Commence par internal, puis promotion vers production
         status: completed
+        
+    - name: Create GitHub Release
+      if: startsWith(github.ref, 'refs/tags/')
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref_name }}
+        release_name: Release ${{ github.ref_name }}
+        body: |
+          🔮 **Ma Carte de Tarot - Version ${{ github.ref_name }}**
+          
+          📱 **App Bundle Android disponible**
+          - Format AAB optimisé pour Google Play Store
+          - Compatible avec toutes les architectures Android
+          - Taille optimisée selon votre appareil
+          
+          ✨ **Nouvelles fonctionnalités :**
+          - Interface améliorée
+          - Performance optimisée
+          - Corrections de bugs
+          
+          📋 **Installation :**
+          - Téléchargez le fichier .aab depuis les artifacts
+          - Ou attendez la publication sur Google Play Store
+          
+          🔮 **Guidance spirituelle authentique avec le Tarot de Marseille !**
+        draft: false
+        prerelease: false
+        
+    - name: Upload AAB to Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: bin/macartedetarot-${{ github.ref_name }}.aab
+        asset_name: ma-carte-tarot-${{ github.ref_name }}.aab
+        asset_content_type: application/vnd.android.package-archive

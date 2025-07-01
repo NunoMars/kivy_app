@@ -8,6 +8,70 @@ import os
 from PIL import Image, ImageDraw, ImageFont
 import textwrap
 
+# Store descriptions for Google Play
+STORE_DESCRIPTIONS = {
+    "short": "🔮 Tirage de Tarot de Marseille authentique - Guidance spirituelle",
+    
+    "long": """🔮 **MA CARTE DE TAROT - TIRAGE AUTHENTIQUE DE MARSEILLE** 🔮
+
+Découvrez l'art ancestral du Tarot de Marseille avec une application authentique et respectueuse de la tradition cartomantique française. Que vous soyez débutant curieux ou pratiquant expérimenté, plongez dans l'univers mystique des 78 arcanes.
+
+✨ **CARACTÉRISTIQUES PRINCIPALES**
+
+🎴 **Cartes Authentiques**
+• 22 Arcanes Majeurs du Tarot de Marseille traditionnel
+• Illustrations fidèles aux tarots historiques
+• Symbolique préservée et respectée
+
+🔮 **Tirages Personnalisés**
+• Tirage quotidien pour guidance spirituelle
+• Sélection aléatoire authentique
+• Interprétation détaillée de chaque carte
+
+📖 **Significations Complètes**
+• Interprétations traditionnelles enrichies
+• Signification à l'endroit et à l'envers
+• Contexte spirituel et psychologique
+• Conseils pratiques pour votre quotidien
+
+🌟 **Interface Intuitive**
+• Design élégant et mystique
+• Navigation fluide et apaisante
+• Animations douces pour l'immersion
+• Optimisé pour tous les écrans
+
+🎯 **POURQUOI CHOISIR CETTE APPLICATION ?**
+
+• **Authenticité** : Respecte la tradition du Tarot de Marseille
+• **Gratuit** : Accès complet sans frais cachés
+• **Hors ligne** : Fonctionne sans connexion internet
+• **Respect** : Approche bienveillante de la divination
+• **Apprentissage** : Parfait pour découvrir le tarot
+
+🧘 **IDÉAL POUR :**
+• Méditation et introspection quotidienne
+• Guidance dans les moments de doute
+• Apprentissage de la cartomancie
+• Développement personnel et spirituel
+
+🔒 **CONFIDENTIALITÉ ET RESPECT**
+Vos tirages restent privés et confidentiels. Aucune donnée personnelle n'est collectée.
+
+⭐ **Note importante :** Le tarot est un outil de réflexion personnelle et de développement spirituel. Les interprétations proposées sont à des fins de divertissement et d'introspection.
+
+📧 **Support** : tarot.support@gmail.com
+🌐 **Site web** : https://nunomars.github.io/kivy_app/
+
+#TarotDeMarseille #Cartomancie #Spiritualité #Méditation #DéveloppementPersonnel""",
+
+    "keywords": [
+        "Tarot de Marseille", "Cartomancie", "Tirage tarot gratuit", 
+        "Arcanes majeurs", "Spiritualité", "Méditation", "Divination",
+        "Oracle", "Cartes voyance", "Guidance spirituelle", 
+        "Développement personnel", "Introspection"
+    ]
+}
+
 def create_app_icon(size=512):
     """Crée l'icône de l'app en HD"""
     # Créer une image de base
@@ -21,8 +85,8 @@ def create_app_icon(size=512):
     
     # Bordure dorée
     border_width = size // 25
-    draw.ellipse([margin-border_width, margin-border_width, 
-                 size-margin+border_width, size-margin+border_width], 
+    draw.ellipse([margin-border_width, margin-borderWidth, 
+                 size-margin+border_width, size-margin+borderWidth], 
                 outline=(255, 215, 0, 255), width=border_width)
     
     # Symbole central (carte stylisée)
@@ -185,71 +249,48 @@ def create_screenshots_template():
         img.save(filename)
         print(f"✅ Template screenshot créé: {filename}")
 
-def create_store_descriptions():
-    """Crée les fichiers de description pour le store"""
-    
-    short_description = "Tarot de Marseille authentique - 78 cartes - Prédictions mystiques"
-    
-    long_description = """🔮 MA CARTE DE TAROT - L'authenticité du Tarot de Marseille
-
-Découvrez les secrets de votre avenir avec notre application de tirage de tarot authentique basée sur la tradition française séculaire.
-
-✨ FONCTIONNALITÉS COMPLÈTES :
-• 78 cartes du Tarot de Marseille traditionnel
-• Tirages en position droite et inversée
-• Significations détaillées et authentiques
-• Interface moderne et intuitive
-• Animations mystiques immersives
-• Fonctionne entièrement hors-ligne
-• Design optimisé pour mobile
-
-🎯 POURQUOI CHOISIR NOTRE APP ?
-• Basée sur l'authentique Tarot de Marseille français
-• Interprétations nuancées par des experts
-• Design moderne respectant la tradition
-• Expérience utilisateur fluide et captivante
-• Pas d'abonnement, utilisation libre
-
-🔮 COMMENT UTILISER :
-1. Concentrez-vous sur votre question intérieure
-2. Touchez la carte pour révéler votre tirage
-3. Découvrez la signification personnalisée
-4. Méditez sur les conseils prodigués
-
-🌟 PARFAIT POUR :
-• Guidance quotidienne et développement personnel
-• Moments de réflexion et d'introspection
-• Découverte de l'art divinatoire du tarot
-• Connexion avec votre intuition profonde
-
-📱 INTERFACE MODERNE :
-• Navigation intuitive
-• Animations fluides
-• Couleurs mystiques apaisantes
-• Textes lisibles et bien structurés
-
-Téléchargez maintenant et laissez la sagesse ancestrale du Tarot de Marseille illuminer votre chemin !
-
-Note : Cette application est destinée au divertissement et au développement personnel. Les prédictions ne substituent pas les conseils professionnels."""
-
-    keywords = [
-        "tarot", "marseille", "divination", "cartes", "prédiction", "voyance", 
-        "spiritualité", "ésotérisme", "oracle", "tirage", "mystique", "avenir", 
-        "destin", "guidance", "développement personnel", "méditation", "intuition"
-    ]
-    
-    # Sauvegarder les descriptions
-    os.makedirs('store_assets', exist_ok=True)
-    
-    with open('store_assets/descriptions.txt', 'w', encoding='utf-8') as f:
-        f.write("=== DESCRIPTION COURTE (80 caractères max) ===\n")
-        f.write(short_description + "\n\n")
-        f.write("=== DESCRIPTION LONGUE ===\n")
-        f.write(long_description + "\n\n")
-        f.write("=== MOTS-CLÉS ASO ===\n")
-        f.write(", ".join(keywords) + "\n")
-    
-    print("✅ Descriptions sauvegardées: store_assets/descriptions.txt")
+def generate_store_descriptions():
+    """Génère les fichiers de description pour le store"""
+    try:
+        # Créer le dossier store_assets s'il n'existe pas
+        store_dir = "store_assets"
+        os.makedirs(store_dir, exist_ok=True)
+        
+        # Sauvegarder la description courte
+        with open(f"{store_dir}/short_description.txt", "w", encoding="utf-8") as f:
+            f.write(STORE_DESCRIPTIONS["short"])
+        
+        # Sauvegarder la description longue
+        with open(f"{store_dir}/long_description.txt", "w", encoding="utf-8") as f:
+            f.write(STORE_DESCRIPTIONS["long"])
+        
+        # Sauvegarder les mots-clés
+        with open(f"{store_dir}/keywords.txt", "w", encoding="utf-8") as f:
+            f.write("\n".join(STORE_DESCRIPTIONS["keywords"]))
+        
+        # Créer un fichier de métadonnées pour Google Play
+        metadata = {
+            "title": "Ma Carte de Tarot",
+            "short_description": STORE_DESCRIPTIONS["short"],
+            "full_description": STORE_DESCRIPTIONS["long"],
+            "category": "Entertainment",
+            "content_rating": "Everyone",
+            "contact_email": "tarot.support@gmail.com",
+            "website": "https://nunomars.github.io/kivy_app/",
+            "privacy_policy": "https://nunomars.github.io/kivy_app/privacy-policy.html"
+        }
+        
+        import json
+        with open(f"{store_dir}/play_store_metadata.json", "w", encoding="utf-8") as f:
+            json.dump(metadata, f, ensure_ascii=False, indent=2)
+        
+        print(f"✅ Descriptions du store générées dans {store_dir}/")
+        print(f"   - Description courte : {len(STORE_DESCRIPTIONS['short'])} caractères")
+        print(f"   - Description longue : {len(STORE_DESCRIPTIONS['long'])} caractères")
+        print(f"   - Mots-clés : {len(STORE_DESCRIPTIONS['keywords'])} éléments")
+        
+    except Exception as e:
+        print(f"❌ Erreur lors de la génération des descriptions : {e}")
 
 def main():
     """Génère tous les assets nécessaires"""
@@ -263,7 +304,7 @@ def main():
     create_app_icon(192)  # Icône normale
     create_feature_graphic()
     create_screenshots_template()
-    create_store_descriptions()
+    generate_store_descriptions()
     
     print("\n🎯 ASSETS GÉNÉRÉS AVEC SUCCÈS !")
     print("\nPROCHAINES ÉTAPES :")
