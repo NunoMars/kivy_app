@@ -79,6 +79,12 @@ jobs:
         $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-33"
         $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;33.0.2"
         
+        # Corriger le chemin du sdkmanager pour buildozer/python-for-android
+        if [ ! -d "$ANDROID_HOME/tools/bin" ]; then
+          mkdir -p $ANDROID_HOME/tools
+          ln -s $ANDROID_HOME/cmdline-tools/latest $ANDROID_HOME/tools/bin
+        fi
+        
         # Vérifier l'installation
         echo "=== Checking Android SDK installation ==="
         if [ -d "$ANDROID_HOME/build-tools/" ]; then
