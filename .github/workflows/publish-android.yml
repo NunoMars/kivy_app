@@ -129,27 +129,47 @@ jobs:
         
         # Vérifier la configuration buildozer finale
         echo "=== Configuration buildozer ==="
-        grep -E "(android\.(sdk_path|ndk_path|ndk|api)|requirements)" buildozer.spec
+        grep -E "(android\.(sdk_path|ndk_path|ndk|api|.*artifact)|requirements)" buildozer.spec
         
-        # Build App Bundle (AAB) pour Google Play avec gestion d'erreur robuste
+        # Build App Bundle (AAB) avec buildozer android release
         echo "=== Build Android App Bundle (AAB) ==="
+        echo "🏗️  Génération AAB avec 'buildozer android release' (requis pour AAB selon doc Kivy)"
         
-        # En mode debug, buildozer ne peut pas créer d'AAB, seulement des APK
-        # AAB est réservé au mode release
-        echo "ℹ️  Mode debug détecté - build APK (AAB uniquement disponible en release)"
+        # Créer une clé de signature temporaire pour pouvoir générer l'AAB
+        echo "🔑 Création clé de signature temporaire pour AAB..."
+        keytool -genkey -v -keystore temp.keystore -alias tempkey -keyalg RSA -keysize 2048 -validity 10000 \
+          -dname "CN=TempKey, OU=Test, O=Test, L=Test, S=Test, C=FR" \
+          -storepass temppass -keypass temppass
         
-        # Build APK debug
-        if timeout 1800 buildozer android debug --verbose; then
-          echo "✅ APK debug build successful!"
+        # Configurer buildozer avec la clé temporaire
+        echo "" >> buildozer.spec
+        echo "# Configuration signature temporaire pour génération AAB" >> buildozer.spec
+        echo "android.release_keystore = temp.keystore" >> buildozer.spec
+        echo "android.release_keystore_passwd = temppass" >> buildozer.spec
+        echo "android.release_key = tempkey" >> buildozer.spec
+        echo "android.release_key_passwd = temppass" >> buildozer.spec
+        
+        # Build AAB avec mode release (seule façon de générer AAB selon doc)
+        if timeout 1800 buildozer android release --verbose; then
+          echo "✅ AAB build successful!"
           ls -la bin/
           
-          # Renommer l'APK pour cohérence avec les artefacts
-          if [ -f "bin/macartedetarot-0.1-arm64-v8a_armeabi-v7a-debug.apk" ]; then
-            cp "bin/macartedetarot-0.1-arm64-v8a_armeabi-v7a-debug.apk" "bin/macartedetarot-debug.apk"
-            echo "✅ APK debug copié pour upload"
-          fi
+          # Rechercher et copier l'AAB généré
+          find bin/ -name "*.aab" | while read aab_file; do
+            echo "📱 AAB trouvé: $aab_file"
+            cp "$aab_file" "bin/macartedetarot-release.aab"
+            echo "✅ AAB copié pour upload: bin/macartedetarot-release.aab"
+          done
+          
+          # Aussi copier l'APK s'il existe (pour backup)
+          find bin/ -name "*.apk" | head -1 | while read apk_file; do
+            echo "📱 APK trouvé: $apk_file"
+            cp "$apk_file" "bin/macartedetarot-release.apk"
+            echo "✅ APK copié pour backup: bin/macartedetarot-release.apk"
+          done
+          
         else
-          echo "❌ APK debug build failed, diagnostic..."
+          echo "❌ AAB build failed, diagnostic..."
           
           # Diagnostic des erreurs
           echo "=== Diagnostic buildozer ==="
@@ -165,7 +185,7 @@ jobs:
           exit 1
         fi
 
-    - name: Build Release AAB (if tagged)
+    - name: Sign Release AAB (if tagged and keystore available)
       if: startsWith(github.ref, 'refs/tags/')
       env:
         ANDROID_HOME: /usr/local/lib/android/sdk
@@ -177,49 +197,51 @@ jobs:
         KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       run: |
-        echo "=== Building Release AAB for Google Play ==="
+        echo "=== Re-signing Release AAB with Production Key ==="
         
-        # Vérifier si nous avons une clé de signature
+        # Vérifier si nous avons une clé de signature production
         if [ -n "$ANDROID_KEYSTORE_BASE64" ]; then
-          echo "🔑 Clé de signature détectée, construction en mode release..."
+          echo "🔑 Clé de signature production détectée, re-signature de l'AAB..."
           
-          # Décoder la clé de signature
-          echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > release.keystore
+          # Décoder la clé de signature production
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > production.keystore
           
-          # Configurer buildozer pour la signature
+          # Re-construire avec la clé de production
           echo "" >> buildozer.spec
-          echo "# Configuration signature automatique" >> buildozer.spec
-          echo "android.debug_keystore = release.keystore" >> buildozer.spec
-          echo "android.debug_keystore_passwd = $KEYSTORE_PASSWORD" >> buildozer.spec
-          echo "android.debug_key = $KEY_ALIAS" >> buildozer.spec
-          echo "android.debug_key_passwd = $KEY_PASSWORD" >> buildozer.spec
+          echo "# Configuration signature production pour release" >> buildozer.spec
+          echo "android.release_keystore = production.keystore" >> buildozer.spec
+          echo "android.release_keystore_passwd = $KEYSTORE_PASSWORD" >> buildozer.spec
+          echo "android.release_key = $KEY_ALIAS" >> buildozer.spec
+          echo "android.release_key_passwd = $KEY_PASSWORD" >> buildozer.spec
           
-          # Build release AAB signé
-          echo "🏗️  Construction AAB release signé..."
-          if timeout 1800 buildozer android release; then
-            echo "✅ AAB release build successful!"
+          # Nettoyer et re-builder avec la vraie clé
+          echo "🧹 Nettoyage pour rebuild avec clé production..."
+          rm -f bin/macartedetarot-release.aab
+          buildozer android clean
+          
+          # Build AAB avec clé de production
+          if timeout 1800 buildozer android release --verbose; then
+            echo "✅ AAB production build successful!"
             ls -la bin/
             
-            # Vérifier si l'AAB release a été créé
-            if [ -f "bin/macartedetarot-0.1-arm64-v8a_armeabi-v7a-release.aab" ]; then
-              cp "bin/macartedetarot-0.1-arm64-v8a_armeabi-v7a-release.aab" "bin/macartedetarot-release.aab"
-              echo "✅ AAB release copié pour upload"
-            else
-              echo "⚠️  AAB release non trouvé, vérification des fichiers..."
-              ls -la bin/
-            fi
+            # Rechercher et copier l'AAB signé avec la clé production
+            find bin/ -name "*.aab" | while read aab_file; do
+              echo "📱 AAB production trouvé: $aab_file"
+              cp "$aab_file" "bin/macartedetarot-production.aab"
+              echo "✅ AAB production copié: bin/macartedetarot-production.aab"
+            done
           else
-            echo "❌ AAB release build failed"
+            echo "❌ AAB production build failed, utilisation de l'AAB temporaire"
             ls -la bin/ || true
           fi
         else
-          echo "⚠️  Pas de clé de signature configurée"
-          echo "   Pour publier sur Google Play, il faut :"
+          echo "⚠️  Pas de clé de signature production configurée"
+          echo "   L'AAB avec clé temporaire sera utilisé pour les tests"
+          echo ""
+          echo "📋 Pour publier sur Google Play, il faut :"
           echo "   1. Générer une clé de signature Android"
           echo "   2. L'encoder en base64 et l'ajouter comme secret ANDROID_KEYSTORE_BASE64"
           echo "   3. Ajouter les secrets KEYSTORE_PASSWORD, KEY_ALIAS, KEY_PASSWORD"
-          echo ""
-          echo "   Pour l'instant, l'APK debug sera utilisé."
         fi
         
     - name: Upload App Bundle (AAB) as artifact
@@ -278,6 +300,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: bin/macartedetarot-release.aab
+        asset_path: bin/macartedetarot-production.aab
         asset_name: ma-carte-tarot-${{ github.ref_name }}.aab
         asset_content_type: application/vnd.android.package-archive
