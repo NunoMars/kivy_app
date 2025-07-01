@@ -87,6 +87,35 @@ jobs:
         # Tester sdkmanager
         $ANDROID_HOME/tools/bin/sdkmanager --version || echo "sdkmanager test failed"
         
+    - name: Fix Buildozer Configuration and Create Android Icon
+      run: |
+        echo "🔧 Application des corrections buildozer..."
+        
+        # Créer l'icône Android PNG
+        python3 create_android_icon.py
+        
+        # Appliquer les corrections buildozer
+        python3 fix_buildozer_errors.py
+        
+        # Vérifier que l'icône a été créée
+        if [ -f "tarot_img/icon.png" ]; then
+          echo "✅ Icône Android créée: tarot_img/icon.png"
+          ls -la tarot_img/icon.png
+        else
+          echo "❌ Icône Android non créée"
+          exit 1
+        fi
+        
+        # Vérifier que le template manifest a été créé
+        if [ -f "android_manifest_template.xml" ]; then
+          echo "✅ Template AndroidManifest créé"
+        else
+          echo "❌ Template AndroidManifest non créé"
+          exit 1
+        fi
+        
+        echo "✅ Corrections buildozer appliquées"
+
     - name: Configure buildozer for GitHub Actions SDK/NDK
       env:
         ANDROID_HOME: /usr/local/lib/android/sdk

@@ -139,17 +139,68 @@ def check_images():
         images = len([f for f in os.listdir("tarot_img") if f.endswith(('.jpg', '.png', '.gif'))])
         print(f"✅ Dossier tarot_img: {images} images trouvées")
         
-        # Vérifier l'icône
-        if os.path.exists("tarot_img/tapis.ico"):
-            print("✅ Icône application: tarot_img/tapis.ico")
+        # Vérifier l'icône PNG (nouvelle version)
+        if os.path.exists("tarot_img/icon.png"):
+            print("✅ Icône Android PNG: tarot_img/icon.png")
         else:
-            print("❌ Icône application manquante: tarot_img/tapis.ico")
+            print("❌ Icône Android PNG manquante: tarot_img/icon.png")
+            print("   Exécutez: python create_android_icon.py")
             return False
+        
+        # Vérifier l'icône ICO (originale)
+        if os.path.exists("tarot_img/tapis.ico"):
+            print("✅ Icône originale ICO: tarot_img/tapis.ico")
+        else:
+            print("⚠️  Icône originale ICO manquante: tarot_img/tapis.ico")
         
         return True
     else:
         print("❌ Dossier tarot_img manquant")
         return False
+
+
+def check_buildozer_fixes():
+    """Vérifie les corrections buildozer"""
+    print("\n🔍 Vérification corrections buildozer...")
+    
+    if not os.path.exists("buildozer.spec"):
+        print("❌ buildozer.spec non trouvé")
+        return False
+    
+    with open("buildozer.spec", "r") as f:
+        content = f.read()
+    
+    checks = [
+        ("android.enable_androidx = True", "AndroidX activé"),
+        ("tarot_img/icon.png", "Icône PNG configurée"),
+        ("android.add_compile_options", "Options compilation Java"),
+    ]
+    
+    all_good = True
+    for pattern, description in checks:
+        if pattern in content:
+            print(f"✅ {description}: OK")
+        else:
+            print(f"❌ {description}: MANQUANT")
+            print("   Exécutez: python fix_buildozer_errors.py")
+            all_good = False
+    
+    # Vérifier le template AndroidManifest
+    if os.path.exists("android_manifest_template.xml"):
+        print("✅ Template AndroidManifest créé")
+        with open("android_manifest_template.xml", "r") as f:
+            manifest_content = f.read()
+        if 'extractNativeLibs="false"' in manifest_content:
+            print("✅ extractNativeLibs=false configuré")
+        else:
+            print("❌ extractNativeLibs=false manquant")
+            all_good = False
+    else:
+        print("❌ Template AndroidManifest manquant")
+        print("   Exécutez: python fix_buildozer_errors.py")
+        all_good = False
+    
+    return all_good
 
 
 def generate_summary():
@@ -182,6 +233,7 @@ def main():
         ("Fichiers Kivy", check_kivy_files),
         ("Images et ressources", check_images),
         ("Configuration buildozer", check_buildozer_config),
+        ("Corrections buildozer", check_buildozer_fixes),
         ("Workflows GitHub Actions", check_workflow_files),
         ("Scripts de support", check_scripts),
     ]
