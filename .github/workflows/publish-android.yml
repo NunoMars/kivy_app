@@ -67,7 +67,7 @@ jobs:
         
         # Build debug APK
         buildozer android debug --verbose
-        
+
     - name: Sign APK for Release
       if: startsWith(github.ref, 'refs/tags/')
       run: |
