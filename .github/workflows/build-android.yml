@@ -60,18 +60,22 @@ jobs:
     - name: Set up Android SDK manually
       run: |
         # Créer le répertoire SDK
-        /usr/bin/mkdir -p $HOME/.buildozer/android/platform
+        mkdir -p $HOME/.buildozer/android/platform
         cd $HOME/.buildozer/android/platform
         
         # Télécharger et installer Command Line Tools
         wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
         unzip -q commandlinetools-linux-9477386_latest.zip
-        /usr/bin/mkdir -p android-sdk/cmdline-tools
+        mkdir -p android-sdk/cmdline-tools
         mv cmdline-tools android-sdk/cmdline-tools/latest
         
-        # Créer le lien symbolique pour le chemin legacy du sdkmanager
-        /usr/bin/mkdir -p android-sdk/tools
-        ln -sf ../cmdline-tools/latest/bin android-sdk/tools/bin
+        # Créer le script wrapper sdkmanager pour le chemin legacy
+        mkdir -p android-sdk/tools/bin
+        cat > android-sdk/tools/bin/sdkmanager << 'EOFSCRIPT'
+        #!/bin/bash
+        exec "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "$@"
+        EOFSCRIPT
+        chmod +x android-sdk/tools/bin/sdkmanager
         
         # Variables d'environnement
         export ANDROID_HOME=$HOME/.buildozer/android/platform/android-sdk
@@ -86,14 +90,15 @@ jobs:
         # Vérifier l'installation
         echo "=== Checking Android SDK installation ==="
         if [ -d "$ANDROID_HOME/build-tools/" ]; then
-          /usr/bin/ls -la "$ANDROID_HOME/build-tools/"
+          ls -la "$ANDROID_HOME/build-tools/"
         else
           echo "Build tools directory not found"
         fi
         
-        # Vérifier le lien symbolique
-        echo "=== Checking sdkmanager paths ==="
-        /usr/bin/ls -la "$ANDROID_HOME/tools/bin/" || echo "Legacy tools/bin not found"
+        # Vérifier le script wrapper
+        echo "=== Checking sdkmanager wrapper ==="
+        ls -la "$ANDROID_HOME/tools/bin/" || echo "Legacy tools/bin not found"
+        cat "$ANDROID_HOME/tools/bin/sdkmanager"
         
     - name: Update buildozer config
       run: |
@@ -103,8 +108,8 @@ jobs:
     - name: Prepare python-for-android
       run: |
         # Créer les répertoires nécessaires pour éviter les erreurs
-        /usr/bin/mkdir -p $HOME/.buildozer/android/platform/python-for-android
-        /usr/bin/mkdir -p .buildozer/android/platform
+        mkdir -p $HOME/.buildozer/android/platform/python-for-android
+        mkdir -p .buildozer/android/platform
         
     - name: Build APK with Buildozer
       env:
@@ -113,16 +118,25 @@ jobs:
       run: |
         # Debug buildozer.spec
         echo "=== Buildozer.spec Android config ==="
-        /usr/bin/grep -E "(android\.(api|sdk|ndk|accept)|sdk_path|ndk_path)" buildozer.spec || echo "No Android config found"
+        grep -E "(android\.(api|sdk|ndk|accept)|sdk_path|ndk_path)" buildozer.spec || echo "No Android config found"
         
         # Afficher les variables d'environnement
         echo "=== Environment ==="
         echo "ANDROID_HOME: $ANDROID_HOME"
         echo "PATH: $PATH"
         if [ -d "$ANDROID_HOME/build-tools/" ]; then
-          /usr/bin/ls -la "$ANDROID_HOME/build-tools/" || echo "Build tools directory exists but ls failed"
+          ls -la "$ANDROID_HOME/build-tools/" || echo "Build tools directory exists but ls failed"
         else
           echo "Build tools not found"
+        fi
+        
+        # Test du sdkmanager wrapper
+        echo "=== Testing sdkmanager wrapper ==="
+        if [ -x "$ANDROID_HOME/tools/bin/sdkmanager" ]; then
+          echo "Wrapper script exists and is executable"
+          "$ANDROID_HOME/tools/bin/sdkmanager" --version || echo "Wrapper test failed"
+        else
+          echo "Wrapper script not found or not executable"
         fi
         
         # Build debug APK
@@ -139,9 +153,9 @@ jobs:
     - name: List generated files
       run: |
         echo "=== Generated files ==="
-        /usr/bin/find . -name "*.apk" -type f 2>/dev/null || echo "No APK files found"
+        find . -name "*.apk" -type f 2>/dev/null || echo "No APK files found"
         if [ -d "bin/" ]; then
-          /usr/bin/ls -la bin/
+          ls -la bin/
         else
           echo "No bin directory"
         fi
