@@ -25,9 +25,14 @@ jobs:
         sudo apt-get install -y git zip unzip openjdk-17-jdk wget coreutils
         sudo apt-get install -y autotools-dev automake libtool pkg-config
         sudo apt-get install -y build-essential libffi-dev libssl-dev
+        
+        # Configure Java 17 pour Gradle (cohérent avec build-android.yml)
+        export JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64
+        echo "JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64" >> $GITHUB_ENV
+        
         pip install --upgrade pip
         pip install buildozer==1.5.0 cython==0.29.33 kivy==2.2.0
-        pip install python-for-android==2024.1.21
+        pip install python-for-android==2023.5.21  # Version cohérente
         
     - name: Set up Android SDK
       run: |

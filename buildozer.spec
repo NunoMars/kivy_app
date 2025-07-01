@@ -7,7 +7,7 @@ title = Ma Carte De Tarot
 package.name = macartedetarot
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = org.example
+package.domain = org.tarot
 
 # (str) Source code where the main.py live
 source.dir = .
