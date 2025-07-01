@@ -73,53 +73,47 @@ jobs:
         pip install kivy==2.2.0
         pip install python-for-android==2023.5.21  # Version stable disponible
         
-    - name: Set up Android SDK manually
+    - name: Set up Android SDK
       run: |
-        # Créer le répertoire SDK
-        mkdir -p $HOME/.buildozer/android/platform
-        cd $HOME/.buildozer/android/platform
+        # Utiliser le SDK Android pré-installé de GitHub Actions
+        export ANDROID_HOME=/usr/local/lib/android/sdk
+        export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/27.2.12479018
+        echo "ANDROID_HOME=/usr/local/lib/android/sdk" >> $GITHUB_ENV
+        echo "ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/27.2.12479018" >> $GITHUB_ENV
+        echo "PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools" >> $GITHUB_ENV
         
-        # Télécharger et installer Command Line Tools
-        wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
-        unzip -q commandlinetools-linux-9477386_latest.zip
-        mkdir -p android-sdk/cmdline-tools
-        mv cmdline-tools android-sdk/cmdline-tools/latest
+        # Créer un lien symbolique pour l'ancien chemin de sdkmanager (compatibilité buildozer)
+        sudo mkdir -p $ANDROID_HOME/tools/bin
+        sudo ln -sf $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager $ANDROID_HOME/tools/bin/sdkmanager
+        sudo ln -sf $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager $ANDROID_HOME/tools/bin/avdmanager
         
-        # Créer le script wrapper sdkmanager pour le chemin legacy
-        mkdir -p android-sdk/tools/bin
-        cat > android-sdk/tools/bin/sdkmanager << 'EOFSCRIPT'
-        #!/bin/bash
-        exec "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "$@"
-        EOFSCRIPT
-        chmod +x android-sdk/tools/bin/sdkmanager
+        # Vérifier l'installation et les liens
+        echo "Android SDK: $ANDROID_HOME"
+        echo "Android NDK: $ANDROID_NDK_HOME"
+        echo "sdkmanager location:"
+        which sdkmanager || echo "sdkmanager not in PATH"
+        ls -la $ANDROID_HOME/tools/bin/ || echo "tools/bin not found"
+        ls -la $ANDROID_HOME/cmdline-tools/latest/bin/ | head -5
         
-        # Variables d'environnement
-        export ANDROID_HOME=$HOME/.buildozer/android/platform/android-sdk
-        export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
+        # Tester sdkmanager
+        $ANDROID_HOME/tools/bin/sdkmanager --version || echo "sdkmanager test failed"
         
-        # Accepter les licences et installer les composants
-        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
-        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platform-tools"
-        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-33"
-        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;33.0.2"
-        
-        # Vérifier l'installation
-        echo "=== Checking Android SDK installation ==="
-        if [ -d "$ANDROID_HOME/build-tools/" ]; then
-          ls -la "$ANDROID_HOME/build-tools/"
-        else
-          echo "Build tools directory not found"
-        fi
-        
-        # Vérifier le script wrapper
-        echo "=== Checking sdkmanager wrapper ==="
-        ls -la "$ANDROID_HOME/tools/bin/" || echo "Legacy tools/bin not found"
-        cat "$ANDROID_HOME/tools/bin/sdkmanager"
+        # Accepter les licences Android
+        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || echo "License acceptance done"
         
     - name: Update buildozer config
+      env:
+        ANDROID_HOME: /usr/local/lib/android/sdk
+        ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/27.2.12479018
       run: |
         # Utiliser le script Python pour mettre à jour buildozer.spec
         python3 .github/scripts/update_buildozer.py
+        
+        # Configurer les SDK/NDK système
+        python3 .github/scripts/configure_buildozer_sdk.py
+        
+        # Exécuter le diagnostic et correction des chemins SDK
+        python3 .github/scripts/fix_sdk_paths.py
         
     - name: Prepare python-for-android
       run: |
@@ -129,9 +123,10 @@ jobs:
         
     - name: Build APK with Buildozer
       env:
-        ANDROID_HOME: /home/runner/.buildozer/android/platform/android-sdk
+        ANDROID_HOME: /usr/local/lib/android/sdk
+        ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/27.2.12479018
         JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
-        PATH: /usr/bin:/bin:/home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin:/home/runner/.buildozer/android/platform/android-sdk/platform-tools:$PATH
+        PATH: /usr/lib/jvm/temurin-17-jdk-amd64/bin:/usr/local/lib/android/sdk/cmdline-tools/latest/bin:/usr/local/lib/android/sdk/platform-tools:/usr/bin:/bin
         PKG_CONFIG_PATH: /usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig
         AUTOCONF_VERSION: 2.71
         AUTOM4TE_PERLLIBDIR: /usr/share/autotools-dev

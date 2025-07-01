@@ -56,11 +56,21 @@ jobs:
         echo "ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/27.2.12479018" >> $GITHUB_ENV
         echo "PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools" >> $GITHUB_ENV
         
-        # Vérifier l'installation
+        # Créer un lien symbolique pour l'ancien chemin de sdkmanager (compatibilité buildozer)
+        sudo mkdir -p $ANDROID_HOME/tools/bin
+        sudo ln -sf $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager $ANDROID_HOME/tools/bin/sdkmanager
+        sudo ln -sf $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager $ANDROID_HOME/tools/bin/avdmanager
+        
+        # Vérifier l'installation et les liens
         echo "Android SDK: $ANDROID_HOME"
         echo "Android NDK: $ANDROID_NDK_HOME"
-        ls -la $ANDROID_HOME/
-        ls -la $ANDROID_NDK_HOME/
+        echo "sdkmanager location:"
+        which sdkmanager || echo "sdkmanager not in PATH"
+        ls -la $ANDROID_HOME/tools/bin/ || echo "tools/bin not found"
+        ls -la $ANDROID_HOME/cmdline-tools/latest/bin/ | head -5
+        
+        # Tester sdkmanager
+        $ANDROID_HOME/tools/bin/sdkmanager --version || echo "sdkmanager test failed"
         
     - name: Configure buildozer for GitHub Actions SDK/NDK
       env:
@@ -69,6 +79,9 @@ jobs:
       run: |
         # Utiliser le nouveau script qui force l'utilisation des SDK/NDK système
         python3 .github/scripts/configure_buildozer_sdk.py
+        
+        # Exécuter le diagnostic et correction des chemins SDK
+        python3 .github/scripts/fix_sdk_paths.py
         
         # Vérifier la configuration finale
         echo "=== Configuration buildozer finale ==="
