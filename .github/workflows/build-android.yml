@@ -37,9 +37,17 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y git zip unzip openjdk-17-jdk wget sed coreutils grep
         sudo apt-get install -y python3-pip python3-setuptools build-essential
-        sudo apt-get install -y libffi-dev libssl-dev autotools-dev automake
+        sudo apt-get install -y libffi-dev libssl-dev libssl3 openssl autotools-dev automake
         sudo apt-get install -y libtool libtool-bin pkg-config zlib1g-dev libncurses5-dev
         sudo apt-get install -y libncursesw5-dev libtinfo6 cmake autoconf
+        
+        # Configurer pkg-config pour OpenSSL
+        export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:$PKG_CONFIG_PATH"
+        echo "PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:$PKG_CONFIG_PATH" >> $GITHUB_ENV
+        
+        # Vérifier pkg-config et OpenSSL
+        pkg-config --exists openssl && echo "OpenSSL pkg-config OK" || echo "OpenSSL pkg-config FAIL"
+        pkg-config --modversion openssl || echo "No OpenSSL version"
         
         # Vérifier que les outils de base fonctionnent
         /usr/bin/which git
@@ -117,7 +125,15 @@ jobs:
       env:
         ANDROID_HOME: /home/runner/.buildozer/android/platform/android-sdk
         PATH: /usr/bin:/bin:/home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin:/home/runner/.buildozer/android/platform/android-sdk/platform-tools:$PATH
+        PKG_CONFIG_PATH: /usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig
       run: |
+        # Debug pkg-config et OpenSSL avant build
+        echo "=== PKG_CONFIG debugging ==="
+        echo "PKG_CONFIG_PATH: $PKG_CONFIG_PATH"
+        pkg-config --exists openssl && echo "✅ OpenSSL pkg-config OK" || echo "❌ OpenSSL pkg-config FAIL"
+        pkg-config --libs openssl || echo "❌ No OpenSSL libs"
+        pkg-config --cflags openssl || echo "❌ No OpenSSL cflags"
+        
         # Debug buildozer.spec
         echo "=== Buildozer.spec Android config ==="
         grep -E "(android\.(api|sdk|ndk|accept)|sdk_path|ndk_path)" buildozer.spec || echo "No Android config found"
