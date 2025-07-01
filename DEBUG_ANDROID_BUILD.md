@@ -62,15 +62,18 @@ Vérifier que les secrets de signature sont configurés dans GitHub :
 
 **Symptôme :**
 ```
-NDK r25c is not supported by this version of buildozer
+'ALooper_pollAll' is unavailable: obsoleted in Android 1
+SDL2 compile errors with NDK 27+
 ```
 
 **Solution :**
-Forcer la version NDK dans buildozer.spec :
+Utiliser NDK 25c qui est compatible avec SDL2 :
 ```ini
-android.ndk = 27.2.12479018
-android.ndk_path = /usr/local/lib/android/sdk/ndk/27.2.12479018
+android.ndk = 25c
+android.ndk_path = /usr/local/lib/android/sdk/ndk/25.2.9519653
 ```
+
+Le NDK 27+ introduit des changements d'API qui cassent la compatibilité SDL2.
 
 ## Scripts de diagnostic
 
@@ -101,7 +104,7 @@ Ce script :
 
 ```bash
 export ANDROID_HOME=/usr/local/lib/android/sdk
-export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/27.2.12479018
+export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/25.2.9519653
 export JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64
 export PATH=$JAVA_HOME/bin:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
 export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig
@@ -112,8 +115,8 @@ export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/u
 ```ini
 # SDK/NDK forcés pour GitHub Actions
 android.sdk_path = /usr/local/lib/android/sdk
-android.ndk_path = /usr/local/lib/android/sdk/ndk/27.2.12479018
-android.ndk = 27.2.12479018
+android.ndk_path = /usr/local/lib/android/sdk/ndk/25.2.9519653
+android.ndk = 25c
 
 # API versions
 android.api = 33

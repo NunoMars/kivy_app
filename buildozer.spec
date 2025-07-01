@@ -110,7 +110,7 @@ android.minapi = 21
 # android.sdk = 33  # OBSOLETE in buildozer 1.5.0+
 
 # (str) Android NDK version to use
-android.ndk = 27.2.12479018
+android.ndk = 25c
 
 # (int) Android NDK API to use. This is the minimum API your app will support, it should usually match android.minapi.
 android.ndk_api = 21
@@ -119,7 +119,7 @@ android.ndk_api = 21
 #android.private_storage = True
 
 # (str) Android NDK directory (if empty, it will be automatically downloaded.)
-#android.ndk_path = /usr/local/lib/android/sdk/ndk/27.2.12479018
+#android.ndk_path = /usr/local/lib/android/sdk/ndk/25.2.9519653
 
 # (str) Android SDK directory (if empty, it will be automatically downloaded.)
 #android.sdk_path = /usr/local/lib/android/sdk

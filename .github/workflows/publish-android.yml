@@ -51,10 +51,17 @@ jobs:
       run: |
         # Utiliser le SDK Android pré-installé de GitHub Actions
         export ANDROID_HOME=/usr/local/lib/android/sdk
-        export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/27.2.12479018
+        # Utiliser NDK 25c qui est compatible avec SDL2 et recommandé par p4a
+        export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/25.2.9519653
         echo "ANDROID_HOME=/usr/local/lib/android/sdk" >> $GITHUB_ENV
-        echo "ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/27.2.12479018" >> $GITHUB_ENV
+        echo "ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/25.2.9519653" >> $GITHUB_ENV
         echo "PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools" >> $GITHUB_ENV
+        
+        # Vérifier si NDK 25c existe, sinon l'installer
+        if [ ! -d "/usr/local/lib/android/sdk/ndk/25.2.9519653" ]; then
+          echo "📥 Installation NDK 25c (compatible SDL2)..."
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;25.2.9519653"
+        fi
         
         # Créer un lien symbolique pour l'ancien chemin de sdkmanager (compatibilité buildozer)
         sudo mkdir -p $ANDROID_HOME/tools/bin
@@ -69,13 +76,21 @@ jobs:
         ls -la $ANDROID_HOME/tools/bin/ || echo "tools/bin not found"
         ls -la $ANDROID_HOME/cmdline-tools/latest/bin/ | head -5
         
+        # Vérifier NDK 25c
+        if [ -d "$ANDROID_NDK_HOME" ]; then
+          echo "✅ NDK 25c trouvé: $ANDROID_NDK_HOME"
+          ls -la $ANDROID_NDK_HOME/ | head -3
+        else
+          echo "❌ NDK 25c non trouvé"
+        fi
+        
         # Tester sdkmanager
         $ANDROID_HOME/tools/bin/sdkmanager --version || echo "sdkmanager test failed"
         
     - name: Configure buildozer for GitHub Actions SDK/NDK
       env:
         ANDROID_HOME: /usr/local/lib/android/sdk
-        ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/27.2.12479018
+        ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/25.2.9519653
       run: |
         # Utiliser le nouveau script qui force l'utilisation des SDK/NDK système
         python3 .github/scripts/configure_buildozer_sdk.py
@@ -90,7 +105,7 @@ jobs:
     - name: Build AAB (App Bundle) with Buildozer
       env:
         ANDROID_HOME: /usr/local/lib/android/sdk
-        ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/27.2.12479018
+        ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/25.2.9519653
         JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
         PATH: /usr/lib/jvm/temurin-17-jdk-amd64/bin:/usr/local/lib/android/sdk/cmdline-tools/latest/bin:/usr/local/lib/android/sdk/platform-tools:/usr/bin:/bin
         PKG_CONFIG_PATH: /usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig
@@ -151,7 +166,7 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       env:
         ANDROID_HOME: /usr/local/lib/android/sdk
-        ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/27.2.12479018
+        ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/25.2.9519653
         JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
         PATH: /usr/lib/jvm/temurin-17-jdk-amd64/bin:/usr/local/lib/android/sdk/cmdline-tools/latest/bin:/usr/local/lib/android/sdk/platform-tools:/usr/bin:/bin
         ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}

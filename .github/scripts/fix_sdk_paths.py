@@ -28,7 +28,7 @@ def check_and_fix_sdk_paths():
     # Vérifier l'existence des répertoires
     paths_to_check = [
         (android_home, "SDK Android"),
-        (android_ndk, "NDK Android"),
+        (android_ndk, "NDK Android (25c compatible SDL2)"),
         (f"{android_home}/cmdline-tools/latest/bin", "Command Line Tools"),
         (f"{android_home}/platform-tools", "Platform Tools"),
     ]

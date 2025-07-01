@@ -17,7 +17,7 @@ def update_buildozer_config():
     
     # Variables d'environnement GitHub Actions
     android_home = os.environ.get('ANDROID_HOME', '/usr/local/lib/android/sdk')
-    android_ndk = os.environ.get('ANDROID_NDK_HOME', '/usr/local/lib/android/sdk/ndk/27.2.12479018')
+    android_ndk = os.environ.get('ANDROID_NDK_HOME', '/usr/local/lib/android/sdk/ndk/25.2.9519653')
     
     print("🔧 Configuration buildozer avec :")
     print(f"   ANDROID_HOME: {android_home}")
@@ -35,8 +35,8 @@ def update_buildozer_config():
         # Accepter automatiquement les licences
         (r'android\.accept_sdk_license = .*', 'android.accept_sdk_license = True'),
         
-        # Utiliser la version NDK cohérente
-        (r'android\.ndk = .*', 'android.ndk = 27.2.12479018'),
+        # Utiliser la version NDK 25c (compatible SDL2)
+        (r'android\.ndk = .*', 'android.ndk = 25c'),
         
         # Supprimer Pillow des requirements s'il existe
         (r'requirements = ([^,]*),?pillow[^,]*,?([^,]*)', r'requirements = \1,\2'),

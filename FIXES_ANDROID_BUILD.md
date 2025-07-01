@@ -1,7 +1,8 @@
 # 🔧 Corrections Build Android GitHub Actions
 
-## Problème résolu
+## Problèmes résolus
 
+### 1. Erreur "sdkmanager not found"
 Le build AAB échouait avec l'erreur :
 ```
 Cannot find sdkmanager at /usr/local/lib/android/sdk/tools/bin/sdkmanager
@@ -9,9 +10,18 @@ Cannot find sdkmanager at /usr/local/lib/android/sdk/tools/bin/sdkmanager
 
 **Cause :** Sur les runners GitHub Actions récents (Ubuntu 22.04), `sdkmanager` se trouve dans `/usr/local/lib/android/sdk/cmdline-tools/latest/bin/` mais buildozer le cherche dans l'ancien chemin `/usr/local/lib/android/sdk/tools/bin/`.
 
+### 2. Erreur SDL2 avec NDK 27+
+Le build échouait avec l'erreur :
+```
+'ALooper_pollAll' is unavailable: obsoleted in Android 1
+SDL2 compile errors with NDK 27.2.12479018
+```
+
+**Cause :** NDK 27+ introduit des changements d'API qui cassent la compatibilité avec SDL2. Le message d'erreur indique que `ALooper_pollAll` est obsolète et que `ALooper_pollOnce` devrait être utilisé à la place.
+
 ## Solutions implémentées
 
-### 1. 🔗 Liens symboliques pour compatibilité
+### 1. 🔗 Liens symboliques pour compatibilité sdkmanager
 
 Dans les workflows `.github/workflows/build-android.yml` et `.github/workflows/publish-android.yml` :
 
@@ -24,21 +34,24 @@ Dans les workflows `.github/workflows/build-android.yml` et `.github/workflows/p
     sudo ln -sf $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager $ANDROID_HOME/tools/bin/avdmanager
 ```
 
-### 2. 🔍 Script de diagnostic automatique
+### 2. 📱 Downgrade vers NDK 25c (compatible SDL2)
 
-Nouveau script `.github/scripts/fix_sdk_paths.py` qui :
-- Vérifie l'existence des répertoires SDK/NDK
-- Teste le fonctionnement de sdkmanager
-- Crée les liens symboliques nécessaires
-- Accepte les licences Android
-- Affiche un diagnostic complet
+Remplacement de NDK 27.2.12479018 par NDK 25.2.9519653 dans tous les workflows :
+
+```yaml
+export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/25.2.9519653
+# Installation automatique si NDK 25c absent
+if [ ! -d "/usr/local/lib/android/sdk/ndk/25.2.9519653" ]; then
+  $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;25.2.9519653"
+fi
+```
 
 ### 3. ⚙️ Configuration unifiée des SDK
 
 Mise à jour de `.github/scripts/configure_buildozer_sdk.py` pour utiliser les chemins corrects :
 ```python
 sdk_dir = "/usr/local/lib/android/sdk"
-ndk_dir = "/usr/local/lib/android/sdk/ndk/27.2.12479018"
+ndk_dir = "/usr/local/lib/android/sdk/ndk/25.2.9519653"  # NDK 25c compatible SDL2
 ```
 
 ### 4. 📋 Variables d'environnement cohérentes
@@ -47,7 +60,7 @@ Unification des variables dans tous les workflows :
 ```yaml
 env:
   ANDROID_HOME: /usr/local/lib/android/sdk
-  ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/27.2.12479018
+  ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/25.2.9519653
   JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
   PATH: /usr/lib/jvm/temurin-17-jdk-amd64/bin:/usr/local/lib/android/sdk/cmdline-tools/latest/bin:...
 ```
@@ -71,8 +84,8 @@ env:
 ```ini
 # SDK/NDK forcés pour GitHub Actions
 android.sdk_path = /usr/local/lib/android/sdk
-android.ndk_path = /usr/local/lib/android/sdk/ndk/27.2.12479018
-android.ndk = 27.2.12479018
+android.ndk_path = /usr/local/lib/android/sdk/ndk/25.2.9519653
+android.ndk = 25c
 
 # API versions compatibles
 android.api = 33
