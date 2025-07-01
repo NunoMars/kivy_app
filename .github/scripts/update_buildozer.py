@@ -18,10 +18,6 @@ def update_buildozer_spec():
     
     # Modifications nécessaires pour GitHub Actions
     modifications = [
-        # Chemins SDK/NDK
-        (r'#android\.sdk_path = .*', 'android.sdk_path = /home/runner/.buildozer/android/platform/android-sdk'),
-        (r'#android\.ndk_path = .*', 'android.ndk_path = /home/runner/.buildozer/android/platform/android-ndk'),
-        
         # Versions Android
         (r'android\.api = \d+', 'android.api = 33'),
         (r'android\.minapi = \d+', 'android.minapi = 21'),
