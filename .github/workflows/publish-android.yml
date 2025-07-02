@@ -237,16 +237,16 @@ jobs:
         ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/25.2.9519653
         JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
         PATH: /usr/lib/jvm/temurin-17-jdk-amd64/bin:/usr/local/lib/android/sdk/cmdline-tools/latest/bin:/usr/local/lib/android/sdk/platform-tools:/usr/bin:/bin
-        ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE }}
+        KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
       run: |
         echo "=== Re-signing Release AAB with Production Key ==="
         
         # Vérifier si nous avons une clé de signature production
         if [ -n "$ANDROID_KEYSTORE_BASE64" ]; then
-          echo "🔑 Clé de signature production détectée, re-signature de l'AAB..."
+          echo "🔑 Clé de signature production détectée, signature de l'AAB..."
           
           # Décoder la clé de signature production
           echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > production.keystore
@@ -258,73 +258,35 @@ jobs:
             exit 1
           }
           
-          # Nettoyer TOUTES les configurations de signature existantes dans buildozer.spec
-          echo "🧹 Nettoyage complet des configurations de signature..."
-          
-          # Supprimer toutes les lignes contenant des configurations de signature
-          sed -i '/android\.release_keystore/d' buildozer.spec
-          sed -i '/android\.release_key/d' buildozer.spec
-          
-          # Supprimer aussi les commentaires de configuration
-          sed -i '/# Configuration signature/d' buildozer.spec
-          
-          # Ajouter la configuration de signature production
-          echo "" >> buildozer.spec
-          echo "# Configuration signature production pour release" >> buildozer.spec
-          echo "android.release_keystore = production.keystore" >> buildozer.spec
-          echo "android.release_keystore_passwd = $KEYSTORE_PASSWORD" >> buildozer.spec
-          echo "android.release_key = $KEY_ALIAS" >> buildozer.spec
-          echo "android.release_key_passwd = $KEY_PASSWORD" >> buildozer.spec
-          
-          # Nettoyer et re-builder avec la vraie clé
-          echo "🧹 Nettoyage pour rebuild avec clé production..."
-          rm -f bin/macartedetarot-release.aab
-          buildozer android clean
-          
-          # Build AAB avec clé de production
-          if timeout 1800 buildozer android release --verbose; then
-            echo "✅ AAB production build successful!"
-            ls -la bin/
+          # S'assurer qu'on a un AAB à signer
+          if [ -f "bin/macartedetarot-release.aab" ]; then
+            echo "📱 AAB trouvé: bin/macartedetarot-release.aab"
             
-            # Rechercher et copier l'AAB signé avec la clé production
-            find bin/ -name "*.aab" | while read aab_file; do
-              echo "📱 AAB production trouvé: $aab_file"
-              cp "$aab_file" "bin/macartedetarot-production.aab"
-              echo "✅ AAB production copié: bin/macartedetarot-production.aab"
-              
-              # Vérifier la signature de production
-              echo "🔍 Vérification signature production..."
-              jarsigner -verify -verbose "$aab_file" && echo "✅ AAB correctement signé avec clé production"
-            done
-          else
-            echo "❌ AAB production build failed"
+            # Copier l'AAB pour la signature de production
+            cp "bin/macartedetarot-release.aab" "bin/macartedetarot-unsigned.aab"
             
-            # En cas d'échec, essayer de re-signer l'AAB existant
-            if [ -f "bin/macartedetarot-release.aab" ]; then
-              echo "🔄 Tentative de re-signature de l'AAB existant..."
-              
-              # Désigner d'abord
-              cp "bin/macartedetarot-release.aab" "bin/unsigned.aab"
-              
-              # Re-signer avec la clé de production
-              jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
-                -keystore production.keystore \
-                -storepass "$KEYSTORE_PASSWORD" \
-                -keypass "$KEY_PASSWORD" \
-                "bin/unsigned.aab" "$KEY_ALIAS"
-              
-              # Aligner avec zipalign si disponible
-              if command -v zipalign >/dev/null 2>&1; then
-                zipalign -v 4 "bin/unsigned.aab" "bin/macartedetarot-production.aab"
-              else
-                cp "bin/unsigned.aab" "bin/macartedetarot-production.aab"
-              fi
-              
-              echo "✅ AAB re-signé manuellement"
+            # Re-signer avec la clé de production
+            echo "🔏 Signature avec la clé de production..."
+            jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
+              -keystore production.keystore \
+              -storepass "$KEYSTORE_PASSWORD" \
+              -keypass "$KEY_PASSWORD" \
+              "bin/macartedetarot-unsigned.aab" "$KEY_ALIAS"
+            
+            # Copier le résultat signé
+            cp "bin/macartedetarot-unsigned.aab" "bin/macartedetarot-production.aab"
+            
+            # Vérifier la signature de production
+            echo "🔍 Vérification signature production..."
+            if jarsigner -verify -verbose "bin/macartedetarot-production.aab"; then
+              echo "✅ AAB correctement signé avec clé production"
             else
-              echo "❌ Aucun AAB à re-signer"
+              echo "❌ Erreur de signature production"
               exit 1
             fi
+          else
+            echo "❌ Aucun AAB trouvé à signer (bin/macartedetarot-release.aab)"
+            exit 1
           fi
         else
           echo "⚠️  Pas de clé de signature production configurée"
