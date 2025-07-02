@@ -87,6 +87,11 @@ jobs:
         # Tester sdkmanager
         $ANDROID_HOME/tools/bin/sdkmanager --version || echo "sdkmanager test failed"
         
+    - name: Install Pillow (Python Imaging Library)
+      run: |
+        python3 -m pip install --upgrade pip
+        python3 -m pip install Pillow
+
     - name: Fix Buildozer Configuration and Create Android Icon
       run: |
         echo "🔧 Application des corrections buildozer..."
