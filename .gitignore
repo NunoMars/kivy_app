@@ -39,7 +39,19 @@ production.keystore
 DEBUG_*.md
 TEMP_*.md
 
-# Scripts de test
+# Scripts de test et nettoyage
 test_*.py
 *_test.py
 debug_*.py
+cleanup_*.py
+fix_*.py
+deploy_*.py
+trigger_*.py
+update_*.py
+create_*.py
+check_*.py
+
+# Artefacts de build temporaires
+*.aab.bak
+*-production.aab.old
+android_manifest_template.xml
