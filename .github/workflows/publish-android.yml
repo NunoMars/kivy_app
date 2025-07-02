@@ -354,6 +354,7 @@ jobs:
         
     - name: Upload to Google Play Console
       if: startsWith(github.ref, 'refs/tags/') && success()
+      continue-on-error: true  # Permet l'échec pour le premier déploiement
       uses: r0adkll/upload-google-play@v1.1.3
       with:
         serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT }}
@@ -361,6 +362,18 @@ jobs:
         releaseFiles: bin/*.aab
         track: internal  # Commence par internal, puis promotion vers production
         status: completed
+        
+    - name: Manual Upload Instructions (if auto-upload fails)
+      if: startsWith(github.ref, 'refs/tags/')
+      run: |
+        echo "📱 Si l'upload automatique a échoué (première fois), suivez ces étapes :"
+        echo "1. 🌐 Allez sur : https://play.google.com/console/"
+        echo "2. 📂 Cliquez sur : Ma Carte de Tarot"
+        echo "3. 🚀 Production → Créer une nouvelle version"
+        echo "4. 📤 Uploadez : bin/macartedetarot-production.aab"
+        echo "5. ✅ Publiez en Internal testing"
+        echo ""
+        echo "🔄 Après la première publication manuelle, l'upload automatique fonctionnera !"
         
     - name: Create GitHub Release
       if: startsWith(github.ref, 'refs/tags/')
