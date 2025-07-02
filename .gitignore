@@ -39,17 +39,19 @@ production.keystore
 DEBUG_*.md
 TEMP_*.md
 
-# Scripts de test et nettoyage
+# Scripts de test et nettoyage (sauf essentiels pour build)
 test_*.py
 *_test.py
 debug_*.py
 cleanup_*.py
-fix_*.py
 deploy_*.py
 trigger_*.py
 update_*.py
-create_*.py
 check_*.py
+
+# Scripts essentiels pour le build (ne pas ignorer)
+!create_android_icon.py
+!fix_buildozer_errors.py
 
 # Artefacts de build temporaires
 *.aab.bak
