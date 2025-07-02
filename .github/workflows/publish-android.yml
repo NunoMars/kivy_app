@@ -251,7 +251,16 @@ jobs:
             exit 1
           }
           
-          # Re-construire avec la clé de production
+          # Nettoyer les configurations de signature existantes dans buildozer.spec
+          echo "🧹 Nettoyage des configurations de signature précédentes..."
+          sed -i '/# Configuration signature temporaire/,+4d' buildozer.spec
+          sed -i '/# Configuration signature production/,+4d' buildozer.spec
+          sed -i '/android.release_keystore/d' buildozer.spec
+          sed -i '/android.release_keystore_passwd/d' buildozer.spec
+          sed -i '/android.release_key/d' buildozer.spec
+          sed -i '/android.release_key_passwd/d' buildozer.spec
+          
+          # Ajouter la configuration de signature production
           echo "" >> buildozer.spec
           echo "# Configuration signature production pour release" >> buildozer.spec
           echo "android.release_keystore = production.keystore" >> buildozer.spec
