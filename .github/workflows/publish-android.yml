@@ -4,8 +4,6 @@ on:
   push:
     tags:
       - 'v*'  # Déclenche sur les tags version (ex: v1.0.0)
-    branches:
-      - main  # Déclenche sur main pour les tests (temporaire)
   workflow_dispatch:  # Permet le déclenchement manuel
 
 jobs:
