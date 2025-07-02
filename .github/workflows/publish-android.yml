@@ -121,6 +121,11 @@ jobs:
         
         echo "✅ Corrections buildozer appliquées"
 
+    - name: Clean buildozer.spec duplicates
+      run: |
+        echo "🧹 Nettoyage des doublons buildozer.spec..."
+        python3 clean_buildozer_spec.py
+
     - name: Configure buildozer for GitHub Actions SDK/NDK
       env:
         ANDROID_HOME: /usr/local/lib/android/sdk
