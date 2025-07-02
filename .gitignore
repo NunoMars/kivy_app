@@ -1,7 +1,17 @@
-venv
-.vscode
-.buildozer
-__pycache__
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# IDEs
+.vscode/
+.idea/
+
+# Buildozer
+.buildozer/
+bin/
+dist/
 
 # Android signing keys (NEVER commit these!)
 *.keystore
@@ -9,18 +19,27 @@ __pycache__
 keystore.base64
 android_signing_key*
 release.keystore*
-macartedetarot-release.keystore*
 temp.keystore
 production.keystore
 
-# Build artifacts
-bin/
-dist/
-
-# Cl�s de signature Android (SENSIBLE !)
-*.keystore.backup
-*.keystore.config
-*-release.keystore*
-*signing-key*
+# Service accounts (SENSITIVE!)
 *service-account*.json
 *google-play*.json
+
+# Fichiers temporaires
+*-unsigned.aab
+*-release.aab
+*-temp.*
+*.tmp
+*.log
+
+# Documentation temporaire
+*_TEMP.md
+*_TEST.md
+DEBUG_*.md
+TEMP_*.md
+
+# Scripts de test
+test_*.py
+*_test.py
+debug_*.py
