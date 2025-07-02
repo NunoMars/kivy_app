@@ -95,12 +95,41 @@ jobs:
         echo "android.release_key = tempkey" >> buildozer.spec
         echo "android.release_key_passwd = temppass" >> buildozer.spec
         
-        # Build AAB
-        buildozer android aab
+        # S'assurer que le mode AAB est activé dans buildozer.spec
+        if ! grep -q "android.release_artifact = aab" buildozer.spec; then
+          echo "android.release_artifact = aab" >> buildozer.spec
+        fi
         
-        # Lister les fichiers générés
-        echo "📱 Fichiers générés:"
-        find bin/ -name "*.aab" -o -name "*.apk" | head -10
+        # Build avec buildozer android release (qui génère un AAB si configuré)
+        echo "🔨 Exécution de buildozer android release..."
+        if timeout 1800 buildozer android release --verbose; then
+          echo "✅ Build réussi!"
+          
+          # Lister les fichiers générés
+          echo "📱 Fichiers générés:"
+          find bin/ -name "*.aab" -o -name "*.apk" | head -10
+          
+          # Copier les fichiers avec des noms standardisés
+          if find bin/ -name "*.aab" | head -1 | read aab_file; then
+            echo "📱 AAB trouvé: $aab_file"
+            cp "$aab_file" "bin/macartedetarot-release.aab"
+          fi
+          
+          if find bin/ -name "*.apk" | head -1 | read apk_file; then
+            echo "📱 APK trouvé: $apk_file"
+            cp "$apk_file" "bin/macartedetarot-release.apk"
+          fi
+        else
+          echo "❌ Build échoué"
+          
+          # Afficher les logs pour diagnostic
+          if [ -f ".buildozer/logs/buildozer.log" ]; then
+            echo "=== Dernières lignes du log buildozer ==="
+            tail -50 .buildozer/logs/buildozer.log
+          fi
+          
+          exit 1
+        fi
 
     - name: Decode Production Keystore
       if: startsWith(github.ref, 'refs/tags/')
