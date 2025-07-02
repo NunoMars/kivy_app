@@ -143,6 +143,7 @@ jobs:
         JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
         PATH: /usr/lib/jvm/temurin-17-jdk-amd64/bin:/usr/local/lib/android/sdk/cmdline-tools/latest/bin:/usr/local/lib/android/sdk/platform-tools:/usr/bin:/bin
         PKG_CONFIG_PATH: /usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig
+        ANDROID_API_LEVEL: "34"
       run: |
         # Vérifier l'environnement avant le build
         echo "=== Environnement de build ==="
