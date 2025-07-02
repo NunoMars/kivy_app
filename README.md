@@ -1,6 +1,34 @@
-# 🃏 Ma Carte de Tarot - Application Android
+# 🃏 Ma Carte de Tarot - Application And## 🔐 Configuration des Secrets GitHub
 
-Application Kivy de tirage de cartes de tarot avec déploiement automatique sur Google Play Store.
+Le projet nécessite les secrets suivants dans GitHub > Settings > Secrets and variables > Actions :
+
+| Secret | Description |
+|--------|-------------|
+| `ANDROID_KEYSTORE` | Clé de signature Android (base64) |
+| `ANDROID_KEYSTORE_PASSWORD` | Mot de passe du keystore |
+| `ANDROID_KEY_ALIAS` | Alias de la clé (ex: release) |
+| `ANDROID_KEY_PASSWORD` | Mot de passe de la clé |
+| `GOOGLE_PLAY_SERVICE_ACCOUNT` | Clé API Google Play (JSON) |
+
+### 🔑 Génération des Clés de Signature
+
+**Linux/macOS :**
+```bash
+./create_signing_key.sh
+```
+
+**Windows :**
+```powershell
+.\create_signing_key.ps1
+```
+
+**Manuel :**
+```bash
+keytool -genkey -v -keystore release.keystore -alias release -keyalg RSA -keysize 2048 -validity 10000
+base64 -w 0 release.keystore  # Pour Linux/macOS
+```
+
+📖 **Guide complet :** Voir `SECRETS_SETUP.md`lication Kivy de tirage de cartes de tarot avec déploiement automatique sur Google Play Store.
 
 ## 🚀 Déploiement
 
