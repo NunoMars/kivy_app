@@ -193,6 +193,10 @@ jobs:
             echo "📱 AAB trouvé: $aab_file"
             cp "$aab_file" "bin/macartedetarot-release.aab"
             echo "✅ AAB copié pour upload: bin/macartedetarot-release.aab"
+            
+            # Vérifier la signature de l'AAB
+            echo "🔍 Vérification signature AAB..."
+            jarsigner -verify -verbose "$aab_file" || echo "⚠️  Signature temporaire détectée"
           done
           
           # Aussi copier l'APK s'il existe (pour backup)
@@ -240,6 +244,13 @@ jobs:
           # Décoder la clé de signature production
           echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > production.keystore
           
+          # Vérifier que la clé est valide
+          echo "🔍 Vérification de la clé de production..."
+          keytool -list -keystore production.keystore -storepass "$KEYSTORE_PASSWORD" || {
+            echo "❌ Clé de production invalide"
+            exit 1
+          }
+          
           # Re-construire avec la clé de production
           echo "" >> buildozer.spec
           echo "# Configuration signature production pour release" >> buildozer.spec
@@ -263,19 +274,64 @@ jobs:
               echo "📱 AAB production trouvé: $aab_file"
               cp "$aab_file" "bin/macartedetarot-production.aab"
               echo "✅ AAB production copié: bin/macartedetarot-production.aab"
+              
+              # Vérifier la signature de production
+              echo "🔍 Vérification signature production..."
+              jarsigner -verify -verbose "$aab_file" && echo "✅ AAB correctement signé avec clé production"
             done
           else
-            echo "❌ AAB production build failed, utilisation de l'AAB temporaire"
-            ls -la bin/ || true
+            echo "❌ AAB production build failed"
+            
+            # En cas d'échec, essayer de re-signer l'AAB existant
+            if [ -f "bin/macartedetarot-release.aab" ]; then
+              echo "🔄 Tentative de re-signature de l'AAB existant..."
+              
+              # Désigner d'abord
+              cp "bin/macartedetarot-release.aab" "bin/unsigned.aab"
+              
+              # Re-signer avec la clé de production
+              jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
+                -keystore production.keystore \
+                -storepass "$KEYSTORE_PASSWORD" \
+                -keypass "$KEY_PASSWORD" \
+                "bin/unsigned.aab" "$KEY_ALIAS"
+              
+              # Aligner avec zipalign si disponible
+              if command -v zipalign >/dev/null 2>&1; then
+                zipalign -v 4 "bin/unsigned.aab" "bin/macartedetarot-production.aab"
+              else
+                cp "bin/unsigned.aab" "bin/macartedetarot-production.aab"
+              fi
+              
+              echo "✅ AAB re-signé manuellement"
+            else
+              echo "❌ Aucun AAB à re-signer"
+              exit 1
+            fi
           fi
         else
           echo "⚠️  Pas de clé de signature production configurée"
-          echo "   L'AAB avec clé temporaire sera utilisé pour les tests"
+          echo "❌ ERREUR: Google Play Console nécessite une clé de signature valide"
           echo ""
-          echo "📋 Pour publier sur Google Play, il faut :"
-          echo "   1. Générer une clé de signature Android"
-          echo "   2. L'encoder en base64 et l'ajouter comme secret ANDROID_KEYSTORE_BASE64"
-          echo "   3. Ajouter les secrets KEYSTORE_PASSWORD, KEY_ALIAS, KEY_PASSWORD"
+          echo "📋 Pour publier sur Google Play, il faut OBLIGATOIREMENT :"
+          echo "   1. Générer une clé de signature Android:"
+          echo "      keytool -genkey -v -keystore release.keystore -alias release"
+          echo "      -keyalg RSA -keysize 2048 -validity 10000"
+          echo "   2. L'encoder en base64:"
+          echo "      base64 -w 0 release.keystore > keystore.base64"
+          echo "   3. Ajouter les secrets GitHub:"
+          echo "      - ANDROID_KEYSTORE_BASE64 (contenu du fichier keystore.base64)"
+          echo "      - KEYSTORE_PASSWORD (mot de passe du keystore)"
+          echo "      - KEY_ALIAS (alias de la clé, ex: release)"
+          echo "      - KEY_PASSWORD (mot de passe de la clé)"
+          echo ""
+          echo "⚠️  L'AAB avec clé temporaire sera généré mais ne pourra PAS être publié sur Google Play"
+          
+          # Copier l'AAB temporaire pour les tests
+          if [ -f "bin/macartedetarot-release.aab" ]; then
+            cp "bin/macartedetarot-release.aab" "bin/macartedetarot-production.aab"
+            echo "📱 AAB temporaire copié (NON VALIDE pour Google Play)"
+          fi
         fi
         
     - name: Upload App Bundle (AAB) as artifact

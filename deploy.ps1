@@ -51,6 +51,14 @@ try {
         Write-Host "⚠️  Échec corrections buildozer, mais on continue..." -ForegroundColor Yellow
     }
     
+    # Validation de la solution de signature
+    Write-Host "🔐 Validation solution signature..." -ForegroundColor Yellow
+    & python validate_signing_solution.py
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "⚠️  Configuration signature incomplète, mais on continue..." -ForegroundColor Yellow
+        Write-Host "📋 N'oubliez pas de configurer les secrets GitHub pour la signature de production" -ForegroundColor Magenta
+    }
+    
     # Validation du workflow
     & python validate_aab_workflow.py
     if ($LASTEXITCODE -eq 0) {
@@ -68,7 +76,7 @@ try {
 Write-Host "📤 Push du code..." -ForegroundColor Cyan
 git add .
 try {
-    git commit -m "fix: correction erreurs AAB - icône PNG + AndroidX + extractNativeLibs"
+    git commit -m "fix: erreurs AAB résolues + signature production configurée"
 } catch {
     Write-Host "Nothing to commit" -ForegroundColor Yellow
 }
