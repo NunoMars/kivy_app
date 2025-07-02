@@ -1,4 +1,4 @@
-name: Publish Android App
+name: Build and Publish Android App
 
 on:
   push:
@@ -8,339 +8,145 @@ on:
 
 jobs:
   build-and-publish:
-    runs-on: ubuntu-22.04  # Cohérent avec build-android.yml
+    runs-on: ubuntu-latest
+
+    env:
+      BUILD_TOOLS_VERSION: "34.0.0"
+      ANDROID_HOME: /opt/android-sdk
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
-        python-version: '3.11'
-        
-    - name: Install dependencies
+        python-version: '3.10'
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install buildozer cython kivy Pillow
+
+    - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y git zip unzip openjdk-17-jdk wget coreutils
-        sudo apt-get install -y autotools-dev automake libtool libtool-bin pkg-config
-        sudo apt-get install -y build-essential libffi-dev libssl-dev zlib1g-dev
-        sudo apt-get install -y libncurses5-dev libncursesw5-dev cmake autoconf
-        
-        # Configure Java 17 pour Gradle avec PATH complet
-        export JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64
-        export PATH="$JAVA_HOME/bin:$PATH"
-        echo "JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64" >> $GITHUB_ENV
-        echo "PATH=$JAVA_HOME/bin:$PATH" >> $GITHUB_ENV
-        
-        # Vérifier Java immédiatement
-        echo "=== Java Configuration Verification ==="
-        which java
-        java -version
-        echo "JAVA_HOME: $JAVA_HOME"
-        
-        # Configurer pkg-config pour OpenSSL
-        export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:$PKG_CONFIG_PATH"
-        echo "PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:$PKG_CONFIG_PATH" >> $GITHUB_ENV
-        
-        pip install --upgrade pip
-        pip install buildozer==1.5.0 cython==0.29.33 kivy==2.2.0
-        pip install python-for-android==2023.5.21  # Version cohérente
-        
-    - name: Set up Android SDK
-      run: |
-        # Utiliser le SDK Android pré-installé de GitHub Actions
-        export ANDROID_HOME=/usr/local/lib/android/sdk
-        # Utiliser NDK 25c qui est compatible avec SDL2 et recommandé par p4a
-        export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/25.2.9519653
-        echo "ANDROID_HOME=/usr/local/lib/android/sdk" >> $GITHUB_ENV
-        echo "ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/25.2.9519653" >> $GITHUB_ENV
-        echo "PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools" >> $GITHUB_ENV
-        
-        # Vérifier si NDK 25c existe, sinon l'installer
-        if [ ! -d "/usr/local/lib/android/sdk/ndk/25.2.9519653" ]; then
-          echo "📥 Installation NDK 25c (compatible SDL2)..."
-          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;25.2.9519653"
-        fi
-        
-        # Créer un lien symbolique pour l'ancien chemin de sdkmanager (compatibilité buildozer)
-        sudo mkdir -p $ANDROID_HOME/tools/bin
-        sudo ln -sf $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager $ANDROID_HOME/tools/bin/sdkmanager
-        sudo ln -sf $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager $ANDROID_HOME/tools/bin/avdmanager
-        
-        # Vérifier l'installation et les liens
-        echo "Android SDK: $ANDROID_HOME"
-        echo "Android NDK: $ANDROID_NDK_HOME"
-        echo "sdkmanager location:"
-        which sdkmanager || echo "sdkmanager not in PATH"
-        ls -la $ANDROID_HOME/tools/bin/ || echo "tools/bin not found"
-        ls -la $ANDROID_HOME/cmdline-tools/latest/bin/ | head -5
-        
-        # Installer build-tools si nécessaire (requis pour apksigner)
-        echo "🔧 Installation/vérification build-tools..."
-        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0"
-        
-        # Vérifier apksigner
-        if [ -f "$ANDROID_HOME/build-tools/34.0.0/apksigner" ]; then
-          echo "✅ apksigner trouvé: $ANDROID_HOME/build-tools/34.0.0/apksigner"
-        else
-          echo "❌ apksigner non trouvé, installation..."
-          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0"
-        fi
-        
-        # Vérifier NDK 25c
-        if [ -d "$ANDROID_NDK_HOME" ]; then
-          echo "✅ NDK 25c trouvé: $ANDROID_NDK_HOME"
-          ls -la $ANDROID_NDK_HOME/ | head -3
-        else
-          echo "❌ NDK 25c non trouvé"
-        fi
-        
-        # Tester sdkmanager
-        $ANDROID_HOME/tools/bin/sdkmanager --version || echo "sdkmanager test failed"
-        
-    - name: Install Pillow (Python Imaging Library)
-      run: |
-        python3 -m pip install --upgrade pip
-        python3 -m pip install Pillow
+        sudo apt-get install -y openjdk-17-jdk unzip zip libgl1-mesa-dev libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev \
+          libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev libgstreamer1.0 libmtdev-dev \
+          autotools-dev automake libtool libtool-bin pkg-config build-essential libffi-dev libssl-dev \
+          libncurses5-dev libncursesw5-dev cmake autoconf
 
-    - name: Fix Buildozer Configuration and Create Android Icon
+    - name: Install Android SDK & NDK
       run: |
-        echo "🔧 Application des corrections buildozer..."
+        wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdline-tools.zip
+        sudo mkdir -p $ANDROID_HOME/cmdline-tools
+        sudo unzip -q cmdline-tools.zip -d $ANDROID_HOME/cmdline-tools
+        sudo mv $ANDROID_HOME/cmdline-tools/cmdline-tools $ANDROID_HOME/cmdline-tools/latest
+        yes | sudo $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_HOME \
+          "platform-tools" "platforms;android-34" "build-tools;${{ env.BUILD_TOOLS_VERSION }}" "ndk;26.1.10909125"
+        echo "ANDROID_SDK_ROOT=$ANDROID_HOME" >> $GITHUB_ENV
+        echo "PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH" >> $GITHUB_ENV
+
+    - name: Prepare Buildozer Configuration
+      run: |
+        echo "🔧 Préparation de la configuration buildozer..."
         
-        # Créer l'icône Android PNG
+        # Créer/vérifier l'icône Android
         python3 create_android_icon.py
         
         # Appliquer les corrections buildozer
         python3 fix_buildozer_errors.py
         
-        # Vérifier que l'icône a été créée
+        # Vérifications
         if [ -f "tarot_img/icon.png" ]; then
-          echo "✅ Icône Android créée: tarot_img/icon.png"
+          echo "✅ Icône Android: tarot_img/icon.png"
           ls -la tarot_img/icon.png
         else
-          echo "❌ Icône Android non créée"
+          echo "❌ Icône Android manquante"
           exit 1
         fi
         
-        # Vérifier que le template manifest a été créé
         if [ -f "android_manifest_template.xml" ]; then
           echo "✅ Template AndroidManifest créé"
         else
-          echo "❌ Template AndroidManifest non créé"
+          echo "❌ Template AndroidManifest manquant"
           exit 1
         fi
-        
-        echo "✅ Corrections buildozer appliquées"
 
-    - name: Configure buildozer for GitHub Actions SDK/NDK
-      env:
-        ANDROID_HOME: /usr/local/lib/android/sdk
-        ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/25.2.9519653
+    - name: Build Android AAB
       run: |
-        # Utiliser le nouveau script qui force l'utilisation des SDK/NDK système
-        python3 .github/scripts/configure_buildozer_sdk.py
+        echo "🏗️ Construction de l'Android App Bundle..."
         
-        # Exécuter le diagnostic et correction des chemins SDK
-        python3 .github/scripts/fix_sdk_paths.py
-        
-        # Vérifier la configuration finale
-        echo "=== Configuration buildozer finale ==="
-        grep -E "(requirements|android\.(sdk_path|ndk_path|ndk|api))" buildozer.spec
-        
-    - name: Build AAB (App Bundle) with Buildozer
-      env:
-        ANDROID_HOME: /usr/local/lib/android/sdk
-        ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/25.2.9519653
-        JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
-        PATH: /usr/lib/jvm/temurin-17-jdk-amd64/bin:/usr/local/lib/android/sdk/cmdline-tools/latest/bin:/usr/local/lib/android/sdk/platform-tools:/usr/bin:/bin
-        PKG_CONFIG_PATH: /usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig
-        ANDROID_API_LEVEL: "34"
-      run: |
-        # Vérifier l'environnement avant le build
-        echo "=== Environnement de build ==="
-        echo "ANDROID_HOME: $ANDROID_HOME"
-        echo "ANDROID_NDK_HOME: $ANDROID_NDK_HOME"
-        echo "JAVA_HOME: $JAVA_HOME"
-        which java
-        java -version
-        
-        # Vérifier que les SDK/NDK existent
-        echo "=== Vérification SDK/NDK ==="
-        ls -la $ANDROID_HOME/ | head -10
-        ls -la $ANDROID_NDK_HOME/ | head -5
-        
-        # Initialiser buildozer avec timeout
-        echo "=== Initialisation buildozer ==="
-        timeout 300 buildozer init || echo "Already initialized or timeout"
-        
-        # Vérifier la configuration buildozer finale
-        echo "=== Configuration buildozer ==="
-        grep -E "(android\.(sdk_path|ndk_path|ndk|api|.*artifact)|requirements)" buildozer.spec
-        
-        # Build App Bundle (AAB) avec buildozer android release
-        echo "=== Build Android App Bundle (AAB) ==="
-        echo "🏗️  Génération AAB avec 'buildozer android release' (requis pour AAB selon doc Kivy)"
-        
-        # Créer une clé de signature temporaire pour pouvoir générer l'AAB
-        echo "🔑 Création clé de signature temporaire pour AAB..."
-        keytool -genkey -v -keystore temp.keystore -alias tempkey -keyalg RSA -keysize 2048 -validity 10000 \
-          -dname "CN=TempKey, OU=Test, O=Test, L=Test, S=Test, C=FR" \
-          -storepass temppass -keypass temppass
-        
-        # Nettoyer toutes les configurations de signature existantes d'abord
-        echo "🧹 Nettoyage des configurations de signature avant build temporaire..."
+        # Nettoyer toute configuration de signature existante
         sed -i '/android\.release_keystore/d' buildozer.spec
         sed -i '/android\.release_key/d' buildozer.spec
         sed -i '/# Configuration signature/d' buildozer.spec
         
+        # Créer une clé temporaire pour le build initial
+        keytool -genkey -v -keystore temp.keystore -alias tempkey -keyalg RSA -keysize 2048 -validity 10000 \
+          -dname "CN=TempBuild, OU=Build, O=Build, L=Build, S=Build, C=US" \
+          -storepass temppass -keypass temppass
+        
         # Configurer buildozer avec la clé temporaire
         echo "" >> buildozer.spec
-        echo "# Configuration signature temporaire pour génération AAB" >> buildozer.spec
+        echo "# Configuration signature temporaire pour build" >> buildozer.spec
         echo "android.release_keystore = temp.keystore" >> buildozer.spec
         echo "android.release_keystore_passwd = temppass" >> buildozer.spec
         echo "android.release_key = tempkey" >> buildozer.spec
         echo "android.release_key_passwd = temppass" >> buildozer.spec
         
-        # Build AAB avec mode release (seule façon de générer AAB selon doc)
-        if timeout 1800 buildozer android release --verbose; then
-          echo "✅ AAB build successful!"
-          ls -la bin/
-          
-          # Rechercher et copier l'AAB généré
-          find bin/ -name "*.aab" | while read aab_file; do
-            echo "📱 AAB trouvé: $aab_file"
-            cp "$aab_file" "bin/macartedetarot-release.aab"
-            echo "✅ AAB copié pour upload: bin/macartedetarot-release.aab"
-            
-            # Vérifier la signature de l'AAB
-            echo "🔍 Vérification signature AAB..."
-            jarsigner -verify -verbose "$aab_file" || echo "⚠️  Signature temporaire détectée"
-          done
-          
-          # Aussi copier l'APK s'il existe (pour backup)
-          find bin/ -name "*.apk" | head -1 | while read apk_file; do
-            echo "📱 APK trouvé: $apk_file"
-            cp "$apk_file" "bin/macartedetarot-release.apk"
-            echo "✅ APK copié pour backup: bin/macartedetarot-release.apk"
-          done
-          
+        # Build AAB
+        buildozer android aab
+        
+        # Lister les fichiers générés
+        echo "📱 Fichiers générés:"
+        find bin/ -name "*.aab" -o -name "*.apk" | head -10
+
+    - name: Decode Production Keystore
+      if: startsWith(github.ref, 'refs/tags/')
+      run: |
+        echo "🔑 Décodage de la clé de production..."
+        echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 --decode > production.keystore
+        
+        # Vérifier la clé
+        keytool -list -keystore production.keystore -storepass "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" || {
+          echo "❌ Clé de production invalide"
+          exit 1
+        }
+
+    - name: Sign AAB with Production Key
+      if: startsWith(github.ref, 'refs/tags/')
+      run: |
+        echo "🔏 Signature de l'AAB avec la clé de production..."
+        
+        # Trouver l'AAB généré
+        AAB_PATH=$(find bin/ -name "*.aab" | head -n 1)
+        if [ -z "$AAB_PATH" ]; then
+          echo "❌ Aucun AAB trouvé!"
+          exit 1
+        fi
+        
+        echo "📱 AAB trouvé: $AAB_PATH"
+        
+        # Signer avec apksigner (requis pour Google Play)
+        $ANDROID_HOME/build-tools/${{ env.BUILD_TOOLS_VERSION }}/apksigner sign \
+          --ks production.keystore \
+          --ks-pass pass:"${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" \
+          --ks-key-alias "${{ secrets.ANDROID_KEY_ALIAS }}" \
+          --key-pass pass:"${{ secrets.ANDROID_KEY_PASSWORD }}" \
+          --out "bin/macartedetarot-production.aab" \
+          "$AAB_PATH"
+        
+        # Vérifier la signature
+        echo "🔍 Vérification de la signature..."
+        if $ANDROID_HOME/build-tools/${{ env.BUILD_TOOLS_VERSION }}/apksigner verify "bin/macartedetarot-production.aab"; then
+          echo "✅ AAB correctement signé avec clé de production"
         else
-          echo "❌ AAB build failed, diagnostic..."
-          
-          # Diagnostic des erreurs
-          echo "=== Diagnostic buildozer ==="
-          buildozer android clean || true
-          
-          # Vérifier les logs buildozer
-          if [ -f ".buildozer/logs/buildozer.log" ]; then
-            echo "=== Dernières lignes du log buildozer ==="
-            tail -50 .buildozer/logs/buildozer.log
-          fi
-          
-          echo "❌ Build complètement échoué"
+          echo "❌ Erreur de signature"
           exit 1
         fi
 
-    - name: Sign Release AAB (if tagged and keystore available)
-      if: startsWith(github.ref, 'refs/tags/')
-      env:
-        ANDROID_HOME: /usr/local/lib/android/sdk
-        ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/25.2.9519653
-        JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
-        PATH: /usr/lib/jvm/temurin-17-jdk-amd64/bin:/usr/local/lib/android/sdk/cmdline-tools/latest/bin:/usr/local/lib/android/sdk/platform-tools:/usr/bin:/bin
-        ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE }}
-        KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-        KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-        KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-      run: |
-        echo "=== Re-signing Release AAB with Production Key ==="
-        
-        # Vérifier si nous avons une clé de signature production
-        if [ -n "$ANDROID_KEYSTORE_BASE64" ]; then
-          echo "🔑 Clé de signature production détectée, signature de l'AAB..."
-          
-          # Décoder la clé de signature production
-          echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > production.keystore
-          
-          # Vérifier que la clé est valide
-          echo "🔍 Vérification de la clé de production..."
-          keytool -list -keystore production.keystore -storepass "$KEYSTORE_PASSWORD" || {
-            echo "❌ Clé de production invalide"
-            exit 1
-          }
-          
-          # S'assurer qu'on a un AAB à signer
-          if [ -f "bin/macartedetarot-release.aab" ]; then
-            echo "📱 AAB trouvé: bin/macartedetarot-release.aab"
-            
-            # Re-signer avec la clé de production using apksigner (requis pour Google Play)
-            echo "🔏 Signature avec apksigner (Google Play compatible)..."
-            
-            # Utiliser apksigner au lieu de jarsigner pour Google Play
-            $ANDROID_HOME/build-tools/34.0.0/apksigner sign \
-              --ks production.keystore \
-              --ks-pass pass:"$KEYSTORE_PASSWORD" \
-              --ks-key-alias "$KEY_ALIAS" \
-              --key-pass pass:"$KEY_PASSWORD" \
-              --out "bin/macartedetarot-production.aab" \
-              "bin/macartedetarot-release.aab"
-            
-            # Vérifier la signature de production avec apksigner
-            echo "🔍 Vérification signature production avec apksigner..."
-            if $ANDROID_HOME/build-tools/34.0.0/apksigner verify "bin/macartedetarot-production.aab"; then
-              echo "✅ AAB correctement signé avec clé production (Google Play compatible)"
-            else
-              echo "❌ Erreur de signature production avec apksigner"
-              
-              # Fallback avec jarsigner pour diagnostic
-              echo "🔄 Tentative fallback avec jarsigner..."
-              jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
-                -keystore production.keystore \
-                -storepass "$KEYSTORE_PASSWORD" \
-                -keypass "$KEY_PASSWORD" \
-                "bin/macartedetarot-unsigned.aab" "$KEY_ALIAS"
-              
-              cp "bin/macartedetarot-unsigned.aab" "bin/macartedetarot-production.aab"
-              
-              # Vérifier avec jarsigner
-              if jarsigner -verify -verbose "bin/macartedetarot-production.aab"; then
-                echo "⚠️  AAB signé avec jarsigner (peut ne pas être accepté par Google Play)"
-              else
-                echo "❌ Échec complet de signature"
-                exit 1
-              fi
-            fi
-          else
-            echo "❌ Aucun AAB trouvé à signer (bin/macartedetarot-release.aab)"
-            exit 1
-          fi
-        else
-          echo "⚠️  Pas de clé de signature production configurée"
-          echo "❌ ERREUR: Google Play Console nécessite une clé de signature valide"
-          echo ""
-          echo "📋 Pour publier sur Google Play, il faut OBLIGATOIREMENT :"
-          echo "   1. Générer une clé de signature Android:"
-          echo "      keytool -genkey -v -keystore release.keystore -alias release"
-          echo "      -keyalg RSA -keysize 2048 -validity 10000"
-          echo "   2. L'encoder en base64:"
-          echo "      base64 -w 0 release.keystore > keystore.base64"
-          echo "   3. Ajouter les secrets GitHub:"
-          echo "      - ANDROID_KEYSTORE_BASE64 (contenu du fichier keystore.base64)"
-          echo "      - KEYSTORE_PASSWORD (mot de passe du keystore)"
-          echo "      - KEY_ALIAS (alias de la clé, ex: release)"
-          echo "      - KEY_PASSWORD (mot de passe de la clé)"
-          echo ""
-          echo "⚠️  L'AAB avec clé temporaire sera généré mais ne pourra PAS être publié sur Google Play"
-          
-          # Copier l'AAB temporaire pour les tests
-          if [ -f "bin/macartedetarot-release.aab" ]; then
-            cp "bin/macartedetarot-release.aab" "bin/macartedetarot-production.aab"
-            echo "📱 AAB temporaire copié (NON VALIDE pour Google Play)"
-          fi
-        fi
-        
-    - name: Upload App Bundle (AAB) as artifact
+    - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: tarot-app-bundle
@@ -351,16 +157,16 @@ jobs:
         
     - name: Upload to Google Play Console
       if: startsWith(github.ref, 'refs/tags/') && success()
-      continue-on-error: true  # Permet l'échec pour le premier déploiement
+      continue-on-error: true
       uses: r0adkll/upload-google-play@v1.1.3
       with:
         serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT }}
-        packageName: org.tarot.macartedetarot  # Nom de package cohérent
-        releaseFiles: bin/*.aab
-        track: internal  # Commence par internal, puis promotion vers production
+        packageName: org.tarot.macartedetarot
+        releaseFiles: bin/macartedetarot-production.aab
+        track: internal
         status: completed
         
-    - name: Manual Upload Instructions (if auto-upload fails)
+    - name: Manual Upload Instructions
       if: startsWith(github.ref, 'refs/tags/')
       run: |
         echo "📱 Si l'upload automatique a échoué (première fois), suivez ces étapes :"
@@ -387,7 +193,7 @@ jobs:
           📱 **App Bundle Android disponible**
           - Format AAB optimisé pour Google Play Store
           - Compatible avec toutes les architectures Android
-          - Taille optimisée selon votre appareil
+          - Signature de production valide
           
           ✨ **Nouvelles fonctionnalités :**
           - Interface améliorée
