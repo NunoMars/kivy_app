@@ -76,6 +76,18 @@ jobs:
         ls -la $ANDROID_HOME/tools/bin/ || echo "tools/bin not found"
         ls -la $ANDROID_HOME/cmdline-tools/latest/bin/ | head -5
         
+        # Installer build-tools si nécessaire (requis pour apksigner)
+        echo "🔧 Installation/vérification build-tools..."
+        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0"
+        
+        # Vérifier apksigner
+        if [ -f "$ANDROID_HOME/build-tools/34.0.0/apksigner" ]; then
+          echo "✅ apksigner trouvé: $ANDROID_HOME/build-tools/34.0.0/apksigner"
+        else
+          echo "❌ apksigner non trouvé, installation..."
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0"
+        fi
+        
         # Vérifier NDK 25c
         if [ -d "$ANDROID_NDK_HOME" ]; then
           echo "✅ NDK 25c trouvé: $ANDROID_NDK_HOME"
@@ -262,27 +274,42 @@ jobs:
           if [ -f "bin/macartedetarot-release.aab" ]; then
             echo "📱 AAB trouvé: bin/macartedetarot-release.aab"
             
-            # Copier l'AAB pour la signature de production
-            cp "bin/macartedetarot-release.aab" "bin/macartedetarot-unsigned.aab"
+            # Re-signer avec la clé de production using apksigner (requis pour Google Play)
+            echo "🔏 Signature avec apksigner (Google Play compatible)..."
             
-            # Re-signer avec la clé de production
-            echo "🔏 Signature avec la clé de production..."
-            jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
-              -keystore production.keystore \
-              -storepass "$KEYSTORE_PASSWORD" \
-              -keypass "$KEY_PASSWORD" \
-              "bin/macartedetarot-unsigned.aab" "$KEY_ALIAS"
+            # Utiliser apksigner au lieu de jarsigner pour Google Play
+            $ANDROID_HOME/build-tools/34.0.0/apksigner sign \
+              --ks production.keystore \
+              --ks-pass pass:"$KEYSTORE_PASSWORD" \
+              --ks-key-alias "$KEY_ALIAS" \
+              --key-pass pass:"$KEY_PASSWORD" \
+              --out "bin/macartedetarot-production.aab" \
+              "bin/macartedetarot-release.aab"
             
-            # Copier le résultat signé
-            cp "bin/macartedetarot-unsigned.aab" "bin/macartedetarot-production.aab"
-            
-            # Vérifier la signature de production
-            echo "🔍 Vérification signature production..."
-            if jarsigner -verify -verbose "bin/macartedetarot-production.aab"; then
-              echo "✅ AAB correctement signé avec clé production"
+            # Vérifier la signature de production avec apksigner
+            echo "🔍 Vérification signature production avec apksigner..."
+            if $ANDROID_HOME/build-tools/34.0.0/apksigner verify "bin/macartedetarot-production.aab"; then
+              echo "✅ AAB correctement signé avec clé production (Google Play compatible)"
             else
-              echo "❌ Erreur de signature production"
-              exit 1
+              echo "❌ Erreur de signature production avec apksigner"
+              
+              # Fallback avec jarsigner pour diagnostic
+              echo "🔄 Tentative fallback avec jarsigner..."
+              jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
+                -keystore production.keystore \
+                -storepass "$KEYSTORE_PASSWORD" \
+                -keypass "$KEY_PASSWORD" \
+                "bin/macartedetarot-unsigned.aab" "$KEY_ALIAS"
+              
+              cp "bin/macartedetarot-unsigned.aab" "bin/macartedetarot-production.aab"
+              
+              # Vérifier avec jarsigner
+              if jarsigner -verify -verbose "bin/macartedetarot-production.aab"; then
+                echo "⚠️  AAB signé avec jarsigner (peut ne pas être accepté par Google Play)"
+              else
+                echo "❌ Échec complet de signature"
+                exit 1
+              fi
             fi
           else
             echo "❌ Aucun AAB trouvé à signer (bin/macartedetarot-release.aab)"
