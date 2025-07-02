@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-and-publish:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04  # Forcer Ubuntu 22.04 pour éviter les problèmes autotools
 
     env:
       BUILD_TOOLS_VERSION: "34.0.0"
@@ -31,18 +31,17 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y openjdk-17-jdk unzip zip libgl1-mesa-dev libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev \
-          libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev libgstreamer1.0 libmtdev-dev \
-          autotools-dev automake libtool libtool-bin pkg-config build-essential libffi-dev libssl-dev \
-          libncurses5-dev libncursesw5-dev cmake autoconf autogen gettext texinfo \
-          libffi8 libffi-dev m4 texinfo flex bison
+        sudo apt-get install -y openjdk-17-jdk unzip zip \
+          libgl1-mesa-dev libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev \
+          libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev \
+          libgstreamer1.0 libmtdev-dev \
+          build-essential libffi-dev libssl-dev \
+          libncurses5-dev libncursesw5-dev cmake \
+          pkg-config git
         
-        # Mettre à jour autotools pour corriger les erreurs LT_SYS_SYMBOL_USCORE
-        sudo apt-get install -y autotools-dev autoconf-archive
-        
-        # S'assurer que les outils autotools sont récents
-        autoconf --version
-        automake --version
+        # Vérifier Java
+        java -version
+        javac -version
 
     - name: Install Android SDK & NDK
       run: |
