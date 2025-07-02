@@ -32,12 +32,16 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y openjdk-17-jdk unzip zip \
-          libgl1-mesa-dev libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev \
-          libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev \
-          libgstreamer1.0 libmtdev-dev \
           build-essential libffi-dev libssl-dev \
-          libncurses5-dev libncursesw5-dev cmake \
-          pkg-config git
+          pkg-config git cmake
+        
+        # Installer les dépendances SDL2 essentielles pour Kivy
+        sudo apt-get install -y libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
+        
+        # Installer les dépendances optionnelles (sans forcer si échec)
+        sudo apt-get install -y libgl1-mesa-dev libportmidi-dev libswscale-dev \
+          libavformat-dev libavcodec-dev zlib1g-dev libmtdev-dev \
+          libncurses5-dev libncursesw5-dev || echo "⚠️  Certaines dépendances optionnelles ont échoué, mais continuons..."
         
         # Vérifier Java
         java -version
