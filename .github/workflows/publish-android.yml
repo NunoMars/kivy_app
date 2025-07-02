@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - 'v*'  # Déclenche sur les tags version (ex: v1.0.0)
+    branches:
+      - main  # Déclenche sur main pour les tests (temporaire)
   workflow_dispatch:  # Permet le déclenchement manuel
 
 jobs:
@@ -44,6 +46,15 @@ jobs:
         sudo mv $ANDROID_HOME/cmdline-tools/cmdline-tools $ANDROID_HOME/cmdline-tools/latest
         yes | sudo $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_HOME \
           "platform-tools" "platforms;android-34" "build-tools;${{ env.BUILD_TOOLS_VERSION }}" "ndk;26.1.10909125"
+        
+        # Créer un lien symbolique pour que buildozer trouve le SDK au bon endroit
+        sudo mkdir -p /usr/local/lib/android
+        sudo ln -sf $ANDROID_HOME /usr/local/lib/android/sdk
+        
+        # Créer le répertoire tools/bin et lier le sdkmanager pour buildozer
+        sudo mkdir -p /usr/local/lib/android/sdk/tools/bin
+        sudo ln -sf $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager /usr/local/lib/android/sdk/tools/bin/sdkmanager
+        
         echo "ANDROID_SDK_ROOT=$ANDROID_HOME" >> $GITHUB_ENV
         echo "ANDROIDSDK=$ANDROID_HOME" >> $GITHUB_ENV
         echo "PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH" >> $GITHUB_ENV
