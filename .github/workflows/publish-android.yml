@@ -121,11 +121,6 @@ jobs:
         
         echo "✅ Corrections buildozer appliquées"
 
-    - name: Clean buildozer.spec duplicates
-      run: |
-        echo "🧹 Nettoyage des doublons buildozer.spec..."
-        python3 clean_buildozer_spec.py
-
     - name: Configure buildozer for GitHub Actions SDK/NDK
       env:
         ANDROID_HOME: /usr/local/lib/android/sdk
@@ -180,6 +175,12 @@ jobs:
         keytool -genkey -v -keystore temp.keystore -alias tempkey -keyalg RSA -keysize 2048 -validity 10000 \
           -dname "CN=TempKey, OU=Test, O=Test, L=Test, S=Test, C=FR" \
           -storepass temppass -keypass temppass
+        
+        # Nettoyer toutes les configurations de signature existantes d'abord
+        echo "🧹 Nettoyage des configurations de signature avant build temporaire..."
+        sed -i '/android\.release_keystore/d' buildozer.spec
+        sed -i '/android\.release_key/d' buildozer.spec
+        sed -i '/# Configuration signature/d' buildozer.spec
         
         # Configurer buildozer avec la clé temporaire
         echo "" >> buildozer.spec
@@ -257,14 +258,15 @@ jobs:
             exit 1
           }
           
-          # Nettoyer les configurations de signature existantes dans buildozer.spec
-          echo "🧹 Nettoyage des configurations de signature précédentes..."
-          sed -i '/# Configuration signature temporaire/,+4d' buildozer.spec
-          sed -i '/# Configuration signature production/,+4d' buildozer.spec
-          sed -i '/android.release_keystore/d' buildozer.spec
-          sed -i '/android.release_keystore_passwd/d' buildozer.spec
-          sed -i '/android.release_key/d' buildozer.spec
-          sed -i '/android.release_key_passwd/d' buildozer.spec
+          # Nettoyer TOUTES les configurations de signature existantes dans buildozer.spec
+          echo "🧹 Nettoyage complet des configurations de signature..."
+          
+          # Supprimer toutes les lignes contenant des configurations de signature
+          sed -i '/android\.release_keystore/d' buildozer.spec
+          sed -i '/android\.release_key/d' buildozer.spec
+          
+          # Supprimer aussi les commentaires de configuration
+          sed -i '/# Configuration signature/d' buildozer.spec
           
           # Ajouter la configuration de signature production
           echo "" >> buildozer.spec

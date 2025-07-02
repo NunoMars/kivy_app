@@ -5,7 +5,6 @@ __pycache__
 
 # Android signing keys (NEVER commit these!)
 *.keystore
-!googleplay.keystore
 *.keystore.base64
 keystore.base64
 android_signing_key*
@@ -24,5 +23,4 @@ dist/
 *-release.keystore*
 *signing-key*
 *service-account*.json
-!google-play-service-account.json
 *google-play*.json

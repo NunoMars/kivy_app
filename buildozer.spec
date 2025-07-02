@@ -450,9 +450,3 @@ warn_on_root = 1
 #    Then, invoke the command line with the "demo" profile:
 #
 #buildozer --profile demo android debug
-
-# Configuration signature production API 34
-android.release_keystore = googleplay.keystore
-android.release_keystore_passwd = GooglePlay2025!
-android.release_key = googleplay
-android.release_key_passwd = GooglePlay2025!
