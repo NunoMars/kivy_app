@@ -229,7 +229,7 @@ jobs:
         echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 --decode > production.keystore
         
         # Vérifier la clé
-        keytool -list -keystore production.keystore -storepass "${{ secrets.KEYSTORE_PASSWORD }}" || {
+        keytool -list -keystore production.keystore -storepass "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" || {
           echo "❌ Clé de production invalide"
           exit 1
         }
@@ -251,9 +251,9 @@ jobs:
         # Signer avec apksigner (requis pour Google Play)
         $ANDROID_HOME/build-tools/${{ env.BUILD_TOOLS_VERSION }}/apksigner sign \
           --ks production.keystore \
-          --ks-pass pass:"${{ secrets.ANDROID_KEYSTORE }}" \
-          --ks-key-alias "${{ secrets.KEY_ALIAS }}" \
-          --key-pass pass:"${{ secrets.KEY_PASSWORD }}" \
+          --ks-pass pass:"${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" \
+          --ks-key-alias "${{ secrets.ANDROID_KEY_ALIAS }}" \
+          --key-pass pass:"${{ secrets.ANDROID_KEY_PASSWORD }}" \
           --out "bin/macartedetarot-production.aab" \
           "$AAB_PATH"
         
