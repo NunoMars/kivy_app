@@ -196,14 +196,19 @@ jobs:
           find bin/ -name "*.aab" -o -name "*.apk" | head -10
           
           # Copier les fichiers avec des noms standardisés
-          if find bin/ -name "*.aab" | head -1 | read aab_file; then
-            echo "📱 AAB trouvé: $aab_file"
-            cp "$aab_file" "bin/macartedetarot-release.aab"
+          AAB_FILE=$(find bin/ -name "*.aab" | head -1)
+          if [ -n "$AAB_FILE" ]; then
+            echo "📱 AAB trouvé: $AAB_FILE"
+            cp "$AAB_FILE" "bin/macartedetarot-release.aab"
+          else
+            echo "❌ Aucun fichier AAB trouvé"
+            exit 1
           fi
           
-          if find bin/ -name "*.apk" | head -1 | read apk_file; then
-            echo "📱 APK trouvé: $apk_file"
-            cp "$apk_file" "bin/macartedetarot-release.apk"
+          APK_FILE=$(find bin/ -name "*.apk" | head -1)
+          if [ -n "$APK_FILE" ]; then
+            echo "📱 APK trouvé: $APK_FILE"
+            cp "$APK_FILE" "bin/macartedetarot-release.apk"
           fi
         else
           echo "❌ Build échoué"
