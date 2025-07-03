@@ -21,12 +21,15 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
+        python-version: '3.9'  # Python 3.9 pour meilleure compatibilité avec PyJNIus
 
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install buildozer cython kivy Pillow
+        # Installer des versions spécifiques pour éviter les problèmes de compatibilité Python 3.10
+        pip install "buildozer>=1.5.0" "cython<3.0" "kivy==2.2.0" Pillow
+        # Downgrader Cython pour compatibilité avec PyJNIus
+        pip install "Cython==0.29.36"
 
     - name: Install system dependencies
       run: |
@@ -181,6 +184,10 @@ jobs:
         
         # Build avec buildozer android release (qui génère un AAB si configuré)
         echo "🔨 Exécution de buildozer android release..."
+        
+        # Patcher PyJNIus pour Python 3.9+ si nécessaire
+        export P4A_PYJNIUS_RECIPE_BRANCH=master
+        
         if timeout 1800 buildozer android release --verbose; then
           echo "✅ Build réussi!"
           
