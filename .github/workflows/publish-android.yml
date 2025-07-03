@@ -229,7 +229,7 @@ jobs:
         echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 --decode > production.keystore
         
         # Vérifier la clé
-        keytool -list -keystore production.keystore -storepass "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" || {
+        keytool -list -keystore production.keystore -storepass "${{ secrets.KEYSTORE_PASSWORD }}" || {
           echo "❌ Clé de production invalide"
           exit 1
         }
