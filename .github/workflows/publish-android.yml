@@ -155,32 +155,19 @@ jobs:
         unset ANDROID_NDK_HOME
         unset ANDROID_NDK_LATEST_HOME
         
-        # Nettoyer toute configuration de signature existante
-        sed -i '/android\.release_keystore/d' buildozer.spec
-        sed -i '/android\.release_key/d' buildozer.spec
-        sed -i '/# Configuration signature/d' buildozer.spec
-        
-        # Créer une clé temporaire pour le build initial
-        keytool -genkey -v -keystore temp.keystore -alias tempkey -keyalg RSA -keysize 2048 -validity 10000 \
-          -dname "CN=TempBuild, OU=Build, O=Build, L=Build, S=Build, C=US" \
-          -storepass temppass -keypass temppass
-        
-        # Configurer buildozer avec la clé temporaire
-        echo "" >> buildozer.spec
-        echo "# Configuration signature temporaire pour build" >> buildozer.spec
-        echo "android.release_keystore = temp.keystore" >> buildozer.spec
-        echo "android.release_keystore_passwd = temppass" >> buildozer.spec
-        echo "android.release_key = tempkey" >> buildozer.spec
-        echo "android.release_key_passwd = temppass" >> buildozer.spec
-        
-        # S'assurer que le mode AAB est activé dans buildozer.spec
+        # Vérifier que buildozer.spec est bien configuré
         if ! grep -q "android.release_artifact = aab" buildozer.spec; then
           echo "android.release_artifact = aab" >> buildozer.spec
         fi
         
         # Forcer la version correcte du NDK pour éviter les conflits
-        echo "android.ndk = 25.2.9519653" >> buildozer.spec
-        echo "android.ndk_path = $ANDROID_HOME/ndk/25.2.9519653" >> buildozer.spec
+        if ! grep -q "android.ndk = 25.2.9519653" buildozer.spec; then
+          echo "android.ndk = 25.2.9519653" >> buildozer.spec
+        fi
+        
+        if ! grep -q "android.ndk_path" buildozer.spec; then
+          echo "android.ndk_path = $ANDROID_HOME/ndk/25.2.9519653" >> buildozer.spec
+        fi
         
         # Build avec buildozer android release (qui génère un AAB si configuré)
         echo "🔨 Exécution de buildozer android release..."

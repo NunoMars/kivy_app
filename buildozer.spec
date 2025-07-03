@@ -29,7 +29,7 @@ source.include_exts = py,png,jpg,gif,kv,atlas
 #source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 0.1
+version = 1.4
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -450,3 +450,13 @@ warn_on_root = 1
 #    Then, invoke the command line with the "demo" profile:
 #
 #buildozer --profile demo android debug
+
+
+android.release_artifact = aab
+
+# Configuration signature de production
+android.release_keystore = googleplay.keystore
+android.release_keystore_passwd = macartedetarot2024
+android.release_key = upload
+android.release_key_passwd = macartedetarot2024
+android.release_artifact = aab
