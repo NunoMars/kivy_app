@@ -49,35 +49,53 @@ jobs:
 
     - name: Install Android SDK & NDK
       run: |
-        # Configurer Java 17 globalement
-        sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/temurin-17-jdk-amd64/bin/java 100
-        sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/temurin-17-jdk-amd64/bin/javac 100
-        sudo update-alternatives --set java /usr/lib/jvm/temurin-17-jdk-amd64/bin/java
-        sudo update-alternatives --set javac /usr/lib/jvm/temurin-17-jdk-amd64/bin/javac
+        # Supprimer toutes les installations Java existantes et forcer Java 17
+        sudo apt-get remove -y openjdk-11-jdk || true
+        sudo apt-get autoremove -y || true
         
-        # Configurer JAVA_HOME globalement
-        export JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64
+        # Réinstaller seulement Java 17
+        sudo apt-get install -y openjdk-17-jdk
+        
+        # Configurer Java 17 de force
+        sudo update-alternatives --remove-all java || true
+        sudo update-alternatives --remove-all javac || true
+        sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-17-openjdk-amd64/bin/java 100
+        sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac 100
+        sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+        sudo update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
+        
+        # Configurer JAVA_HOME pour Java 17 OpenJDK
+        export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
         export PATH=$JAVA_HOME/bin:$PATH
-        echo "JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64" >> $GITHUB_ENV
-        echo "PATH=$JAVA_HOME/bin:$PATH" >> $GITHUB_ENV
+        echo "JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64" >> $GITHUB_ENV
         
-        # Diagnostics Java
+        # Diagnostics Java détaillés
         echo "=== Diagnostics Java ==="
+        echo "PATH: $PATH"
+        echo "JAVA_HOME: $JAVA_HOME"
         which java
         java -version
-        echo "JAVA_HOME: $JAVA_HOME"
+        which javac
+        javac -version
+        ls -la /usr/lib/jvm/
         
-        wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdline-tools.zip
+        # Télécharger une version plus ancienne des Command Line Tools compatible Java 11+
+        wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
         sudo mkdir -p $ANDROID_HOME/cmdline-tools
         sudo unzip -q cmdline-tools.zip -d $ANDROID_HOME/cmdline-tools
         sudo mv $ANDROID_HOME/cmdline-tools/cmdline-tools $ANDROID_HOME/cmdline-tools/latest
         
-        # Installer seulement les composants essentiels avec Java 17 configuré
-        yes | sudo env "JAVA_HOME=$JAVA_HOME" "PATH=$PATH" $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_HOME \
+        # Test direct du sdkmanager avec Java 17
+        echo "=== Test sdkmanager ==="
+        sudo env "JAVA_HOME=$JAVA_HOME" $JAVA_HOME/bin/java -version
+        sudo env "JAVA_HOME=$JAVA_HOME" $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --version
+        
+        # Installer seulement les composants essentiels
+        yes | sudo env "JAVA_HOME=$JAVA_HOME" "PATH=$JAVA_HOME/bin:$PATH" $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_HOME \
           "platform-tools" "platforms;android-34" "build-tools;${{ env.BUILD_TOOLS_VERSION }}"
         
-        # Installer le NDK 25c (version recommandée par python-for-android)
-        yes | sudo env "JAVA_HOME=$JAVA_HOME" "PATH=$PATH" $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_HOME \
+        # Installer le NDK 25c
+        yes | sudo env "JAVA_HOME=$JAVA_HOME" "PATH=$JAVA_HOME/bin:$PATH" $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_HOME \
           "ndk;25.2.9519653"
         
         # Créer un lien symbolique pour que buildozer trouve le SDK au bon endroit
