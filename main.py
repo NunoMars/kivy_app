@@ -76,15 +76,37 @@ class CardScreen(Screen):
         super(CardScreen, self).__init__(**kwargs)
 
     def draw_card(self):
-        """Déclenche le tirage d'une carte depuis l'écran d'accueil"""
+        """Déclenche le tirage d'une carte depuis l'écran d'accueil avec animation"""
+        # Animation du bouton avant le tirage
+        self.animate_draw_button()
+        
         # Récupérer l'écran de réponse
         response_screen = self.manager.get_screen("response_screen")
         
-        # Déclencher le chargement des données avec popup
-        response_screen.show_loading_popup()
+        # Déclencher le chargement des données avec popup après l'animation
+        Clock.schedule_once(lambda dt: response_screen.show_loading_popup(), 0.8)
         
-        # Changer d'écran après un court délai pour permettre au popup de s'afficher
-        Clock.schedule_once(lambda dt: self.switch_to_response(), 0.1)
+        # Changer d'écran après un délai pour permettre au popup de s'afficher
+        Clock.schedule_once(lambda dt: self.switch_to_response(), 0.9)
+    
+    def animate_draw_button(self):
+        """Anime le bouton de tirage de carte"""
+        # Essayer de trouver le bouton de tirage dans le fichier .kv
+        try:
+            # Animation de pulsation magique simple
+            button = self.ids.get('draw_button')  # Assumons que le bouton a cet ID
+            if button:
+                # Animation magique : pulsation d'opacité
+                magic_pulse = Animation(opacity=0.5, duration=0.2)
+                magic_pulse += Animation(opacity=1, duration=0.2)
+                magic_pulse += Animation(opacity=0.7, duration=0.2)
+                magic_pulse += Animation(opacity=1, duration=0.2)
+                
+                magic_pulse.start(button)
+                
+                print("Animation du bouton de tirage lancée")
+        except Exception as e:
+            print(f"Erreur animation bouton: {e}")
     
     def switch_to_response(self):
         """Change vers l'écran de réponse"""
@@ -110,10 +132,17 @@ class LoadingPopup(Popup):
         
         # GIF de la carte au centre
         gif_path = os.path.join(os.path.dirname(__file__), "tarot_img", "carte-unscreen.gif")
-        animated_card = Image(source=gif_path, anim_delay=0.1, size_hint=(1, 0.8))
+        animated_card = Image(source=gif_path, anim_delay=0.05, size_hint=(1, 0.8))  # Animation plus rapide
+        
+        # Ajouter une animation de pulsation d'opacité seulement
+        pulse_anim = Animation(opacity=0.7, duration=1)
+        pulse_anim += Animation(opacity=1, duration=1)
+        pulse_anim.repeat = True
+        pulse_anim.start(animated_card)
+        
         content_layout.add_widget(animated_card)
         
-        # Message d'attente en bas
+        # Message d'attente en bas avec animation
         waiting_label = Label(
             text="Concentration en cours...",
             size_hint=(1, 0.1),
@@ -121,6 +150,13 @@ class LoadingPopup(Popup):
             color=[0.6, 0.4, 0.2, 1.0],
             halign='center'
         )
+        
+        # Animation pulsante pour le texte (sans font_size pour éviter les erreurs)
+        pulse_text = Animation(opacity=0.7, duration=0.8)
+        pulse_text += Animation(opacity=1.0, duration=0.8)
+        pulse_text.repeat = True
+        pulse_text.start(waiting_label)
+        
         content_layout.add_widget(waiting_label)
         
         self.content = content_layout
@@ -149,6 +185,14 @@ class FullScreenImagePopup(BoxLayout):
         self.orientation = "vertical"
         self.image = Image(source=image_path, size_hint=(1, 1))
         self.add_widget(self.image)
+        
+        # Animation subtile de l'image (léger changement d'opacité)
+        zoom_anim = Animation(opacity=0.8, duration=2)
+        zoom_anim += Animation(opacity=1, duration=2)
+        zoom_anim.repeat = True
+        
+        # Démarrer l'animation après un petit délai
+        Clock.schedule_once(lambda dt: zoom_anim.start(self.image), 0.5)
 
 
 class CardResponseScreen(Screen):
@@ -243,6 +287,9 @@ class CardResponseScreen(Screen):
             print("Error loading card data:", e)
 
         self.loading_popup.dismiss()  # Close the loading popup
+        
+        # Ajouter des animations d'apparition pour les éléments
+        self.animate_card_appearance()
 
     def reset(self):
         """Réinitialise l'écran de réponse pour un nouveau tirage"""
@@ -261,11 +308,17 @@ class CardResponseScreen(Screen):
             del self.full_screen_popup
 
     def on_image_click(self, instance, touch):
-        """Affiche l'image en plein écran si l'utilisateur clique dessus"""
+        """Affiche l'image en plein écran si l'utilisateur clique dessus avec animation"""
         if self.card_image is not None and self.card_image.collide_point(*touch.pos):
             if hasattr(self, "full_screen_popup"):
-                self.remove_widget(self.full_screen_popup)
-                del self.full_screen_popup
+                # Sauvegarder une référence au popup avant de le supprimer
+                popup_to_close = self.full_screen_popup
+                del self.full_screen_popup  # Supprimer l'attribut immédiatement
+                
+                # Animation de fermeture simple
+                close_anim = Animation(opacity=0, duration=0.3)
+                close_anim.bind(on_complete=lambda *args: self.remove_widget(popup_to_close))
+                close_anim.start(popup_to_close)
             else:
                 if self.state == "a l'envers":
                     image_path = f"tarot_img/MajorArcanaCards/{self.drawn_card} {self.state}.jpg"
@@ -274,16 +327,23 @@ class CardResponseScreen(Screen):
                         f"tarot_img/MajorArcanaCards/{self.drawn_card}.jpg"
                     )
 
-                # Create a full-screen popup with the image
+                # Créer le popup plein écran avec animation d'ouverture
                 self.full_screen_popup = FullScreenImagePopup(image_path)
+                
+                # Commencer invisible
+                self.full_screen_popup.opacity = 0
+                
                 self.add_widget(self.full_screen_popup)
+                
+                # Animation d'ouverture simple
+                open_anim = Animation(opacity=1, duration=0.5)
+                open_anim.start(self.full_screen_popup)
 
     def animate_button_press(self, button):
         """Anime le bouton lors du clic pour un effet visuel"""
-        # Animation de pressage (réduction de taille)
-        anim_press = Animation(size_hint=(0.55, 0.13), duration=0.1)  # Légèrement plus petit
-        # Animation de retour à la taille normale
-        anim_release = Animation(size_hint=(0.6, 0.15), duration=0.1)  # Taille normale du bouton
+        # Animation simple d'opacité
+        anim_press = Animation(opacity=0.5, duration=0.1)
+        anim_release = Animation(opacity=1, duration=0.1)
         
         # Chaîner les animations
         anim_press.bind(on_complete=lambda *args: anim_release.start(button))
@@ -292,31 +352,127 @@ class CardResponseScreen(Screen):
     def on_button_hover(self, button, hover):
         """Effet de survol pour le bouton"""
         if hover:
-            # Légère augmentation de taille au survol
-            Animation(size_hint=(0.85, 1.05), duration=0.2).start(button)
+            # Légère modification d'opacité au survol
+            Animation(opacity=0.8, duration=0.2).start(button)
         else:
-            # Retour à la taille normale
-            Animation(size_hint=(0.8, 1), duration=0.2).start(button)
+            # Retour à l'opacité normale
+            Animation(opacity=1, duration=0.2).start(button)
 
     def on_button_press(self):
-        """Méthode appelée lors du clic sur le bouton nouveau tirage"""
+        """Méthode appelée lors du clic sur le bouton nouveau tirage avec animations fun"""
         try:
             button = self.ids.back_button
             if button:
-                print("Bouton trouvé, animation en cours...")
-                # Animation simple de pressage - seulement sur la largeur
-                original_size_hint_x = button.size_hint_x
-                anim = Animation(size_hint_x=0.6, duration=0.1)
-                anim += Animation(size_hint_x=original_size_hint_x, duration=0.1)
-                anim.start(button)
-                # Délai pour voir l'animation
-                Clock.schedule_once(lambda dt: self.change_screen(), 0.25)
+                print("Bouton trouvé, animation fun en cours...")
+                
+                # Animation simple et efficace d'opacité
+                pulse_anim = Animation(opacity=0.3, duration=0.1)
+                pulse_anim += Animation(opacity=1.0, duration=0.1)
+                pulse_anim += Animation(opacity=0.5, duration=0.1)
+                pulse_anim += Animation(opacity=1.0, duration=0.1)
+                pulse_anim += Animation(opacity=0.3, duration=0.1)
+                pulse_anim += Animation(opacity=1.0, duration=0.1)
+                
+                # Démarrer l'animation
+                pulse_anim.start(button)
+                
+                # Animation bonus: faire trembler le bouton
+                self.create_shake_animation(button)
+                
+                # Délai pour voir toutes les animations
+                Clock.schedule_once(lambda dt: self.change_screen(), 0.8)
             else:
                 print("Bouton non trouvé, changement direct")
                 self.change_screen()
         except Exception as e:
             print(f"Erreur animation: {e}")
             self.change_screen()
+    
+    def create_shake_animation(self, widget):
+        """Crée une animation de tremblement pour le widget (opacité uniquement)"""
+        # Animation de pulsation rapide pour simuler le tremblement
+        shake1 = Animation(opacity=0.8, duration=0.05)
+        shake2 = Animation(opacity=1.0, duration=0.05)
+        shake3 = Animation(opacity=0.7, duration=0.05)
+        shake4 = Animation(opacity=1.0, duration=0.05)
+        shake5 = Animation(opacity=0.9, duration=0.05)
+        shake6 = Animation(opacity=1.0, duration=0.05)
+        
+        # Chaîner les animations
+        shake_sequence = shake1 + shake2 + shake3 + shake4 + shake5 + shake6
+        
+        # Démarrer après un petit délai
+        Clock.schedule_once(lambda dt: shake_sequence.start(widget), 0.2)
+    
+    def animate_card_appearance(self):
+        """Anime l'apparition des éléments de la carte"""
+        # Animation de l'image de la carte (fondu seulement)
+        if self.card_image:
+            # Commencer invisible
+            self.card_image.opacity = 0
+            
+            # Animation d'apparition simple
+            fade_in = Animation(opacity=1, duration=0.8)
+            fade_in.start(self.card_image)
+        
+        # Animation du nom de la carte (fondu)
+        if self.card_name:
+            self.card_name.opacity = 0
+            
+            fade_in_name = Animation(opacity=1, duration=0.6)
+            
+            Clock.schedule_once(lambda dt: fade_in_name.start(self.card_name), 0.2)
+        
+        # Animation de l'état de la carte (pulsation simple)
+        if self.card_state:
+            self.card_state.opacity = 0
+            
+            # Animation de pulsation simple
+            pulse = Animation(opacity=1, duration=0.5)
+            
+            Clock.schedule_once(lambda dt: pulse.start(self.card_state), 0.4)
+        
+        # Animation du texte (typewriter effect simulé)
+        if self.card_text:
+            original_text = self.card_text.text
+            self.card_text.text = ""
+            self.card_text.opacity = 1
+            
+            # Effet typewriter
+            Clock.schedule_once(lambda dt: self.typewriter_effect(original_text), 0.8)
+        
+        # Animation des mots-clés (fondu simple)
+        if self.states_label:
+            self.states_label.opacity = 0
+            
+            bounce_in = Animation(opacity=1, duration=0.4)
+            
+            Clock.schedule_once(lambda dt: bounce_in.start(self.states_label), 0.6)
+    
+    def typewriter_effect(self, full_text):
+        """Simule un effet typewriter pour le texte"""
+        if not self.card_text:
+            return
+            
+        def add_char(dt, current_index=[0]):
+            if current_index[0] < len(full_text):
+                self.card_text.text = full_text[:current_index[0] + 1]
+                current_index[0] += 1
+                Clock.schedule_once(lambda dt: add_char(dt, current_index), 0.03)
+            else:
+                # Animation finale de brillance
+                self.create_text_glow_effect()
+        
+        add_char(0)
+    
+    def create_text_glow_effect(self):
+        """Crée un effet de brillance sur le texte"""
+        if self.card_text:
+            glow = Animation(opacity=0.7, duration=0.3)
+            glow += Animation(opacity=1, duration=0.3)
+            glow += Animation(opacity=0.8, duration=0.2)
+            glow += Animation(opacity=1, duration=0.2)
+            glow.start(self.card_text)
     
     def change_screen(self):
         """Change vers l'écran principal et reset"""
