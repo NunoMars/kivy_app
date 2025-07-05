@@ -12,6 +12,9 @@ from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from kivy.animation import Animation
+from kivy.uix.button import Button
+from kivy.core.window import Window
+import math
 
 from signification import cards_signification
 
