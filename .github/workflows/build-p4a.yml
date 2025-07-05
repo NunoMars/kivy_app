@@ -77,17 +77,24 @@ jobs:
         path: "*.aab"
         
     - name: Sign AAB (if secrets configured)
-      if: ${{ secrets.ANDROID_KEYSTORE && secrets.ANDROID_KEYSTORE_PASSWORD }}
+      if: ${{ env.ANDROID_KEYSTORE != '' && env.ANDROID_KEYSTORE_PASSWORD != '' }}
+      env:
+        ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
+        ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
       run: |
-        echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 -d > signing.keystore
+        echo "$ANDROID_KEYSTORE" | base64 -d > signing.keystore
         jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
           -keystore signing.keystore \
-          -storepass "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" \
-          -keypass "${{ secrets.ANDROID_KEY_PASSWORD }}" \
-          macartedetarot-1.4.aab "${{ secrets.ANDROID_KEY_ALIAS }}"
+          -storepass "$ANDROID_KEYSTORE_PASSWORD" \
+          -keypass "$ANDROID_KEY_PASSWORD" \
+          macartedetarot-1.4.aab "$ANDROID_KEY_ALIAS"
           
     - name: Upload signed AAB
-      if: ${{ secrets.ANDROID_KEYSTORE }}
+      if: ${{ env.ANDROID_KEYSTORE != '' }}
+      env:
+        ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
       uses: actions/upload-artifact@v4
       with:
         name: android-aab-signed
