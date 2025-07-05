@@ -56,6 +56,23 @@ jobs:
         pip install --user -r requirements.txt
         echo "$HOME/.local/bin" >> $GITHUB_PATH
         
+    - name: Setup Android SDK compatibility for buildozer
+      run: |
+        # Créer les liens symboliques pour compatibilité buildozer avec Android SDK
+        sudo mkdir -p /usr/local/lib/android/sdk/tools/bin
+        sudo ln -sf /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager /usr/local/lib/android/sdk/tools/bin/sdkmanager
+        sudo ln -sf /usr/local/lib/android/sdk/cmdline-tools/latest/bin/avdmanager /usr/local/lib/android/sdk/tools/bin/avdmanager
+        
+        # Vérifier les liens
+        echo "✅ SDK compatibility links created:"
+        ls -la /usr/local/lib/android/sdk/tools/bin/
+        
+        # Vérifier que sdkmanager fonctionne
+        /usr/local/lib/android/sdk/tools/bin/sdkmanager --version || echo "⚠️ sdkmanager test failed"
+        
+        # Accepter les licences Android si nécessaire
+        yes | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --licenses || echo "✅ Licenses accepted"
+        
     - name: Setup Android keystore (if secrets available)
       env:
         ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
@@ -70,12 +87,28 @@ jobs:
         fi
         
     - name: Build APK (debug)
+      env:
+        ANDROID_HOME: /usr/local/lib/android/sdk
+        ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/25.2.9519653
+        JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
       run: |
         echo "=== Building Debug APK ==="
+        echo "ANDROID_HOME: $ANDROID_HOME"
+        echo "ANDROID_NDK_HOME: $ANDROID_NDK_HOME"
+        echo "JAVA_HOME: $JAVA_HOME"
+        
+        # Vérifier que les outils sont accessibles
+        which java && java -version
+        which javac && javac -version
+        ls -la $ANDROID_HOME/tools/bin/sdkmanager
+        
         buildozer android debug --verbose
         
     - name: Build AAB (release)
       env:
+        ANDROID_HOME: /usr/local/lib/android/sdk
+        ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/25.2.9519653
+        JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
         ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
         ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
