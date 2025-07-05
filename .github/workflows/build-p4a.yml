@@ -30,12 +30,18 @@ jobs:
         sudo apt install -y build-essential git unzip zip
         sudo apt install -y libbz2-dev libsqlite3-dev libssl-dev
         sudo apt install -y libffi-dev libncurses5-dev libgdbm-dev
+        sudo apt install -y autotools-dev automake autoconf libtool
+        sudo apt install -y pkg-config zlib1g-dev libltdl-dev
+        sudo apt install -y python3-setuptools python3-wheel
         
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
         pip install python-for-android
         pip install -r requirements.txt
+        
+        # Installer Cython séparément pour éviter les problèmes
+        pip install cython
         
     - name: Set up Android SDK
       run: |
@@ -61,17 +67,21 @@ jobs:
         echo "ANDROID_HOME: $ANDROID_HOME"
         ls -la $ANDROID_HOME/platforms
         
-        # Nettoyer les builds précédents
-        p4a clean_dists
+        # Nettoyer complètement l'environnement p4a
+        p4a clean_all
         
-        # Compiler l'AAB avec API target explicite
+        # Forcer l'utilisation des outils système pour autotools
+        export ACLOCAL_PATH="/usr/share/aclocal"
+        export M4PATH="/usr/share/aclocal"
+        
+        # Compiler l'AAB avec des requirements simplifiés
         p4a aab \
           --private . \
           --package=org.tarot.macartedetarot \
           --name="Ma Carte De Tarot" \
           --version=1.4 \
           --bootstrap=sdl2 \
-          --requirements=python3,kivy,pillow,pyjnius \
+          --requirements=python3,kivy,pillow \
           --arch=arm64-v8a \
           --api=34 \
           --release \
