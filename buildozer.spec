@@ -451,12 +451,8 @@ warn_on_root = 1
 #
 #buildozer --profile demo android debug
 
-
-android.release_artifact = aab
-
 # Configuration signature de production
 android.release_keystore = googleplay.keystore
 android.release_keystore_passwd = macartedetarot2024
 android.release_key = upload
 android.release_key_passwd = macartedetarot2024
-android.release_artifact = aab

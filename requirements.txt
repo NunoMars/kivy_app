@@ -5,6 +5,7 @@ docutils==0.20.1
 idna==3.4
 Kivy
 Kivy-Garden
+kivmob
 Pillow
 mypy-extensions==1.0.0
 packaging==23.1
