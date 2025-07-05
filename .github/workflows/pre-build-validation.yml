@@ -1,0 +1,111 @@
+name: Pre-Build Validation
+
+on:
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - '*.py'
+      - '*.kv'
+      - 'requirements.txt'
+      - 'buildozer.spec'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install validation tools
+      run: |
+        pip install --upgrade pip
+        pip install flake8 pylint
+        
+    - name: Validate Python syntax
+      run: |
+        echo "=== Validation syntaxe Python ==="
+        python -m py_compile main.py
+        python -m py_compile signification.py
+        
+    - name: Check code style (non-blocking)
+      continue-on-error: true
+      run: |
+        echo "=== Analyse style de code ==="
+        flake8 main.py signification.py --max-line-length=120 --ignore=E501,W503
+        
+    - name: Validate buildozer.spec
+      run: |
+        echo "=== Validation buildozer.spec ==="
+        if [ ! -f "buildozer.spec" ]; then
+          echo "❌ buildozer.spec manquant"
+          exit 1
+        fi
+        
+        # Vérifier les champs critiques
+        grep -q "title =" buildozer.spec || (echo "❌ Titre manquant"; exit 1)
+        grep -q "package.name =" buildozer.spec || (echo "❌ Package name manquant"; exit 1)
+        grep -q "package.domain =" buildozer.spec || (echo "❌ Package domain manquant"; exit 1)
+        
+        echo "✅ buildozer.spec valide"
+        
+    - name: Validate requirements.txt
+      run: |
+        echo "=== Validation requirements.txt ==="
+        if [ ! -f "requirements.txt" ]; then
+          echo "❌ requirements.txt manquant"
+          exit 1
+        fi
+        
+        # Vérifier que Kivy est présent
+        grep -q "kivy" requirements.txt || (echo "❌ Kivy manquant dans requirements"; exit 1)
+        
+        echo "✅ requirements.txt valide"
+        
+    - name: Check project structure
+      run: |
+        echo "=== Validation structure projet ==="
+        
+        # Fichiers obligatoires
+        [ -f "main.py" ] || (echo "❌ main.py manquant"; exit 1)
+        [ -f "macartedetarotapp.kv" ] || (echo "❌ fichier .kv manquant"; exit 1)
+        [ -d "tarot_img" ] || (echo "❌ dossier tarot_img manquant"; exit 1)
+        
+        # Vérifier quelques images critiques
+        [ -f "tarot_img/Back.jpg" ] || echo "⚠️ Image Back.jpg manquante"
+        [ -f "tarot_img/bg.jpg" ] || echo "⚠️ Image bg.jpg manquante"
+        
+        echo "✅ Structure projet validée"
+        
+    - name: Test import modules
+      run: |
+        echo "=== Test import des modules ==="
+        python -c "
+        import sys
+        sys.path.append('.')
+        
+        try:
+            import signification
+            print('✅ Module signification importé')
+        except ImportError as e:
+            print('❌ Erreur import signification: ' + str(e))
+            sys.exit(1)
+        "
+        
+    - name: Validation summary
+      run: |
+        echo "## ✅ Validation Pre-Build Complète" >> $GITHUB_STEP_SUMMARY
+        echo "### Fichiers validés :" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Syntaxe Python" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ buildozer.spec" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ requirements.txt" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Structure projet" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Import des modules" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "🚀 **Prêt pour la build Android !**" >> $GITHUB_STEP_SUMMARY

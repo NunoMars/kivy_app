@@ -4,6 +4,13 @@ on:
   workflow_dispatch:  # Déclenchement manuel uniquement
   push:
     branches: [ main ]
+    paths:
+      - '*.py'
+      - '*.kv'
+      - 'requirements.txt'
+      - 'buildozer.spec'
+      - 'tarot_img/**'
+      - '.github/workflows/**'
 
 jobs:
   test-basic:
