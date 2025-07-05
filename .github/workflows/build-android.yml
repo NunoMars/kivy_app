@@ -126,7 +126,11 @@ jobs:
           echo "⚠️ Building unsigned AAB (no keystore secrets)"
         fi
         
-        buildozer android aab --verbose
+        # Vérifier que android.release_artifact = aab dans buildozer.spec
+        grep "android.release_artifact = aab" buildozer.spec || echo "⚠️ android.release_artifact not set to aab"
+        
+        # Build release (AAB car android.release_artifact = aab)
+        buildozer android release --verbose
         
     - name: Verify build outputs
       run: |
@@ -136,20 +140,35 @@ jobs:
         echo "AAB files:"
         find . -name "*.aab" -type f 2>/dev/null || echo "No AAB found"
         
-        # Check if AAB is signed
-        if [ -f "bin/macartedetarot-1.4-arm64-v8a-release.aab" ]; then
-          echo "✅ AAB build found: bin/macartedetarot-1.4-arm64-v8a-release.aab"
-          ls -lh bin/macartedetarot-1.4-arm64-v8a-release.aab
+        echo "=== Contents of bin/ directory ==="
+        ls -la bin/ 2>/dev/null || echo "bin/ directory not found"
+        
+        # Check for debug APK (various possible names)
+        if ls bin/*debug*.apk 2>/dev/null; then
+          echo "✅ Debug APK found"
+          ls -lh bin/*debug*.apk
+        elif ls bin/*.apk 2>/dev/null; then
+          echo "✅ APK found"
+          ls -lh bin/*.apk
+        fi
+        
+        # Check for release AAB (various possible names)
+        if ls bin/*release*.aab 2>/dev/null; then
+          echo "✅ Release AAB found"
+          ls -lh bin/*release*.aab
           if [ -f "signing.keystore" ]; then
             echo "✅ AAB is signed and ready for Play Store"
           else
             echo "⚠️ AAB is unsigned"
           fi
-        fi
-        
-        if [ -f "bin/macartedetarot-1.4-arm64-v8a-debug.apk" ]; then
-          echo "✅ Debug APK found: bin/macartedetarot-1.4-arm64-v8a-debug.apk"
-          ls -lh bin/macartedetarot-1.4-arm64-v8a-debug.apk
+        elif ls bin/*.aab 2>/dev/null; then
+          echo "✅ AAB found"
+          ls -lh bin/*.aab
+          if [ -f "signing.keystore" ]; then
+            echo "✅ AAB is signed and ready for Play Store"
+          else
+            echo "⚠️ AAB is unsigned"
+          fi
         fi
         
     - name: Upload APK artifact
