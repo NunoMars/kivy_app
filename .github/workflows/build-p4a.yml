@@ -1,0 +1,94 @@
+name: Build Android AAB with P4A
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Set up Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '21'
+        
+    - name: Install system dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y build-essential git unzip zip
+        sudo apt install -y libbz2-dev libsqlite3-dev libssl-dev
+        sudo apt install -y libffi-dev libncurses5-dev libgdbm-dev
+        
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install python-for-android
+        pip install -r requirements.txt
+        
+    - name: Set up Android SDK
+      run: |
+        mkdir -p $HOME/android-sdk
+        cd $HOME/android-sdk
+        wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+        unzip -q commandlinetools-linux-11076708_latest.zip
+        mkdir -p cmdline-tools/latest
+        mv cmdline-tools/* cmdline-tools/latest/ || true
+        export ANDROID_HOME=$HOME/android-sdk
+        export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0"
+        
+    - name: Build AAB
+      env:
+        ANDROID_HOME: ${{ runner.temp }}/android-sdk
+      run: |
+        export ANDROID_HOME=$HOME/android-sdk
+        export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+        p4a aab --private . \
+          --package=org.tarot.macartedetarot \
+          --name="Ma Carte De Tarot" \
+          --version=1.4 \
+          --bootstrap=sdl2 \
+          --requirements=python3,kivy,pillow \
+          --arch=arm64-v8a,armeabi-v7a \
+          --release
+          
+    - name: Find and upload AAB
+      run: |
+        find ~/.local/share/python-for-android -name "*.aab" -exec cp {} ./macartedetarot-1.4.aab \;
+        ls -la *.aab
+        
+    - name: Upload AAB artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: android-aab-unsigned
+        path: "*.aab"
+        
+    - name: Sign AAB (if secrets configured)
+      if: ${{ secrets.ANDROID_KEYSTORE && secrets.ANDROID_KEYSTORE_PASSWORD }}
+      run: |
+        echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 -d > signing.keystore
+        jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
+          -keystore signing.keystore \
+          -storepass "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" \
+          -keypass "${{ secrets.ANDROID_KEY_PASSWORD }}" \
+          macartedetarot-1.4.aab "${{ secrets.ANDROID_KEY_ALIAS }}"
+          
+    - name: Upload signed AAB
+      if: ${{ secrets.ANDROID_KEYSTORE }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: android-aab-signed
+        path: "*.aab"
