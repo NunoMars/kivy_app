@@ -48,7 +48,7 @@ jobs:
         mv cmdline-tools/* cmdline-tools/latest/ || true
         export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
         yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
-        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0" "platform-tools"
+        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "platforms;android-33" "build-tools;34.0.0" "platform-tools"
         
         # Ajouter les variables d'environnement pour les étapes suivantes
         echo "ANDROID_HOME=$ANDROID_HOME" >> $GITHUB_ENV
@@ -59,12 +59,12 @@ jobs:
       run: |
         # Vérifier les variables d'environnement
         echo "ANDROID_HOME: $ANDROID_HOME"
-        ls -la $ANDROID_HOME
+        ls -la $ANDROID_HOME/platforms
         
         # Nettoyer les builds précédents
         p4a clean_dists
         
-        # Compiler l'AAB avec une architecture spécifique
+        # Compiler l'AAB avec API target explicite
         p4a aab \
           --private . \
           --package=org.tarot.macartedetarot \
@@ -73,6 +73,7 @@ jobs:
           --bootstrap=sdl2 \
           --requirements=python3,kivy,pillow,pyjnius \
           --arch=arm64-v8a \
+          --api=34 \
           --release \
           --permission INTERNET \
           --permission ACCESS_NETWORK_STATE \
