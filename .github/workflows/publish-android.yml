@@ -155,6 +155,11 @@ jobs:
         unset ANDROID_NDK_HOME
         unset ANDROID_NDK_LATEST_HOME
         
+        # Nettoyer toute configuration de signature existante
+        sed -i '/android\.release_keystore/d' buildozer.spec
+        sed -i '/android\.release_key/d' buildozer.spec
+        sed -i '/# Configuration signature/d' buildozer.spec
+        
         # Vérifier que buildozer.spec est bien configuré
         if ! grep -q "android.release_artifact = aab" buildozer.spec; then
           echo "android.release_artifact = aab" >> buildozer.spec
@@ -186,7 +191,7 @@ jobs:
           AAB_FILE=$(find bin/ -name "*.aab" | head -1)
           if [ -n "$AAB_FILE" ]; then
             echo "📱 AAB trouvé: $AAB_FILE"
-            cp "$AAB_FILE" "bin/macartedetarot-release.aab"
+            cp "$AAB_FILE" "bin/macartedetarot-unsigned.aab"
           else
             echo "❌ Aucun fichier AAB trouvé"
             exit 1
@@ -195,7 +200,7 @@ jobs:
           APK_FILE=$(find bin/ -name "*.apk" | head -1)
           if [ -n "$APK_FILE" ]; then
             echo "📱 APK trouvé: $APK_FILE"
-            cp "$APK_FILE" "bin/macartedetarot-release.apk"
+            cp "$APK_FILE" "bin/macartedetarot-unsigned.apk"
           fi
         else
           echo "❌ Build échoué"
@@ -227,27 +232,40 @@ jobs:
         echo "🔏 Signature de l'AAB avec la clé de production..."
         
         # Trouver l'AAB généré
-        AAB_PATH=$(find bin/ -name "*.aab" | head -n 1)
+        AAB_PATH=$(find bin/ -name "*-unsigned.aab" | head -n 1)
         if [ -z "$AAB_PATH" ]; then
-          echo "❌ Aucun AAB trouvé!"
-          exit 1
+          echo "❌ Aucun AAB non signé trouvé!"
+          # Essayer de trouver n'importe quel AAB
+          AAB_PATH=$(find bin/ -name "*.aab" | head -n 1)
+          if [ -z "$AAB_PATH" ]; then
+            echo "❌ Aucun AAB trouvé du tout!"
+            exit 1
+          fi
         fi
         
         echo "📱 AAB trouvé: $AAB_PATH"
         
         # Signer avec apksigner (requis pour Google Play)
+        echo "🔐 Signature en cours..."
         $ANDROID_HOME/build-tools/${{ env.BUILD_TOOLS_VERSION }}/apksigner sign \
           --ks production.keystore \
           --ks-pass pass:"${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" \
           --ks-key-alias "${{ secrets.ANDROID_KEY_ALIAS }}" \
           --key-pass pass:"${{ secrets.ANDROID_KEY_PASSWORD }}" \
-          --out "bin/macartedetarot-production.aab" \
+          --out "bin/macartedetarot-production-signed.aab" \
           "$AAB_PATH"
         
         # Vérifier la signature
         echo "🔍 Vérification de la signature..."
-        if $ANDROID_HOME/build-tools/${{ env.BUILD_TOOLS_VERSION }}/apksigner verify "bin/macartedetarot-production.aab"; then
+        if $ANDROID_HOME/build-tools/${{ env.BUILD_TOOLS_VERSION }}/apksigner verify "bin/macartedetarot-production-signed.aab"; then
           echo "✅ AAB correctement signé avec clé de production"
+          
+          # Copier le fichier signé avec un nom plus simple
+          cp "bin/macartedetarot-production-signed.aab" "bin/macartedetarot-production.aab"
+          
+          # Afficher les informations de signature
+          echo "🔍 Informations de signature:"
+          $ANDROID_HOME/build-tools/${{ env.BUILD_TOOLS_VERSION }}/apksigner verify --print-certs "bin/macartedetarot-production.aab"
         else
           echo "❌ Erreur de signature"
           exit 1
