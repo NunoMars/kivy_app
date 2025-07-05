@@ -179,49 +179,106 @@ jobs:
         
         # Build release avec timeout et retry
         echo "=== Starting AAB build ==="
-        timeout 1800 buildozer android release --verbose || {
-          echo "❌ First build attempt failed, retrying with clean..."
+        echo "Current buildozer.spec config:"
+        grep "android.release_artifact" buildozer.spec || echo "❌ android.release_artifact not found"
+        grep "android.archs" buildozer.spec || echo "❌ android.archs not found"
+        
+        # Premier essai avec capture d'erreur détaillée
+        echo "=== First AAB build attempt ==="
+        if timeout 1800 buildozer android release --verbose 2>&1 | tee aab_build.log; then
+          echo "✅ AAB build completed successfully"
+        else
+          echo "❌ First AAB build attempt failed"
+          echo "=== Build log tail ==="
+          tail -50 aab_build.log || echo "No build log found"
+          
+          echo "=== Retrying with clean build ==="
           buildozer android clean
-          timeout 1800 buildozer android release --verbose
-        }
+          rm -rf .buildozer/android/platform/build-*
+          
+          if timeout 1800 buildozer android release --verbose 2>&1 | tee aab_build_retry.log; then
+            echo "✅ AAB build completed on retry"
+          else
+            echo "❌ AAB build failed on retry too"
+            echo "=== Retry build log tail ==="
+            tail -50 aab_build_retry.log || echo "No retry build log found"
+            
+            echo "=== Debugging gradle issues ==="
+            find .buildozer -name "*.log" -mtime -1 | head -5 | while read log; do
+              echo "=== $log ==="
+              grep -i "error\|exception\|failed" "$log" | tail -10 || echo "No errors in $log"
+            done
+          fi
+        fi
         
     - name: Verify build outputs
       run: |
-        echo "=== Build verification ==="
-        echo "APK files:"
-        find . -name "*.apk" -type f 2>/dev/null || echo "No APK found"
-        echo "AAB files:"
-        find . -name "*.aab" -type f 2>/dev/null || echo "No AAB found"
+        echo "=== Comprehensive Build Verification ==="
         
-        echo "=== Contents of bin/ directory ==="
-        ls -la bin/ 2>/dev/null || echo "bin/ directory not found"
+        # Chercher tous les fichiers APK et AAB dans tout le workspace
+        echo "=== Searching for all APK files ==="
+        find . -name "*.apk" -type f 2>/dev/null | head -20 || echo "No APK found anywhere"
         
-        # Check for debug APK (various possible names)
-        if ls bin/*debug*.apk 2>/dev/null; then
-          echo "✅ Debug APK found"
-          ls -lh bin/*debug*.apk
-        elif ls bin/*.apk 2>/dev/null; then
-          echo "✅ APK found"
-          ls -lh bin/*.apk
+        echo "=== Searching for all AAB files ==="
+        find . -name "*.aab" -type f 2>/dev/null | head -20 || echo "No AAB found anywhere"
+        
+        echo "=== Exploring build directories ==="
+        ls -la .buildozer/android/platform/ 2>/dev/null || echo ".buildozer/android/platform/ not found"
+        
+        if [ -d ".buildozer/android/platform" ]; then
+          echo "=== Build directories found ==="
+          find .buildozer/android/platform -name "build-*" -type d 2>/dev/null | head -10
+          
+          echo "=== Searching in dist directories ==="
+          find .buildozer/android/platform -name "dists" -type d 2>/dev/null | while read dist_dir; do
+            echo "Checking: $dist_dir"
+            find "$dist_dir" -name "*.apk" -o -name "*.aab" 2>/dev/null | head -5
+          done
         fi
         
-        # Check for release AAB (various possible names)
-        if ls bin/*release*.aab 2>/dev/null; then
-          echo "✅ Release AAB found"
-          ls -lh bin/*release*.aab
-          if [ -f "signing.keystore" ]; then
-            echo "✅ AAB is signed and ready for Play Store"
-          else
-            echo "⚠️ AAB is unsigned"
-          fi
-        elif ls bin/*.aab 2>/dev/null; then
-          echo "✅ AAB found"
-          ls -lh bin/*.aab
-          if [ -f "signing.keystore" ]; then
-            echo "✅ AAB is signed and ready for Play Store"
-          else
-            echo "⚠️ AAB is unsigned"
-          fi
+        echo "=== Contents of bin/ directory ==="
+        if [ -d "bin" ]; then
+          ls -la bin/
+        else
+          echo "bin/ directory not found"
+        fi
+        
+        # Check for debug APK (various possible names)
+        echo "=== APK verification ==="
+        if find . -name "*debug*.apk" -o -name "*.apk" | grep -q .; then
+          echo "✅ APK files found:"
+          find . -name "*debug*.apk" -o -name "*.apk" | head -5 | while read apk; do
+            echo "  - $apk ($(du -h "$apk" | cut -f1))"
+          done
+        else
+          echo "❌ No APK files found"
+        fi
+        
+        # Check for release AAB
+        echo "=== AAB verification ==="
+        if find . -name "*release*.aab" -o -name "*.aab" | grep -q .; then
+          echo "✅ AAB files found:"
+          find . -name "*release*.aab" -o -name "*.aab" | head -5 | while read aab; do
+            echo "  - $aab ($(du -h "$aab" | cut -f1))"
+            if [ -f "signing.keystore" ]; then
+              echo "    ✅ Signed and ready for Play Store"
+            else
+              echo "    ⚠️ Unsigned"
+            fi
+          done
+        else
+          echo "❌ No AAB files found"
+          echo "=== Investigating AAB build failure ==="
+          
+          # Chercher des indices sur pourquoi l'AAB n'a pas été créé
+          echo "Checking gradle directories:"
+          find .buildozer -name "gradle*" -type f 2>/dev/null | head -10
+          
+          echo "Checking for gradle errors in recent logs:"
+          find .buildozer -name "*.log" -type f -mtime -1 2>/dev/null | head -5 | while read logfile; do
+            echo "=== $logfile ==="
+            grep -i "error\|failed\|exception" "$logfile" 2>/dev/null | tail -10 || echo "No errors in log"
+          done
         fi
         
     - name: Upload APK artifact
@@ -230,8 +287,7 @@ jobs:
       with:
         name: android-apk-debug
         path: |
-          bin/*.apk
-          .buildozer/android/platform/build-*/dists/*/bin/*.apk
+          **/*.apk
         retention-days: 30
         
     - name: Upload AAB artifact
@@ -240,6 +296,15 @@ jobs:
       with:
         name: android-aab-build
         path: |
-          bin/*.aab
-          .buildozer/android/platform/build-*/dists/*/bin/*.aab
+          **/*.aab
         retention-days: 90
+        
+    - name: Upload build logs (if build failed)
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-logs
+        path: |
+          aab_build*.log
+          .buildozer/**/*.log
+        retention-days: 7
