@@ -43,11 +43,12 @@ jobs:
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
-        p4a clean_all || buildozer android clean
-        pip install 'cython==0.29.36'
-        pip install pyjnius==1.5.0
-        pip install python-for-android
-        pip install -r requirements.txt
+        pip install --user 'cython==0.29.36'
+        pip install --user pyjnius==1.5.0
+        pip install --user python-for-android
+        pip install --user buildozer
+        pip install --user -r requirements.txt
+        echo \"$HOME/.local/bin\" >> $GITHUB_PATH
         
     - name: Set up Android SDK
       run: |
