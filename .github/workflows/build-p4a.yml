@@ -22,7 +22,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11'
+        python-version: '3.10'
         
     - name: Set up Java
       uses: actions/setup-java@v4
@@ -43,11 +43,11 @@ jobs:
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
+        p4a clean_all || buildozer android clean
+        pip install 'cython==0.29.36'
+        pip install pyjnius==1.5.0
         pip install python-for-android
         pip install -r requirements.txt
-        
-        # Installer Cython séparément pour éviter les problèmes
-        pip install cython
         
     - name: Set up Android SDK
       run: |

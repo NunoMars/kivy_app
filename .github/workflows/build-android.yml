@@ -5,13 +5,14 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-  workflow_dispatch:  # Permet d    - name: Build APK with Buildozer
-      env:
-        ANDROID_HOME: /usr/local/lib/android/sdk
-        ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/25.2.9519653
-        JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
-        PATH: /usr/lib/jvm/temurin-17-jdk-amd64/bin:/usr/local/lib/android/sdk/cmdline-tools/latest/bin:/usr/local/lib/android/sdk/platform-tools:/usr/bin:/bin
-        PKG_CONFIG_PATH: /usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfigement manuel
+  workflow_dispatch:
+
+env:
+  ANDROID_HOME: /usr/local/lib/android/sdk
+  ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/25.2.9519653
+  JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
+  PATH: /usr/lib/jvm/temurin-17-jdk-amd64/bin:/usr/local/lib/android/sdk/cmdline-tools/latest/bin:/usr/local/lib/android/sdk/platform-tools:/usr/bin:/bin
+  PKG_CONFIG_PATH: /usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig
 
 jobs:
   build:
@@ -24,7 +25,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11'
+        python-version: '3.10'
         
     - name: Cache buildozer global directory
       uses: actions/cache@v3
@@ -75,9 +76,10 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install buildozer==1.5.0
-        pip install cython==0.29.33
+        pip install cython==0.29.36
         pip install kivy==2.2.0
-        pip install python-for-android==2023.5.21  # Version stable disponible
+        pip install python-for-android==2023.5.21
+        pip install pyjnius==1.5.0
         
     - name: Set up Android SDK
       run: |
@@ -142,7 +144,7 @@ jobs:
         mkdir -p $HOME/.buildozer/android/platform/python-for-android
         mkdir -p .buildozer/android/platform
         
-    - name: Build APK with Buildozer
+    - name: Build APK & AAB with Buildozer
       env:
         ANDROID_HOME: /usr/local/lib/android/sdk
         ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/25.2.9519653
@@ -152,97 +154,50 @@ jobs:
         AUTOCONF_VERSION: 2.71
         AUTOM4TE_PERLLIBDIR: /usr/share/autotools-dev
       run: |
-        # Debug pkg-config et OpenSSL avant build
-        echo "=== PKG_CONFIG debugging ==="
-        echo "PKG_CONFIG_PATH: $PKG_CONFIG_PATH"
-        pkg-config --exists openssl && echo "✅ OpenSSL pkg-config OK" || echo "❌ OpenSSL pkg-config FAIL"
-        pkg-config --libs openssl || echo "❌ No OpenSSL libs"
-        pkg-config --cflags openssl || echo "❌ No OpenSSL cflags"
+        # Nettoyage complet
+        rm -rf .buildozer || true
+        rm -rf $HOME/.buildozer/android/platform/python-for-android-fork || true
+        rm -rf $HOME/.buildozer/android/platform/python-for-android || true
         
-        # Debug autotools versions
-        echo "=== Autotools versions ==="
-        autoconf --version | head -1
-        automake --version | head -1 
-        libtool --version | head -1
+        # Build APK debug
+        echo "=== Build APK debug ==="
+        buildozer android debug --verbose || echo "❌ Debug build failed"
         
-        # Debug buildozer.spec
-        echo "=== Buildozer.spec Android config ==="
-        grep -E "(android\.(api|sdk|ndk|accept)|sdk_path|ndk_path)" buildozer.spec || echo "No Android config found"
+        # Build AAB release
+        echo "=== Build AAB release ==="
+        buildozer android clean
+        buildozer android aab --verbose || echo "❌ AAB build failed"
         
-        # Afficher les variables d'environnement
-        echo "=== Environment ==="
-        echo "ANDROID_HOME: $ANDROID_HOME"
-        echo "PATH: $PATH"
-        if [ -d "$ANDROID_HOME/build-tools/" ]; then
-          ls -la "$ANDROID_HOME/build-tools/" || echo "Build tools directory exists but ls failed"
-        else
-          echo "Build tools not found"
-        fi
+        # Vérifier les fichiers générés
+        echo "=== APK générés ==="
+        find . -name "*.apk" -type f 2>/dev/null || echo "Aucun APK trouvé"
+        echo "=== AAB générés ==="
+        find . -name "*.aab" -type f 2>/dev/null || echo "Aucun AAB trouvé"
         
-        # Test du sdkmanager wrapper
-        echo "=== Testing sdkmanager wrapper ==="
-        if [ -x "$ANDROID_HOME/tools/bin/sdkmanager" ]; then
-          echo "Wrapper script exists and is executable"
-          "$ANDROID_HOME/tools/bin/sdkmanager" --version || echo "Wrapper test failed"
-        else
-          echo "Wrapper script not found or not executable"
-        fi
-        
-        # Build debug APK avec requirements optimisés pour Android
-        echo "=== Starting buildozer build ==="
-        
-        # Forcer Java 17 explicitement avant build
-        echo "=== Configuring Java 17 for Gradle ==="
-        export JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64
-        echo "JAVA_HOME forcé à: $JAVA_HOME"
-        echo "Java version active:"
-        java -version
-        
-        # Vérifier les requirements après update_buildozer.py
-        echo "Requirements configurés:"
-        grep "requirements =" buildozer.spec
-        
-        # Vérifier qu'aucun cache ne contient Pillow
-        echo "=== Cleaning any potential Pillow cache ==="
-        if [ -d ".buildozer" ]; then
-          echo "Removing existing .buildozer cache..."
-          rm -rf .buildozer
-        fi
-        
-        # Nettoyer le cache global buildozer aussi
-        if [ -d "$HOME/.buildozer" ]; then
-          echo "Cleaning global buildozer cache..."
-          rm -rf "$HOME/.buildozer/android/platform/python-for-android-fork"
-          rm -rf "$HOME/.buildozer/android/platform/python-for-android"
-        fi
-        
-        # Build avec fresh start
-        echo "=== Building APK with fresh cache ==="
-        buildozer android debug --verbose || {
-          echo "❌ Debug build failed, trying release build..."
-          buildozer android release --verbose || {
-            echo "❌ Both debug and release builds failed"
-            echo "Checking if any APK was generated anyway..."
-            find . -name "*.apk" -type f 2>/dev/null || echo "No APK found anywhere"
-          }
-        }
-        
-    - name: Upload APK (même partiel)
+    - name: Upload APK & AAB (même partiel)
       uses: actions/upload-artifact@v4
-      if: always()  # Upload même si le build échoue
+      if: always()
       with:
         name: android-build-artifacts
         path: |
           bin/*.apk
           .buildozer/android/platform/build-*/dists/*/bin/*.apk
           .buildozer/android/platform/build-*/dists/*/build/outputs/apk/**/*.apk
+          bin/*.aab
+          .buildozer/android/platform/build-*/dists/*/bin/*.aab
+          .buildozer/android/platform/build-*/dists/*/build/outputs/bundle/**/*.aab
+          bin/*-signed.aab
+          .buildozer/android/platform/build-*/dists/*/bin/*-signed.aab
+          .buildozer/android/platform/build-*/dists/*/build/outputs/bundle/**/*-signed.aab
         retention-days: 30
         
-    - name: List all possible APK locations
+    - name: List all possible APK & AAB locations
       if: always()
       run: |
         echo "=== Recherche de tous les APKs générés ==="
         find . -name "*.apk" -type f 2>/dev/null || echo "Aucun APK trouvé"
+        echo "=== Recherche de tous les AAB générés ==="
+        find . -name "*.aab" -type f 2>/dev/null || echo "Aucun AAB trouvé"
         
         echo "=== Contenu du répertoire bin ==="
         if [ -d "bin/" ]; then
@@ -253,8 +208,9 @@ jobs:
         
         echo "=== Contenu buildozer dists ==="
         find .buildozer -name "*.apk" -type f 2>/dev/null || echo "Aucun APK dans .buildozer"
+        find .buildozer -name "*.aab" -type f 2>/dev/null || echo "Aucun AAB dans .buildozer"
         
         echo "=== Structure complète build ==="
         if [ -d ".buildozer/android/platform/build-arm64-v8a_armeabi-v7a/dists/" ]; then
-          find .buildozer/android/platform/build-arm64-v8a_armeabi-v7a/dists/ -name "*.apk" -o -name "build" -type d 2>/dev/null || echo "Pas de build dans dists"
+          find .buildozer/android/platform/build-arm64-v8a_armeabi-v7a/dists/ -name "*.apk" -o -name "*.aab" -o -name "build" -type d 2>/dev/null || echo "Pas de build dans dists"
         fi
