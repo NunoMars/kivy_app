@@ -3,6 +3,12 @@ __version__ = "0.01"
 import os
 import random
 
+# Configuration Kivy pour supprimer le splash screen
+from kivy.config import Config
+Config.set('graphics', 'width', '300')
+Config.set('graphics', 'height', '600')
+# Config.set('graphics', 'resizable', '0')  # Optionnel : fenêtre non redimensionnable
+
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.popup import Popup
@@ -66,7 +72,16 @@ class AutoScrollLabel(Label):
 
 
 class RootScreen(ScreenManager):
-    pass
+    def __init__(self, **kwargs):
+        super(RootScreen, self).__init__(**kwargs)
+        
+        # Ajouter tous les écrans
+        self.add_widget(SplashScreen())
+        self.add_widget(CardScreen())
+        self.add_widget(CardResponseScreen())
+        
+        # Commencer par le splash screen
+        self.current = "splash_screen"
 
 
 class CardScreen(Screen):
@@ -183,16 +198,51 @@ class FullScreenImagePopup(BoxLayout):
     def __init__(self, image_path, **kwargs):
         super(FullScreenImagePopup, self).__init__(**kwargs)
         self.orientation = "vertical"
-        self.image = Image(source=image_path, size_hint=(1, 1))
+        
+        # Background sombre semi-transparent
+        with self.canvas.before:
+            from kivy.graphics import Color, Rectangle
+            Color(0, 0, 0, 0.8)  # Fond noir semi-transparent
+            self.bg_rect = Rectangle(pos=self.pos, size=self.size)
+        
+        self.bind(pos=self.update_bg, size=self.update_bg)
+        
+        # Image plein écran avec toute la hauteur disponible
+        self.image = Image(
+            source=image_path,
+            size_hint=(1, 1),  # Prend toute la place disponible
+            allow_stretch=True,
+            keep_ratio=True  # Garde le ratio pour éviter la déformation
+        )
         self.add_widget(self.image)
         
         # Animation subtile de l'image (léger changement d'opacité)
-        zoom_anim = Animation(opacity=0.8, duration=2)
+        zoom_anim = Animation(opacity=0.9, duration=2)
         zoom_anim += Animation(opacity=1, duration=2)
         zoom_anim.repeat = True
         
         # Démarrer l'animation après un petit délai
         Clock.schedule_once(lambda dt: zoom_anim.start(self.image), 0.5)
+    
+    def update_bg(self, instance, value):
+        """Met à jour le background"""
+        self.bg_rect.pos = instance.pos
+        self.bg_rect.size = instance.size
+    
+    def on_touch_down(self, touch):
+        """Ferme l'image plein écran quand on clique dessus"""
+        if self.collide_point(*touch.pos):
+            # Animation de fermeture
+            close_anim = Animation(opacity=0, duration=0.3)
+            close_anim.bind(on_complete=self.remove_from_parent)
+            close_anim.start(self)
+            return True
+        return super().on_touch_down(touch)
+    
+    def remove_from_parent(self, *args):
+        """Supprime le widget du parent"""
+        if self.parent:
+            self.parent.remove_widget(self)
 
 
 class CardResponseScreen(Screen):
@@ -203,21 +253,42 @@ class CardResponseScreen(Screen):
         self.path = "tarot_img/MajorArcanaCards"
         self.cards = list(cards_signification.keys())
         self.states = ["a l'endroit", "a l'envers"]
-        self.card_name = None
-        self.card_state = None
-        self.states_label = None
-        self.card_text = None
-        self.card_image = None
+        # Ces attributs seront liés dans on_kv_post
+        self._card_name = None
+        self._card_state = None
+        self._states_label = None
+        self._card_text = None
+        self._card_image = None
         # Compteur pour les pubs interstitielles (maximise les revenus)
         self.tirage_count = 0
 
     def on_kv_post(self, base_widget):
         # Link Python attributes to widgets defined in the .kv file by their ids
-        self.card_name = self.ids.get("card_name")
-        self.card_state = self.ids.get("card_state")
-        self.states_label = self.ids.get("states_label")
-        self.card_text = self.ids.get("card_text")
-        self.card_image = self.ids.get("card_image")
+        self._card_name = self.ids.get("card_name")
+        self._card_state = self.ids.get("card_state")
+        self._states_label = self.ids.get("states_label")
+        self._card_text = self.ids.get("card_text")
+        self._card_image = self.ids.get("card_image")
+
+    @property
+    def card_name(self):
+        return self._card_name
+    
+    @property 
+    def card_state(self):
+        return self._card_state
+        
+    @property
+    def states_label(self):
+        return self._states_label
+        
+    @property
+    def card_text(self):
+        return self._card_text
+        
+    @property
+    def card_image(self):
+        return self._card_image
 
     def on_enter(self, *args):
         # Le popup est maintenant déclenché depuis CardScreen.draw_card()
@@ -305,40 +376,39 @@ class CardResponseScreen(Screen):
             self.card_text.text = ""
         if self.card_image is not None:
             self.card_image.source = "tarot_img/Back.jpg"
+        
+        # Nettoyer le popup plein écran s'il existe
         if hasattr(self, "full_screen_popup"):
-            self.remove_widget(self.full_screen_popup)
+            if self.full_screen_popup.parent:
+                self.full_screen_popup.parent.remove_widget(self.full_screen_popup)
             del self.full_screen_popup
 
     def on_image_click(self, instance, touch):
         """Affiche l'image en plein écran si l'utilisateur clique dessus avec animation"""
         if self.card_image is not None and self.card_image.collide_point(*touch.pos):
             if hasattr(self, "full_screen_popup"):
-                # Sauvegarder une référence au popup avant de le supprimer
-                popup_to_close = self.full_screen_popup
-                del self.full_screen_popup  # Supprimer l'attribut immédiatement
-                
-                # Animation de fermeture simple
-                close_anim = Animation(opacity=0, duration=0.3)
-                close_anim.bind(on_complete=lambda *args: self.remove_widget(popup_to_close))
-                close_anim.start(popup_to_close)
+                # Fermer le popup existant
+                if self.full_screen_popup.parent:
+                    self.full_screen_popup.parent.remove_widget(self.full_screen_popup)
+                del self.full_screen_popup
             else:
+                # Déterminer le chemin de l'image
                 if self.state == "a l'envers":
                     image_path = f"tarot_img/MajorArcanaCards/{self.drawn_card} {self.state}.jpg"
                 else:
-                    image_path = (
-                        f"tarot_img/MajorArcanaCards/{self.drawn_card}.jpg"
-                    )
+                    image_path = f"tarot_img/MajorArcanaCards/{self.drawn_card}.jpg"
 
-                # Créer le popup plein écran avec animation d'ouverture
+                # Créer le popup plein écran avec toute la hauteur
                 self.full_screen_popup = FullScreenImagePopup(image_path)
                 
-                # Commencer invisible
+                # Commencer invisible pour animation d'ouverture
                 self.full_screen_popup.opacity = 0
                 
+                # Ajouter au parent principal (Screen) pour couvrir tout l'écran
                 self.add_widget(self.full_screen_popup)
                 
-                # Animation d'ouverture simple
-                open_anim = Animation(opacity=1, duration=0.5)
+                # Animation d'ouverture
+                open_anim = Animation(opacity=1, duration=0.4)
                 open_anim.start(self.full_screen_popup)
 
     def animate_button_press(self, button):
@@ -647,6 +717,83 @@ class InterstitialAdPopup(Popup):
         self.dismiss()
 
 
+class SplashScreen(Screen):
+    """Écran de démarrage personnalisé avec carte GIF"""
+    
+    def __init__(self, **kwargs):
+        super(SplashScreen, self).__init__(**kwargs)
+        self.name = "splash_screen"
+        
+        # Layout principal
+        layout = BoxLayout(orientation="vertical", padding=[20, 50, 20, 50])
+        
+        # Background
+        with layout.canvas.before:
+            from kivy.graphics import Rectangle, Color
+            Color(0.1, 0.1, 0.1, 1)  # Fond sombre
+            self.bg_rect = Rectangle(pos=layout.pos, size=layout.size)
+        
+        layout.bind(pos=self.update_bg, size=self.update_bg)
+        
+        # Titre mystique
+        title = Label(
+            text="🔮 Ma Carte de Tarot 🔮",
+            font_size="28sp",
+            color=[0.9, 0.7, 0.3, 1.0],  # Doré mystique
+            halign='center',
+            valign='middle',
+            size_hint=(1, 0.2),
+            bold=True
+        )
+        layout.add_widget(title)
+        
+        # GIF carte qui tourne (plus grand pour mobile)
+        self.spinning_card = Image(
+            source="tarot_img/carte-unscreen.gif",
+            anim_delay=0.08,  # Animation fluide
+            size_hint=(1, 0.6),
+            allow_stretch=True,
+            keep_ratio=True
+        )
+        layout.add_widget(self.spinning_card)
+        
+        # Message de chargement
+        loading_label = Label(
+            text="Préparation des arcanes...",
+            font_size="18sp",
+            color=[0.7, 0.5, 0.3, 1.0],
+            halign='center',
+            size_hint=(1, 0.2)
+        )
+        layout.add_widget(loading_label)
+        
+        # Animation de pulsation pour le titre
+        pulse = Animation(opacity=0.7, duration=1.5)
+        pulse += Animation(opacity=1, duration=1.5)
+        pulse.repeat = True
+        pulse.start(title)
+        
+        # Animation de rotation pour effet mystique
+        rotation = Animation(opacity=0.8, duration=2)
+        rotation += Animation(opacity=1, duration=2)
+        rotation.repeat = True
+        rotation.start(self.spinning_card)
+        
+        self.add_widget(layout)
+        
+        # Passer à l'écran principal après 3 secondes
+        Clock.schedule_once(self.go_to_main, 3)
+    
+    def update_bg(self, instance, value):
+        """Met à jour le background"""
+        self.bg_rect.pos = instance.pos
+        self.bg_rect.size = instance.size
+    
+    def go_to_main(self, dt):
+        """Transition vers l'écran principal"""
+        self.manager.current = "hello_screen"
+
+
 class MaCarteDeTarotApp(App):
     """Application principale"""
 
@@ -657,6 +804,10 @@ class MaCarteDeTarotApp(App):
         """Build the app"""
         self.title = "Ma Carte de Tarot"
         self.icon = "tarot_img/tapis.ico"
+        
+        # Supprimer le logo Kivy au démarrage
+        from kivy.config import Config
+        Config.set('kivy', 'window_icon', 'tarot_img/tapis.ico')
 
         return RootScreen()
 

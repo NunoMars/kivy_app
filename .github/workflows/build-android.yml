@@ -58,6 +58,18 @@ jobs:
         
     - name: Setup Android SDK compatibility for buildozer
       run: |
+        # Vérifier et nettoyer l'environnement Android
+        echo "=== Android Environment Setup ==="
+        echo "ANDROID_HOME: $ANDROID_HOME"
+        echo "Available NDKs:"
+        ls -la /usr/local/lib/android/sdk/ndk/ || echo "No NDKs found"
+        
+        # Forcer l'utilisation du NDK 25c seulement
+        export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/25.2.9519653
+        export ANDROIDNDK=/usr/local/lib/android/sdk/ndk/25.2.9519653
+        echo "ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/25.2.9519653" >> $GITHUB_ENV
+        echo "ANDROIDNDK=/usr/local/lib/android/sdk/ndk/25.2.9519653" >> $GITHUB_ENV
+        
         # Créer les liens symboliques pour compatibilité buildozer avec Android SDK
         sudo mkdir -p /usr/local/lib/android/sdk/tools/bin
         sudo ln -sf /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager /usr/local/lib/android/sdk/tools/bin/sdkmanager
@@ -70,8 +82,26 @@ jobs:
         # Vérifier que sdkmanager fonctionne
         /usr/local/lib/android/sdk/tools/bin/sdkmanager --version || echo "⚠️ sdkmanager test failed"
         
-        # Accepter les licences Android si nécessaire
-        yes | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --licenses || echo "✅ Licenses accepted"
+        # Installer explicitement les composants nécessaires
+        echo "=== Installing required Android components ==="
+        yes | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --licenses
+        /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "platforms;android-33"
+        /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0" "build-tools;33.0.2"
+        
+        # S'assurer que NDK 25c est installé
+        if [ ! -d "/usr/local/lib/android/sdk/ndk/25.2.9519653" ]; then
+          echo "Installing NDK 25c..."
+          /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "ndk;25.2.9519653"
+        else
+          echo "✅ NDK 25c already available"
+        fi
+        
+        echo "✅ Android environment configured"
+        
+    - name: Run build diagnostic
+      run: |
+        chmod +x diagnostic-build.sh
+        ./diagnostic-build.sh
         
     - name: Setup Android keystore (if secrets available)
       env:
@@ -90,11 +120,14 @@ jobs:
       env:
         ANDROID_HOME: /usr/local/lib/android/sdk
         ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/25.2.9519653
+        ANDROIDNDK: /usr/local/lib/android/sdk/ndk/25.2.9519653
         JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
+        GRADLE_OPTS: "-Xmx2048m -Dorg.gradle.daemon=false"
       run: |
         echo "=== Building Debug APK ==="
         echo "ANDROID_HOME: $ANDROID_HOME"
         echo "ANDROID_NDK_HOME: $ANDROID_NDK_HOME"
+        echo "ANDROIDNDK: $ANDROIDNDK"
         echo "JAVA_HOME: $JAVA_HOME"
         
         # Vérifier que les outils sont accessibles
@@ -102,13 +135,24 @@ jobs:
         which javac && javac -version
         ls -la $ANDROID_HOME/tools/bin/sdkmanager
         
+        # Nettoyer complètement les builds précédents et le cache buildozer
+        echo "=== Aggressive cleanup ==="
+        rm -rf .buildozer/android/platform/build-arm64-v8a_armeabi-v7a || echo "Multi-arch build not found"
+        rm -rf .buildozer/android/platform/build-armeabi-v7a || echo "Old armeabi-v7a build not found"
+        rm -rf .buildozer/android/platform/build-* || echo "No build dirs found"
+        rm -rf bin/ || echo "No bin dir found"
+        buildozer android clean || echo "Clean failed, continuing..."
+        
+        # Build APK avec options debug
         buildozer android debug --verbose
         
     - name: Build AAB (release)
       env:
         ANDROID_HOME: /usr/local/lib/android/sdk
         ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/25.2.9519653
+        ANDROIDNDK: /usr/local/lib/android/sdk/ndk/25.2.9519653
         JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
+        GRADLE_OPTS: "-Xmx3072m -Dorg.gradle.daemon=false -Dorg.gradle.parallel=false"
         ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
         ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
@@ -129,8 +173,17 @@ jobs:
         # Vérifier que android.release_artifact = aab dans buildozer.spec
         grep "android.release_artifact = aab" buildozer.spec || echo "⚠️ android.release_artifact not set to aab"
         
-        # Build release (AAB car android.release_artifact = aab)
-        buildozer android release --verbose
+        # Nettoyer complètement avant le build AAB
+        echo "=== Cleaning previous builds ==="
+        rm -rf .buildozer/android/platform/build-* || true
+        
+        # Build release avec timeout et retry
+        echo "=== Starting AAB build ==="
+        timeout 1800 buildozer android release --verbose || {
+          echo "❌ First build attempt failed, retrying with clean..."
+          buildozer android clean
+          timeout 1800 buildozer android release --verbose
+        }
         
     - name: Verify build outputs
       run: |

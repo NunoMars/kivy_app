@@ -1,8 +1,7 @@
 #:import AutoScrollLabel __main__.AutoScrollLabel
 
 <RootScreen>:
-    CardScreen:  
-    CardResponseScreen:
+    # Pas besoin de déclarer les écrans ici, ils sont ajoutés en Python
 
 <CardScreen>:
     name: "hello_screen"
@@ -17,24 +16,24 @@
         # Titre en haut
         Label:
             text: "Bienvenue dans le tarot divinatoire"
-            font_size: "18sp"
+            font_size: "20sp"  # Plus grand pour mobile
             halign: 'center'
             valign: 'middle'
             bold: True
             color: 0.6, 0.4, 0.2, 1.0
             outline_color: 1, 1, 1, 1
             outline_width: 4
-            size_hint_y: 0.12
+            size_hint_y: 0.15
             text_size: self.size
 
-        # Zone carte (60% de l'écran)
+        # Zone carte (70% de l'écran pour plus de place)
         FloatLayout:
-            size_hint_y: 0.6
+            size_hint_y: 0.7
             Button:
                 id: draw_button
                 background_color: 0, 0, 0, 0
                 on_press: root.draw_card()
-                size_hint: 0.6, 0.8
+                size_hint: 0.8, 0.9  # Plus grand pour mobile
                 pos_hint: {'center_x': 0.5, 'center_y': 0.5}
                 Image:
                     id: card_image
@@ -42,18 +41,20 @@
                     size: self.parent.size
                     pos: self.parent.pos
                     fit_mode: "contain"
+                    allow_stretch: True
+                    keep_ratio: True
         
         # Instructions en bas
         Label:
-            text: "Cliquez sur la carte\npour une prédiction"
-            font_size: "16sp"
+            text: "Touchez la carte\npour une prédiction"
+            font_size: "18sp"  # Plus grand pour mobile
             multiline: True
             halign: 'center'
             valign: 'middle'
             color: 0.6, 0.4, 0.2, 1.0
             outline_color: 1, 1, 1, 1
             outline_width: 4
-            size_hint_y: 0.28
+            size_hint_y: 0.15
             text_size: self.size
 
 
@@ -74,12 +75,14 @@
                 size: self.size
                 source: "tarot_img/bg.jpg"
         
-        # Image de la carte - en haut
+        # Image de la carte - Plus grande pour mobile
         Image:
             id: card_image
             size_hint: 1, None
-            height: min(dp(250), self.parent.height * 0.35)
+            height: min(dp(300), self.parent.height * 0.4)  # Plus haute
             pos_hint: {'center_x': 0.5}
+            allow_stretch: True
+            keep_ratio: True
             
         # Nom de la carte
         Label:

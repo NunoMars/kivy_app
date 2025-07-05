@@ -12,6 +12,10 @@ package.domain = org.tarot
 # (str) Source code where the main.py live
 source.dir = .
 
+# (l# (str) The Android arch to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
+# In past, was `android.arch` as we weren't supporting builds for multiple archs at the same time.
+android.archs = arm64-v8a
+
 # (list) Source files to include (let empty to include all the files)
 source.include_exts = py,png,jpg,gif,kv,atlas
 
@@ -101,7 +105,7 @@ fullscreen = 0
 #android.features = android.hardware.usb.host
 
 # (int) Target Android API, should be as high as possible.
-android.api = 34
+android.api = 33
 
 # (int) Minimum API your APK / AAB will support.
 android.minapi = 21
@@ -281,10 +285,6 @@ android.enable_androidx = True
 # (bool) Copy library instead of making a libpymodules.so
 #android.copy_libs = 1
 
-# (list) The Android archs to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
-# In past, was `android.arch` as we weren't supporting builds for multiple archs at the same time.
-android.archs = arm64-v8a, armeabi-v7a
-
 # (int) overrides automatic versionCode computation (used in build.gradle)
 # this is not the same as app version and should only be edited if you know what you're doing
 # android.numeric_version = 1
@@ -309,6 +309,9 @@ android.release_artifact = aab
 
 # (str) The format used to package the app for debug mode (apk or aar).
 android.debug_artifact = apk
+
+# (str) Gradle options for better performance in CI
+android.gradle_dependencies = com.android.support:support-v4:28.0.0
 
 #
 # Python for android (p4a) specific
