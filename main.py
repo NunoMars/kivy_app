@@ -208,6 +208,8 @@ class CardResponseScreen(Screen):
         self.states_label = None
         self.card_text = None
         self.card_image = None
+        # Compteur pour les pubs interstitielles (maximise les revenus)
+        self.tirage_count = 0
 
     def on_kv_post(self, base_widget):
         # Link Python attributes to widgets defined in the .kv file by their ids
@@ -475,9 +477,174 @@ class CardResponseScreen(Screen):
             glow.start(self.card_text)
     
     def change_screen(self):
-        """Change vers l'écran principal et reset"""
+        """Change vers l'écran principal avec logique d'interstitielle pour maximiser les revenus"""
+        self.tirage_count += 1
+        
+        # Vérifier si l'utilisateur est premium (pour l'instant simulé)
+        is_premium = False  # À remplacer par la vraie logique premium
+        
+        # Afficher interstitielle tous les 3 tirages pour utilisateurs gratuits
+        if not is_premium and self.tirage_count % 3 == 0:
+            print(f"Affichage interstitielle après {self.tirage_count} tirages - MAXIMISATION REVENUS!")
+            self.show_interstitial_ad()
+        else:
+            print(f"Tirage #{self.tirage_count} - Retour direct à l'accueil")
+            self.return_to_home()
+    
+    def show_interstitial_ad(self):
+        """Affiche une pub interstitielle puis retourne à l'accueil"""
+        self.interstitial_popup = InterstitialAdPopup()
+        
+        # Callback pour retourner à l'accueil après fermeture
+        def on_ad_close(*args):
+            Clock.schedule_once(lambda dt: self.return_to_home(), 0.5)
+        
+        self.interstitial_popup.bind(on_dismiss=on_ad_close)
+        self.interstitial_popup.open()
+    
+    def return_to_home(self):
+        """Retourne à l'écran d'accueil après reset"""
         self.manager.current = "hello_screen"
         self.reset()
+
+
+class InterstitialAdPopup(Popup):
+    """Popup publicitaire interstitielle pour maximiser les revenus"""
+    
+    def __init__(self, **kwargs):
+        super(InterstitialAdPopup, self).__init__(**kwargs)
+        self.title = "MERCI POUR VOTRE CONSULTATION !"
+        self.title_color = [0.6, 0.4, 0.2, 1.0]
+        self.title_size = "20sp"
+        self.background = "tarot_img/bg.jpg"
+        self.size_hint = (0.9, 0.8)
+        self.auto_dismiss = False  # Force l'utilisateur à attendre
+        
+        content_layout = BoxLayout(orientation="vertical", spacing=15, padding=[20, 20, 20, 20])
+        
+        # Message de remerciement
+        thanks_label = Label(
+            text="✨ J'espère que votre prédiction vous a plu ! ✨",
+            font_size="16sp",
+            color=[0.6, 0.4, 0.2, 1.0],
+            halign='center',
+            size_hint=(1, 0.2),
+            text_size=(None, None)
+        )
+        content_layout.add_widget(thanks_label)
+        
+        # Zone pub principale (ici vous mettrez AdMob)
+        ad_main = self.create_main_ad()
+        content_layout.add_widget(ad_main)
+        
+        # Message d'encouragement
+        encourage_label = Label(
+            text="🔮 Continuez à explorer les mystères du tarot ! 🔮",
+            font_size="14sp",
+            color=[0.4, 0.3, 0.6, 1.0],
+            halign='center',
+            size_hint=(1, 0.15),
+            text_size=(None, None)
+        )
+        content_layout.add_widget(encourage_label)
+        
+        # Bouton de fermeture stylé IDENTIQUE à celui de l'écran de réponse
+        self.close_button = Button(
+            text="✨ Nouveau tirage (3s) ✨",
+            size_hint=(0.7, 0.18),
+            pos_hint={'center_x': 0.5},
+            disabled=True,
+            background_normal='',  # Nécessaire pour avoir un background personnalisé
+            background_color=[0, 0, 0, 0],  # Transparent pour utiliser canvas.before
+            color=[1, 1, 1, 0.5],
+            font_size="18sp",  # Même taille que dans le .kv
+            bold=True
+        )
+        
+        # Ajouter le style visuel identique avec canvas.before
+        with self.close_button.canvas.before:
+            from kivy.graphics import Color, RoundedRectangle
+            self.button_color = Color(0.6, 0.4, 0.2, 0.5)  # Garder la référence pour changer la couleur
+            self.button_bg = RoundedRectangle(
+                pos=self.close_button.pos,
+                size=self.close_button.size,
+                radius=[25, 25, 25, 25]
+            )
+        
+        # Lier la mise à jour du background à la position/taille du bouton
+        def update_button_bg(instance, *args):
+            self.button_bg.pos = instance.pos
+            self.button_bg.size = instance.size
+        self.close_button.bind(pos=update_button_bg, size=update_button_bg)
+        
+        self.close_button.bind(on_press=self.close_ad)
+        content_layout.add_widget(self.close_button)
+        
+        self.content = content_layout
+        
+        # Timer pour activer le bouton après 3 secondes
+        self.countdown = 3
+        Clock.schedule_interval(self.update_countdown, 1)
+    
+    def create_main_ad(self):
+        """Crée la zone publicitaire principale (à remplacer par AdMob)"""
+        ad_layout = BoxLayout(orientation="vertical", spacing=10, size_hint=(1, 0.5))
+        
+        # Simulation de pub premium (apps de rencontre payent bien)
+        ad1 = Label(
+            text="💕 Trouvez l'Amour avec Astrologie+ 💕\n"
+                 "Compatibilité amoureuse basée sur votre thème astral",
+            font_size="14sp",
+            color=[0.8, 0.2, 0.4, 1.0],
+            halign='center',
+            size_hint=(1, 0.5),
+            text_size=(None, None)
+        )
+        
+        # Simulation de pub spiritualité (niche rentable)
+        ad2 = Label(
+            text="🔮 Formation Tarot Professionnel 🔮\n"
+                 "Devenez cartomancien certifié - Inscription gratuite",
+            font_size="14sp",
+            color=[0.4, 0.3, 0.8, 1.0],
+            halign='center',
+            size_hint=(1, 0.5),
+            text_size=(None, None)
+        )
+        
+        ad_layout.add_widget(ad1)
+        ad_layout.add_widget(ad2)
+        
+        # Animation de pulsation pour attirer l'attention
+        pulse = Animation(opacity=0.7, duration=1.5)
+        pulse += Animation(opacity=1, duration=1.5)
+        pulse.repeat = True
+        pulse.start(ad_layout)
+        
+        return ad_layout
+    
+    def update_countdown(self, dt):
+        """Met à jour le compte à rebours"""
+        self.countdown -= 1
+        if self.countdown > 0:
+            self.close_button.text = f"✨ Nouveau tirage ({self.countdown}s) ✨"
+        else:
+            self.close_button.text = "✨ Nouveau tirage ✨"
+            self.close_button.disabled = False
+            # Changer la couleur du background canvas au lieu de background_color
+            self.button_color.rgba = [0.6, 0.4, 0.2, 1.0]  # Opaque quand actif
+            self.close_button.color = [1, 1, 1, 1]
+            Clock.unschedule(self.update_countdown)
+            
+            # Animation du bouton disponible
+            glow = Animation(opacity=0.8, duration=0.5)
+            glow += Animation(opacity=1, duration=0.5)
+            glow.repeat = True
+            glow.start(self.close_button)
+    
+    def close_ad(self, instance):
+        """Ferme la pub et continue le flow"""
+        self.dismiss()
 
 
 class MaCarteDeTarotApp(App):
