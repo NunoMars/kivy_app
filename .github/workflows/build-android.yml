@@ -1,216 +1,140 @@
-name: Build Android APK
+name: Build Android APK & AAB
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
+    paths:
+      - '*.py'
+      - '*.kv'
+      - 'requirements.txt'
+      - 'buildozer.spec'
+      - 'tarot_img/**'
   pull_request:
-    branches: [ main ]
+    branches: [ main, master ]
+    paths:
+      - '*.py'
+      - '*.kv'
+      - 'requirements.txt'
+      - 'buildozer.spec'
+      - 'tarot_img/**'
   workflow_dispatch:
-
-env:
-  ANDROID_HOME: /usr/local/lib/android/sdk
-  ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/25.2.9519653
-  JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
-  PATH: /usr/lib/jvm/temurin-17-jdk-amd64/bin:/usr/local/lib/android/sdk/cmdline-tools/latest/bin:/usr/local/lib/android/sdk/platform-tools:/usr/bin:/bin
-  PKG_CONFIG_PATH: /usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig
 
 jobs:
   build:
-    runs-on: ubuntu-22.04  # Utiliser Ubuntu 22.04 pour éviter les conflits autotools
+    runs-on: ubuntu-latest
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    
+      
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
         
-    - name: Cache buildozer global directory
-      uses: actions/cache@v3
+    - name: Set up Java
+      uses: actions/setup-java@v4
       with:
-        path: .buildozer_global
-        key: buildozer-global-${{ hashFiles('buildozer.spec') }}
-        
-    - name: Cache buildozer directory
-      uses: actions/cache@v3
-      with:
-        path: .buildozer
-        key: buildozer-${{ hashFiles('buildozer.spec') }}
+        distribution: 'temurin'
+        java-version: '17'
         
     - name: Install system dependencies
       run: |
-        sudo apt-get update
-        sudo apt-get install -y git zip unzip openjdk-17-jdk wget sed coreutils grep
+        sudo apt update
+        sudo apt install -y build-essential git unzip zip
+        sudo apt install -y libbz2-dev libsqlite3-dev libssl-dev
+        sudo apt install -y libffi-dev libncurses5-dev libgdbm-dev
+        sudo apt install -y autotools-dev automake autoconf libtool
+        sudo apt install -y pkg-config zlib1g-dev libltdl-dev
+        sudo apt install -y python3-setuptools python3-wheel
         
-        # Configure Java 17 pour Gradle (requis par Android Gradle Plugin)
-        export JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64
-        echo "JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64" >> $GITHUB_ENV
-        echo "Java version configured:"
-        java -version
-        sudo apt-get install -y python3-pip python3-setuptools build-essential
-        sudo apt-get install -y libffi-dev libssl-dev libssl3 openssl autotools-dev automake
-        sudo apt-get install -y libtool libtool-bin pkg-config zlib1g-dev libncurses5-dev
-        sudo apt-get install -y libncursesw5-dev libtinfo6 cmake autoconf
-        
-        # Configurer pkg-config pour OpenSSL
-        export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:$PKG_CONFIG_PATH"
-        echo "PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:$PKG_CONFIG_PATH" >> $GITHUB_ENV
-        
-        # Vérifier pkg-config et OpenSSL
-        pkg-config --exists openssl && echo "OpenSSL pkg-config OK" || echo "OpenSSL pkg-config FAIL"
-        pkg-config --modversion openssl || echo "No OpenSSL version"
-        
-        # Vérifier que les outils de base fonctionnent
-        /usr/bin/which git
-        /usr/bin/which grep
-        /usr/bin/which sed
-        /usr/bin/which ls
-        /usr/bin/which mkdir
-        /usr/bin/which libtool
-        /usr/bin/which autoconf
-        git --version
-
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install buildozer==1.5.0
-        pip install cython==0.29.36
-        pip install kivy==2.2.0
-        pip install python-for-android==2023.5.21
-        pip install pyjnius==1.5.0
+        pip install --user 'cython==0.29.36'
+        pip install --user 'buildozer==1.5.0'
+        pip install --user -r requirements.txt
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
         
-    - name: Set up Android SDK
+    - name: Setup Android keystore (if secrets available)
+      env:
+        ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
       run: |
-        # Utiliser le SDK Android pré-installé de GitHub Actions
-        export ANDROID_HOME=/usr/local/lib/android/sdk
-        # Utiliser NDK 25c qui est compatible avec SDL2 et recommandé par p4a
-        export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/25.2.9519653
-        echo "ANDROID_HOME=/usr/local/lib/android/sdk" >> $GITHUB_ENV
-        echo "ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/25.2.9519653" >> $GITHUB_ENV
-        echo "PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools" >> $GITHUB_ENV
-        
-        # Vérifier si NDK 25c existe, sinon l'installer
-        if [ ! -d "/usr/local/lib/android/sdk/ndk/25.2.9519653" ]; then
-          echo "📥 Installation NDK 25c (compatible SDL2)..."
-          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;25.2.9519653"
-        fi
-        
-        # Créer un lien symbolique pour l'ancien chemin de sdkmanager (compatibilité buildozer)
-        sudo mkdir -p $ANDROID_HOME/tools/bin
-        sudo ln -sf $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager $ANDROID_HOME/tools/bin/sdkmanager
-        sudo ln -sf $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager $ANDROID_HOME/tools/bin/avdmanager
-        
-        # Vérifier l'installation et les liens
-        echo "Android SDK: $ANDROID_HOME"
-        echo "Android NDK: $ANDROID_NDK_HOME"
-        echo "sdkmanager location:"
-        which sdkmanager || echo "sdkmanager not in PATH"
-        ls -la $ANDROID_HOME/tools/bin/ || echo "tools/bin not found"
-        ls -la $ANDROID_HOME/cmdline-tools/latest/bin/ | head -5
-        
-        # Vérifier NDK 25c
-        if [ -d "$ANDROID_NDK_HOME" ]; then
-          echo "✅ NDK 25c trouvé: $ANDROID_NDK_HOME"
-          ls -la $ANDROID_NDK_HOME/ | head -3
+        if [ ! -z "$ANDROID_KEYSTORE" ]; then
+          echo "$ANDROID_KEYSTORE" | base64 -d > signing.keystore
+          echo "KEYSTORE_AVAILABLE=true" >> $GITHUB_ENV
+          echo "✅ Keystore configured for AAB signing"
         else
-          echo "❌ NDK 25c non trouvé"
+          echo "KEYSTORE_AVAILABLE=false" >> $GITHUB_ENV
+          echo "⚠️ No keystore configured - will build unsigned AAB"
         fi
         
-        # Tester sdkmanager
-        $ANDROID_HOME/tools/bin/sdkmanager --version || echo "sdkmanager test failed"
+    - name: Build APK (debug)
+      run: |
+        echo "=== Building Debug APK ==="
+        buildozer android debug --verbose
         
-        # Accepter les licences Android
-        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || echo "License acceptance done"
-        
-    - name: Update buildozer config
+    - name: Build AAB (release)
       env:
-        ANDROID_HOME: /usr/local/lib/android/sdk
-        ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/25.2.9519653
+        ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
       run: |
-        # Utiliser le script Python pour mettre à jour buildozer.spec
-        python3 .github/scripts/update_buildozer.py
+        echo "=== Building Release AAB ==="
         
-        # Configurer les SDK/NDK système
-        python3 .github/scripts/configure_buildozer_sdk.py
+        # Configure keystore passwords if secrets are available
+        if [ -f "signing.keystore" ] && [ ! -z "$ANDROID_KEYSTORE_PASSWORD" ]; then
+          # Update buildozer.spec with keystore credentials
+          sed -i "s/android.release_keystore_passwd = /android.release_keystore_passwd = $ANDROID_KEYSTORE_PASSWORD/" buildozer.spec
+          sed -i "s/android.release_key = /android.release_key = $ANDROID_KEY_ALIAS/" buildozer.spec
+          sed -i "s/android.release_key_passwd = /android.release_key_passwd = $ANDROID_KEY_PASSWORD/" buildozer.spec
+          echo "✅ Keystore credentials configured"
+        else
+          echo "⚠️ Building unsigned AAB (no keystore secrets)"
+        fi
         
-        # Exécuter le diagnostic et correction des chemins SDK
-        python3 .github/scripts/fix_sdk_paths.py
+        buildozer android aab --verbose
         
-    - name: Prepare python-for-android
+    - name: Verify build outputs
       run: |
-        # Créer les répertoires nécessaires pour éviter les erreurs
-        mkdir -p $HOME/.buildozer/android/platform/python-for-android
-        mkdir -p .buildozer/android/platform
+        echo "=== Build verification ==="
+        echo "APK files:"
+        find . -name "*.apk" -type f 2>/dev/null || echo "No APK found"
+        echo "AAB files:"
+        find . -name "*.aab" -type f 2>/dev/null || echo "No AAB found"
         
-    - name: Build APK & AAB with Buildozer
-      env:
-        ANDROID_HOME: /usr/local/lib/android/sdk
-        ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/25.2.9519653
-        JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
-        PATH: /usr/lib/jvm/temurin-17-jdk-amd64/bin:/usr/local/lib/android/sdk/cmdline-tools/latest/bin:/usr/local/lib/android/sdk/platform-tools:/usr/bin:/bin
-        PKG_CONFIG_PATH: /usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig
-        AUTOCONF_VERSION: 2.71
-        AUTOM4TE_PERLLIBDIR: /usr/share/autotools-dev
-      run: |
-        # Nettoyage complet
-        rm -rf .buildozer || true
-        rm -rf $HOME/.buildozer/android/platform/python-for-android-fork || true
-        rm -rf $HOME/.buildozer/android/platform/python-for-android || true
+        # Check if AAB is signed
+        if [ -f "bin/macartedetarot-1.4-arm64-v8a-release.aab" ]; then
+          echo "✅ AAB build found: bin/macartedetarot-1.4-arm64-v8a-release.aab"
+          ls -lh bin/macartedetarot-1.4-arm64-v8a-release.aab
+          if [ -f "signing.keystore" ]; then
+            echo "✅ AAB is signed and ready for Play Store"
+          else
+            echo "⚠️ AAB is unsigned"
+          fi
+        fi
         
-        # Build APK debug
-        echo "=== Build APK debug ==="
-        buildozer android debug --verbose || echo "❌ Debug build failed"
+        if [ -f "bin/macartedetarot-1.4-arm64-v8a-debug.apk" ]; then
+          echo "✅ Debug APK found: bin/macartedetarot-1.4-arm64-v8a-debug.apk"
+          ls -lh bin/macartedetarot-1.4-arm64-v8a-debug.apk
+        fi
         
-        # Build AAB release
-        echo "=== Build AAB release ==="
-        buildozer android clean
-        buildozer android aab --verbose || echo "❌ AAB build failed"
-        
-        # Vérifier les fichiers générés
-        echo "=== APK générés ==="
-        find . -name "*.apk" -type f 2>/dev/null || echo "Aucun APK trouvé"
-        echo "=== AAB générés ==="
-        find . -name "*.aab" -type f 2>/dev/null || echo "Aucun AAB trouvé"
-        
-    - name: Upload APK & AAB (même partiel)
-      uses: actions/upload-artifact@v4
+    - name: Upload APK artifact
       if: always()
+      uses: actions/upload-artifact@v4
       with:
-        name: android-build-artifacts
+        name: android-apk-debug
         path: |
           bin/*.apk
           .buildozer/android/platform/build-*/dists/*/bin/*.apk
-          .buildozer/android/platform/build-*/dists/*/build/outputs/apk/**/*.apk
-          bin/*.aab
-          .buildozer/android/platform/build-*/dists/*/bin/*.aab
-          .buildozer/android/platform/build-*/dists/*/build/outputs/bundle/**/*.aab
-          bin/*-signed.aab
-          .buildozer/android/platform/build-*/dists/*/bin/*-signed.aab
-          .buildozer/android/platform/build-*/dists/*/build/outputs/bundle/**/*-signed.aab
         retention-days: 30
         
-    - name: List all possible APK & AAB locations
+    - name: Upload AAB artifact
       if: always()
-      run: |
-        echo "=== Recherche de tous les APKs générés ==="
-        find . -name "*.apk" -type f 2>/dev/null || echo "Aucun APK trouvé"
-        echo "=== Recherche de tous les AAB générés ==="
-        find . -name "*.aab" -type f 2>/dev/null || echo "Aucun AAB trouvé"
-        
-        echo "=== Contenu du répertoire bin ==="
-        if [ -d "bin/" ]; then
-          ls -la bin/
-        else
-          echo "Répertoire bin inexistant"
-        fi
-        
-        echo "=== Contenu buildozer dists ==="
-        find .buildozer -name "*.apk" -type f 2>/dev/null || echo "Aucun APK dans .buildozer"
-        find .buildozer -name "*.aab" -type f 2>/dev/null || echo "Aucun AAB dans .buildozer"
-        
-        echo "=== Structure complète build ==="
-        if [ -d ".buildozer/android/platform/build-arm64-v8a_armeabi-v7a/dists/" ]; then
-          find .buildozer/android/platform/build-arm64-v8a_armeabi-v7a/dists/ -name "*.apk" -o -name "*.aab" -o -name "build" -type d 2>/dev/null || echo "Pas de build dans dists"
-        fi
+      uses: actions/upload-artifact@v4
+      with:
+        name: android-aab-build
+        path: |
+          bin/*.aab
+          .buildozer/android/platform/build-*/dists/*/bin/*.aab
+        retention-days: 90

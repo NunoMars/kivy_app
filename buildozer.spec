@@ -19,10 +19,10 @@ source.include_exts = py,png,jpg,gif,kv,atlas
 #source.include_patterns = assets/*,images/*.png
 
 # (list) Source files to exclude (let empty to not exclude anything)
-#source.exclude_exts = spec
+source.exclude_exts = spec,md,txt
 
 # (list) List of directory to exclude (let empty to not exclude anything)
-#source.exclude_dirs = tests, bin, venv
+source.exclude_dirs = tests, bin, venv, .github, __pycache__, .git, .vscode, guides
 
 # (list) List of exclusions using pattern matching
 # Do not prefix with './'
@@ -47,7 +47,7 @@ requirements = python3,kivy==2.2.0,pillow
 #presplash.filename = %(source.dir)s/data/presplash.png
 
 # (str) Icon of the application
-icon.filename = %(source.dir)s/tarot_img/icon.png
+icon.filename = %(source.dir)s/tarot_img/tapis.ico
 
 # (list) Supported orientations
 # Valid options are: landscape, portrait, portrait-reverse or landscape-reverse
@@ -452,7 +452,8 @@ warn_on_root = 1
 #buildozer --profile demo android debug
 
 # Configuration signature de production
-android.release_keystore = googleplay.keystore
-android.release_keystore_passwd = macartedetarot2024
-android.release_key = upload
-android.release_key_passwd = macartedetarot2024
+# Ces valeurs seront remplacées par les secrets GitHub en CI/CD
+android.release_keystore = %(source.dir)s/signing.keystore
+android.release_keystore_passwd = 
+android.release_key = 
+android.release_key_passwd = 
