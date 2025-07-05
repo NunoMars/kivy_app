@@ -39,31 +39,44 @@ jobs:
         
     - name: Set up Android SDK
       run: |
-        mkdir -p $HOME/android-sdk
-        cd $HOME/android-sdk
+        export ANDROID_HOME=$HOME/android-sdk
+        mkdir -p $ANDROID_HOME
+        cd $ANDROID_HOME
         wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
         unzip -q commandlinetools-linux-11076708_latest.zip
         mkdir -p cmdline-tools/latest
         mv cmdline-tools/* cmdline-tools/latest/ || true
-        export ANDROID_HOME=$HOME/android-sdk
         export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
         yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
-        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0"
+        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0" "platform-tools"
+        
+        # Ajouter les variables d'environnement pour les étapes suivantes
+        echo "ANDROID_HOME=$ANDROID_HOME" >> $GITHUB_ENV
+        echo "$ANDROID_HOME/cmdline-tools/latest/bin" >> $GITHUB_PATH
+        echo "$ANDROID_HOME/platform-tools" >> $GITHUB_PATH
         
     - name: Build AAB
-      env:
-        ANDROID_HOME: ${{ runner.temp }}/android-sdk
       run: |
-        export ANDROID_HOME=$HOME/android-sdk
-        export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
-        p4a aab --private . \
+        # Vérifier les variables d'environnement
+        echo "ANDROID_HOME: $ANDROID_HOME"
+        ls -la $ANDROID_HOME
+        
+        # Nettoyer les builds précédents
+        p4a clean_dists
+        
+        # Compiler l'AAB avec une architecture spécifique
+        p4a aab \
+          --private . \
           --package=org.tarot.macartedetarot \
           --name="Ma Carte De Tarot" \
           --version=1.4 \
           --bootstrap=sdl2 \
-          --requirements=python3,kivy,pillow \
-          --arch=arm64-v8a,armeabi-v7a \
-          --release
+          --requirements=python3,kivy,pillow,pyjnius \
+          --arch=arm64-v8a \
+          --release \
+          --permission INTERNET \
+          --permission ACCESS_NETWORK_STATE \
+          --orientation=portrait
           
     - name: Find and upload AAB
       run: |
