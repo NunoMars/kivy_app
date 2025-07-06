@@ -404,24 +404,28 @@ class CardResponseScreen(Screen):
                     self.full_screen_popup.parent.remove_widget(self.full_screen_popup)
                 del self.full_screen_popup
             else:
-                # Déterminer le chemin de l'image
-                if self.state == "a l'envers":
-                    image_path = f"tarot_img/MajorArcanaCards/{self.drawn_card} {self.state}.jpg"
+                # Utiliser le système de mapping pour obtenir le bon chemin
+                from card_image_mapping import get_card_image_path
+                image_path = get_card_image_path(self.drawn_card, self.state)
+                
+                print(f"Full screen image path: {image_path}")  # Debug
+                
+                # Vérifier que le fichier existe
+                if os.path.exists(image_path):
+                    # Créer le popup plein écran avec toute la hauteur
+                    self.full_screen_popup = FullScreenImagePopup(image_path)
+                    
+                    # Commencer invisible pour animation d'ouverture
+                    self.full_screen_popup.opacity = 0
+                    
+                    # Ajouter au parent principal (Screen) pour couvrir tout l'écran
+                    self.add_widget(self.full_screen_popup)
+                    
+                    # Animation d'ouverture
+                    open_anim = Animation(opacity=1, duration=0.4)
+                    open_anim.start(self.full_screen_popup)
                 else:
-                    image_path = f"tarot_img/MajorArcanaCards/{self.drawn_card}.jpg"
-
-                # Créer le popup plein écran avec toute la hauteur
-                self.full_screen_popup = FullScreenImagePopup(image_path)
-                
-                # Commencer invisible pour animation d'ouverture
-                self.full_screen_popup.opacity = 0
-                
-                # Ajouter au parent principal (Screen) pour couvrir tout l'écran
-                self.add_widget(self.full_screen_popup)
-                
-                # Animation d'ouverture
-                open_anim = Animation(opacity=1, duration=0.4)
-                open_anim.start(self.full_screen_popup)
+                    print(f"Image not found for full screen: {image_path}")
 
     def animate_button_press(self, button):
         """Anime le bouton lors du clic pour un effet visuel"""

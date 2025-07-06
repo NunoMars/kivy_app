@@ -52,7 +52,7 @@ def normalize_card_name_for_file(card_name):
         ''': "'",  # Apostrophe courbe vers droite
         ''': "'",  # Apostrophe courbe vers gauche
         '"': '"',  # Guillemets courbes ouvrants
-        '"': '"',  # Guillemets courbes fermants
+        '"': '"',  # Guillemets courbes fermants (caractère différent)
     }
     
     normalized = card_name
@@ -68,7 +68,7 @@ def get_image_path(card_name, state="normal"):
     
     Args:
         card_name (str): Nom de la carte avec accents
-        state (str): "normal" ou "a l'envers"
+        state (str): "normal", "a l'endroit" ou "a l'envers"
     
     Returns:
         str: Chemin vers le fichier image
@@ -76,9 +76,11 @@ def get_image_path(card_name, state="normal"):
     # Normaliser le nom pour le fichier
     normalized_name = normalize_card_name_for_file(card_name)
     
+    # Gérer les différents états
     if state == "a l'envers":
         image_file_name = f"{normalized_name} {state}.jpg"
     else:
+        # "normal" ou "a l'endroit" = carte droite
         image_file_name = f"{normalized_name}.jpg"
     
     return f"tarot_img/MajorArcanaCards/{image_file_name}"
