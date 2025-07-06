@@ -4,349 +4,165 @@ on:
   push:
     branches: [ main, master ]
     paths:
-      - '*.py'
-      - '*.kv'
+      - '**.py'
+      - '**.kv'
       - 'requirements.txt'
       - 'buildozer.spec'
       - 'tarot_img/**'
   pull_request:
     branches: [ main, master ]
     paths:
-      - '*.py'
-      - '*.kv'
+      - '**.py'
+      - '**.kv'
       - 'requirements.txt'
       - 'buildozer.spec'
       - 'tarot_img/**'
   workflow_dispatch:
 
 jobs:
-  build:
+  setup-env:
     runs-on: ubuntu-latest
-    
+    outputs:
+      keystore_available: ${{ steps.check-keystore.outputs.available }}
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-        
-    - name: Set up Java
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '17'
-        
-    - name: Install system dependencies
-      run: |
-        sudo apt update
-        sudo apt install -y build-essential git unzip zip
-        sudo apt install -y libbz2-dev libsqlite3-dev libssl-dev
-        sudo apt install -y libffi-dev libncurses5-dev libgdbm-dev
-        sudo apt install -y autotools-dev automake autoconf libtool
-        sudo apt install -y pkg-config zlib1g-dev libltdl-dev
-        sudo apt install -y python3-setuptools python3-wheel
-        # Ajouter les bibliothèques multilib pour résoudre les erreurs de linkage NDK
-        sudo apt install -y gcc-multilib g++-multilib
-        
-    - name: Install Python dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install --user 'cython==0.29.36'
-        pip install --user 'buildozer==1.5.0'
-        pip install --user -r requirements.txt
-        echo "$HOME/.local/bin" >> $GITHUB_PATH
-        
-    - name: Setup Android SDK compatibility for buildozer
-      run: |
-        # Vérifier et nettoyer l'environnement Android
-        echo "=== Android Environment Setup ==="
-        echo "ANDROID_HOME: $ANDROID_HOME"
-        echo "Available NDKs:"
-        ls -la /usr/local/lib/android/sdk/ndk/ || echo "No NDKs found"
-        
-        # Forcer l'utilisation du NDK 25c seulement
-        export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/25.2.9519653
-        export ANDROIDNDK=/usr/local/lib/android/sdk/ndk/25.2.9519653
-        echo "ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/25.2.9519653" >> $GITHUB_ENV
-        echo "ANDROIDNDK=/usr/local/lib/android/sdk/ndk/25.2.9519653" >> $GITHUB_ENV
-        
-        # Créer les liens symboliques pour compatibilité buildozer avec Android SDK
-        sudo mkdir -p /usr/local/lib/android/sdk/tools/bin
-        sudo ln -sf /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager /usr/local/lib/android/sdk/tools/bin/sdkmanager
-        sudo ln -sf /usr/local/lib/android/sdk/cmdline-tools/latest/bin/avdmanager /usr/local/lib/android/sdk/tools/bin/avdmanager
-        
-        # Vérifier les liens
-        echo "✅ SDK compatibility links created:"
-        ls -la /usr/local/lib/android/sdk/tools/bin/
-        
-        # Vérifier que sdkmanager fonctionne
-        /usr/local/lib/android/sdk/tools/bin/sdkmanager --version || echo "⚠️ sdkmanager test failed"
-        
-        # Installer explicitement les composants nécessaires
-        echo "=== Installing required Android components ==="
-        yes | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --licenses
-        /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "platforms;android-33"
-        /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0" "build-tools;33.0.2"
-        
-        # S'assurer que NDK 25c est installé
-        if [ ! -d "/usr/local/lib/android/sdk/ndk/25.2.9519653" ]; then
-          echo "Installing NDK 25c..."
-          /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "ndk;25.2.9519653"
-        else
-          echo "✅ NDK 25c already available"
-        fi
-        
-        echo "✅ Android environment configured"
-        
-    - name: Setup Android keystore (if secrets available)
-      env:
-        ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
-      run: |
-        if [ ! -z "$ANDROID_KEYSTORE" ]; then
-          echo "$ANDROID_KEYSTORE" | base64 -d > signing.keystore
-          echo "KEYSTORE_AVAILABLE=true" >> $GITHUB_ENV
-          echo "✅ Keystore configured for AAB signing"
-        else
-          echo "KEYSTORE_AVAILABLE=false" >> $GITHUB_ENV
-          echo "⚠️ No keystore configured - will build unsigned AAB"
-        fi
-        
-    - name: Build APK (debug)
-      env:
-        ANDROID_HOME: /usr/local/lib/android/sdk
-        ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/25.2.9519653
-        ANDROIDNDK: /usr/local/lib/android/sdk/ndk/25.2.9519653
-        JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
-        GRADLE_OPTS: "-Xmx2048m -Dorg.gradle.daemon=false"
-      run: |
-        echo "=== Building Debug APK ==="
-        echo "ANDROID_HOME: $ANDROID_HOME"
-        echo "ANDROID_NDK_HOME: $ANDROID_NDK_HOME"
-        echo "ANDROIDNDK: $ANDROIDNDK"
-        echo "JAVA_HOME: $JAVA_HOME"
-        
-        # Vérifier que les outils sont accessibles
-        which java && java -version
-        which javac && javac -version
-        ls -la $ANDROID_HOME/tools/bin/sdkmanager
-        
-        # Nettoyer complètement les builds précédents et le cache buildozer
-        echo "=== Aggressive cleanup ==="
-        rm -rf .buildozer/android/platform/build-arm64-v8a_armeabi-v7a || echo "Multi-arch build not found"
-        rm -rf .buildozer/android/platform/build-armeabi-v7a || echo "Old armeabi-v7a build not found"
-        rm -rf .buildozer/android/platform/build-* || echo "No build dirs found"
-        rm -rf bin/ || echo "No bin dir found"
-        buildozer android clean || echo "Clean failed, continuing..."
-        
-        # Build APK avec options debug
-        buildozer android debug --verbose
-        
-    - name: Build AAB (release)
-      env:
-        ANDROID_HOME: /usr/local/lib/android/sdk
-        ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/25.2.9519653
-        ANDROIDNDK: /usr/local/lib/android/sdk/ndk/25.2.9519653
-        JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
-        GRADLE_OPTS: "-Xmx3072m -Dorg.gradle.daemon=false -Dorg.gradle.parallel=false"
-        ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-        ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-      run: |
-        echo "=== Building Release AAB ==="
-        
-        # Vérifier si les secrets sont disponibles
-        if [ ! -z "$ANDROID_KEYSTORE_PASSWORD" ] && [ ! -z "$ANDROID_KEY_PASSWORD" ] && [ ! -z "$ANDROID_KEY_ALIAS" ]; then
-          echo "✅ Keystore secrets available - building signed AAB"
-          SIGNING_AVAILABLE=true
-        else
-          echo "⚠️ Keystore secrets not available - building unsigned AAB"
-          SIGNING_AVAILABLE=false
-        fi
-        
-        # Configure keystore passwords if secrets are available
-        if [ -f "signing.keystore" ] && [ "$SIGNING_AVAILABLE" = "true" ]; then
-          # Update buildozer.spec with keystore credentials
-          sed -i "s/android.release_keystore_passwd = VOTRE_MOT_DE_PASSE_KEYSTORE/android.release_keystore_passwd = $ANDROID_KEYSTORE_PASSWORD/" buildozer.spec
-          sed -i "s/android.release_key = upload/android.release_key = $ANDROID_KEY_ALIAS/" buildozer.spec  
-          sed -i "s/android.release_key_passwd = VOTRE_MOT_DE_PASSE_CLE/android.release_key_passwd = $ANDROID_KEY_PASSWORD/" buildozer.spec
-          sed -i "s|android.release_keystore = %(source.dir)s/googleplay.keystore|android.release_keystore = %(source.dir)s/signing.keystore|" buildozer.spec
-          echo "✅ Keystore credentials configured in buildozer.spec"
-        else
-          echo "⚠️ Building unsigned AAB (no keystore secrets or keystore file)"
-        fi
-        
-        # Vérifier que android.release_artifact = aab dans buildozer.spec
-        if grep -q "android.release_artifact = aab" buildozer.spec; then
-          echo "✅ android.release_artifact correctly set to aab"
-        else
-          echo "❌ android.release_artifact not set to aab - fixing..."
-          sed -i "s/android.release_artifact = apk/android.release_artifact = aab/" buildozer.spec
-          echo "android.release_artifact = aab" >> buildozer.spec
-        fi
-        
-        # Patch NDK pour résoudre les erreurs de linkage libgcc_s
-        echo "=== Fixing NDK linkage issues ==="
-        export PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
-        
-        # Variables d'environnement supplémentaires pour le build AAB
-        export CC="$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/clang"
-        export CXX="$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++"
-        export AR="$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"
-        export STRIP="$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip"
-        
-        echo "✅ NDK environment configured"
-        
-        # Nettoyer complètement avant le build AAB
-        echo "=== Cleaning previous builds ==="
-        rm -rf .buildozer/android/platform/build-* || true
-        
-        # Build release avec timeout et retry
-        echo "=== Starting AAB build ==="
-        echo "Current buildozer.spec config:"
-        grep "android.release_artifact" buildozer.spec || echo "❌ android.release_artifact not found"
-        grep "android.archs" buildozer.spec || echo "❌ android.archs not found"
-        
-        if [ "$SIGNING_AVAILABLE" = "true" ]; then
-          echo "=== Building SIGNED AAB ==="
-        else
-          echo "=== Building UNSIGNED AAB ==="
-        fi
-        
-        # Premier essai avec capture d'erreur détaillée
-        echo "=== First AAB build attempt ==="
-        if timeout 2400 buildozer android release --verbose 2>&1 | tee aab_build.log; then
-          echo "✅ AAB build completed successfully"
-          if [ "$SIGNING_AVAILABLE" = "true" ]; then
-            echo "🔐 AAB is SIGNED and ready for Play Store"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Install system packages
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            build-essential git zip unzip libbz2-dev libsqlite3-dev libssl-dev \
+            libffi-dev libncurses5-dev libgdbm-dev autotools-dev automake autoconf \
+            libtool pkg-config zlib1g-dev libltdl-dev python3-setuptools python3-wheel \
+            gcc-multilib g++-multilib
+
+      - name: Install Python packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install --user cython==0.29.36 buildozer==1.5.0
+          pip install --user -r requirements.txt
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Configure Android environment
+        run: |
+          export SDK_PATH=/usr/local/lib/android/sdk
+          export NDK_PATH=$SDK_PATH/ndk/25.2.9519653
+
+          echo "ANDROID_HOME=$SDK_PATH" >> $GITHUB_ENV
+          echo "ANDROID_NDK_HOME=$NDK_PATH" >> $GITHUB_ENV
+          echo "ANDROIDNDK=$NDK_PATH" >> $GITHUB_ENV
+
+          sudo mkdir -p $SDK_PATH/tools/bin
+          sudo ln -sf $SDK_PATH/cmdline-tools/latest/bin/sdkmanager $SDK_PATH/tools/bin/sdkmanager
+          sudo ln -sf $SDK_PATH/cmdline-tools/latest/bin/avdmanager $SDK_PATH/tools/bin/avdmanager
+
+          yes | $SDK_PATH/cmdline-tools/latest/bin/sdkmanager --licenses
+          $SDK_PATH/cmdline-tools/latest/bin/sdkmanager \
+            "platforms;android-34" "platforms;android-33" \
+            "build-tools;34.0.0" "build-tools;33.0.2" \
+            "ndk;25.2.9519653"
+
+      - name: Decode keystore (if available)
+        id: check-keystore
+        run: |
+          if [ -n "${{ secrets.ANDROID_KEYSTORE }}" ]; then
+            echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 -d > signing.keystore
+            echo "available=true" >> $GITHUB_OUTPUT
           else
-            echo "⚠️ AAB is UNSIGNED - configure secrets for signed builds"
+            echo "available=false" >> $GITHUB_OUTPUT
           fi
-        else
-          FIRST_EXIT_CODE=$?
-          echo "❌ First AAB build attempt failed (exit code: $FIRST_EXIT_CODE)"
-          echo "=== Build log tail ==="
-          tail -100 aab_build.log || echo "No build log found"
-          
-          echo "=== Retrying with clean build ==="
-          buildozer android clean
+
+  build-apk:
+    needs: setup-env
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Restore environment
+        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Clean previous APK build
+        run: |
+          buildozer android clean || true
+          rm -rf bin/ .buildozer/android/platform/build-*
+
+      - name: Build APK (debug)
+        run: |
+          buildozer android debug --verbose
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-apk-debug
+          path: |
+            bin/*.apk
+            .buildozer/**/*.apk
+          retention-days: 30
+
+  build-aab:
+    needs: setup-env
+    runs-on: ubuntu-latest
+    if: ${{ always() }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Restore environment
+        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Prepare buildozer.spec
+        run: |
+          sed -i "s|^#*android.release_artifact *=.*|android.release_artifact = aab|" buildozer.spec
+          grep -q "android.archs" buildozer.spec || echo "android.archs = arm64-v8a" >> buildozer.spec
+
+          if [ "${{ needs.setup-env.outputs.keystore_available }}" == "true" ]; then
+            sed -i "s|^#*android.release_keystore *=.*|android.release_keystore = %(source.dir)s/signing.keystore|" buildozer.spec
+            sed -i "s|^#*android.release_key *=.*|android.release_key = ${{ secrets.ANDROID_KEY_ALIAS }}|" buildozer.spec
+            sed -i "s|^#*android.release_key_passwd *=.*|android.release_key_passwd = ${{ secrets.ANDROID_KEY_PASSWORD }}|" buildozer.spec
+            sed -i "s|^#*android.release_keystore_passwd *=.*|android.release_keystore_passwd = ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}|" buildozer.spec
+          fi
+
+      - name: Clean AAB build
+        run: |
+          buildozer android clean || true
           rm -rf .buildozer/android/platform/build-*
-          
-          # Deuxième tentative
-          if timeout 2400 buildozer android release --verbose 2>&1 | tee aab_build_retry.log; then
-            echo "✅ AAB build completed on retry"
-            if [ "$SIGNING_AVAILABLE" = "true" ]; then
-              echo "🔐 AAB is SIGNED and ready for Play Store"
-            else
-              echo "⚠️ AAB is UNSIGNED - configure secrets for signed builds"
-            fi
-          else
-            RETRY_EXIT_CODE=$?
-            echo "❌ AAB build failed on retry too (exit code: $RETRY_EXIT_CODE)"
-            echo "=== Retry build log tail ==="
-            tail -100 aab_build_retry.log || echo "No retry build log found"
-            
-            # Skip AAB build for now but don't fail the workflow
-            echo "⚠️ Skipping AAB build - APK debug is available for testing"
-            exit 0
-          fi
-        fi
-        
-    - name: Verify build outputs
-      run: |
-        echo "=== Comprehensive Build Verification ==="
-        
-        # Chercher tous les fichiers APK et AAB dans tout le workspace
-        echo "=== Searching for all APK files ==="
-        find . -name "*.apk" -type f 2>/dev/null | head -20 || echo "No APK found anywhere"
-        
-        echo "=== Searching for all AAB files ==="
-        find . -name "*.aab" -type f 2>/dev/null | head -20 || echo "No AAB found anywhere"
-        
-        echo "=== Exploring build directories ==="
-        ls -la .buildozer/android/platform/ 2>/dev/null || echo ".buildozer/android/platform/ not found"
-        
-        if [ -d ".buildozer/android/platform" ]; then
-          echo "=== Build directories found ==="
-          find .buildozer/android/platform -name "build-*" -type d 2>/dev/null | head -10
-          
-          echo "=== Searching in dist directories ==="
-          find .buildozer/android/platform -name "dists" -type d 2>/dev/null | while read dist_dir; do
-            echo "Checking: $dist_dir"
-            find "$dist_dir" -name "*.apk" -o -name "*.aab" 2>/dev/null | head -5
-          done
-        fi
-        
-        echo "=== Contents of bin/ directory ==="
-        if [ -d "bin" ]; then
-          ls -la bin/
-        else
-          echo "bin/ directory not found"
-        fi
-        
-        # Check for debug APK (various possible names)
-        echo "=== APK verification ==="
-        if find . -name "*debug*.apk" -o -name "*.apk" | grep -q .; then
-          echo "✅ APK files found:"
-          find . -name "*debug*.apk" -o -name "*.apk" | head -5 | while read apk; do
-            echo "  - $apk ($(du -h "$apk" | cut -f1))"
-          done
-        else
-          echo "❌ No APK files found"
-        fi
-        
-        # Check for release AAB
-        echo "=== AAB verification ==="
-        if find . -name "*release*.aab" -o -name "*.aab" | grep -q .; then
-          echo "✅ AAB files found:"
-          find . -name "*release*.aab" -o -name "*.aab" | head -5 | while read aab; do
-            echo "  - $aab ($(du -h "$aab" | cut -f1))"
-            if [ -f "signing.keystore" ]; then
-              echo "    ✅ Signed and ready for Play Store"
-            else
-              echo "    ⚠️ Unsigned"
-            fi
-          done
-        else
-          echo "❌ No AAB files found"
-          echo "=== Investigating AAB build failure ==="
-          
-          # Chercher des indices sur pourquoi l'AAB n'a pas été créé
-          echo "Checking gradle directories:"
-          find .buildozer -name "gradle*" -type f 2>/dev/null | head -10
-          
-          echo "Checking for gradle errors in recent logs:"
-          find .buildozer -name "*.log" -type f -mtime -1 2>/dev/null | head -5 | while read logfile; do
-            echo "=== $logfile ==="
-            grep -i "error\|failed\|exception" "$logfile" 2>/dev/null | tail -10 || echo "No errors in log"
-          done
-        fi
-        
-    - name: Upload APK artifact
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: android-apk-debug
-        path: |
-          **/*.apk
-        retention-days: 30
-        
-    - name: Upload AAB artifact
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: android-aab-build
-        path: |
-          **/*.aab
-        retention-days: 90
-        
-    - name: Upload build logs (if build failed)
-      if: failure()
-      uses: actions/upload-artifact@v4
-      with:
-        name: build-logs
-        path: |
-          aab_build*.log
-          .buildozer/**/*.log
-        retention-days: 7
+
+      - name: Build AAB (release)
+        run: |
+          timeout 2400 buildozer android release --verbose || {
+            echo "⚠️ First AAB build failed, retrying with clean"
+            buildozer android clean
+            timeout 2400 buildozer android release --verbose || echo "❌ Second attempt failed"
+          }
+
+      - name: Upload AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-aab-release
+          path: |
+            bin/*.aab
+            .buildozer/**/*.aab
+          retention-days: 90
+
+      - name: Upload build logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: |
+            aab_build*.log
+            .buildozer/**/*.log
+          retention-days: 7
