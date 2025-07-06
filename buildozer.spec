@@ -123,10 +123,10 @@ android.ndk_api = 21
 #android.private_storage = True
 
 # (str) Android NDK directory (if empty, it will be automatically downloaded.)
-android.ndk_path = /usr/local/lib/android/sdk/ndk/25.2.9519653
+# android.ndk_path = 
 
 # (str) Android SDK directory (if empty, it will be automatically downloaded.)
-android.sdk_path = /usr/local/lib/android/sdk
+# android.sdk_path =
 
 # (str) ANT directory (if empty, it will be automatically downloaded.)
 #android.ant_path =
@@ -455,8 +455,8 @@ warn_on_root = 1
 #buildozer --profile demo android debug
 
 # Configuration signature de production
-# Ces valeurs seront remplacées par les secrets GitHub en CI/CD
-android.release_keystore = %(source.dir)s/signing.keystore
-android.release_keystore_passwd = 
-android.release_key = 
-android.release_key_passwd = 
+# Valeurs pour build local (à ne pas commiter avec les vrais mots de passe !)
+android.release_keystore = %(source.dir)s/googleplay.keystore
+android.release_keystore_passwd = VOTRE_MOT_DE_PASSE_KEYSTORE
+android.release_key = upload
+android.release_key_passwd = VOTRE_MOT_DE_PASSE_CLE 
