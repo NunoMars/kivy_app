@@ -92,7 +92,19 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Restore environment
-        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+        run: |
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          python -m pip install --upgrade pip
+          pip install --user cython==0.29.36 buildozer==1.5.0
+          pip install --user -r requirements.txt
+
+      - name: Restore Android environment  
+        run: |
+          export SDK_PATH=/usr/local/lib/android/sdk
+          export NDK_PATH=$SDK_PATH/ndk/25.2.9519653
+          echo "ANDROID_HOME=$SDK_PATH" >> $GITHUB_ENV
+          echo "ANDROID_NDK_HOME=$NDK_PATH" >> $GITHUB_ENV
+          echo "ANDROIDNDK=$NDK_PATH" >> $GITHUB_ENV
 
       - name: Clean previous APK build
         run: |
@@ -121,7 +133,24 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Restore environment
-        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+        run: |
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          python -m pip install --upgrade pip
+          pip install --user cython==0.29.36 buildozer==1.5.0
+          pip install --user -r requirements.txt
+
+      - name: Restore Android environment
+        run: |
+          export SDK_PATH=/usr/local/lib/android/sdk
+          export NDK_PATH=$SDK_PATH/ndk/25.2.9519653
+          echo "ANDROID_HOME=$SDK_PATH" >> $GITHUB_ENV
+          echo "ANDROID_NDK_HOME=$NDK_PATH" >> $GITHUB_ENV
+          echo "ANDROIDNDK=$NDK_PATH" >> $GITHUB_ENV
+
+      - name: Decode keystore (for AAB)
+        if: ${{ needs.setup-env.outputs.keystore_available == 'true' }}
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 -d > signing.keystore
 
       - name: Prepare buildozer.spec
         run: |
