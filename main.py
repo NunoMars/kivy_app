@@ -75,13 +75,29 @@ class RootScreen(ScreenManager):
     def __init__(self, **kwargs):
         super(RootScreen, self).__init__(**kwargs)
         
-        # Ajouter tous les écrans
-        self.add_widget(SplashScreen())
-        self.add_widget(CardScreen())
-        self.add_widget(CardResponseScreen())
+        # Détecter la plateforme
+        import platform
+        is_android = platform.system() == 'Linux' and hasattr(platform, 'machine') and 'android' in str(platform.machine()).lower()
         
-        # Commencer par le splash screen
-        self.current = "splash_screen"
+        # Ajouter tous les écrans
+        card_screen = CardScreen()
+        card_screen.name = "main_screen"  # Nom explicite pour l'écran principal
+        
+        response_screen = CardResponseScreen() 
+        response_screen.name = "response_screen"
+        
+        self.add_widget(card_screen)
+        self.add_widget(response_screen)
+        
+        # Sur Android : ajouter et commencer par le splash screen
+        # Sur autres plateformes : aller directement au menu principal
+        if is_android:
+            splash_screen = SplashScreen()
+            self.add_widget(splash_screen)
+            self.current = "splash_screen"
+        else:
+            # Sur Windows/Desktop : aller directement au menu principal
+            self.current = "main_screen"
 
 
 class CardScreen(Screen):
@@ -327,13 +343,9 @@ class CardResponseScreen(Screen):
                 keywords = str(cards_signification[self.drawn_card][self.state])
                 self.states_label.text = keywords.upper()  # Mots-clés en MAJUSCULES pour plus d'impact
 
-            if self.state == "a l'envers":
-                image_file_name = f"{self.drawn_card} {self.state}.jpg"
-            else:
-                image_file_name = f"{self.drawn_card}.jpg"
-            image_path = os.path.join(
-                self.path, image_file_name
-            )  # Construct full path
+            # Utiliser le système de mapping pour gérer les accents automatiquement
+            from card_image_mapping import get_card_image_path
+            image_path = get_card_image_path(self.drawn_card, self.state)
 
             # Print the image path for debugging
             # print("Image Path:", image_path)
@@ -574,7 +586,7 @@ class CardResponseScreen(Screen):
     
     def return_to_home(self):
         """Retourne à l'écran d'accueil après reset"""
-        self.manager.current = "hello_screen"
+        self.manager.current = "main_screen"
         self.reset()
 
 
@@ -791,7 +803,7 @@ class SplashScreen(Screen):
     
     def go_to_main(self, dt):
         """Transition vers l'écran principal"""
-        self.manager.current = "hello_screen"
+        self.manager.current = "main_screen"
 
 
 class MaCarteDeTarotApp(App):
