@@ -51,7 +51,8 @@ requirements = python3,kivy==2.2.0,pillow
 #presplash.filename = %(source.dir)s/data/presplash.png
 
 # (str) Icon of the application
-icon.filename = %(source.dir)s/tarot_img/tapis.ico
+# Utilisation de Back.jpg converti en icône (temporaire)
+# icon.filename = %(source.dir)s/tarot_img/tapis.ico
 
 # (list) Supported orientations
 # Valid options are: landscape, portrait, portrait-reverse or landscape-reverse
