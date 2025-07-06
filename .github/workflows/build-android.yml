@@ -100,11 +100,6 @@ jobs:
         
         echo "✅ Android environment configured"
         
-    - name: Run build diagnostic
-      run: |
-        chmod +x diagnostic-build.sh
-        ./diagnostic-build.sh
-        
     - name: Setup Android keystore (if secrets available)
       env:
         ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
