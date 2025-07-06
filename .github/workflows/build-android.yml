@@ -77,8 +77,8 @@ jobs:
       - name: Decode keystore (if available)
         id: check-keystore
         run: |
-          if [ -n "${{ secrets.ANDROID_KEYSTORE }}" ]; then
-            echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 -d > signing.keystore
+          if [ -n "${{ secrets.ANDROID_SIGNING_KEY }}" ]; then
+            echo "${{ secrets.ANDROID_SIGNING_KEY }}" | base64 -d > signing.keystore
             echo "available=true" >> $GITHUB_OUTPUT
           else
             echo "available=false" >> $GITHUB_OUTPUT
@@ -223,7 +223,7 @@ jobs:
       - name: Decode keystore (for AAB)
         if: ${{ needs.setup-env.outputs.keystore_available == 'true' }}
         run: |
-          echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 -d > signing.keystore
+          echo "${{ secrets.ANDROID_SIGNING_KEY }}" | base64 -d > signing.keystore
 
       - name: Prepare buildozer.spec
         run: |
@@ -242,9 +242,9 @@ jobs:
           if [ "${{ needs.setup-env.outputs.keystore_available }}" == "true" ]; then
             echo "🔑 Configuring keystore for release signing"
             sed -i "s|^#*android.release_keystore *=.*|android.release_keystore = %(source.dir)s/signing.keystore|" buildozer.spec
-            sed -i "s|^#*android.release_key *=.*|android.release_key = ${{ secrets.ANDROID_KEY_ALIAS }}|" buildozer.spec
-            sed -i "s|^#*android.release_key_passwd *=.*|android.release_key_passwd = ${{ secrets.ANDROID_KEY_PASSWORD }}|" buildozer.spec
-            sed -i "s|^#*android.release_keystore_passwd *=.*|android.release_keystore_passwd = ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}|" buildozer.spec
+            sed -i "s|^#*android.release_key *=.*|android.release_key = ${{ secrets.KEY_ALIAS }}|" buildozer.spec
+            sed -i "s|^#*android.release_key_passwd *=.*|android.release_key_passwd = ${{ secrets.KEY_PASSWORD }}|" buildozer.spec
+            sed -i "s|^#*android.release_keystore_passwd *=.*|android.release_keystore_passwd = ${{ secrets.KEYSTORE_PASSWORD }}|" buildozer.spec
           else
             echo "⚠️ No keystore available - building unsigned AAB"
           fi

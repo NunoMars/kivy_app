@@ -43,17 +43,14 @@ android.debug_artifact = apk
 # Dépendance gradle simple (nécessaire pour certaines compatibilités internes)
 android.gradle_dependencies = com.android.support:support-v4:28.0.0
 
-# Signature CI/CD — injectée dynamiquement via GitHub Actions (ne pas décommenter ici)
-# android.release_keystore = %(source.dir)s/signing.keystore
-# android.release_keystore_passwd = VOTRE_MOT_DE_PASSE_KEYSTORE
-# android.release_key = upload
-# android.release_key_passwd = VOTRE_MOT_DE_PASSE_CLE
-
-# Signature locale pour builds Windows (décommentez après création du keystore)
-android.release_keystore = %(source.dir)s/release.keystore
-android.release_keystore_passwd = VOTRE_MOT_DE_PASSE_KEYSTORE
+# Signature locale pour Windows (configurée avec le keystore googleplay.keystore)
+# ATTENTION: Ces lignes contiennent des mots de passe en clair - à utiliser uniquement en local
+# Pour CI/CD, ces valeurs sont injectées automatiquement via les secrets GitHub
+android.release_keystore = %(source.dir)s/googleplay.keystore
+android.release_keystore_passwd = nunotheboss
 android.release_key = upload
-android.release_key_passwd = VOTRE_MOT_DE_PASSE_CLE
+android.release_key_passwd = nunotheboss
+
 
 
 [buildozer]
