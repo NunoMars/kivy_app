@@ -258,9 +258,25 @@ jobs:
           rm -rf .buildozer/android/platform/build-*
 
       - name: Build AAB (release)
+        env:
+          # Variables d'environnement pour python-for-android signature
+          P4A_RELEASE_KEYSTORE: ${{ github.workspace }}/signing.keystore
+          P4A_RELEASE_KEYSTORE_PASSWD: ${{ secrets.KEYSTORE_PASSWORD }}
+          P4A_RELEASE_KEYALIAS: ${{ secrets.KEY_ALIAS }}
+          P4A_RELEASE_KEYALIAS_PASSWD: ${{ secrets.KEY_PASSWORD }}
         run: |
           # Enable debug mode for more verbose output
           export BUILDOZER_LOG_LEVEL=2
+          
+          # Vérifier les variables de signature
+          if [ "${{ needs.setup-env.outputs.keystore_available }}" == "true" ]; then
+            echo "🔑 Signature variables set:"
+            echo "P4A_RELEASE_KEYSTORE: $P4A_RELEASE_KEYSTORE"
+            echo "P4A_RELEASE_KEYALIAS: $P4A_RELEASE_KEYALIAS"
+            echo "Keystore exists: $(test -f $P4A_RELEASE_KEYSTORE && echo 'YES' || echo 'NO')"
+          else
+            echo "⚠️ No signing variables - building unsigned"
+          fi
           
           timeout 3600 buildozer android release --verbose || {
             echo "⚠️ First AAB build failed, listing files and retrying with clean"
@@ -310,3 +326,55 @@ jobs:
             aab_build*.log
             .buildozer/**/*.log
           retention-days: 7
+
+      - name: Manual AAB signing (if needed)
+        if: ${{ needs.setup-env.outputs.keystore_available == 'true' }}
+        run: |
+          echo "=== Checking AAB signature status ==="
+          
+          # Trouver le fichier AAB
+          AAB_FILE=$(find . -name "*.aab" -type f | head -1)
+          
+          if [ -z "$AAB_FILE" ]; then
+            echo "❌ No AAB file found"
+            exit 1
+          fi
+          
+          echo "Found AAB: $AAB_FILE"
+          
+          # Vérifier si l'AAB est déjà signé
+          if jarsigner -verify "$AAB_FILE" 2>/dev/null; then
+            echo "✅ AAB is already signed"
+          else
+            echo "⚠️ AAB is not signed, signing manually..."
+            
+            # Copier l'AAB pour signature
+            SIGNED_AAB="${AAB_FILE%.*}-signed.aab"
+            cp "$AAB_FILE" "$SIGNED_AAB"
+            
+            # Signer l'AAB
+            jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
+              -keystore signing.keystore \
+              -storepass "${{ secrets.KEYSTORE_PASSWORD }}" \
+              -keypass "${{ secrets.KEY_PASSWORD }}" \
+              "$SIGNED_AAB" "${{ secrets.KEY_ALIAS }}"
+            
+            if [ $? -eq 0 ]; then
+              echo "✅ AAB signed successfully"
+              
+              # Vérifier la signature
+              if jarsigner -verify -verbose -certs "$SIGNED_AAB"; then
+                echo "✅ Signature verification passed"
+                
+                # Remplacer l'AAB original par la version signée
+                mv "$SIGNED_AAB" "$AAB_FILE"
+                echo "Original AAB replaced with signed version"
+              else
+                echo "❌ Signature verification failed"
+                exit 1
+              fi
+            else
+              echo "❌ AAB signing failed"
+              exit 1
+            fi
+          fi
