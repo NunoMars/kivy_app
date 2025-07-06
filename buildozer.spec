@@ -49,6 +49,12 @@ android.gradle_dependencies = com.android.support:support-v4:28.0.0
 # android.release_key = upload
 # android.release_key_passwd = VOTRE_MOT_DE_PASSE_CLE
 
+# Signature locale pour builds Windows (décommentez après création du keystore)
+android.release_keystore = %(source.dir)s/release.keystore
+android.release_keystore_passwd = VOTRE_MOT_DE_PASSE_KEYSTORE
+android.release_key = upload
+android.release_key_passwd = VOTRE_MOT_DE_PASSE_CLE
+
 
 [buildozer]
 log_level = 2

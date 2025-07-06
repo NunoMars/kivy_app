@@ -3,11 +3,17 @@ __version__ = "0.01"
 import os
 import random
 
+# Supprimer complètement le splash screen Kivy
+os.environ['KIVY_NO_CONSOLELOG'] = '1'
+os.environ['KIVY_NO_FILELOG'] = '1'
+
 # Configuration Kivy pour supprimer le splash screen
 from kivy.config import Config
 Config.set('graphics', 'width', '300')
 Config.set('graphics', 'height', '600')
-# Config.set('graphics', 'resizable', '0')  # Optionnel : fenêtre non redimensionnable
+Config.set('kivy', 'log_level', 'warning')  # Réduire les logs
+Config.set('kivy', 'show_fps', '0')  # Masquer les FPS
+Config.set('graphics', 'show_cursor', '1')  # Garder le curseur
 
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -19,8 +25,6 @@ from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from kivy.animation import Animation
 from kivy.uix.button import Button
-from kivy.core.window import Window
-import math
 
 from signification import cards_signification
 
@@ -153,17 +157,38 @@ class LoadingPopup(Popup):
         self.title_size = "22sp"  # Même taille que le nom de la carte
         self.background = "tarot_img/bg.jpg"
         
+        # Détecter si on est sur Android pour ajuster les tailles
+        import platform
+        is_android = platform.system() == 'Linux' and hasattr(platform, 'machine') and 'android' in str(platform.machine()).lower()
+        
         content_layout = BoxLayout(orientation="vertical", spacing=10, padding=[10, 10, 10, 10])
         
-        # Ajout de la pub en haut (si demandée)
+        # Ajout de la pub en haut (si demandée) - plus petite sur Android
         if show_ad:
-            ad_layout = self.create_ad_banner()
+            ad_layout = self.create_ad_banner(is_android)
             if ad_layout:
                 content_layout.add_widget(ad_layout)
         
-        # GIF de la carte au centre
+        # GIF de la carte au centre - BEAUCOUP plus grand sur Android
         gif_path = os.path.join(os.path.dirname(__file__), "tarot_img", "carte-unscreen.gif")
-        animated_card = Image(source=gif_path, anim_delay=0.05, size_hint=(1, 0.8))  # Animation plus rapide
+        
+        if is_android:
+            # Sur Android : image beaucoup plus grande et popup plus grand
+            self.size_hint = (0.95, 0.9)  # Popup presque plein écran
+            animated_card = Image(
+                source=gif_path, 
+                anim_delay=0.05, 
+                size_hint=(1, 0.75),  # 75% de l'espace pour l'image
+                allow_stretch=True,
+                keep_ratio=True
+            )
+        else:
+            # Sur desktop : tailles normales
+            animated_card = Image(
+                source=gif_path, 
+                anim_delay=0.05, 
+                size_hint=(1, 0.6)
+            )
         
         # Ajouter une animation de pulsation d'opacité seulement
         pulse_anim = Animation(opacity=0.7, duration=1)
@@ -173,11 +198,11 @@ class LoadingPopup(Popup):
         
         content_layout.add_widget(animated_card)
         
-        # Message d'attente en bas avec animation
+        # Message d'attente en bas avec animation - plus petit sur Android
         waiting_label = Label(
             text="Concentration en cours...",
-            size_hint=(1, 0.1),
-            font_size="14sp",
+            size_hint=(1, 0.08 if is_android else 0.1),  # Plus petit sur Android
+            font_size="16sp" if is_android else "14sp",  # Police plus grande sur Android
             color=[0.6, 0.4, 0.2, 1.0],
             halign='center'
         )
@@ -192,7 +217,7 @@ class LoadingPopup(Popup):
         
         self.content = content_layout
     
-    def create_ad_banner(self):
+    def create_ad_banner(self, is_android=False):
         """Crée une bannière publicitaire discrète"""
         # Pour l'instant, simulation d'une pub simple
         # En production, ici vous intégreriez AdMob, etc.
@@ -200,10 +225,10 @@ class LoadingPopup(Popup):
         # Simulation d'une pub thématique simple
         ad_label = Label(
             text="💎 Boutique Cristaux & Minéraux - Livraison gratuite 💎",
-            font_size="12sp",
+            font_size="11sp" if is_android else "12sp",  # Police plus petite sur Android
             color=[0.4, 0.3, 0.6, 1.0],  # Violet discret
             halign='center',
-            size_hint=(1, 0.15),
+            size_hint=(1, 0.10 if is_android else 0.15),  # Plus petit sur Android
             text_size=(None, None)
         )
         
@@ -819,13 +844,19 @@ class MaCarteDeTarotApp(App):
     def build(self):
         """Build the app"""
         self.title = "Ma Carte de Tarot"
-        self.icon = "tarot_img/tapis.ico"
+        self.icon = "tarot_img/icon.png"  # Utiliser la nouvelle icône
         
-        # Supprimer le logo Kivy au démarrage
+        # Supprimer complètement le splash screen et logo Kivy
         from kivy.config import Config
-        Config.set('kivy', 'window_icon', 'tarot_img/tapis.ico')
+        Config.set('kivy', 'window_icon', 'tarot_img/icon.png')
+        Config.set('kivy', 'splash', '0')  # Désactiver le splash
 
         return RootScreen()
+    
+    def on_start(self):
+        """Appelé après le build, quand l'app démarre"""
+        # S'assurer qu'aucun splash n'est visible
+        pass
 
 
 if __name__ == "__main__":
