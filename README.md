@@ -1,28 +1,33 @@
 # 🃏 Ma Carte de Tarot - Application And## 🔐 Configuration des Secrets GitHub
 
+https://play.google.com/apps/internaltest/4699508915394093740
+
 Le projet nécessite les secrets suivants dans GitHub > Settings > Secrets and variables > Actions :
 
-| Secret | Description |
-|--------|-------------|
-| `ANDROID_KEYSTORE` | Clé de signature Android (base64) |
-| `ANDROID_KEYSTORE_PASSWORD` | Mot de passe du keystore |
-| `ANDROID_KEY_ALIAS` | Alias de la clé (ex: release) |
-| `ANDROID_KEY_PASSWORD` | Mot de passe de la clé |
-| `GOOGLE_PLAY_SERVICE_ACCOUNT` | Clé API Google Play (JSON) |
+| Secret                          | Description                        |
+| ------------------------------- | ---------------------------------- |
+| `ANDROID_KEYSTORE`            | Clé de signature Android (base64) |
+| `ANDROID_KEYSTORE_PASSWORD`   | Mot de passe du keystore           |
+| `ANDROID_KEY_ALIAS`           | Alias de la clé (ex: release)     |
+| `ANDROID_KEY_PASSWORD`        | Mot de passe de la clé            |
+| `GOOGLE_PLAY_SERVICE_ACCOUNT` | Clé API Google Play (JSON)        |
 
 ### 🔑 Génération des Clés de Signature
 
 **Linux/macOS :**
+
 ```bash
 ./create_signing_key.sh
 ```
 
 **Windows :**
+
 ```powershell
 .\create_signing_key.ps1
 ```
 
 **Manuel :**
+
 ```bash
 keytool -genkey -v -keystore release.keystore -alias release -keyalg RSA -keysize 2048 -validity 10000
 base64 -w 0 release.keystore  # Pour Linux/macOS
@@ -41,6 +46,7 @@ git push origin v1.0.2
 ```
 
 Le pipeline GitHub Actions se charge automatiquement de :
+
 - Compiler l'application Android (AAB)
 - Signer avec la clé de production
 - Publier sur Google Play Store
@@ -70,13 +76,13 @@ kivy_app/
 
 Le projet nécessite les secrets suivants dans GitHub > Settings > Secrets and variables > Actions :
 
-| Secret | Description |
-|--------|-------------|
-| `ANDROID_KEYSTORE` | Clé de signature Android (base64) |
-| `ANDROID_KEYSTORE_PASSWORD` | Mot de passe du keystore |
-| `ANDROID_KEY_ALIAS` | Alias de la clé (ex: googleplay) |
-| `ANDROID_KEY_PASSWORD` | Mot de passe de la clé |
-| `GOOGLE_PLAY_SERVICE_ACCOUNT` | Clé API Google Play (JSON) |
+| Secret                          | Description                        |
+| ------------------------------- | ---------------------------------- |
+| `ANDROID_KEYSTORE`            | Clé de signature Android (base64) |
+| `ANDROID_KEYSTORE_PASSWORD`   | Mot de passe du keystore           |
+| `ANDROID_KEY_ALIAS`           | Alias de la clé (ex: googleplay)  |
+| `ANDROID_KEY_PASSWORD`        | Mot de passe de la clé            |
+| `GOOGLE_PLAY_SERVICE_ACCOUNT` | Clé API Google Play (JSON)        |
 
 ## 📱 Workflow Automatique
 
@@ -89,6 +95,7 @@ Le projet nécessite les secrets suivants dans GitHub > Settings > Secrets and v
 ## 🌐 Site Web
 
 Le projet inclut un site web accessible via GitHub Pages :
+
 - **Page d'accueil :** Présentation de l'application
 - **Politique de confidentialité :** Conformité RGPD
 - **Support utilisateur :** Contact et documentation
@@ -96,7 +103,7 @@ Le projet inclut un site web accessible via GitHub Pages :
 ## 🎯 Fonctionnalités
 
 - ✅ Application Kivy fonctionnelle avec Tarot de Marseille
-- ✅ Pipeline CI/CD entièrement automatisé  
+- ✅ Pipeline CI/CD entièrement automatisé
 - ✅ Build AAB optimisé (Android API 34)
 - ✅ Signature automatique avec clé de production
 - ✅ Publication automatique sur Google Play Console
