@@ -18,7 +18,7 @@ version = 1.6
 requirements = python3,kivy==2.2.0,pillow
 
 icon.filename = %(source.dir)s/tarot_img/icon.png
-orientation = all
+# orientation = portrait
 
 fullscreen = 0
 
