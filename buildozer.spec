@@ -13,7 +13,7 @@ source.include_exts = py,png,jpg,gif,kv,atlas
 source.exclude_exts = spec,md,txt
 source.exclude_dirs = tests, bin, venv, .github, __pycache__, .git, .vscode, guides
 
-version = 1.4
+version = 1.5
 
 requirements = python3,kivy==2.2.0,pillow
 
@@ -25,7 +25,7 @@ fullscreen = 0
 author = © Nuno Marcelino Copyright Info
 
 # Android spécificités
-android.api = 33
+android.api = 34
 android.minapi = 21
 android.ndk = 25c
 android.ndk_api = 21
