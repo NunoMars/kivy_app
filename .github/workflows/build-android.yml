@@ -123,7 +123,6 @@ jobs:
             python-for-android \
             pyjnius \
             plyer \
-            android \
             sh \
             colorama \
             appdirs \
