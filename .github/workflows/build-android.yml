@@ -141,8 +141,7 @@ jobs:
             numpy \
             setuptools-scm \
             toml \
-            packaging \
-            distutils-extra
+            packaging
           
           echo "$HOME/.local/bin" >> $GITHUB_PATH
           
