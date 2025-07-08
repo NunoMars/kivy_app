@@ -1,16 +1,7 @@
 [app]
 
 title = Ma Carte De Tarot
-pacandroid.allow_resize = True
-android.resizeableActivity = True
-
-## Format d'export (géré par le workflow)
-
-## Dépendances gradle avec versions récentes (Play Store compliance)
-android.gradle_dependencies = androidx.annotation:annotation:1.6.0, androidx.fragment:fragment:1.5.7
-
-
-[buildozer]detarot
+package.name = macartedetarot
 package.domain = org.tarot
 source.dir = .
 
@@ -49,7 +40,7 @@ android.logcat_filters = *:S python:D
 android.allow_resize = True
 android.resizeableActivity = True
 
-## Format d’export (géré par le workflow)
+## Format d'export (géré par le workflow)
 
 ## Dépendances gradle avec versions récentes (Play Store compliance)
 android.gradle_dependencies = androidx.annotation:annotation:1.6.0, androidx.fragment:fragment:1.5.7
