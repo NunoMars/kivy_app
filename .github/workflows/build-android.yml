@@ -1,4 +1,4 @@
-name: Build Android APK & AAB (Enhanced Cache)
+name: Build Android APK & AAB (Optimized)
 
 on:
   push:
@@ -20,28 +20,34 @@ on:
   workflow_dispatch:
 
 env:
-  PYTHON_VERSION: '3.10'
+  PYTHON_VERSION: '3.11'
   JAVA_VERSION: '17'
-  CYTHON_VERSION: '0.29.36'
+  CYTHON_VERSION: '3.0.10'
   BUILDOZER_VERSION: '1.5.0'
   ANDROID_API_LEVEL: '34'
   NDK_VERSION: '25.2.9519653'
+  BUILD_TOOLS_VERSION: '34.0.0'
+  CMAKE_VERSION: '3.22.1'
 
 jobs:
   build-android:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
+      fail-fast: false
       matrix:
         build_type: ['apk', 'aab']
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - name: Set up Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
 
       - name: Set up Java ${{ env.JAVA_VERSION }}
         uses: actions/setup-java@v4
@@ -49,7 +55,7 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ env.JAVA_VERSION }}
 
-      # Cache système pour les dépendances Python
+      # Cache amélioré pour les dépendances Python
       - name: Cache Python dependencies
         uses: actions/cache@v4
         with:
@@ -57,313 +63,297 @@ jobs:
             ~/.cache/pip
             ~/.local/lib/python*/site-packages
             ~/.local/bin
-          key: ${{ runner.os }}-python-deps-${{ env.PYTHON_VERSION }}-${{ hashFiles('requirements.txt') }}-${{ env.CYTHON_VERSION }}-${{ env.BUILDOZER_VERSION }}-v3
+          key: ${{ runner.os }}-python-${{ env.PYTHON_VERSION }}-${{ hashFiles('requirements.txt') }}-${{ env.CYTHON_VERSION }}-${{ env.BUILDOZER_VERSION }}-v4
           restore-keys: |
-            ${{ runner.os }}-python-deps-${{ env.PYTHON_VERSION }}-
-            ${{ runner.os }}-python-deps-
+            ${{ runner.os }}-python-${{ env.PYTHON_VERSION }}-${{ hashFiles('requirements.txt') }}-
+            ${{ runner.os }}-python-${{ env.PYTHON_VERSION }}-
 
-      # Cache pour buildozer et ses artefacts
+      # Cache Buildozer global optimisé
       - name: Cache Buildozer global
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.buildozer
-          key: ${{ runner.os }}-buildozer-global-${{ env.ANDROID_API_LEVEL }}-${{ env.NDK_VERSION }}-v2
+          path: ~/.buildozer
+          key: ${{ runner.os }}-buildozer-${{ env.ANDROID_API_LEVEL }}-${{ env.NDK_VERSION }}-${{ env.BUILD_TOOLS_VERSION }}-v3
           restore-keys: |
-            ${{ runner.os }}-buildozer-global-
+            ${{ runner.os }}-buildozer-${{ env.ANDROID_API_LEVEL }}-${{ env.NDK_VERSION }}-
+            ${{ runner.os }}-buildozer-${{ env.ANDROID_API_LEVEL }}-
 
-      # Cache pour les dépendances Android
-      - name: Cache Android dependencies
+      # Cache Android SDK/NDK plus spécifique
+      - name: Cache Android SDK/NDK
         uses: actions/cache@v4
         with:
           path: |
-            .buildozer/android/platform/android-sdk
-            .buildozer/android/platform/android-ndk
-            .buildozer/android/platform/apache-ant
-          key: ${{ runner.os }}-android-deps-${{ env.ANDROID_API_LEVEL }}-${{ env.NDK_VERSION }}-v2
+            ~/.android/sdk
+            ~/.android/ndk
+            /usr/local/lib/android/sdk
+          key: ${{ runner.os }}-android-sdk-${{ env.ANDROID_API_LEVEL }}-${{ env.NDK_VERSION }}-${{ env.BUILD_TOOLS_VERSION }}-v3
           restore-keys: |
-            ${{ runner.os }}-android-deps-
+            ${{ runner.os }}-android-sdk-${{ env.ANDROID_API_LEVEL }}-${{ env.NDK_VERSION }}-
+            ${{ runner.os }}-android-sdk-${{ env.ANDROID_API_LEVEL }}-
 
-      # Cache pour les recipes python-for-android
-      - name: Cache python-for-android recipes
+      # Cache P4A plus granulaire
+      - name: Cache python-for-android
         uses: actions/cache@v4
         with:
           path: |
-            .buildozer/android/platform/python-for-android
             ~/.cache/python-for-android
-          key: ${{ runner.os }}-p4a-recipes-${{ hashFiles('requirements.txt') }}-v2
+            .buildozer/android/platform/python-for-android
+          key: ${{ runner.os }}-p4a-${{ hashFiles('requirements.txt') }}-${{ env.PYTHON_VERSION }}-${{ env.ANDROID_API_LEVEL }}-v3
           restore-keys: |
-            ${{ runner.os }}-p4a-recipes-
+            ${{ runner.os }}-p4a-${{ hashFiles('requirements.txt') }}-${{ env.PYTHON_VERSION }}-
+            ${{ runner.os }}-p4a-${{ hashFiles('requirements.txt') }}-
 
-      - name: Install system packages
-        run: |
-          sudo apt update
-          sudo apt install -y \
-            build-essential git zip unzip libbz2-dev libsqlite3-dev libssl-dev \
-            libffi-dev libncurses5-dev libgdbm-dev autotools-dev automake autoconf \
-            libtool pkg-config zlib1g-dev libltdl-dev python3-setuptools python3-wheel \
-            gcc-multilib g++-multilib libncursesw5-dev libreadline-dev \
-            libc6-dev libffi-dev libgmp-dev libmpfr-dev libmpc-dev \
-            libc6-dev-i386 lib32z1 lib32ncurses-dev
+      # Cache des sources compilées
+      - name: Cache build artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            .buildozer/android/platform/build-*
+            .buildozer/android/dists
+          key: ${{ runner.os }}-build-${{ matrix.build_type }}-${{ hashFiles('**/*.py', '**/*.kv', 'requirements.txt', 'buildozer.spec') }}-v2
+          restore-keys: |
+            ${{ runner.os }}-build-${{ matrix.build_type }}-
+            ${{ runner.os }}-build-
 
-      - name: Install and cache Python packages
+      - name: Install system dependencies
         run: |
-          python -m pip install --upgrade pip setuptools wheel
-          
-          # Installation des dépendances de base
-          pip install --user cython==${{ env.CYTHON_VERSION }}
-          pip install --user buildozer==${{ env.BUILDOZER_VERSION }}
-          
-          # Installation des dépendances du projet
-          pip install --user -r requirements.txt
-          
-          # Pré-installation des dépendances python-for-android pour éviter les erreurs réseau
-          echo "📦 Installing python-for-android dependencies..."
-          pip install --user \
-            python-for-android \
-            pyjnius \
-            plyer \
-            sh \
-            colorama \
-            appdirs \
-            six \
-            jinja2 \
-            requests \
-            urllib3 \
-            certifi \
-            charset-normalizer \
-            idna
-          
-          # Installation des recipes couramment utilisés
-          echo "🔧 Pre-installing common p4a recipes dependencies..."
-          pip install --user \
-            pillow \
-            numpy \
-            setuptools-scm \
-            toml \
-            packaging
-          
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-          
-          # Vérification des installations
-          echo "✅ Installed packages:"
-          pip list --user | grep -E "(cython|buildozer|python-for-android|pyjnius|plyer)"
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            build-essential git zip unzip openjdk-17-jdk \
+            python3-pip python3-setuptools python3-wheel python3-dev \
+            libffi-dev libssl-dev zlib1g-dev libbz2-dev libsqlite3-dev \
+            libncurses5-dev libgdbm-dev liblzma-dev tk-dev \
+            autotools-dev automake autoconf libtool pkg-config \
+            ccache \
+            cmake ninja-build
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          api-level: ${{ env.ANDROID_API_LEVEL }}
+          build-tools: ${{ env.BUILD_TOOLS_VERSION }}
+          ndk-version: ${{ env.NDK_VERSION }}
+          cmake-version: ${{ env.CMAKE_VERSION }}
+          cmdline-tools-version: 12266719
+          packages: 'platform-tools tools'
 
       - name: Configure Android environment
         run: |
-          export SDK_PATH=/usr/local/lib/android/sdk
-          export NDK_PATH=$SDK_PATH/ndk/${{ env.NDK_VERSION }}
+          # Variables d'environnement Android
+          echo "ANDROID_HOME=$ANDROID_HOME" >> $GITHUB_ENV
+          echo "ANDROID_SDK_ROOT=$ANDROID_HOME" >> $GITHUB_ENV
+          echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/${{ env.NDK_VERSION }}" >> $GITHUB_ENV
+          echo "ANDROIDNDK=$ANDROID_HOME/ndk/${{ env.NDK_VERSION }}" >> $GITHUB_ENV
+          echo "ANDROID_NDK_ROOT=$ANDROID_HOME/ndk/${{ env.NDK_VERSION }}" >> $GITHUB_ENV
+          
+          # Configuration des outils
+          echo "$ANDROID_HOME/cmdline-tools/latest/bin" >> $GITHUB_PATH
+          echo "$ANDROID_HOME/platform-tools" >> $GITHUB_PATH
+          
+          # Accepter les licences
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses >/dev/null 2>&1
 
-          echo "ANDROID_HOME=$SDK_PATH" >> $GITHUB_ENV
-          echo "ANDROID_NDK_HOME=$NDK_PATH" >> $GITHUB_ENV
-          echo "ANDROIDNDK=$NDK_PATH" >> $GITHUB_ENV
-          echo "ANDROID_SDK_ROOT=$SDK_PATH" >> $GITHUB_ENV
-
-          sudo mkdir -p $SDK_PATH/tools/bin
-          sudo ln -sf $SDK_PATH/cmdline-tools/latest/bin/sdkmanager $SDK_PATH/tools/bin/sdkmanager
-          sudo ln -sf $SDK_PATH/cmdline-tools/latest/bin/avdmanager $SDK_PATH/tools/bin/avdmanager
-
-          yes | $SDK_PATH/cmdline-tools/latest/bin/sdkmanager --licenses
-          $SDK_PATH/cmdline-tools/latest/bin/sdkmanager \
-            "platforms;android-${{ env.ANDROID_API_LEVEL }}" "platforms;android-33" \
-            "build-tools;${{ env.ANDROID_API_LEVEL }}.0.0" "build-tools;33.0.2" \
-            "ndk;${{ env.NDK_VERSION }}" \
-            "cmake;3.22.1" \
-            "platform-tools"
-
-      - name: Pre-install p4a dependencies offline
+      - name: Install Python dependencies
         run: |
-          echo "📥 Pre-installing python-for-android dependencies..."
+          python -m pip install --upgrade pip setuptools wheel
           
-          # Créer le répertoire de cache p4a
-          mkdir -p ~/.cache/python-for-android
+          # Installation avec cache et optimisations
+          pip install --user --no-warn-script-location \
+            cython==${{ env.CYTHON_VERSION }} \
+            buildozer==${{ env.BUILDOZER_VERSION }}
           
-          # Installer les dépendances supplémentaires pour éviter les échecs de build
-          pip install --user \
-            setuptools-scm \
-            wheel \
-            cython \
+          # Installation des dépendances du projet
+          if [ -f requirements.txt ]; then
+            pip install --user --no-warn-script-location -r requirements.txt
+          fi
+          
+          # Dépendances P4A communes
+          pip install --user --no-warn-script-location \
+            python-for-android \
+            colorama \
+            appdirs \
             jinja2 \
-            six \
-            enum34 || true
+            sh \
+            pyjnius \
+            plyer
           
-          # Pré-télécharger les sources NDK communes si possible
-          echo "📦 Checking for cached NDK sources..."
-          ls -la ~/.buildozer/ || echo "No global buildozer cache yet"
+          # Ajouter ~/.local/bin au PATH
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          
+          # Vérification
+          echo "=== Installed packages ==="
+          pip list --user | grep -E "(cython|buildozer|python-for-android)"
 
-      - name: Decode keystore (if available)
-        id: check-keystore
+      - name: Decode keystore
+        id: keystore
+        if: matrix.build_type == 'aab'
         run: |
-          if [ -n "${{ secrets.ANDROID_SIGNING_KEY }}" ] && [ "${{ matrix.build_type }}" == "aab" ]; then
+          if [ -n "${{ secrets.ANDROID_SIGNING_KEY }}" ]; then
             echo "${{ secrets.ANDROID_SIGNING_KEY }}" | base64 -d > signing.keystore
             echo "available=true" >> $GITHUB_OUTPUT
-            echo "🔑 Keystore decoded for AAB signing"
+            echo "🔑 Keystore decoded successfully"
           else
             echo "available=false" >> $GITHUB_OUTPUT
-            if [ "${{ matrix.build_type }}" == "aab" ]; then
-              echo "⚠️ No keystore available - building unsigned AAB"
-            else
-              echo "ℹ️ APK build - no keystore needed"
-            fi
+            echo "⚠️ No keystore available - building unsigned AAB"
           fi
 
-      - name: Prepare buildozer.spec for ${{ matrix.build_type }}
+      - name: Configure buildozer.spec
         run: |
           echo "=== Configuring buildozer.spec for ${{ matrix.build_type }} ==="
           
-          # Backup original
-          cp buildozer.spec buildozer.spec.bak
+          # Sauvegarde
+          cp buildozer.spec buildozer.spec.backup
           
-          # Configuration de base
-          sed -i "s|^#*android.archs *=.*|android.archs = arm64-v8a|" buildozer.spec
-          sed -i "s|^#*android.api *=.*|android.api = ${{ env.ANDROID_API_LEVEL }}|" buildozer.spec
-          sed -i "s|^#*android.ndk *=.*|android.ndk = ${{ env.NDK_VERSION }}|" buildozer.spec
+          # Configuration Android
+          sed -i "s/^#*android.archs.*/android.archs = arm64-v8a, armeabi-v7a/" buildozer.spec
+          sed -i "s/^#*android.api.*/android.api = ${{ env.ANDROID_API_LEVEL }}/" buildozer.spec
+          sed -i "s/^#*android.ndk.*/android.ndk = ${{ env.NDK_VERSION }}/" buildozer.spec
+          sed -i "s/^#*android.sdk.*/android.sdk = ${{ env.ANDROID_API_LEVEL }}/" buildozer.spec
           
+          # Configuration spécifique au type de build
           if [ "${{ matrix.build_type }}" == "aab" ]; then
-            echo "📦 Configuring for AAB release build"
-            sed -i "s|^#*android.release_artifact *=.*|android.release_artifact = aab|" buildozer.spec
+            echo "📦 Configuring for AAB build"
+            sed -i "s/^#*android.release_artifact.*/android.release_artifact = aab/" buildozer.spec
             
             # Configuration keystore si disponible
-            if [ "${{ steps.check-keystore.outputs.available }}" == "true" ]; then
-              echo "🔑 Configuring keystore for release signing"
-              sed -i "s|^#*android.release_keystore *=.*|android.release_keystore = %(source.dir)s/signing.keystore|" buildozer.spec
-              sed -i "s|^#*android.release_key *=.*|android.release_key = ${{ secrets.KEY_ALIAS }}|" buildozer.spec
-              sed -i "s|^#*android.release_key_passwd *=.*|android.release_key_passwd = ${{ secrets.KEY_PASSWORD }}|" buildozer.spec
-              sed -i "s|^#*android.release_keystore_passwd *=.*|android.release_keystore_passwd = ${{ secrets.KEYSTORE_PASSWORD }}|" buildozer.spec
+            if [ "${{ steps.keystore.outputs.available }}" == "true" ]; then
+              echo "🔑 Configuring release signing"
+              {
+                echo "android.release_keystore = %(source.dir)s/signing.keystore"
+                echo "android.release_keyalias = ${{ secrets.KEY_ALIAS }}"
+                echo "android.release_keystore_passwd = ${{ secrets.KEYSTORE_PASSWORD }}"
+                echo "android.release_keyalias_passwd = ${{ secrets.KEY_PASSWORD }}"
+              } >> buildozer.spec
             fi
           else
-            echo "📱 Configuring for APK debug build"
-            sed -i "s|^#*android.release_artifact *=.*|android.release_artifact = apk|" buildozer.spec
+            echo "📱 Configuring for APK build"
+            sed -i "s/^#*android.release_artifact.*/android.release_artifact = apk/" buildozer.spec
           fi
           
-          echo "=== Final buildozer.spec configuration ==="
-          cat buildozer.spec
-
-      - name: Clean previous builds
-        run: |
-          echo "🧹 Cleaning previous builds for ${{ matrix.build_type }}"
-          buildozer android clean || true
-          rm -rf bin/
+          # Optimisations de build
+          sed -i "s/^#*android.gradle_dependencies.*/android.gradle_dependencies = /" buildozer.spec
+          sed -i "s/^#*android.gradle_plugins.*/android.gradle_plugins = /" buildozer.spec
           
-          # Nettoyer uniquement les builds, pas les caches
-          rm -rf .buildozer/android/platform/build-*
-          rm -rf .buildozer/android/app
+          echo "=== buildozer.spec configured ==="
+
+      - name: Pre-build setup
+        run: |
+          echo "🔧 Pre-build setup for ${{ matrix.build_type }}"
+          
+          # Créer les répertoires nécessaires
+          mkdir -p .buildozer/android/platform
+          mkdir -p bin
+          
+          # Vérifier les caches
+          echo "=== Cache status ==="
+          echo "Buildozer cache: $(du -sh ~/.buildozer 2>/dev/null || echo '0B')"
+          echo "P4A cache: $(du -sh ~/.cache/python-for-android 2>/dev/null || echo '0B')"
+          echo "Android SDK: $(du -sh $ANDROID_HOME 2>/dev/null || echo '0B')"
 
       - name: Build ${{ matrix.build_type }}
+        timeout-minutes: 120
         env:
           BUILDOZER_LOG_LEVEL: 2
           P4A_RELEASE_KEYSTORE: ${{ github.workspace }}/signing.keystore
           P4A_RELEASE_KEYSTORE_PASSWD: ${{ secrets.KEYSTORE_PASSWORD }}
           P4A_RELEASE_KEYALIAS: ${{ secrets.KEY_ALIAS }}
           P4A_RELEASE_KEYALIAS_PASSWD: ${{ secrets.KEY_PASSWORD }}
-          # Variables pour éviter les timeouts réseau
-          PIP_TIMEOUT: 300
-          PIP_RETRIES: 3
-          PIP_DEFAULT_TIMEOUT: 300
+          GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true"
+          ANDROID_NDK_HOME: ${{ env.ANDROID_NDK_HOME }}
+          JAVA_OPTS: "-Xmx4g"
         run: |
-          echo "🚀 Starting ${{ matrix.build_type }} build with enhanced caching"
+          echo "🚀 Building ${{ matrix.build_type }}"
           
-          # Vérification de l'environnement
-          echo "=== Build Environment ==="
+          # Afficher l'environnement
+          echo "=== Environment ==="
           echo "Python: $(python --version)"
-          echo "Buildozer: $(buildozer version)"
           echo "Java: $(java -version 2>&1 | head -1)"
+          echo "Buildozer: $(buildozer version)"
           echo "Android Home: $ANDROID_HOME"
           echo "Android NDK: $ANDROID_NDK_HOME"
+          echo "Available space: $(df -h . | tail -1)"
           
-          # Vérification des caches
-          echo "=== Cache Status ==="
-          echo "Python packages cache: $(ls -la ~/.cache/pip | wc -l) files"
-          echo "Buildozer global cache: $(ls -la ~/.buildozer 2>/dev/null | wc -l || echo 0) files"
-          echo "P4A cache: $(ls -la ~/.cache/python-for-android 2>/dev/null | wc -l || echo 0) files"
+          # Build avec gestion d'erreurs
+          set -e
           
-          # Build avec timeout et retry
           if [ "${{ matrix.build_type }}" == "aab" ]; then
             echo "📦 Building AAB (release)"
-            timeout 7200 buildozer android release --verbose || {
-              echo "⚠️ First AAB build attempt failed, retrying with fresh p4a bootstrap"
-              rm -rf .buildozer/android/platform/python-for-android
-              timeout 7200 buildozer android release --verbose
-            }
+            buildozer android release
           else
             echo "📱 Building APK (debug)"
-            timeout 7200 buildozer android debug --verbose || {
-              echo "⚠️ First APK build attempt failed, retrying with fresh p4a bootstrap"
-              rm -rf .buildozer/android/platform/python-for-android
-              timeout 7200 buildozer android debug --verbose
-            }
+            buildozer android debug
           fi
+          
+          echo "✅ Build completed successfully"
 
-      - name: Verify build output
-        if: always()
+      - name: Verify build artifacts
         run: |
-          echo "=== Build Verification ==="
-          echo "Directory contents:"
-          ls -la
+          echo "=== Build verification ==="
           
-          echo "bin/ contents:"
-          ls -la bin/ || echo "No bin directory found"
-          
-          echo "Searching for build artifacts:"
-          if [ "${{ matrix.build_type }}" == "aab" ]; then
-            find . -name "*.aab" -type f 2>/dev/null || echo "No AAB files found"
-          else
-            find . -name "*.apk" -type f 2>/dev/null || echo "No APK files found"
-          fi
+          # Lister les fichiers générés
+          echo "Generated files:"
+          find . -name "*.${{ matrix.build_type }}" -type f -exec ls -lh {} \; || echo "No ${{ matrix.build_type }} files found"
           
           # Vérifier la signature pour AAB
-          if [ "${{ matrix.build_type }}" == "aab" ] && [ "${{ steps.check-keystore.outputs.available }}" == "true" ]; then
+          if [ "${{ matrix.build_type }}" == "aab" ] && [ "${{ steps.keystore.outputs.available }}" == "true" ]; then
             AAB_FILE=$(find . -name "*.aab" -type f | head -1)
             if [ -n "$AAB_FILE" ]; then
-              echo "=== AAB Signature Verification ==="
-              if jarsigner -verify "$AAB_FILE" 2>/dev/null; then
-                echo "✅ AAB is properly signed"
+              echo "=== AAB signature verification ==="
+              if command -v jarsigner >/dev/null 2>&1; then
+                jarsigner -verify -verbose "$AAB_FILE" || echo "⚠️ Signature verification failed"
               else
-                echo "⚠️ AAB signature verification failed"
+                echo "ℹ️ jarsigner not available for signature verification"
               fi
             fi
           fi
 
-      - name: Upload ${{ matrix.build_type }} artifact
+      - name: Upload build artifact
         uses: actions/upload-artifact@v4
+        if: success()
         with:
-          name: android-${{ matrix.build_type }}-${{ matrix.build_type == 'aab' && 'release' || 'debug' }}
-          path: |
-            bin/*.${{ matrix.build_type }}
+          name: ${{ matrix.build_type }}-${{ github.run_number }}
+          path: bin/*.${{ matrix.build_type }}
           retention-days: ${{ matrix.build_type == 'aab' && 90 || 30 }}
-          if-no-files-found: warn
 
-      - name: Upload build logs (on failure)
-        if: failure()
+      - name: Upload logs on failure
         uses: actions/upload-artifact@v4
+        if: failure()
         with:
-          name: build-logs-${{ matrix.build_type }}
+          name: build-logs-${{ matrix.build_type }}-${{ github.run_number }}
           path: |
             .buildozer/**/*.log
-            buildozer.spec.bak
+            buildozer.spec.backup
+            buildozer.spec
           retention-days: 7
 
-  # Job de résumé pour afficher les résultats
-  build-summary:
+  # Notification et résumé
+  notify-results:
     needs: build-android
     runs-on: ubuntu-latest
     if: always()
+    
     steps:
-      - name: Build Summary
+      - name: Build summary
         run: |
           echo "=== Build Summary ==="
-          echo "Build Status: ${{ needs.build-android.result }}"
+          
+          APK_STATUS="${{ needs.build-android.outputs.apk-status || 'unknown' }}"
+          AAB_STATUS="${{ needs.build-android.outputs.aab-status || 'unknown' }}"
+          
+          echo "📱 APK Build: $APK_STATUS"
+          echo "📦 AAB Build: $AAB_STATUS"
           
           if [ "${{ needs.build-android.result }}" == "success" ]; then
             echo "✅ All builds completed successfully!"
             echo ""
-            echo "📱 APK ready for testing"
-            echo "📦 AAB ready for Play Store upload"
-            echo ""
             echo "Next steps:"
-            echo "1. Download artifacts from the Actions tab"
+            echo "1. Download artifacts from Actions tab"
             echo "2. Test APK on device"
-            echo "3. Upload AAB to Play Console"
+            echo "3. Upload AAB to Google Play Console"
           else
-            echo "❌ Some builds failed - check logs above"
+            echo "❌ Build failed - check logs for details"
+            echo "💡 Common solutions:"
+            echo "  - Clear caches and retry"
+            echo "  - Check buildozer.spec configuration"
+            echo "  - Verify requirements.txt dependencies"
           fi
