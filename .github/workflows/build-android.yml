@@ -155,8 +155,29 @@ jobs:
           if [ ! -L ~/.buildozer/android/platform/android-sdk ]; then
             ln -sf $ANDROID_HOME ~/.buildozer/android/platform/android-sdk
           fi
-          if [ ! -L ~/.buildozer/android/platform/android-ndk-r${{ env.NDK_VERSION }} ]; then
-            ln -sf $ANDROID_HOME/ndk/${{ env.NDK_VERSION }} ~/.buildozer/android/platform/android-ndk-r${{ env.NDK_VERSION }}
+          
+          # Créer plusieurs liens pour le NDK pour couvrir tous les formats attendus
+          NDK_PATH="$ANDROID_HOME/ndk/${{ env.NDK_VERSION }}"
+          if [ -d "$NDK_PATH" ]; then
+            # Format principal attendu par buildozer
+            if [ ! -L ~/.buildozer/android/platform/android-ndk-r${{ env.NDK_VERSION }} ]; then
+              ln -sf "$NDK_PATH" ~/.buildozer/android/platform/android-ndk-r${{ env.NDK_VERSION }}
+            fi
+            # Format alternatif
+            if [ ! -L ~/.buildozer/android/platform/android-ndk-${{ env.NDK_VERSION }} ]; then
+              ln -sf "$NDK_PATH" ~/.buildozer/android/platform/android-ndk-${{ env.NDK_VERSION }}
+            fi
+            # Format court (version recommandée 25b)
+            if [ ! -L ~/.buildozer/android/platform/android-ndk-r25b ]; then
+              ln -sf "$NDK_PATH" ~/.buildozer/android/platform/android-ndk-r25b
+            fi
+            # Format générique
+            if [ ! -L ~/.buildozer/android/platform/android-ndk ]; then
+              ln -sf "$NDK_PATH" ~/.buildozer/android/platform/android-ndk
+            fi
+            echo "✅ NDK links created successfully"
+          else
+            echo "❌ NDK not found at $NDK_PATH"
           fi
           
           # Accepter les licences
@@ -239,10 +260,14 @@ jobs:
           sed -i '/^android.api = /a android.ndk = ${{ env.NDK_VERSION }}' buildozer.spec
           sed -i '/^android.ndk = /a android.sdk = ${{ env.ANDROID_API_LEVEL }}' buildozer.spec
           
+          # Forcer l'utilisation du NDK pré-installé 
+          sed -i '/^android.sdk = /a android.ndk_path = ~/.buildozer/android/platform/android-ndk-r${{ env.NDK_VERSION }}' buildozer.spec
+          sed -i '/^android.ndk_path = /a android.sdk_path = ~/.buildozer/android/platform/android-sdk' buildozer.spec
+          
           # Configuration spécifique au type de build
           if [ "${{ matrix.build_type }}" == "aab" ]; then
             echo "📦 Configuring for AAB build"
-            sed -i '/^android.sdk = /a android.release_artifact = aab' buildozer.spec
+            sed -i '/^android.sdk_path = /a android.release_artifact = aab' buildozer.spec
             
             # Configuration keystore si disponible
             if [ "${{ steps.keystore.outputs.available }}" == "true" ]; then
@@ -254,7 +279,7 @@ jobs:
             fi
           else
             echo "📱 Configuring for APK build"
-            sed -i '/^android.sdk = /a android.release_artifact = apk' buildozer.spec
+            sed -i '/^android.sdk_path = /a android.release_artifact = apk' buildozer.spec
           fi
           
           echo "=== buildozer.spec configured ==="
@@ -275,7 +300,12 @@ jobs:
           echo "Android SDK: $(ls -la $ANDROID_HOME 2>/dev/null || echo 'Not found')"
           echo "Android NDK: $(ls -la $ANDROID_HOME/ndk/${{ env.NDK_VERSION }} 2>/dev/null || echo 'Not found')"
           echo "Buildozer SDK link: $(ls -la ~/.buildozer/android/platform/android-sdk 2>/dev/null || echo 'Not found')"
-          echo "Buildozer NDK link: $(ls -la ~/.buildozer/android/platform/android-ndk-r${{ env.NDK_VERSION }} 2>/dev/null || echo 'Not found')"
+          echo "Buildozer NDK links:"
+          ls -la ~/.buildozer/android/platform/android-ndk* 2>/dev/null || echo 'No NDK links found'
+          
+          # Lister tous les NDK disponibles
+          echo "Available NDK versions:"
+          ls -la $ANDROID_HOME/ndk/ 2>/dev/null || echo 'No NDK directory found'
           
           # Vérifier les caches
           echo "=== Cache status ==="
