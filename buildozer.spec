@@ -13,12 +13,12 @@ source.include_exts = py,png,jpg,gif,kv,atlas
 source.exclude_exts = spec,md,txt
 source.exclude_dirs = tests, bin, venv, .github, __pycache__, .git, .vscode, guides
 
-version = 1.6
+version = 1.6.1
 
 requirements = python3,kivy==2.2.0,pillow
 
 icon.filename = %(source.dir)s/tarot_img/icon.png
-# orientation = portrait
+orientation = portrait
 
 fullscreen = 0
 
@@ -46,7 +46,7 @@ android.release_artifact = aab
 android.debug_artifact = apk
 
 # Dépendances gradle avec versions récentes (Play Store compliance)
-android.gradle_dependencies = androidx.annotation:annotation:1.7.1, androidx.fragment:fragment:1.6.2, com.android.support:support-v4:28.0.0
+android.gradle_dependencies = androidx.annotation:annotation:1.6.0, androidx.fragment:fragment:1.5.7
 
 # Signature locale pour Windows (configurée avec le keystore googleplay.keystore)
 # ATTENTION: Ces lignes contiennent des mots de passe en clair - à utiliser uniquement en local
