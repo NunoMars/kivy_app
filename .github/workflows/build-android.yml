@@ -156,12 +156,70 @@ jobs:
           if [ ! -d ~/.buildozer/android/platform/android-sdk ]; then
             echo "📁 Copying Android SDK to buildozer location..."
             cp -r $ANDROID_HOME ~/.buildozer/android/platform/android-sdk
-            
-            # Créer les liens symboliques pour les outils dans l'ancien format
-            if [ -d ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest ]; then
-              mkdir -p ~/.buildozer/android/platform/android-sdk/tools/bin
-              ln -sf ../../cmdline-tools/latest/bin/* ~/.buildozer/android/platform/android-sdk/tools/bin/ || true
+          fi
+          
+          # Créer la structure des outils pour compatibilité buildozer
+          echo "🔧 Creating tools compatibility structure..."
+          mkdir -p ~/.buildozer/android/platform/android-sdk/tools/bin
+          
+          # Créer les liens symboliques vers les nouveaux outils
+          if [ -d ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin ]; then
+            # Lien vers sdkmanager
+            ln -sf ../../cmdline-tools/latest/bin/sdkmanager ~/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager || true
+            # Lien vers avdmanager
+            ln -sf ../../cmdline-tools/latest/bin/avdmanager ~/.buildozer/android/platform/android-sdk/tools/bin/avdmanager || true
+            echo "✅ Tools symlinks created successfully"
+          else
+            echo "⚠️ cmdline-tools not found, trying alternative approach"
+            # Alternative: copier directement depuis ANDROID_HOME
+            if [ -f "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" ]; then
+              ln -sf "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" ~/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager || true
+              ln -sf "$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager" ~/.buildozer/android/platform/android-sdk/tools/bin/avdmanager || true
+              echo "✅ Direct tools symlinks created"
             fi
+          fi
+          
+          # Vérifier que sdkmanager est accessible
+          if [ -x ~/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager ]; then
+            echo "✅ sdkmanager is accessible at ~/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager"
+          else
+            echo "⚠️ sdkmanager still not accessible, buildozer may fail"
+          fi
+
+      - name: Fix sdkmanager paths
+        run: |
+          echo "🔧 Fixing sdkmanager paths for buildozer compatibility"
+          
+          # S'assurer que la structure tools/bin existe toujours
+          mkdir -p ~/.buildozer/android/platform/android-sdk/tools/bin
+          
+          # Forcer la création des liens même si ils existent déjà
+          echo "🔗 Creating/updating sdkmanager symlinks..."
+          
+          # Supprimer les anciens liens s'ils existent
+          rm -f ~/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager
+          rm -f ~/.buildozer/android/platform/android-sdk/tools/bin/avdmanager
+          
+          # Créer les nouveaux liens
+          if [ -f "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" ]; then
+            ln -sf "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" ~/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager
+            ln -sf "$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager" ~/.buildozer/android/platform/android-sdk/tools/bin/avdmanager
+            echo "✅ Symlinks created successfully"
+          else
+            echo "❌ Source sdkmanager not found"
+          fi
+          
+          # Test final
+          if [ -x ~/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager ]; then
+            echo "✅ sdkmanager is now accessible"
+            echo "Version: $(~/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager --version 2>/dev/null || echo 'Error checking version')"
+          else
+            echo "❌ sdkmanager still not accessible"
+            echo "🔍 Debugging info:"
+            echo "  ANDROID_HOME: $ANDROID_HOME"
+            echo "  Expected source: $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+            echo "  Expected target: ~/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager"
+            ls -la "$ANDROID_HOME/cmdline-tools/latest/bin/" 2>/dev/null || echo "  cmdline-tools not found"
           fi
           
           # Copier le NDK avec tous les noms possibles
@@ -302,6 +360,22 @@ jobs:
           echo "Buildozer SDK: $(ls -la ~/.buildozer/android/platform/android-sdk 2>/dev/null || echo 'Not found')"
           echo "Buildozer NDK directories:"
           ls -la ~/.buildozer/android/platform/android-ndk* 2>/dev/null || echo 'No NDK directories found'
+          
+          # Vérifier les outils critiques
+          echo "=== Critical tools verification ==="
+          TOOLS_CHECK=(
+            "~/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager"
+            "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+            "$ANDROID_HOME/platform-tools/adb"
+          )
+          
+          for tool in "${TOOLS_CHECK[@]}"; do
+            if [ -x "$(eval echo $tool)" ]; then
+              echo "✅ $tool"
+            else
+              echo "❌ $tool"
+            fi
+          done
           
           # Lister tous les NDK disponibles
           echo "Available NDK versions:"
