@@ -150,6 +150,15 @@ jobs:
           echo "$ANDROID_HOME/cmdline-tools/latest/bin" >> $GITHUB_PATH
           echo "$ANDROID_HOME/platform-tools" >> $GITHUB_PATH
           
+          # Créer les liens symboliques pour que buildozer trouve le NDK/SDK
+          mkdir -p ~/.buildozer/android/platform
+          if [ ! -L ~/.buildozer/android/platform/android-sdk ]; then
+            ln -sf $ANDROID_HOME ~/.buildozer/android/platform/android-sdk
+          fi
+          if [ ! -L ~/.buildozer/android/platform/android-ndk-r${{ env.NDK_VERSION }} ]; then
+            ln -sf $ANDROID_HOME/ndk/${{ env.NDK_VERSION }} ~/.buildozer/android/platform/android-ndk-r${{ env.NDK_VERSION }}
+          fi
+          
           # Accepter les licences
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses >/dev/null 2>&1
 
@@ -259,6 +268,14 @@ jobs:
           # Créer les répertoires nécessaires
           mkdir -p .buildozer/android/platform
           mkdir -p bin
+          
+          # Vérifier que le NDK/SDK sont disponibles
+          echo "=== Android SDK/NDK verification ==="
+          echo "Android Home: $ANDROID_HOME"
+          echo "Android SDK: $(ls -la $ANDROID_HOME 2>/dev/null || echo 'Not found')"
+          echo "Android NDK: $(ls -la $ANDROID_HOME/ndk/${{ env.NDK_VERSION }} 2>/dev/null || echo 'Not found')"
+          echo "Buildozer SDK link: $(ls -la ~/.buildozer/android/platform/android-sdk 2>/dev/null || echo 'Not found')"
+          echo "Buildozer NDK link: $(ls -la ~/.buildozer/android/platform/android-ndk-r${{ env.NDK_VERSION }} 2>/dev/null || echo 'Not found')"
           
           # Vérifier les caches
           echo "=== Cache status ==="
