@@ -25,7 +25,7 @@ env:
   CYTHON_VERSION: '3.0.10'
   BUILDOZER_VERSION: '1.5.0'
   ANDROID_API_LEVEL: '34'
-  NDK_VERSION: '25.2.9519653'
+  NDK_VERSION: '26.3.11579264'
   BUILD_TOOLS_VERSION: '34.0.0'
   CMAKE_VERSION: '3.22.1'
 
@@ -81,18 +81,17 @@ jobs:
             ${{ runner.os }}-buildozer-${{ env.ANDROID_API_LEVEL }}-${{ env.NDK_VERSION }}-
             ${{ runner.os }}-buildozer-${{ env.ANDROID_API_LEVEL }}-
 
-      # Cache Android SDK/NDK plus spécifique
+      # Cache Android SDK/NDK optimisé (profite du cache setup-android)
       - name: Cache Android SDK/NDK
         uses: actions/cache@v4
         with:
           path: |
             ~/.android/sdk
             ~/.android/ndk
-            /usr/local/lib/android/sdk
-          key: ${{ runner.os }}-android-sdk-${{ env.ANDROID_API_LEVEL }}-${{ env.NDK_VERSION }}-${{ env.BUILD_TOOLS_VERSION }}-v3
+          key: ${{ runner.os }}-android-setup-${{ env.ANDROID_API_LEVEL }}-${{ env.NDK_VERSION }}-${{ env.BUILD_TOOLS_VERSION }}-v4
           restore-keys: |
-            ${{ runner.os }}-android-sdk-${{ env.ANDROID_API_LEVEL }}-${{ env.NDK_VERSION }}-
-            ${{ runner.os }}-android-sdk-${{ env.ANDROID_API_LEVEL }}-
+            ${{ runner.os }}-android-setup-${{ env.ANDROID_API_LEVEL }}-${{ env.NDK_VERSION }}-
+            ${{ runner.os }}-android-setup-${{ env.ANDROID_API_LEVEL }}-
 
       # Cache P4A plus granulaire
       - name: Cache python-for-android
@@ -133,12 +132,16 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
         with:
-          api-level: ${{ env.ANDROID_API_LEVEL }}
-          build-tools: ${{ env.BUILD_TOOLS_VERSION }}
-          ndk-version: ${{ env.NDK_VERSION }}
-          cmake-version: ${{ env.CMAKE_VERSION }}
-          cmdline-tools-version: 12266719
-          packages: 'platform-tools tools'
+          cmdline-tools-version: '11076708'
+          log-accepted-android-sdk-licenses: false
+          packages: |
+            platform-tools
+            platforms;android-${{ env.ANDROID_API_LEVEL }}
+            build-tools;${{ env.BUILD_TOOLS_VERSION }}
+            ndk;${{ env.NDK_VERSION }}
+            cmake;${{ env.CMAKE_VERSION }}
+            extras;android;m2repository
+            extras;google;m2repository
 
       - name: Configure Android environment
         run: |
@@ -170,9 +173,9 @@ jobs:
             if [ ! -d ~/.buildozer/android/platform/android-ndk-r${{ env.NDK_VERSION }} ]; then
               cp -r "$NDK_PATH" ~/.buildozer/android/platform/android-ndk-r${{ env.NDK_VERSION }}
             fi
-            # Format court (version recommandée 25b)
-            if [ ! -d ~/.buildozer/android/platform/android-ndk-r25b ]; then
-              cp -r "$NDK_PATH" ~/.buildozer/android/platform/android-ndk-r25b
+            # Format court (version recommandée 26c pour NDK 26.3.11579264)
+            if [ ! -d ~/.buildozer/android/platform/android-ndk-r26c ]; then
+              cp -r "$NDK_PATH" ~/.buildozer/android/platform/android-ndk-r26c
             fi
             echo "✅ NDK copied successfully"
           else
@@ -406,14 +409,11 @@ jobs:
         run: |
           echo "=== Build Summary ==="
           
-          APK_STATUS="${{ needs.build-android.outputs.apk-status || 'unknown' }}"
-          AAB_STATUS="${{ needs.build-android.outputs.aab-status || 'unknown' }}"
-          
-          echo "📱 APK Build: $APK_STATUS"
-          echo "📦 AAB Build: $AAB_STATUS"
-          
           if [ "${{ needs.build-android.result }}" == "success" ]; then
             echo "✅ All builds completed successfully!"
+            echo ""
+            echo "📱 APK Build: SUCCESS"
+            echo "📦 AAB Build: SUCCESS"
             echo ""
             echo "Next steps:"
             echo "1. Download artifacts from Actions tab"
