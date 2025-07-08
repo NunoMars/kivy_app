@@ -6,7 +6,7 @@ package.domain = org.tarot
 source.dir = .
 
 # Architecture Android ciblée
-android.archs = arm64-v8a
+# (gérée automatiquement par le workflow, doublons supprimés)
 
 # Inclusions
 source.include_exts = py,png,jpg,gif,kv,atlas
@@ -24,10 +24,9 @@ fullscreen = 0
 
 author = © Nuno Marcelino Copyright Info
 
-# Android spécificités
-android.api = 35
+## Android spécificités
+# (gérées automatiquement par le workflow, doublons supprimés)
 android.minapi = 21
-android.ndk = 25c
 android.ndk_api = 21
 android.skip_update = False
 android.accept_sdk_license = True
@@ -41,20 +40,18 @@ android.logcat_filters = *:S python:D
 android.allow_resize = True
 android.resizeableActivity = True
 
-# Format d’export
-android.release_artifact = aab
-android.debug_artifact = apk
+## Format d’export (géré par le workflow)
 
-# Dépendances gradle avec versions récentes (Play Store compliance)
+## Dépendances gradle avec versions récentes (Play Store compliance)
 android.gradle_dependencies = androidx.annotation:annotation:1.6.0, androidx.fragment:fragment:1.5.7
 
-# Signature locale pour Windows (configurée avec le keystore googleplay.keystore)
-# ATTENTION: Ces lignes contiennent des mots de passe en clair - à utiliser uniquement en local
-# Pour CI/CD, ces valeurs sont injectées automatiquement via les secrets GitHub
-android.release_keystore = %(source.dir)s/googleplay.keystore
-android.release_keystore_passwd = nunotheboss
-android.release_key = upload
-android.release_key_passwd = nunotheboss
+
+# === AJOUTS AUTOMATIQUES PAR LE WORKFLOW CI/CD ===
+android.archs = arm64-v8a, armeabi-v7a
+android.api = 34
+android.ndk = 25.2.9519653
+android.sdk = 34
+android.release_artifact = apk
 
 
 
