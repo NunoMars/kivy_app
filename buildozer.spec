@@ -13,7 +13,7 @@ source.include_exts = py,png,jpg,gif,kv,atlas
 source.exclude_exts = spec,md,txt
 source.exclude_dirs = tests, bin, venv, .github, __pycache__, .git, .vscode, guides
 
-version = 1.7
+version = 1.7.1
 
 requirements = python3,kivy==2.2.0,pillow
 
@@ -24,10 +24,10 @@ fullscreen = 0
 
 author = © Nuno Marcelino Copyright Info
 
-# Android spécificités
-android.api = 35
+# Android spécificités - API level configuré automatiquement par CI/CD
+android.api = 34
 android.minapi = 21
-android.ndk = 25c
+android.ndk = 25.2.9519653
 android.ndk_api = 21
 android.skip_update = False
 android.accept_sdk_license = True
@@ -48,13 +48,12 @@ android.debug_artifact = apk
 # Dépendances gradle avec versions récentes (Play Store compliance)
 android.gradle_dependencies = androidx.annotation:annotation:1.6.0, androidx.fragment:fragment:1.5.7
 
-# Signature locale pour Windows (configurée avec le keystore googleplay.keystore)
-# ATTENTION: Ces lignes contiennent des mots de passe en clair - à utiliser uniquement en local
-# Pour CI/CD, ces valeurs sont injectées automatiquement via les secrets GitHub
-android.release_keystore = %(source.dir)s/googleplay.keystore
-android.release_keystore_passwd = nunotheboss
-android.release_key = upload
-android.release_key_passwd = nunotheboss
+# Signature pour CI/CD - configurée automatiquement via secrets GitHub
+# Les valeurs ci-dessous sont des placeholders et seront remplacées par le workflow
+#android.release_keystore = %(source.dir)s/signing.keystore
+#android.release_key = KEY_ALIAS_FROM_SECRETS
+#android.release_key_passwd = KEY_PASSWORD_FROM_SECRETS
+#android.release_keystore_passwd = KEYSTORE_PASSWORD_FROM_SECRETS
 
 
 

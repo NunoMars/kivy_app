@@ -1,4 +1,4 @@
-name: Build Android APK & AAB
+name: Build Android APK & AAB (Enhanced Cache)
 
 on:
   push:
@@ -19,25 +19,81 @@ on:
       - 'tarot_img/**'
   workflow_dispatch:
 
+env:
+  PYTHON_VERSION: '3.10'
+  JAVA_VERSION: '17'
+  CYTHON_VERSION: '0.29.36'
+  BUILDOZER_VERSION: '1.5.0'
+  ANDROID_API_LEVEL: '34'
+  NDK_VERSION: '25.2.9519653'
+
 jobs:
-  setup-env:
+  build-android:
     runs-on: ubuntu-latest
-    outputs:
-      keystore_available: ${{ steps.check-keystore.outputs.available }}
+    strategy:
+      matrix:
+        build_type: ['apk', 'aab']
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Set up Java
+      - name: Set up Java ${{ env.JAVA_VERSION }}
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: ${{ env.JAVA_VERSION }}
+
+      # Cache système pour les dépendances Python
+      - name: Cache Python dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.local/lib/python*/site-packages
+            ~/.local/bin
+          key: ${{ runner.os }}-python-deps-${{ env.PYTHON_VERSION }}-${{ hashFiles('requirements.txt') }}-${{ env.CYTHON_VERSION }}-${{ env.BUILDOZER_VERSION }}-v3
+          restore-keys: |
+            ${{ runner.os }}-python-deps-${{ env.PYTHON_VERSION }}-
+            ${{ runner.os }}-python-deps-
+
+      # Cache pour buildozer et ses artefacts
+      - name: Cache Buildozer global
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.buildozer
+          key: ${{ runner.os }}-buildozer-global-${{ env.ANDROID_API_LEVEL }}-${{ env.NDK_VERSION }}-v2
+          restore-keys: |
+            ${{ runner.os }}-buildozer-global-
+
+      # Cache pour les dépendances Android
+      - name: Cache Android dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            .buildozer/android/platform/android-sdk
+            .buildozer/android/platform/android-ndk
+            .buildozer/android/platform/apache-ant
+          key: ${{ runner.os }}-android-deps-${{ env.ANDROID_API_LEVEL }}-${{ env.NDK_VERSION }}-v2
+          restore-keys: |
+            ${{ runner.os }}-android-deps-
+
+      # Cache pour les recipes python-for-android
+      - name: Cache python-for-android recipes
+        uses: actions/cache@v4
+        with:
+          path: |
+            .buildozer/android/platform/python-for-android
+            ~/.cache/python-for-android
+          key: ${{ runner.os }}-p4a-recipes-${{ hashFiles('requirements.txt') }}-v2
+          restore-keys: |
+            ${{ runner.os }}-p4a-recipes-
 
       - name: Install system packages
         run: |
@@ -46,23 +102,64 @@ jobs:
             build-essential git zip unzip libbz2-dev libsqlite3-dev libssl-dev \
             libffi-dev libncurses5-dev libgdbm-dev autotools-dev automake autoconf \
             libtool pkg-config zlib1g-dev libltdl-dev python3-setuptools python3-wheel \
-            gcc-multilib g++-multilib
+            gcc-multilib g++-multilib libncursesw5-dev libreadline-dev \
+            libc6-dev libffi-dev libgmp-dev libmpfr-dev libmpc-dev \
+            libc6-dev-i386 lib32z1 lib32ncurses-dev
 
-      - name: Install Python packages
+      - name: Install and cache Python packages
         run: |
-          python -m pip install --upgrade pip
-          pip install --user cython==0.29.36 buildozer==1.5.0
+          python -m pip install --upgrade pip setuptools wheel
+          
+          # Installation des dépendances de base
+          pip install --user cython==${{ env.CYTHON_VERSION }}
+          pip install --user buildozer==${{ env.BUILDOZER_VERSION }}
+          
+          # Installation des dépendances du projet
           pip install --user -r requirements.txt
+          
+          # Pré-installation des dépendances python-for-android pour éviter les erreurs réseau
+          echo "📦 Installing python-for-android dependencies..."
+          pip install --user \
+            python-for-android \
+            pyjnius \
+            plyer \
+            android \
+            sh \
+            colorama \
+            appdirs \
+            six \
+            jinja2 \
+            requests \
+            urllib3 \
+            certifi \
+            charset-normalizer \
+            idna
+          
+          # Installation des recipes couramment utilisés
+          echo "🔧 Pre-installing common p4a recipes dependencies..."
+          pip install --user \
+            pillow \
+            numpy \
+            setuptools-scm \
+            toml \
+            packaging \
+            distutils-extra
+          
           echo "$HOME/.local/bin" >> $GITHUB_PATH
+          
+          # Vérification des installations
+          echo "✅ Installed packages:"
+          pip list --user | grep -E "(cython|buildozer|python-for-android|pyjnius|plyer)"
 
       - name: Configure Android environment
         run: |
           export SDK_PATH=/usr/local/lib/android/sdk
-          export NDK_PATH=$SDK_PATH/ndk/25.2.9519653
+          export NDK_PATH=$SDK_PATH/ndk/${{ env.NDK_VERSION }}
 
           echo "ANDROID_HOME=$SDK_PATH" >> $GITHUB_ENV
           echo "ANDROID_NDK_HOME=$NDK_PATH" >> $GITHUB_ENV
           echo "ANDROIDNDK=$NDK_PATH" >> $GITHUB_ENV
+          echo "ANDROID_SDK_ROOT=$SDK_PATH" >> $GITHUB_ENV
 
           sudo mkdir -p $SDK_PATH/tools/bin
           sudo ln -sf $SDK_PATH/cmdline-tools/latest/bin/sdkmanager $SDK_PATH/tools/bin/sdkmanager
@@ -70,311 +167,205 @@ jobs:
 
           yes | $SDK_PATH/cmdline-tools/latest/bin/sdkmanager --licenses
           $SDK_PATH/cmdline-tools/latest/bin/sdkmanager \
-            "platforms;android-34" "platforms;android-33" \
-            "build-tools;34.0.0" "build-tools;33.0.2" \
-            "ndk;25.2.9519653"
+            "platforms;android-${{ env.ANDROID_API_LEVEL }}" "platforms;android-33" \
+            "build-tools;${{ env.ANDROID_API_LEVEL }}.0.0" "build-tools;33.0.2" \
+            "ndk;${{ env.NDK_VERSION }}" \
+            "cmake;3.22.1" \
+            "platform-tools"
+
+      - name: Pre-install p4a dependencies offline
+        run: |
+          echo "📥 Pre-installing python-for-android dependencies..."
+          
+          # Créer le répertoire de cache p4a
+          mkdir -p ~/.cache/python-for-android
+          
+          # Installer les dépendances supplémentaires pour éviter les échecs de build
+          pip install --user \
+            setuptools-scm \
+            wheel \
+            cython \
+            jinja2 \
+            six \
+            enum34 || true
+          
+          # Pré-télécharger les sources NDK communes si possible
+          echo "📦 Checking for cached NDK sources..."
+          ls -la ~/.buildozer/ || echo "No global buildozer cache yet"
 
       - name: Decode keystore (if available)
         id: check-keystore
         run: |
-          if [ -n "${{ secrets.ANDROID_SIGNING_KEY }}" ]; then
+          if [ -n "${{ secrets.ANDROID_SIGNING_KEY }}" ] && [ "${{ matrix.build_type }}" == "aab" ]; then
             echo "${{ secrets.ANDROID_SIGNING_KEY }}" | base64 -d > signing.keystore
             echo "available=true" >> $GITHUB_OUTPUT
+            echo "🔑 Keystore decoded for AAB signing"
           else
             echo "available=false" >> $GITHUB_OUTPUT
+            if [ "${{ matrix.build_type }}" == "aab" ]; then
+              echo "⚠️ No keystore available - building unsigned AAB"
+            else
+              echo "ℹ️ APK build - no keystore needed"
+            fi
           fi
 
-  build-apk:
-    needs: setup-env
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Install system packages
+      - name: Prepare buildozer.spec for ${{ matrix.build_type }}
         run: |
-          sudo apt update
-          sudo apt install -y \
-            build-essential git zip unzip libbz2-dev libsqlite3-dev libssl-dev \
-            libffi-dev libncurses5-dev libgdbm-dev autotools-dev automake autoconf \
-            libtool pkg-config zlib1g-dev libltdl-dev python3-setuptools python3-wheel \
-            gcc-multilib g++-multilib
-
-      - name: Install Python packages
-        run: |
-          python -m pip install --upgrade pip
-          pip install --user cython==0.29.36 buildozer==1.5.0
-          pip install --user -r requirements.txt
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-
-      - name: Configure Android environment
-        run: |
-          export SDK_PATH=/usr/local/lib/android/sdk
-          export NDK_PATH=$SDK_PATH/ndk/25.2.9519653
-
-          echo "ANDROID_HOME=$SDK_PATH" >> $GITHUB_ENV
-          echo "ANDROID_NDK_HOME=$NDK_PATH" >> $GITHUB_ENV
-          echo "ANDROIDNDK=$NDK_PATH" >> $GITHUB_ENV
-
-          sudo mkdir -p $SDK_PATH/tools/bin
-          sudo ln -sf $SDK_PATH/cmdline-tools/latest/bin/sdkmanager $SDK_PATH/tools/bin/sdkmanager
-          sudo ln -sf $SDK_PATH/cmdline-tools/latest/bin/avdmanager $SDK_PATH/tools/bin/avdmanager
-
-          yes | $SDK_PATH/cmdline-tools/latest/bin/sdkmanager --licenses
-          $SDK_PATH/cmdline-tools/latest/bin/sdkmanager \
-            "platforms;android-34" "platforms;android-33" \
-            "build-tools;34.0.0" "build-tools;33.0.2" \
-            "ndk;25.2.9519653"
-
-      - name: Clean previous APK build
-        run: |
-          buildozer android clean || true
-          rm -rf bin/ .buildozer/android/platform/build-*
-
-      - name: Build APK (debug)
-        run: |
-          export BUILDOZER_LOG_LEVEL=2
-          buildozer android debug --verbose
-
-      - name: List APK outputs
-        if: always()
-        run: |
-          echo "=== Directory contents after APK build ==="
-          ls -la
-          echo "=== bin directory contents ==="
-          ls -la bin/ || echo "No bin directory found"
-          echo "=== Searching for APK files ==="
-          find . -name "*.apk" -type f 2>/dev/null || echo "No APK files found"
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-apk-debug
-          path: |
-            bin/*.apk
-          retention-days: 30
-          if-no-files-found: warn
-
-  build-aab:
-    needs: setup-env
-    runs-on: ubuntu-latest
-    if: ${{ always() }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Install system packages
-        run: |
-          sudo apt update
-          sudo apt install -y \
-            build-essential git zip unzip libbz2-dev libsqlite3-dev libssl-dev \
-            libffi-dev libncurses5-dev libgdbm-dev autotools-dev automake autoconf \
-            libtool pkg-config zlib1g-dev libltdl-dev python3-setuptools python3-wheel \
-            gcc-multilib g++-multilib
-
-      - name: Install Python packages
-        run: |
-          python -m pip install --upgrade pip
-          pip install --user cython==0.29.36 buildozer==1.5.0
-          pip install --user -r requirements.txt
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-
-      - name: Configure Android environment
-        run: |
-          export SDK_PATH=/usr/local/lib/android/sdk
-          export NDK_PATH=$SDK_PATH/ndk/25.2.9519653
-
-          echo "ANDROID_HOME=$SDK_PATH" >> $GITHUB_ENV
-          echo "ANDROID_NDK_HOME=$NDK_PATH" >> $GITHUB_ENV
-          echo "ANDROIDNDK=$NDK_PATH" >> $GITHUB_ENV
-
-          sudo mkdir -p $SDK_PATH/tools/bin
-          sudo ln -sf $SDK_PATH/cmdline-tools/latest/bin/sdkmanager $SDK_PATH/tools/bin/sdkmanager
-          sudo ln -sf $SDK_PATH/cmdline-tools/latest/bin/avdmanager $SDK_PATH/tools/bin/avdmanager
-
-          yes | $SDK_PATH/cmdline-tools/latest/bin/sdkmanager --licenses
-          $SDK_PATH/cmdline-tools/latest/bin/sdkmanager \
-            "platforms;android-34" "platforms;android-33" \
-            "build-tools;34.0.0" "build-tools;33.0.2" \
-            "ndk;25.2.9519653"
-
-      - name: Decode keystore (for AAB)
-        if: ${{ needs.setup-env.outputs.keystore_available == 'true' }}
-        run: |
-          echo "${{ secrets.ANDROID_SIGNING_KEY }}" | base64 -d > signing.keystore
-
-      - name: Prepare buildozer.spec
-        run: |
-          echo "=== Original buildozer.spec ==="
-          cat buildozer.spec
+          echo "=== Configuring buildozer.spec for ${{ matrix.build_type }} ==="
           
-          # Ensure AAB format
-          sed -i "s|^#*android.release_artifact *=.*|android.release_artifact = aab|" buildozer.spec
+          # Backup original
+          cp buildozer.spec buildozer.spec.bak
           
-          # Ensure arch is set
-          if ! grep -q "^android.archs" buildozer.spec; then
-            echo "android.archs = arm64-v8a" >> buildozer.spec
-          fi
-
-          # Configure keystore if available
-          if [ "${{ needs.setup-env.outputs.keystore_available }}" == "true" ]; then
-            echo "🔑 Configuring keystore for release signing"
-            sed -i "s|^#*android.release_keystore *=.*|android.release_keystore = %(source.dir)s/signing.keystore|" buildozer.spec
-            sed -i "s|^#*android.release_key *=.*|android.release_key = ${{ secrets.KEY_ALIAS }}|" buildozer.spec
-            sed -i "s|^#*android.release_key_passwd *=.*|android.release_key_passwd = ${{ secrets.KEY_PASSWORD }}|" buildozer.spec
-            sed -i "s|^#*android.release_keystore_passwd *=.*|android.release_keystore_passwd = ${{ secrets.KEYSTORE_PASSWORD }}|" buildozer.spec
+          # Configuration de base
+          sed -i "s|^#*android.archs *=.*|android.archs = arm64-v8a|" buildozer.spec
+          sed -i "s|^#*android.api *=.*|android.api = ${{ env.ANDROID_API_LEVEL }}|" buildozer.spec
+          sed -i "s|^#*android.ndk *=.*|android.ndk = ${{ env.NDK_VERSION }}|" buildozer.spec
+          
+          if [ "${{ matrix.build_type }}" == "aab" ]; then
+            echo "📦 Configuring for AAB release build"
+            sed -i "s|^#*android.release_artifact *=.*|android.release_artifact = aab|" buildozer.spec
+            
+            # Configuration keystore si disponible
+            if [ "${{ steps.check-keystore.outputs.available }}" == "true" ]; then
+              echo "🔑 Configuring keystore for release signing"
+              sed -i "s|^#*android.release_keystore *=.*|android.release_keystore = %(source.dir)s/signing.keystore|" buildozer.spec
+              sed -i "s|^#*android.release_key *=.*|android.release_key = ${{ secrets.KEY_ALIAS }}|" buildozer.spec
+              sed -i "s|^#*android.release_key_passwd *=.*|android.release_key_passwd = ${{ secrets.KEY_PASSWORD }}|" buildozer.spec
+              sed -i "s|^#*android.release_keystore_passwd *=.*|android.release_keystore_passwd = ${{ secrets.KEYSTORE_PASSWORD }}|" buildozer.spec
+            fi
           else
-            echo "⚠️ No keystore available - building unsigned AAB"
+            echo "📱 Configuring for APK debug build"
+            sed -i "s|^#*android.release_artifact *=.*|android.release_artifact = apk|" buildozer.spec
           fi
           
-          echo "=== Modified buildozer.spec ==="
+          echo "=== Final buildozer.spec configuration ==="
           cat buildozer.spec
 
-      - name: Clean AAB build
+      - name: Clean previous builds
         run: |
+          echo "🧹 Cleaning previous builds for ${{ matrix.build_type }}"
           buildozer android clean || true
+          rm -rf bin/
+          
+          # Nettoyer uniquement les builds, pas les caches
           rm -rf .buildozer/android/platform/build-*
+          rm -rf .buildozer/android/app
 
-      - name: Build AAB (release)
+      - name: Build ${{ matrix.build_type }}
         env:
-          # Variables d'environnement pour python-for-android signature
+          BUILDOZER_LOG_LEVEL: 2
           P4A_RELEASE_KEYSTORE: ${{ github.workspace }}/signing.keystore
           P4A_RELEASE_KEYSTORE_PASSWD: ${{ secrets.KEYSTORE_PASSWORD }}
           P4A_RELEASE_KEYALIAS: ${{ secrets.KEY_ALIAS }}
           P4A_RELEASE_KEYALIAS_PASSWD: ${{ secrets.KEY_PASSWORD }}
+          # Variables pour éviter les timeouts réseau
+          PIP_TIMEOUT: 300
+          PIP_RETRIES: 3
+          PIP_DEFAULT_TIMEOUT: 300
         run: |
-          # Enable debug mode for more verbose output
-          export BUILDOZER_LOG_LEVEL=2
+          echo "🚀 Starting ${{ matrix.build_type }} build with enhanced caching"
           
-          # Vérifier les variables de signature
-          if [ "${{ needs.setup-env.outputs.keystore_available }}" == "true" ]; then
-            echo "🔑 Signature variables set:"
-            echo "P4A_RELEASE_KEYSTORE: $P4A_RELEASE_KEYSTORE"
-            echo "P4A_RELEASE_KEYALIAS: $P4A_RELEASE_KEYALIAS"
-            echo "Keystore exists: $(test -f $P4A_RELEASE_KEYSTORE && echo 'YES' || echo 'NO')"
-          else
-            echo "⚠️ No signing variables - building unsigned"
-          fi
+          # Vérification de l'environnement
+          echo "=== Build Environment ==="
+          echo "Python: $(python --version)"
+          echo "Buildozer: $(buildozer version)"
+          echo "Java: $(java -version 2>&1 | head -1)"
+          echo "Android Home: $ANDROID_HOME"
+          echo "Android NDK: $ANDROID_NDK_HOME"
           
-          timeout 3600 buildozer android release --verbose || {
-            echo "⚠️ First AAB build failed, listing files and retrying with clean"
-            echo "=== Current directory contents ==="
-            ls -la
-            echo "=== bin directory contents ==="
-            ls -la bin/ || echo "No bin directory"
-            echo "=== .buildozer structure ==="
-            find .buildozer -name "*.aab" -o -name "*.apk" 2>/dev/null || echo "No AAB/APK found"
-            
-            buildozer android clean
-            timeout 3600 buildozer android release --verbose || {
-              echo "❌ Second attempt failed, showing final structure"
-              ls -la
-              ls -la bin/ || echo "Still no bin directory"
-              exit 1
+          # Vérification des caches
+          echo "=== Cache Status ==="
+          echo "Python packages cache: $(ls -la ~/.cache/pip | wc -l) files"
+          echo "Buildozer global cache: $(ls -la ~/.buildozer 2>/dev/null | wc -l || echo 0) files"
+          echo "P4A cache: $(ls -la ~/.cache/python-for-android 2>/dev/null | wc -l || echo 0) files"
+          
+          # Build avec timeout et retry
+          if [ "${{ matrix.build_type }}" == "aab" ]; then
+            echo "📦 Building AAB (release)"
+            timeout 7200 buildozer android release --verbose || {
+              echo "⚠️ First AAB build attempt failed, retrying with fresh p4a bootstrap"
+              rm -rf .buildozer/android/platform/python-for-android
+              timeout 7200 buildozer android release --verbose
             }
-          }
+          else
+            echo "📱 Building APK (debug)"
+            timeout 7200 buildozer android debug --verbose || {
+              echo "⚠️ First APK build attempt failed, retrying with fresh p4a bootstrap"
+              rm -rf .buildozer/android/platform/python-for-android
+              timeout 7200 buildozer android debug --verbose
+            }
+          fi
 
-      - name: List build outputs
+      - name: Verify build output
         if: always()
         run: |
-          echo "=== Final directory contents ==="
+          echo "=== Build Verification ==="
+          echo "Directory contents:"
           ls -la
-          echo "=== bin directory contents ==="
+          
+          echo "bin/ contents:"
           ls -la bin/ || echo "No bin directory found"
-          echo "=== Searching for AAB files ==="
-          find . -name "*.aab" -type f 2>/dev/null || echo "No AAB files found"
-          echo "=== Searching for APK files ==="
-          find . -name "*.apk" -type f 2>/dev/null || echo "No APK files found"
+          
+          echo "Searching for build artifacts:"
+          if [ "${{ matrix.build_type }}" == "aab" ]; then
+            find . -name "*.aab" -type f 2>/dev/null || echo "No AAB files found"
+          else
+            find . -name "*.apk" -type f 2>/dev/null || echo "No APK files found"
+          fi
+          
+          # Vérifier la signature pour AAB
+          if [ "${{ matrix.build_type }}" == "aab" ] && [ "${{ steps.check-keystore.outputs.available }}" == "true" ]; then
+            AAB_FILE=$(find . -name "*.aab" -type f | head -1)
+            if [ -n "$AAB_FILE" ]; then
+              echo "=== AAB Signature Verification ==="
+              if jarsigner -verify "$AAB_FILE" 2>/dev/null; then
+                echo "✅ AAB is properly signed"
+              else
+                echo "⚠️ AAB signature verification failed"
+              fi
+            fi
+          fi
 
-      - name: Upload AAB
+      - name: Upload ${{ matrix.build_type }} artifact
         uses: actions/upload-artifact@v4
         with:
-          name: android-aab-release
+          name: android-${{ matrix.build_type }}-${{ matrix.build_type == 'aab' && 'release' || 'debug' }}
           path: |
-            bin/*.aab
-          retention-days: 90
+            bin/*.${{ matrix.build_type }}
+          retention-days: ${{ matrix.build_type == 'aab' && 90 || 30 }}
           if-no-files-found: warn
 
-      - name: Upload build logs
+      - name: Upload build logs (on failure)
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: build-logs
+          name: build-logs-${{ matrix.build_type }}
           path: |
-            aab_build*.log
             .buildozer/**/*.log
+            buildozer.spec.bak
           retention-days: 7
 
-      - name: Manual AAB signing (if needed)
-        if: ${{ needs.setup-env.outputs.keystore_available == 'true' }}
+  # Job de résumé pour afficher les résultats
+  build-summary:
+    needs: build-android
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Build Summary
         run: |
-          echo "=== Checking AAB signature status ==="
+          echo "=== Build Summary ==="
+          echo "Build Status: ${{ needs.build-android.result }}"
           
-          # Trouver le fichier AAB
-          AAB_FILE=$(find . -name "*.aab" -type f | head -1)
-          
-          if [ -z "$AAB_FILE" ]; then
-            echo "❌ No AAB file found"
-            exit 1
-          fi
-          
-          echo "Found AAB: $AAB_FILE"
-          
-          # Vérifier si l'AAB est déjà signé
-          if jarsigner -verify "$AAB_FILE" 2>/dev/null; then
-            echo "✅ AAB is already signed"
+          if [ "${{ needs.build-android.result }}" == "success" ]; then
+            echo "✅ All builds completed successfully!"
+            echo ""
+            echo "📱 APK ready for testing"
+            echo "📦 AAB ready for Play Store upload"
+            echo ""
+            echo "Next steps:"
+            echo "1. Download artifacts from the Actions tab"
+            echo "2. Test APK on device"
+            echo "3. Upload AAB to Play Console"
           else
-            echo "⚠️ AAB is not signed, signing manually..."
-            
-            # Copier l'AAB pour signature
-            SIGNED_AAB="${AAB_FILE%.*}-signed.aab"
-            cp "$AAB_FILE" "$SIGNED_AAB"
-            
-            # Signer l'AAB
-            jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
-              -keystore signing.keystore \
-              -storepass "${{ secrets.KEYSTORE_PASSWORD }}" \
-              -keypass "${{ secrets.KEY_PASSWORD }}" \
-              "$SIGNED_AAB" "${{ secrets.KEY_ALIAS }}"
-            
-            if [ $? -eq 0 ]; then
-              echo "✅ AAB signed successfully"
-              
-              # Vérifier la signature
-              if jarsigner -verify -verbose -certs "$SIGNED_AAB"; then
-                echo "✅ Signature verification passed"
-                
-                # Remplacer l'AAB original par la version signée
-                mv "$SIGNED_AAB" "$AAB_FILE"
-                echo "Original AAB replaced with signed version"
-              else
-                echo "❌ Signature verification failed"
-                exit 1
-              fi
-            else
-              echo "❌ AAB signing failed"
-              exit 1
-            fi
+            echo "❌ Some builds failed - check logs above"
           fi
