@@ -105,6 +105,18 @@ jobs:
             ${{ runner.os }}-p4a-${{ hashFiles('requirements.txt') }}-${{ env.PYTHON_VERSION }}-
             ${{ runner.os }}-p4a-${{ hashFiles('requirements.txt') }}-
 
+      # Cache des packages de dépendances
+      - name: Cache buildozer packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.buildozer/android/packages
+            .buildozer/android/platform/build-*/packages
+          key: ${{ runner.os }}-buildozer-packages-${{ env.ANDROID_API_LEVEL }}-v2
+          restore-keys: |
+            ${{ runner.os }}-buildozer-packages-${{ env.ANDROID_API_LEVEL }}-
+            ${{ runner.os }}-buildozer-packages-
+
       # Cache des sources compilées
       - name: Cache build artifacts
         uses: actions/cache@v4
@@ -342,6 +354,34 @@ jobs:
           echo "📋 Final configuration preview:"
           grep -A 15 "CONFIGURATION AUTOMATIQUE" buildozer.spec || echo "Configuration added successfully"
 
+      - name: Optimize cache
+        run: |
+          echo "🧹 Optimizing buildozer cache"
+          chmod +x scripts/optimize-cache.sh
+          ./scripts/optimize-cache.sh
+
+      - name: Pre-download dependencies
+        run: |
+          echo "📦 Pre-downloading common build dependencies"
+          
+          # Utiliser le script de téléchargement alternatif
+          chmod +x scripts/download-dependencies.sh
+          ./scripts/download-dependencies.sh
+          
+          # Vérifier le résultat
+          echo "📊 Final cache status:"
+          ls -lah ~/.buildozer/android/packages/ 2>/dev/null || echo "No packages cached"
+          
+          # Calculer la taille totale du cache
+          if [ -d ~/.buildozer/android/packages/ ]; then
+            cache_size=$(du -sh ~/.buildozer/android/packages/ 2>/dev/null | cut -f1)
+            echo "Total cache size: $cache_size"
+            
+            # Compter les fichiers
+            file_count=$(ls -1 ~/.buildozer/android/packages/ 2>/dev/null | wc -l)
+            echo "Cached files: $file_count"
+          fi
+
       - name: Pre-build setup
         run: |
           echo "🔧 Pre-build setup for ${{ matrix.build_type }}"
@@ -392,6 +432,12 @@ jobs:
           echo "P4A cache: $(du -sh ~/.cache/python-for-android 2>/dev/null || echo '0B')"
           echo "Android SDK: $(du -sh $ANDROID_HOME 2>/dev/null || echo '0B')"
 
+      - name: Network diagnostics
+        run: |
+          echo "🌐 Network diagnostics before build"
+          chmod +x scripts/diagnose-network.sh
+          ./scripts/diagnose-network.sh
+
       - name: Build ${{ matrix.build_type }}
         timeout-minutes: 120
         env:
@@ -403,6 +449,10 @@ jobs:
           GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true"
           ANDROID_NDK_HOME: ${{ env.ANDROID_NDK_HOME }}
           JAVA_OPTS: "-Xmx4g"
+          # Variables pour améliorer la connectivité réseau
+          PYTHONHTTPSVERIFY: "0"
+          REQUESTS_CA_BUNDLE: ""
+          CURL_CA_BUNDLE: ""
         run: |
           echo "🚀 Building ${{ matrix.build_type }}"
           
@@ -415,18 +465,113 @@ jobs:
           echo "Android NDK: $ANDROID_NDK_HOME"
           echo "Available space: $(df -h . | tail -1)"
           
-          # Build avec gestion d'erreurs
-          set -e
+          # Fonction de retry pour les builds
+          build_with_retry() {
+            local max_attempts=3
+            local attempt=1
+            local delay=30
+            
+            while [ $attempt -le $max_attempts ]; do
+              echo "🔄 Build attempt $attempt/$max_attempts"
+              
+              if [ "${{ matrix.build_type }}" == "aab" ]; then
+                echo "📦 Building AAB (release)"
+                if timeout 90m buildozer android release; then
+                  echo "✅ Build completed successfully on attempt $attempt"
+                  return 0
+                fi
+              else
+                echo "📱 Building APK (debug)"
+                if timeout 90m buildozer android debug; then
+                  echo "✅ Build completed successfully on attempt $attempt"
+                  return 0
+                fi
+              fi
+              
+              echo "❌ Build attempt $attempt failed"
+              
+              if [ $attempt -lt $max_attempts ]; then
+                echo "⏳ Waiting ${delay}s before retry..."
+                sleep $delay
+                
+                # Nettoyer les téléchargements partiels
+                echo "🧹 Cleaning partial downloads..."
+                find ~/.buildozer -name "*.tmp" -delete 2>/dev/null || true
+                find .buildozer -name "*.tmp" -delete 2>/dev/null || true
+                
+                # Augmenter le délai pour le prochain essai
+                delay=$((delay * 2))
+              fi
+              
+              attempt=$((attempt + 1))
+            done
+            
+            echo "❌ All build attempts failed"
+            return 1
+          }
           
-          if [ "${{ matrix.build_type }}" == "aab" ]; then
-            echo "📦 Building AAB (release)"
-            buildozer android release
+          # Exécuter le build avec retry
+          if build_with_retry; then
+            echo "✅ Build completed successfully"
           else
-            echo "📱 Building APK (debug)"
-            buildozer android debug
+            echo "❌ Build failed after all retry attempts"
+            echo ""
+            echo "🔍 Diagnostic post-échec:"
+            echo "========================"
+            
+            # Diagnostic réseau
+            echo "📡 Network diagnostics:"
+            ping -c 3 8.8.8.8 >/dev/null 2>&1 && echo "  ✅ Internet OK" || echo "  ❌ No internet"
+            ping -c 3 download.savannah.gnu.org >/dev/null 2>&1 && echo "  ✅ Download server OK" || echo "  ❌ Cannot reach download server"
+            
+            # Diagnostic des caches
+            echo ""
+            echo "� Cache diagnostics:"
+            echo "  ~/.buildozer size: $(du -sh ~/.buildozer 2>/dev/null || echo '0B')"
+            echo "  ~/.cache/python-for-android size: $(du -sh ~/.cache/python-for-android 2>/dev/null || echo '0B')"
+            echo "  ~/.buildozer/android/packages size: $(du -sh ~/.buildozer/android/packages 2>/dev/null || echo '0B')"
+            
+            # Diagnostic des artefacts
+            echo ""
+            echo "📋 Build artifacts:"
+            echo "  bin/ directory: $(ls -la bin/ 2>/dev/null || echo 'Does not exist')"
+            echo "  .buildozer/android/platform/build-* packages:"
+            find .buildozer/android/platform/build-* -name "*.tar.gz" -o -name "*.tar.xz" -o -name "*.zip" 2>/dev/null | head -10 || echo "  No build packages found"
+            
+            # Diagnostic des erreurs buildozer
+            echo ""
+            echo "📝 Recent buildozer logs:"
+            if [ -f ".buildozer/logs/buildozer.log" ]; then
+              echo "  Last 20 lines of buildozer.log:"
+              tail -20 .buildozer/logs/buildozer.log || echo "  Cannot read buildozer.log"
+            else
+              echo "  No buildozer.log found"
+            fi
+            
+            # Diagnostic des erreurs p4a
+            if [ -d ".buildozer/android/platform/python-for-android" ]; then
+              echo ""
+              echo "📝 Python-for-Android diagnostics:"
+              p4a_log=$(find .buildozer/android/platform/python-for-android -name "*.log" | head -1)
+              if [ -f "$p4a_log" ]; then
+                echo "  Last 20 lines of P4A log:"
+                tail -20 "$p4a_log" || echo "  Cannot read P4A log"
+              else
+                echo "  No P4A log found"
+              fi
+            fi
+            
+            # Diagnostic des téléchargements
+            echo ""
+            echo "📥 Download diagnostics:"
+            echo "  Cached packages:"
+            ls -la ~/.buildozer/android/packages/ 2>/dev/null || echo "  No packages cached"
+            
+            echo "  Recent download attempts:"
+            find ~/.buildozer -name "*.tmp" -o -name "*.part" 2>/dev/null | head -5 || echo "  No partial downloads found"
+            
+            exit 1
           fi
-          
-          echo "✅ Build completed successfully"
 
       - name: Verify build artifacts
         run: |
