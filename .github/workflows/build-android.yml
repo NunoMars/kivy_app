@@ -149,13 +149,19 @@ jobs:
           echo "$ANDROID_HOME/cmdline-tools/latest/bin" >> $GITHUB_PATH
           echo "$ANDROID_HOME/platform-tools" >> $GITHUB_PATH
           
-          # Créer les liens symboliques pour que buildozer trouve le NDK/SDK
+          # Préparer les répertoires buildozer
           mkdir -p ~/.buildozer/android/platform
           
-          # Copier le SDK au lieu de créer un lien symbolique
+          # Copier le SDK avec structure complète
           if [ ! -d ~/.buildozer/android/platform/android-sdk ]; then
             echo "📁 Copying Android SDK to buildozer location..."
             cp -r $ANDROID_HOME ~/.buildozer/android/platform/android-sdk
+            
+            # Créer les liens symboliques pour les outils dans l'ancien format
+            if [ -d ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest ]; then
+              mkdir -p ~/.buildozer/android/platform/android-sdk/tools/bin
+              ln -sf ../../cmdline-tools/latest/bin/* ~/.buildozer/android/platform/android-sdk/tools/bin/ || true
+            fi
           fi
           
           # Copier le NDK avec tous les noms possibles
@@ -174,9 +180,6 @@ jobs:
           else
             echo "❌ NDK not found at $NDK_PATH"
           fi
-          
-          # Accepter les licences
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses >/dev/null 2>&1
 
       - name: Install Python dependencies
         run: |
