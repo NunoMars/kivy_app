@@ -72,8 +72,11 @@ jobs:
       - name: Cache Buildozer global
         uses: actions/cache@v4
         with:
-          path: ~/.buildozer
-          key: ${{ runner.os }}-buildozer-${{ env.ANDROID_API_LEVEL }}-${{ env.NDK_VERSION }}-${{ env.BUILD_TOOLS_VERSION }}-v3
+          path: |
+            ~/.buildozer
+            ~/.buildozer/android/platform/android-sdk
+            ~/.buildozer/android/platform/android-ndk-*
+          key: ${{ runner.os }}-buildozer-${{ env.ANDROID_API_LEVEL }}-${{ env.NDK_VERSION }}-${{ env.BUILD_TOOLS_VERSION }}-v4
           restore-keys: |
             ${{ runner.os }}-buildozer-${{ env.ANDROID_API_LEVEL }}-${{ env.NDK_VERSION }}-
             ${{ runner.os }}-buildozer-${{ env.ANDROID_API_LEVEL }}-
@@ -152,30 +155,26 @@ jobs:
           
           # Créer les liens symboliques pour que buildozer trouve le NDK/SDK
           mkdir -p ~/.buildozer/android/platform
-          if [ ! -L ~/.buildozer/android/platform/android-sdk ]; then
-            ln -sf $ANDROID_HOME ~/.buildozer/android/platform/android-sdk
+          
+          # Copier le SDK au lieu de créer un lien symbolique
+          if [ ! -d ~/.buildozer/android/platform/android-sdk ]; then
+            echo "📁 Copying Android SDK to buildozer location..."
+            cp -r $ANDROID_HOME ~/.buildozer/android/platform/android-sdk
           fi
           
-          # Créer plusieurs liens pour le NDK pour couvrir tous les formats attendus
+          # Copier le NDK avec tous les noms possibles
           NDK_PATH="$ANDROID_HOME/ndk/${{ env.NDK_VERSION }}"
           if [ -d "$NDK_PATH" ]; then
+            echo "📁 Copying Android NDK to buildozer location..."
             # Format principal attendu par buildozer
-            if [ ! -L ~/.buildozer/android/platform/android-ndk-r${{ env.NDK_VERSION }} ]; then
-              ln -sf "$NDK_PATH" ~/.buildozer/android/platform/android-ndk-r${{ env.NDK_VERSION }}
-            fi
-            # Format alternatif
-            if [ ! -L ~/.buildozer/android/platform/android-ndk-${{ env.NDK_VERSION }} ]; then
-              ln -sf "$NDK_PATH" ~/.buildozer/android/platform/android-ndk-${{ env.NDK_VERSION }}
+            if [ ! -d ~/.buildozer/android/platform/android-ndk-r${{ env.NDK_VERSION }} ]; then
+              cp -r "$NDK_PATH" ~/.buildozer/android/platform/android-ndk-r${{ env.NDK_VERSION }}
             fi
             # Format court (version recommandée 25b)
-            if [ ! -L ~/.buildozer/android/platform/android-ndk-r25b ]; then
-              ln -sf "$NDK_PATH" ~/.buildozer/android/platform/android-ndk-r25b
+            if [ ! -d ~/.buildozer/android/platform/android-ndk-r25b ]; then
+              cp -r "$NDK_PATH" ~/.buildozer/android/platform/android-ndk-r25b
             fi
-            # Format générique
-            if [ ! -L ~/.buildozer/android/platform/android-ndk ]; then
-              ln -sf "$NDK_PATH" ~/.buildozer/android/platform/android-ndk
-            fi
-            echo "✅ NDK links created successfully"
+            echo "✅ NDK copied successfully"
           else
             echo "❌ NDK not found at $NDK_PATH"
           fi
@@ -299,13 +298,20 @@ jobs:
           echo "Android Home: $ANDROID_HOME"
           echo "Android SDK: $(ls -la $ANDROID_HOME 2>/dev/null || echo 'Not found')"
           echo "Android NDK: $(ls -la $ANDROID_HOME/ndk/${{ env.NDK_VERSION }} 2>/dev/null || echo 'Not found')"
-          echo "Buildozer SDK link: $(ls -la ~/.buildozer/android/platform/android-sdk 2>/dev/null || echo 'Not found')"
-          echo "Buildozer NDK links:"
-          ls -la ~/.buildozer/android/platform/android-ndk* 2>/dev/null || echo 'No NDK links found'
+          
+          # Vérifier les copies dans buildozer
+          echo "Buildozer SDK: $(ls -la ~/.buildozer/android/platform/android-sdk 2>/dev/null || echo 'Not found')"
+          echo "Buildozer NDK directories:"
+          ls -la ~/.buildozer/android/platform/android-ndk* 2>/dev/null || echo 'No NDK directories found'
           
           # Lister tous les NDK disponibles
           echo "Available NDK versions:"
           ls -la $ANDROID_HOME/ndk/ 2>/dev/null || echo 'No NDK directory found'
+          
+          # Taille des répertoires
+          echo "Directory sizes:"
+          echo "SDK size: $(du -sh ~/.buildozer/android/platform/android-sdk 2>/dev/null || echo '0B')"
+          echo "NDK size: $(du -sh ~/.buildozer/android/platform/android-ndk-r* 2>/dev/null || echo '0B')"
           
           # Vérifier les caches
           echo "=== Cache status ==="
