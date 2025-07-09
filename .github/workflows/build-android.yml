@@ -432,11 +432,13 @@ jobs:
           echo "P4A cache: $(du -sh ~/.cache/python-for-android 2>/dev/null || echo '0B')"
           echo "Android SDK: $(du -sh $ANDROID_HOME 2>/dev/null || echo '0B')"
 
-      - name: Network diagnostics
+      - name: Diagnostic réseau avant build
         run: |
-          echo "🌐 Network diagnostics before build"
-          chmod +x scripts/diagnose-network.sh
-          ./scripts/diagnose-network.sh
+          bash scripts/diagnose-network.sh
+          if ! ping -c 1 github.com >/dev/null 2>&1; then
+            echo "::error::Réseau totalement indisponible, build annulé."
+            exit 1
+          fi
 
       - name: Build ${{ matrix.build_type }}
         timeout-minutes: 120
