@@ -22,7 +22,7 @@ on:
 env:
   PYTHON_VERSION: '3.11'
   JAVA_VERSION: '17'
-  CYTHON_VERSION: '3.0.10'
+  CYTHON_VERSION: '0.29.36'
   BUILDOZER_VERSION: '1.5.0'
   ANDROID_API_LEVEL: '34'
   NDK_VERSION: '25.2.9519653'
@@ -100,10 +100,10 @@ jobs:
           path: |
             ~/.cache/python-for-android
             .buildozer/android/platform/python-for-android
-          key: ${{ runner.os }}-p4a-${{ hashFiles('requirements.txt') }}-${{ env.PYTHON_VERSION }}-${{ env.ANDROID_API_LEVEL }}-v3
+          key: ${{ runner.os }}-p4a-${{ hashFiles('requirements.txt') }}-${{ env.PYTHON_VERSION }}-${{ env.ANDROID_API_LEVEL }}-${{ env.CYTHON_VERSION }}-v4
           restore-keys: |
+            ${{ runner.os }}-p4a-${{ hashFiles('requirements.txt') }}-${{ env.PYTHON_VERSION }}-${{ env.ANDROID_API_LEVEL }}-
             ${{ runner.os }}-p4a-${{ hashFiles('requirements.txt') }}-${{ env.PYTHON_VERSION }}-
-            ${{ runner.os }}-p4a-${{ hashFiles('requirements.txt') }}-
 
       # Cache des packages de dépendances
       - name: Cache buildozer packages
@@ -124,10 +124,10 @@ jobs:
           path: |
             .buildozer/android/platform/build-*
             .buildozer/android/dists
-          key: ${{ runner.os }}-build-${{ matrix.build_type }}-${{ hashFiles('**/*.py', '**/*.kv', 'requirements.txt', 'buildozer.spec') }}-v2
+          key: ${{ runner.os }}-build-${{ matrix.build_type }}-${{ hashFiles('**/*.py', '**/*.kv', 'requirements.txt', 'buildozer.spec') }}-${{ env.CYTHON_VERSION }}-v3
           restore-keys: |
+            ${{ runner.os }}-build-${{ matrix.build_type }}-${{ hashFiles('**/*.py', '**/*.kv', 'requirements.txt', 'buildozer.spec') }}-
             ${{ runner.os }}-build-${{ matrix.build_type }}-
-            ${{ runner.os }}-build-
 
       - name: Install system dependencies
         run: |
@@ -363,6 +363,14 @@ jobs:
           echo "🧹 Optimizing buildozer cache"
           chmod +x scripts/optimize-cache.sh
           ./scripts/optimize-cache.sh
+          
+          # Nettoyer spécifiquement les builds Kivy/Cython pour forcer la reconstruction
+          echo "🧹 Cleaning Kivy/Cython builds due to version changes..."
+          rm -rf ~/.buildozer/android/platform/build-*/other_builds/kivy* || true
+          rm -rf .buildozer/android/platform/build-*/other_builds/kivy* || true
+          rm -rf ~/.cache/python-for-android/dists/* || true
+          
+          echo "✅ Cache optimized and Kivy/Cython builds cleaned"
 
       - name: Pre-download dependencies
         run: |
@@ -539,6 +547,11 @@ jobs:
           PYTHONHTTPSVERIFY: "0"
           REQUESTS_CA_BUNDLE: ""
           CURL_CA_BUNDLE: ""
+          # Force l'utilisation de Cython 0.29.x pour la compatibilité Kivy 2.3.0
+          CYTHON_VERSION: "${{ env.CYTHON_VERSION }}"
+          # Eviter les erreurs de compilation stricte avec le nouveau NDK
+          CFLAGS: "-Wno-error=incompatible-function-pointer-types"
+          CXXFLAGS: "-Wno-error=incompatible-function-pointer-types"
         run: |
           echo "🚀 Building ${{ matrix.build_type }}"
           

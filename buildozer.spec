@@ -15,7 +15,7 @@ source.exclude_dirs = tests, bin, venv, .github, __pycache__, .git, .vscode, gui
 
 version = 1.7
 
-requirements = python3,kivy==2.2.0,pillow
+requirements = python3,kivy==2.3.0,pillow==10.0.0
 
 icon.filename = %(source.dir)s/tarot_img/icon.png
 orientation = portrait
