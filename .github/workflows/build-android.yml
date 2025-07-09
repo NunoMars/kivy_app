@@ -136,10 +136,12 @@ jobs:
             build-essential git zip unzip openjdk-17-jdk \
             python3-pip python3-setuptools python3-wheel python3-dev \
             libffi-dev libssl-dev zlib1g-dev libbz2-dev libsqlite3-dev \
-            libncurses5-dev libgdbm-dev liblzma-dev tk-dev \
+            libncurses5-dev libncursesw5-dev libgdbm-dev libgdbm-compat-dev \
+            liblzma-dev tk-dev uuid-dev libmpdec-dev \
             autotools-dev automake autoconf libtool pkg-config \
-            ccache \
-            cmake ninja-build
+            ccache cmake ninja-build \
+            libreadline-dev libexpat1-dev libxml2-dev libxslt1-dev \
+            gfortran libgfortran5 libc6-dev linux-libc-dev
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
@@ -156,6 +158,16 @@ jobs:
           echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/${{ env.NDK_VERSION }}" >> $GITHUB_ENV
           echo "ANDROIDNDK=$ANDROID_HOME/ndk/${{ env.NDK_VERSION }}" >> $GITHUB_ENV
           echo "ANDROID_NDK_ROOT=$ANDROID_HOME/ndk/${{ env.NDK_VERSION }}" >> $GITHUB_ENV
+          
+          # Variables d'environnement pour la compilation C/C++ native (hostpython3)
+          echo "CC=gcc" >> $GITHUB_ENV
+          echo "CXX=g++" >> $GITHUB_ENV
+          echo "CPP=cpp" >> $GITHUB_ENV
+          echo "AR=ar" >> $GITHUB_ENV
+          echo "RANLIB=ranlib" >> $GITHUB_ENV
+          echo "STRIP=strip" >> $GITHUB_ENV
+          echo "LDFLAGS=-L/usr/lib/x86_64-linux-gnu" >> $GITHUB_ENV
+          echo "CPPFLAGS=-I/usr/include" >> $GITHUB_ENV
           
           # Configuration des outils
           echo "$ANDROID_HOME/cmdline-tools/latest/bin" >> $GITHUB_PATH
@@ -372,6 +384,16 @@ jobs:
           
           echo "✅ Cache optimized and Kivy/Cython builds cleaned"
 
+      - name: Verify build environment
+        run: |
+          echo "🔍 Verifying build environment for hostpython3 compilation..."
+          
+          # Exécuter le script de diagnostic complet
+          chmod +x scripts/check-compilation-env.sh
+          ./scripts/check-compilation-env.sh
+          
+          echo "✅ Build environment verification complete"
+
       - name: Pre-download dependencies
         run: |
           echo "📦 Pre-downloading common build dependencies"
@@ -554,6 +576,13 @@ jobs:
           CXXFLAGS: "-Wno-error=incompatible-function-pointer-types"
         run: |
           echo "🚀 Building ${{ matrix.build_type }}"
+          
+          # Force clean hostpython3 build to ensure fresh compilation
+          echo "🧹 Cleaning hostpython3 build to ensure fresh compilation..."
+          rm -rf ~/.buildozer/android/platform/build-*/build/other_builds/hostpython3* || true
+          rm -rf .buildozer/android/platform/build-*/build/other_builds/hostpython3* || true
+          rm -rf ~/.buildozer/android/platform/build-*/packages/hostpython3* || true
+          rm -rf .buildozer/android/platform/build-*/packages/hostpython3* || true
           
           # Afficher l'environnement
           echo "=== Environment ==="
