@@ -24,9 +24,9 @@ env:
   JAVA_VERSION: '17'
   CYTHON_VERSION: '3.0.10'
   BUILDOZER_VERSION: '1.5.0'
-  ANDROID_API_LEVEL: '34'
+  ANDROID_API_LEVEL: '36'
   NDK_VERSION: '26.3.11579264'
-  BUILD_TOOLS_VERSION: '34.0.0'
+  BUILD_TOOLS_VERSION: '35.0.0'
   CMAKE_VERSION: '3.22.1'
 
 jobs:
@@ -396,7 +396,40 @@ jobs:
           echo "Android SDK: $(ls -la $ANDROID_HOME 2>/dev/null || echo 'Not found')"
           echo "Android NDK: $(ls -la $ANDROID_HOME/ndk/${{ env.NDK_VERSION }} 2>/dev/null || echo 'Not found')"
           
+          # Vérifier les API disponibles
+          echo "=== Available Android APIs ==="
+          if [ -d "$ANDROID_HOME/platforms" ]; then
+            echo "Installed platforms:"
+            ls -la $ANDROID_HOME/platforms/ | grep android- | sort
+            echo "Target API level: ${{ env.ANDROID_API_LEVEL }}"
+            if [ -d "$ANDROID_HOME/platforms/android-${{ env.ANDROID_API_LEVEL }}" ]; then
+              echo "✅ Target API ${{ env.ANDROID_API_LEVEL }} is available"
+            else
+              echo "❌ Target API ${{ env.ANDROID_API_LEVEL }} is NOT available"
+              echo "Available APIs: $(ls $ANDROID_HOME/platforms/ | grep android- | sed 's/android-//' | sort -n | tr '\n' ' ')"
+            fi
+          else
+            echo "❌ No platforms directory found"
+          fi
+          
+          # Vérifier les Build Tools disponibles
+          echo "=== Available Build Tools ==="
+          if [ -d "$ANDROID_HOME/build-tools" ]; then
+            echo "Installed build-tools:"
+            ls -la $ANDROID_HOME/build-tools/ | grep -v "^total" | sort
+            echo "Target build-tools: ${{ env.BUILD_TOOLS_VERSION }}"
+            if [ -d "$ANDROID_HOME/build-tools/${{ env.BUILD_TOOLS_VERSION }}" ]; then
+              echo "✅ Target build-tools ${{ env.BUILD_TOOLS_VERSION }} is available"
+            else
+              echo "❌ Target build-tools ${{ env.BUILD_TOOLS_VERSION }} is NOT available"
+              echo "Available build-tools: $(ls $ANDROID_HOME/build-tools/ | sort -V | tr '\n' ' ')"
+            fi
+          else
+            echo "❌ No build-tools directory found"
+          fi
+          
           # Vérifier les copies dans buildozer
+          echo "=== Buildozer Configuration ==="
           echo "Buildozer SDK: $(ls -la ~/.buildozer/android/platform/android-sdk 2>/dev/null || echo 'Not found')"
           echo "Buildozer NDK directories:"
           ls -la ~/.buildozer/android/platform/android-ndk* 2>/dev/null || echo 'No NDK directories found'
@@ -418,11 +451,11 @@ jobs:
           done
           
           # Lister tous les NDK disponibles
-          echo "Available NDK versions:"
+          echo "=== Available NDK versions ==="
           ls -la $ANDROID_HOME/ndk/ 2>/dev/null || echo 'No NDK directory found'
           
           # Taille des répertoires
-          echo "Directory sizes:"
+          echo "=== Directory sizes ==="
           echo "SDK size: $(du -sh ~/.buildozer/android/platform/android-sdk 2>/dev/null || echo '0B')"
           echo "NDK size: $(du -sh ~/.buildozer/android/platform/android-ndk-r* 2>/dev/null || echo '0B')"
           
