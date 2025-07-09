@@ -435,9 +435,36 @@ jobs:
       - name: Diagnostic réseau avant build
         run: |
           bash scripts/diagnose-network.sh
-          if ! ping -c 1 github.com >/dev/null 2>&1; then
-            echo "::error::Réseau totalement indisponible, build annulé."
+          
+          # Test de connectivité HTTP/HTTPS plus robuste que ping
+          echo "🔍 Test de connectivité critique pour le build..."
+          
+          # Vérifier les URLs critiques pour buildozer
+          CRITICAL_URLS=(
+            "https://github.com"
+            "https://download.savannah.gnu.org"
+            "https://pypi.org"
+          )
+          
+          failed_urls=0
+          for url in "${CRITICAL_URLS[@]}"; do
+            if ! curl -s --connect-timeout 10 --max-time 20 "$url" >/dev/null 2>&1; then
+              echo "❌ Cannot reach $url"
+              failed_urls=$((failed_urls + 1))
+            else
+              echo "✅ $url accessible"
+            fi
+          done
+          
+          # Si plus de la moitié des URLs critiques échouent, annuler le build
+          if [ $failed_urls -gt 1 ]; then
+            echo "::error::Connectivité réseau insuffisante ($failed_urls/3 URLs critiques inaccessibles) - Build annulé."
+            echo "::error::Réessayez plus tard quand la connectivité sera rétablie."
             exit 1
+          elif [ $failed_urls -gt 0 ]; then
+            echo "::warning::Connectivité réseau dégradée ($failed_urls/3 URLs critiques inaccessibles) - Build tenté avec retry."
+          else
+            echo "✅ Connectivité réseau correcte - Build lancé."
           fi
 
       - name: Build ${{ matrix.build_type }}
