@@ -24,9 +24,9 @@ env:
   JAVA_VERSION: '17'
   CYTHON_VERSION: '3.0.10'
   BUILDOZER_VERSION: '1.5.0'
-  ANDROID_API_LEVEL: '36'
-  NDK_VERSION: '26.3.11579264'
-  BUILD_TOOLS_VERSION: '35.0.0'
+  ANDROID_API_LEVEL: '34'
+  NDK_VERSION: '25.2.9519653'
+  BUILD_TOOLS_VERSION: '34.0.0'
   CMAKE_VERSION: '3.22.1'
 
 jobs:
@@ -242,9 +242,13 @@ jobs:
             if [ ! -d ~/.buildozer/android/platform/android-ndk-r${{ env.NDK_VERSION }} ]; then
               cp -r "$NDK_PATH" ~/.buildozer/android/platform/android-ndk-r${{ env.NDK_VERSION }}
             fi
-            # Format court (version recommandée 26c pour NDK 26.3.11579264)
-            if [ ! -d ~/.buildozer/android/platform/android-ndk-r26c ]; then
-              cp -r "$NDK_PATH" ~/.buildozer/android/platform/android-ndk-r26c
+            # Format court pour NDK 25b (r25b)
+            if [ ! -d ~/.buildozer/android/platform/android-ndk-r25b ]; then
+              cp -r "$NDK_PATH" ~/.buildozer/android/platform/android-ndk-r25b
+            fi
+            # Format attendu par p4a
+            if [ ! -d ~/.buildozer/android/platform/android-ndk-r25.2.9519653 ]; then
+              cp -r "$NDK_PATH" ~/.buildozer/android/platform/android-ndk-r25.2.9519653
             fi
             echo "✅ NDK copied successfully"
           else
@@ -452,7 +456,27 @@ jobs:
           
           # Lister tous les NDK disponibles
           echo "=== Available NDK versions ==="
-          ls -la $ANDROID_HOME/ndk/ 2>/dev/null || echo 'No NDK directory found'
+          if [ -d "$ANDROID_HOME/ndk" ]; then
+            echo "Installed NDK versions:"
+            ls -la $ANDROID_HOME/ndk/ | grep -v "^total" | sort
+            echo ""
+            echo "Target NDK: ${{ env.NDK_VERSION }}"
+            if [ -d "$ANDROID_HOME/ndk/${{ env.NDK_VERSION }}" ]; then
+              echo "✅ Target NDK ${{ env.NDK_VERSION }} is available"
+              # Vérifier les outils NDK
+              if [ -f "$ANDROID_HOME/ndk/${{ env.NDK_VERSION }}/ndk-build" ]; then
+                echo "✅ ndk-build found"
+                echo "NDK Build version: $($ANDROID_HOME/ndk/${{ env.NDK_VERSION }}/ndk-build --version 2>/dev/null | head -1 || echo 'Cannot determine')"
+              else
+                echo "❌ ndk-build not found"
+              fi
+            else
+              echo "❌ Target NDK ${{ env.NDK_VERSION }} is NOT available"
+              echo "Available NDKs: $(ls $ANDROID_HOME/ndk/ 2>/dev/null | tr '\n' ' ' || echo 'None')"
+            fi
+          else
+            echo "❌ No NDK directory found"
+          fi
           
           # Taille des répertoires
           echo "=== Directory sizes ==="
