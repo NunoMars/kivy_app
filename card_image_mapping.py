@@ -89,6 +89,25 @@ def get_image_path(card_name, state="normal"):
 SPECIAL_CARD_MAPPINGS = {
     # Si certaines cartes ont des cas particuliers, les ajouter ici
     # "Nom Original": "nom_fichier_special",
+    "O Mago": "O Mago",
+    "A Papisa": "A Papisa",
+    "O Imperador": "O Imperador",
+    "A Imperatriz": "A Imperatriz",
+    "O Louco": "O Louco",
+    "O Papa": "O Papa",
+    "Os Amantes": "Os Amantes",
+    "O Carro": "O Carro",
+    "A Justiça": "A Justiça",
+    "O Eremita": "O Eremita",
+    "A Roda da Fortuna": "A Roda da Fortuna",
+    "A Força": "A Força",
+    "O Enforcado": "O Enforcado",
+    "A Morte": "A Morte",
+    "A Estrela": "A Estrela",
+    "A Lua": "A Lua",
+    "O Sol": "O Sol",
+    "O Julgamento": "O Julgamento",
+    "O Mundo": "O Mundo"
 }
 
 def get_card_image_path(card_name, state="normal"):

@@ -2,6 +2,23 @@ __version__ = "0.01"
 
 import os
 import random
+import locale
+from translations import MESSAGES
+
+# Détecter la langue du système
+def get_system_language():
+    try:
+        lang = locale.getdefaultlocale()[0]
+        return "pt" if lang and lang.startswith("pt") else "fr"
+    except:
+        return "fr"
+
+# Langue actuelle de l'application
+CURRENT_LANG = get_system_language()
+
+# Fonction helper pour obtenir les traductions
+def tr(key):
+    return MESSAGES[CURRENT_LANG].get(key, MESSAGES["fr"][key])
 
 # Supprimer complètement le splash screen Kivy
 os.environ['KIVY_NO_CONSOLELOG'] = '1'
@@ -26,7 +43,7 @@ from kivy.uix.scrollview import ScrollView
 from kivy.animation import Animation
 from kivy.uix.button import Button
 
-from signification import cards_signification
+from tarot_loader import get_cards_signification, get_card_state
 
 
 class AutoScrollLabel(Label):
@@ -151,7 +168,7 @@ class CardScreen(Screen):
 class LoadingPopup(Popup):
     def __init__(self, show_ad=True, **kwargs):
         super(LoadingPopup, self).__init__(**kwargs)
-        self.title = "JE TIRE UNE CARTE..."
+        self.title = tr("drawing_card")
         # Style du titre pour correspondre au nom de la carte
         self.title_color = [0.6, 0.4, 0.2, 1.0]  # Marron comme le nom de la carte
         self.title_size = "22sp"  # Même taille que le nom de la carte
@@ -200,7 +217,7 @@ class LoadingPopup(Popup):
         
         # Message d'attente en bas avec animation - plus petit sur Android
         waiting_label = Label(
-            text="Concentration en cours...",
+            text=tr("concentrating"),
             size_hint=(1, 0.08 if is_android else 0.1),  # Plus petit sur Android
             font_size="16sp" if is_android else "14sp",  # Police plus grande sur Android
             color=[0.6, 0.4, 0.2, 1.0],
@@ -292,8 +309,9 @@ class CardResponseScreen(Screen):
     def __init__(self, **kwargs):
         super(CardResponseScreen, self).__init__(**kwargs)
         self.path = "tarot_img/MajorArcanaCards"
-        self.cards = list(cards_signification.keys())
-        self.states = ["a l'endroit", "a l'envers"]
+        self.cards_signification = get_cards_signification()
+        self.cards = list(self.cards_signification.keys())
+        self.states = [get_card_state('upright'), get_card_state('reversed')]
         # Ces attributs seront liés dans on_kv_post
         self._card_name = None
         self._card_state = None
@@ -360,20 +378,21 @@ class CardResponseScreen(Screen):
                 self.card_name.text = self.drawn_card
             if self.card_state is not None:
                 if self.state == "a l'envers":
-                    self.card_state.text = "⬇ À L'ENVERS ⬇"
+                    self.card_state.text = tr("reversed")
                 else:
-                    self.card_state.text = "⬆ À L'ENDROIT ⬆"
+                    self.card_state.text = tr("upright")
                     
             if self.states_label is not None:
-                keywords = str(cards_signification[self.drawn_card][self.state])
+                state_key = 'direita' if self.state == get_card_state('upright') else 'invertida'
+                keywords = str(self.cards_signification[self.drawn_card][state_key])
                 self.states_label.text = keywords.upper()  # Mots-clés en MAJUSCULES pour plus d'impact
 
             # Utiliser le système de mapping pour gérer les accents automatiquement
             from card_image_mapping import get_card_image_path
-            image_path = get_card_image_path(self.drawn_card, self.state)
+            image_path = get_card_image_path(self.drawn_card, self.state, CURRENT_LANG)
 
             # Print the image path for debugging
-            # print("Image Path:", image_path)
+            print("Image Path:", image_path)
 
             if os.path.exists(image_path):
                 if self.card_image is not None:
@@ -387,11 +406,8 @@ class CardResponseScreen(Screen):
                 print("Image not found:", image_path)
 
             if self.card_text is not None:
-                self.card_text.text = str(
-                    cards_signification[self.drawn_card][
-                        f"signification {self.state}"
-                    ]
-                )
+                signif_key = f"signification {'direita' if self.state == get_card_state('upright') else 'invertida'}"
+                self.card_text.text = str(self.cards_signification[self.drawn_card][signif_key])
         except Exception as e:
             # Handle any exceptions and print the error message
             print("Error loading card data:", e)
@@ -624,7 +640,7 @@ class InterstitialAdPopup(Popup):
     
     def __init__(self, **kwargs):
         super(InterstitialAdPopup, self).__init__(**kwargs)
-        self.title = "MERCI POUR VOTRE CONSULTATION !"
+        self.title = tr("thanks")
         self.title_color = [0.6, 0.4, 0.2, 1.0]
         self.title_size = "20sp"
         self.background = "tarot_img/bg.jpg"
@@ -635,7 +651,7 @@ class InterstitialAdPopup(Popup):
         
         # Message de remerciement
         thanks_label = Label(
-            text="✨ J'espère que votre prédiction vous a plu ! ✨",
+            text=tr("thanks"),
             font_size="16sp",
             color=[0.6, 0.4, 0.2, 1.0],
             halign='center',
@@ -650,7 +666,7 @@ class InterstitialAdPopup(Popup):
         
         # Message d'encouragement
         encourage_label = Label(
-            text="🔮 Continuez à explorer les mystères du tarot ! 🔮",
+            text=tr("continue_exploring"),
             font_size="14sp",
             color=[0.4, 0.3, 0.6, 1.0],
             halign='center',
@@ -661,7 +677,7 @@ class InterstitialAdPopup(Popup):
         
         # Bouton de fermeture stylé IDENTIQUE à celui de l'écran de réponse
         self.close_button = Button(
-            text="✨ Nouveau tirage (3s) ✨",
+            text=tr("new_reading_countdown").format(seconds=3),
             size_hint=(0.7, 0.18),
             pos_hint={'center_x': 0.5},
             disabled=True,
@@ -843,7 +859,7 @@ class MaCarteDeTarotApp(App):
 
     def build(self):
         """Build the app"""
-        self.title = "Ma Carte de Tarot"
+        self.title = tr("app_title")
         self.icon = "tarot_img/icon.png"  # Utiliser la nouvelle icône
         
         # Supprimer complètement le splash screen et logo Kivy

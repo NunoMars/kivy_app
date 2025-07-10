@@ -1,0 +1,176 @@
+cards_signification = {
+    "O Mago": {
+        "direita": "começo, recursos, entusiasmo, energia, criatividade",
+        "invertida": "ilusão, manipulação, falta de foco, dispersão, engano",
+        "signification direita": "O Mago é a carta do tarot que representa o começo, a energia vital e a ação. Simboliza a autoconfiança, a criatividade e a vontade de agir. É uma carta que incentiva a tomar decisões, transformar ideias em ações concretas e aproveitar as oportunidades. O Mago convida à exploração, à comunicação clara e à expressão criativa. É uma carta que lembra a importância da iniciativa e da confiança nos próprios talentos e recursos para atingir seus objetivos.",
+        "signification invertida": "O Mago invertido revela ilusão, manipulação ou uso de seus talentos para fins desonestos. Esta posição pode indicar dispersão de energias, falta de foco ou tendência a enganar os outros com belas palavras. Às vezes é o charlatão que abusa da confiança dos outros ou a pessoa que mente para si mesma sobre suas verdadeiras capacidades."
+    },
+    "A Papisa": {
+        "direita": "intuição, sabedoria, conhecimento, mistério, segredos",
+        "invertida": "segredos ocultos, ignorância voluntária, intuição bloqueada, superficialidade",
+        "signification direita": "A Papisa é a carta do tarot que representa a sabedoria, o conhecimento e a intuição. Simboliza a busca pela verdade, a espiritualidade e o autoconhecimento. É uma carta que convida à introspecção, à escuta da intuição e à busca pela verdade. A Papisa é uma carta que lembra a importância da sabedoria e do conhecimento para atingir seus objetivos.",
+        "signification invertida": "A Papisa invertida revela segredos ocultos, ignorância voluntária ou intuição bloqueada por preconceitos. Esta posição pode indicar superficialidade, recusa em acessar a sabedoria interior ou uso do conhecimento para manipular os outros. Às vezes é a falsa espiritualidade ou a ciência sem consciência."
+    },
+    "O Imperador": {
+        "direita": "autoridade, estrutura, controle, estabilidade, paternidade",
+        "invertida": "tirania, rigidez, abuso de poder, falta de disciplina",
+        "signification direita": "O Imperador simboliza autoridade, estrutura e estabilidade. Ele representa a figura paterna, o controle e a capacidade de liderar com sabedoria. Esta carta incentiva a estabelecer limites claros e a tomar decisões racionais para alcançar seus objetivos.",
+        "signification invertida": "O Imperador invertido pode indicar abuso de poder, rigidez excessiva ou falta de disciplina. Esta posição alerta contra a tirania e a necessidade de encontrar equilíbrio entre autoridade e empatia."
+    },
+    "A Imperatriz": {
+        "direita": "fertilidade, abundância, criatividade, natureza, nutrição",
+        "invertida": "dependência, negligência, bloqueio criativo, excesso de controle",
+        "signification direita": "A Imperatriz é a carta do tarot que simboliza a fertilidade, a abundância e a criatividade. Representa a conexão com a natureza, o cuidado e a nutrição. É uma carta que encoraja a expressão criativa e a apreciação das coisas belas da vida.",
+        "signification invertida": "A Imperatriz invertida pode indicar dependência excessiva, negligência ou bloqueio criativo. Pode simbolizar uma tendência a controlar excessivamente ou a falta de cuidado com as necessidades emocionais e físicas. É um lembrete para encontrar equilíbrio e harmonia."
+    },
+    "O Louco": {
+        "direita": "novos começos, espontaneidade, liberdade, aventura, potencial",
+        "invertida": "imprudência, falta de direção, negligência, hesitação",
+        "signification direita": "O Louco simboliza novos começos e a liberdade de explorar o desconhecido. É uma carta que encoraja a espontaneidade, a aventura e a confiança no futuro. Representa o potencial ilimitado e a coragem de seguir em frente sem medo do desconhecido.",
+        "signification invertida": "O Louco invertido pode indicar imprudência, falta de direção ou hesitação em tomar decisões importantes. Pode simbolizar negligência ou a incapacidade de avaliar os riscos de maneira adequada. É um lembrete para equilibrar a espontaneidade com a responsabilidade."
+    },
+    "O Papa": {
+        "direita": "ensino espiritual, tradição sagrada, orientação moral, iniciação, sabedoria transmitida",
+        "invertida": "dogmatismo, manipulação religiosa, tradição estagnada, falso profeta",
+        "signification direita": "O Papa representa o ensino espiritual autêntico e a transmissão da sabedoria sagrada. Esta carta evoca o guia espiritual, o iniciador que conecta o humano ao divino por meio do conhecimento tradicional. Simboliza a moral iluminada, os ritos de passagem e o aprendizado dos mistérios. É a ponte entre o visível e o invisível, o professor que revela as verdades eternas.",
+        "signification invertida": "O Papa invertido revela o dogmatismo cego, a manipulação pelo poder religioso ou uma tradição que se tornou estagnada. Esta posição pode indicar um falso profeta, o uso da espiritualidade para fins pessoais ou a rejeição estéril de qualquer orientação tradicional."
+    },
+    "Os Amantes": {
+        "direita": "escolha difícil, união, amor, dualidade, decisão importante",
+        "invertida": "má escolha, separação, indecisão, conflito interno",
+        "signification direita": "Os Amantes representam antes de tudo uma escolha crucial a ser feita, muitas vezes entre dois caminhos opostos. Esta carta evoca a união, o amor verdadeiro, mas também a necessidade de escolher entre diferentes opções de vida. Simboliza a maturidade emocional, o compromisso autêntico e a harmonia entre os opostos. É o equilíbrio entre paixão e razão, entre desejo e responsabilidade.",
+        "signification invertida": "Os Amantes invertidos indicam uma má escolha, uma separação ou uma profunda indecisão. Esta posição revela conflitos internos, a incapacidade de escolher ou decisões tomadas por razões erradas. Pode sinalizar relações desequilibradas, infidelidades ou a incapacidade de se comprometer autenticamente. Às vezes é o arrependimento de uma escolha passada."
+    },
+    "O Carro": {
+        "direita": "domínio das forças opostas, vontade triunfante, progresso, vitória pelo equilíbrio",
+        "invertida": "perda de controle, forças dispersas, fracasso por falta de direção, conflito interno",
+        "signification direita": "O Carro representa a vitória obtida pelo domínio das forças opostas. Esta carta evoca a capacidade de dirigir energias contraditórias para um mesmo objetivo, como um condutor que controla seus cavalos. Simboliza a vontade triunfante, o equilíbrio dinâmico e o progresso constante apesar dos obstáculos. É a arte de transformar oposições em complementaridades.",
+        "signification invertida": "O Carro invertido revela a perda de controle, a incapacidade de harmonizar as forças presentes ou o fracasso devido à falta de direção clara. Esta posição pode indicar energias dispersas, conflitos internos paralisantes ou a ilusão de controlar o que realmente nos escapa."
+    },
+    "A Justiça": {
+        "direita": "justiça, equilíbrio, verdade, lei, equidade",
+        "invertida": "injustiça, desequilíbrio, parcialidade, corrupção, vingança",
+        "signification direita": "A Justiça é a carta do tarot que representa a justiça, o equilíbrio e a verdade. Simboliza a lei, a equidade e a verdade. É uma carta que convida à justiça, ao equilíbrio e à verdade. A Justiça é uma carta que lembra a importância da justiça e do equilíbrio para alcançar seus objetivos.",
+        "signification invertida": "A Justiça invertida revela a injustiça, a parcialidade ou a corrupção dos sistemas. Esta posição pode indicar um desequilíbrio das forças, a vingança que substitui a justiça, ou a incapacidade de ver a verdade por preconceito. Às vezes é o julgamento errado ou o abuso do sistema judicial."
+    },
+    "O Eremita": {
+        "direita": "busca espiritual, sabedoria, introspecção, guia interior, solidão construtiva",
+        "invertida": "isolamento estéril, recusa de conselhos, orgulho espiritual, solidão sofrida",
+        "signification direita": "O Eremita representa a busca espiritual e a procura pela verdade interior. Esta carta evoca a sabedoria adquirida pela experiência, a necessidade de se retirar do mundo para melhor se compreender. Simboliza o guia espiritual, aquele que ilumina o caminho dos outros graças à sua própria iluminação. É a solidão escolhida para a evolução pessoal.",
+        "signification invertida": "O Eremita invertido indica um isolamento estéril, a recusa de ouvir conselhos sábios ou um orgulho espiritual que impede o aprendizado. Esta posição pode revelar uma solidão sofrida em vez de escolhida, ou a incapacidade de compartilhar sua sabedoria com os outros por egoísmo ou misantropia."
+    },
+    "A Roda da Fortuna": {
+        "direita": "ciclos naturais, karma, oportunidade, mudança de sorte, destino em movimento",
+        "invertida": "má sorte persistente, resistência aos ciclos, mau karma, estagnação",
+        "signification direita": "A Roda da Fortuna representa os ciclos naturais da vida e a ação do karma. Esta carta evoca as mudanças de sorte, as oportunidades que se apresentam e a importância de aproveitar o momento certo. Simboliza o destino em movimento, as lições da experiência e a compreensão de que tudo está em constante mudança. É a aceitação dos altos e baixos da existência.",
+        "signification invertida": "A Roda da Fortuna invertida pode indicar um período de má sorte persistente, a resistência aos ciclos naturais ou as consequências de um mau karma. Esta posição revela às vezes a estagnação voluntária, a incapacidade de aproveitar as oportunidades ou a repetição de erros que mantêm no fracasso."
+    },
+    "A Força": {
+        "direita": "força interior, autocontrole, coragem, suavidade, persuasão",
+        "invertida": "fraqueza, falta de controle, violência, brutalidade, covardia",
+        "signification direita": "A Força representa o domínio de seus instintos pela suavidade em vez da violência. Esta carta evoca a força interior, a coragem moral e a capacidade de superar os obstáculos pela persuasão e paciência. Simboliza a inteligência emocional, a compaixão firme e a vitória do espírito sobre a matéria. É dominar seus impulsos destrutivos pelo amor e sabedoria.",
+        "signification invertida": "A Força invertida indica uma falta de autocontrole, o uso da violência onde a suavidade seria mais eficaz, ou, inversamente, uma fraqueza excessiva diante dos desafios. Esta posição pode revelar a covardia, a incapacidade de se defender ou o uso abusivo de seu poder sobre os outros."
+    },
+    "O Enforcado": {
+        "direita": "sacrifício voluntário, espera, nova perspectiva, desapego, iniciação",
+        "invertida": "sacrifício inútil, teimosia, resistência à mudança, impaciência",
+        "signification direita": "O Enforcado representa um sacrifício voluntário para obter uma nova perspectiva. Esta carta evoca a aceitação de um período de suspensão, de espera necessária para ver as coisas sob um ângulo diferente. É o desapego, o abandono de nossas certezas para acessar uma sabedoria superior. O Enforcado nos ensina a paciência e o valor da contemplação diante da ação precipitada.",
+        "signification invertida": "O Enforcado invertido indica um sacrifício que não leva a lugar nenhum, uma teimosia estéril ou uma resistência à mudança necessária. Esta posição pode revelar impaciência diante de uma situação que exige tempo. É às vezes a recusa de aceitar uma perspectiva diferente ou a incapacidade de desapegar-se de situações ultrapassadas."
+    },
+    "A Morte": {
+        "direita": "transformação profunda, fim de um ciclo, renascimento, mudança radical, purificação",
+        "invertida": "resistência à mudança, estagnação, medo do desconhecido, transformação bloqueada",
+        "signification direita": "A Morte não prediz a morte física, mas uma transformação profunda e necessária. Esta carta anuncia o fim de um ciclo de vida e o início de um novo capítulo. Simboliza a metamorfose, a purificação e o renascimento após abandonar o que não nos serve mais. É a aceitação da mudança inevitável para permitir uma evolução espiritual.",
+        "signification invertida": "A Morte invertida revela uma resistência à mudança necessária, o medo de desapegar-se do passado ou a incapacidade de aceitar que certas situações estão definitivamente terminadas. Esta posição indica uma estagnação voluntária ou a ilusão de que se pode impedir a evolução natural das coisas."
+    },
+    "A Estrela": {
+        "direita": "esperança, inspiração, espiritualidade, generosidade, otimismo",
+        "invertida": "desespero, perda de fé, pessimismo, egoísmo, ilusões perdidas",
+        "signification direita": "A Estrela é a carta do tarot que representa a esperança, a inspiração e a espiritualidade. Simboliza a generosidade, o otimismo e a espiritualidade. É uma carta que convida à esperança, à inspiração e à espiritualidade. A Estrela é uma carta que lembra a importância da esperança e da inspiração para alcançar seus objetivos.",
+        "signification invertida": "A Estrela invertida revela o desespero, a perda de fé no futuro ou um pessimismo profundo. Esta posição pode indicar ilusões perdidas, o egoísmo que substitui a generosidade, ou a desconexão espiritual. Às vezes é a depressão que segue uma grande decepção ou a incapacidade de ver a beleza do mundo."
+    },
+    "A Lua": {
+        "direita": "ilusões, confusão, medos, inconsciente, mistérios",
+        "invertida": "clareza, verdade revelada, fim das ilusões, intuição recuperada",
+        "signification direita": "A Lua revela um mundo de ilusões, confusão e medos ocultos. Esta carta evoca os mistérios do inconsciente, os sonhos perturbadores e as situações onde nada é o que parece ser. Ela alerta contra enganos, mal-entendidos e projeções de nossas próprias angústias na realidade. A Lua nos convida a navegar com cautela na escuridão da incerteza.",
+        "signification invertida": "A Lua invertida anuncia a dissipação das ilusões e o retorno da clareza. Os mistérios se revelam, os mal-entendidos se dissipam e a verdade finalmente emerge. Esta posição indica uma reconexão com a intuição autêntica, livre de medos e projeções. É o fim de um período de confusão e o acesso a uma compreensão mais clara da situação."
+    },
+    "O Sol": {
+        "direita": "alegria, felicidade, sucesso, realização, celebração",
+        "invertida": "orgulho excessivo, ego inflado, sucesso temporário, ilusão de grandeza",
+        "signification direita": "O Sol representa a alegria pura, a realização radiante e o sucesso merecido. Esta carta evoca o florescimento total, o reconhecimento público e a celebração de suas realizações. Simboliza a criança interior liberada, a criatividade que se expressa plenamente e a harmonia entre o ser e suas aspirações. É a iluminação que dissipa todas as sombras.",
+        "signification invertida": "O Sol invertido revela o orgulho excessivo, o ego que cega o julgamento ou a ilusão de grandeza. Esta posição pode indicar um sucesso temporário que esconde fundações frágeis, a vaidade que isola dos outros, ou a incapacidade de compartilhar sua luz com os outros. Às vezes é a arrogância que precede a queda."
+    },
+    "O Julgamento": {
+        "direita": "renascimento espiritual, chamado divino, ressurreição, balanço de vida, transformação final",
+        "invertida": "surdez espiritual, recusa da evolução, julgamento severo, culpa",
+        "signification direita": "O Julgamento representa o renascimento espiritual e o chamado divino para uma transformação profunda. Esta carta evoca a ressurreição simbólica, o balanço de vida e o despertar para uma consciência superior. Simboliza a absolvição, o perdão e a possibilidade de renascer purificado de seus erros passados. É o chamado da alma para sua verdadeira missão.",
+        "signification invertida": "O Julgamento invertido revela a surdez aos chamados espirituais, a recusa de evoluir ou um julgamento muito severo consigo mesmo ou com os outros. Esta posição pode indicar a culpa paralisante, a incapacidade de perdoar ou a resistência às transformações necessárias para a evolução da alma."
+    },
+    "O Mundo": {
+        "direita": "realização total, harmonia universal, ciclo completo, maestria completa",
+        "invertida": "fracasso próximo ao objetivo, perfeccionismo paralisante, isolamento, ciclo inacabado",
+        "signification direita": "O Mundo representa a realização total e a harmonia universal. Esta carta evoca a conclusão completa de um ciclo, a maestria perfeita de todos os elementos e a integração harmoniosa de todas as experiências. Simboliza o sucesso duradouro, o reconhecimento merecido e o estado de graça onde tudo contribui para o florescimento. É o culminar da jornada iniciática do Louco.",
+        "signification invertida": "O Mundo invertido pode indicar um fracasso frustrante quando se estava próximo do objetivo, o perfeccionismo que paralisa ou o isolamento apesar do sucesso aparente. Esta posição revela às vezes um ciclo inacabado, a incapacidade de saborear suas conquistas ou o medo da realização que poderia significar o fim de uma busca."
+    },
+    "O Valete de Paus": {
+        "direita": "mensageiro criativo, nova inspiração, projeto nascente, entusiasmo juvenil",
+        "invertida": "falsa promessa, projeto abortado, entusiasmo superficial, impaciência criativa",
+        "signification direita": "O Valete de Paus traz mensagens criativas, novas inspirações ou anuncia o início de um projeto empolgante. Ele representa o entusiasmo juvenil, a abordagem criativa fresca e o surgimento de ideias inovadoras. Esta carta evoca o aprendiz artista, o estudante apaixonado e o espírito que descobre seus talentos.",
+        "signification invertida": "O Valete de Paus invertido alerta contra falsas promessas criativas, entusiasmo superficial ou impaciência que faz abortar projetos. Esta posição pode revelar uma abordagem imatura da criatividade, a tendência de desistir diante dos primeiros obstáculos ou ilusões sobre suas próprias capacidades."
+    },
+    "O Rei de Ouros": {
+        "direita": "prosperidade estabelecida, domínio financeiro, generosidade sábia, liderança material",
+        "invertida": "avareza, corrupção, abuso de riqueza, materialismo excessivo",
+        "signification direita": "O Rei de Ouros representa a prosperidade estabelecida, o domínio financeiro e a liderança no campo material. Ele encarna a generosidade sábia, o investimento refletido e a capacidade de criar riqueza duradoura. Esta carta evoca o empreendedor realizado, o mecenas generoso e aquele que coloca seu sucesso a serviço do bem comum.",
+        "signification invertida": "O Rei de Ouros invertido revela avareza, corrupção ou abuso de riqueza. Esta posição pode indicar um materialismo excessivo que sufoca os valores humanos, a tendência de corromper com dinheiro ou a incapacidade de compartilhar sua prosperidade com quem precisa."
+    },
+    "A Rainha de Ouros": {
+        "direita": "abundância nutritiva, generosidade prática, prosperidade compartilhada, sabedoria doméstica",
+        "invertida": "avareza protetora, materialismo possessivo, negligência do lar, desperdício",
+        "signification direita": "A Rainha de Ouros encarna a abundância nutritiva e a generosidade prática. Ela representa a prosperidade compartilhada, a sabedoria doméstica e a capacidade de criar um ambiente nutritivo e seguro. Esta carta evoca a mãe atenta, a anfitriã generosa e aquela que faz prosperar os recursos familiares com amor e inteligência.",
+        "signification invertida": "A Rainha de Ouros invertida revela avareza protetora, materialismo possessivo ou negligência do lar. Esta posição pode indicar uma generosidade mal colocada que leva ao desperdício, a incapacidade de gerenciar os recursos familiares ou a obsessão por bens materiais em detrimento das relações humanas."
+    },
+    "O Cavaleiro de Ouros": {
+        "direita": "trabalho árduo, método, perseverança, responsabilidade, pragmatismo",
+        "invertida": "obsessão pelo trabalho, rotina excessiva, falta de ambição, preguiça",
+        "signification direita": "O Cavaleiro de Ouros representa o trabalhador metódico e perseverante. Ele avança lentamente, mas com segurança, em direção aos seus objetivos materiais e financeiros. Esta carta evoca responsabilidade, pragmatismo e a capacidade de realizar um trabalho de longo prazo. É a paciência e a tenacidade a serviço da realização concreta.",
+        "signification invertida": "O Cavaleiro de Ouros invertido pode indicar uma obsessão excessiva pelo trabalho em detrimento de tudo o mais, ou, ao contrário, preguiça e falta de ambição. Esta posição revela às vezes uma rotina paralisante, a incapacidade de correr riscos calculados ou uma abordagem muito rígida dos projetos."
+    },
+    "O Valete de Ouros": {
+        "direita": "estudante aplicado, aprendizado prático, nova oportunidade material, diligência",
+        "invertida": "preguiça estudiosa, oportunismo, superficialidade no aprendizado, negligência",
+        "signification direita": "O Valete de Ouros representa o estudante aplicado, o aprendizado prático e o surgimento de novas oportunidades materiais. Ele evoca diligência, perseverança no estudo e a capacidade de transformar teoria em aplicações concretas. Esta carta simboliza o aprendiz sério que lança as bases de seu futuro sucesso.",
+        "signification invertida": "O Valete de Ouros invertido revela preguiça nos estudos, oportunismo de curto prazo ou superficialidade no aprendizado. Esta posição pode indicar negligência, incapacidade de perseverar no esforço ou tendência a buscar atalhos que comprometem a qualidade do trabalho."
+    },
+    "O Valete de Copas": {
+        "direita": "mensagem emocional, inspiração artística, despertar sensível, criatividade nascente",
+        "invertida": "imaturidade emocional, sensibilidade ferida, criatividade bloqueada, ingenuidade perigosa",
+        "signification direita": "O Valete de Copas traz mensagens emocionais, inspiração artística ou anuncia um despertar sensível. Ele representa a criatividade nascente no campo das artes, a abertura do coração e a receptividade às influências sutis. Esta carta evoca o artista em formação, o amante sincero e a alma pura que descobre a riqueza do mundo emocional.",
+        "signification invertida": "O Valete de Copas invertido revela imaturidade emocional, sensibilidade ferida ou criatividade bloqueada. Esta posição pode indicar uma ingenuidade perigosa diante de manipulações afetivas, a incapacidade de expressar seus sentimentos de maneira construtiva ou feridas emocionais que impedem o florescimento artístico."
+    },
+    "O Rei de Espadas": {
+        "direita": "inteligência, autoridade justa, clareza mental, objetividade, justiça",
+        "invertida": "tirania, abuso de poder, frieza excessiva, manipulação mental",
+        "signification direita": "O Rei de Espadas representa a inteligência superior, a autoridade baseada no conhecimento e na justiça. Ele simboliza clareza mental, objetividade e a capacidade de resolver situações complexas com sabedoria. Esta carta evoca o líder esclarecido, o juiz justo e o pensador que coloca sua inteligência a serviço do bem comum.",
+        "signification invertida": "O Rei de Espadas invertido revela abuso de poder intelectual, tirania fria ou uso da inteligência para manipular os outros. Esta posição pode indicar falta de empatia, autoridade despótica ou uso do conhecimento para dominar em vez de servir."
+    },
+    "A Rainha de Espadas": {
+        "direita": "independência, lucidez, franqueza, inteligência pragmática, experiência da dor",
+        "invertida": "amargura, rancor, crítica destrutiva, frieza excessiva",
+        "signification direita": "A Rainha de Espadas representa a independência conquistada pela experiência, muitas vezes dolorosa. Ela simboliza lucidez, franqueza e inteligência pragmática. Esta carta evoca uma mulher que aprendeu com a vida e que agora pode oferecer conselhos valiosos, mesmo que às vezes pareçam duros. É a sabedoria nascida da provação.",
+        "signification invertida": "A Rainha de Espadas invertida revela amargura que corrói, rancor persistente ou crítica destrutiva nascida de suas próprias feridas. Esta posição pode indicar frieza excessiva, incapacidade de perdoar ou uso de experiências passadas para ferir em vez de ajudar."
+    },
+    "O Cavaleiro de Espadas": {
+        "direita": "ação impulsiva, coragem, combatividade, mudança brusca, heroísmo",
+        "invertida": "imprudência, agressão, destruição, raiva cega",
+        "signification direita": "O Cavaleiro de Espadas representa ação rápida e corajosa, às vezes impulsiva. Ele simboliza intervenção heroica, defesa de ideais com determinação. Esta carta evoca mudanças bruscas mas necessárias, espírito combativo e vontade de resolver problemas de forma incisiva.",
+        "signification invertida": "O Cavaleiro de Espadas invertido revela imprudência, agressão destrutiva ou raiva cega. Esta posição alerta contra ações precipitadas que causam mais danos do que soluções. Às vezes é violência gratuita ou incapacidade de controlar impulsos destrutivos."
+    },
+    "O Valete de Espadas": {
+        "direita": "curiosidade intelectual, mensagens importantes, vigilância, agilidade mental",
+        "invertida": "indiscrição, espionagem maliciosa, mentiras, manipulação de informações",
+        "signification direita": "O Valete de Espadas representa curiosidade intelectual, chegada de notícias importantes ou necessidade de vigilância. Ele simboliza mente ágil, capacidade de observação e inteligência em ação. Esta carta evoca quem coleta informações, monitora situações e traz mensagens cruciais. É inteligência a serviço da descoberta.",
+        "signification invertida": "O Valete de Espadas invertido revela indiscrição, espionagem maliciosa ou manipulação de informações. Esta posição pode indicar mentiras, rumores maliciosos ou uso de conhecimento para prejudicar em vez de esclarecer. Às vezes é fofoca destrutiva ou traição de confiança."
+    }
+}
