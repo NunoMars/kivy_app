@@ -228,3 +228,26 @@ cards_signification = {
         "signification a l'envers": "Le Valet d'Épée inversé révèle l'indiscrétion, l'espionnage malveillant ou la manipulation d'informations. Cette position peut indiquer des mensonges, des rumeurs malveillantes ou l'usage de la connaissance pour nuire plutôt que pour éclairer. C'est parfois le bavardage destructeur ou la trahison de confiance.",
     },
 }
+
+def get_cards_signification():
+    """Retourne le dictionnaire des significations de cartes"""
+    return cards_signification
+
+def get_card_state(state):
+    """Convertit l'état de la carte selon la langue"""
+    state_mapping = {
+        'upright': 'a l\'endroit',
+        'reversed': 'a l\'envers',
+        'droite': 'a l\'endroit',
+        'endroit': 'a l\'endroit',
+        'envers': 'a l\'envers',
+        'invertida': 'a l\'envers'
+    }
+    return state_mapping.get(state, state)
+
+def get_signification_key(state):
+    """Retourne la clé de signification selon l'état"""
+    if state in ['reversed', 'a l\'envers', 'envers', 'invertida']:
+        return 'signification a l\'envers'
+    else:
+        return 'signification a l\'endroit'

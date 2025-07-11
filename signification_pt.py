@@ -174,3 +174,28 @@ cards_signification = {
         "signification invertida": "O Valete de Espadas invertido revela indiscrição, espionagem maliciosa ou manipulação de informações. Esta posição pode indicar mentiras, rumores maliciosos ou uso de conhecimento para prejudicar em vez de esclarecer. Às vezes é fofoca destrutiva ou traição de confiança."
     }
 }
+
+def get_cards_signification():
+    """Retourne le dictionnaire des significations de cartes en portugais"""
+    return cards_signification
+
+def get_card_state(state):
+    """Convertit l'état de la carte selon la langue"""
+    state_mapping = {
+        'upright': 'direita',
+        'reversed': 'invertida',
+        'droite': 'direita',
+        'endroit': 'direita',
+        'envers': 'invertida',
+        'a l\'envers': 'invertida',
+        'direita': 'direita',
+        'invertida': 'invertida'
+    }
+    return state_mapping.get(state, state)
+
+def get_signification_key(state):
+    """Retourne la clé de signification selon l'état"""
+    if state in ['reversed', 'a l\'envers', 'envers', 'invertida']:
+        return 'signification invertida'
+    else:
+        return 'signification direita'
