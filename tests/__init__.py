@@ -1,0 +1,1 @@
+# Tests pour l'application Ma Carte de Tarot
