@@ -2,862 +2,902 @@ __version__ = "0.01"
 
 import os
 import random
+import locale
+from translations import MESSAGES
 
-# Supprimer complètement le splash screen Kivy
+# Détecter la langue du système
+def get_system_language():
+    try:
+        # Prend la variable d'environnement LANG si présente
+        lang = os.environ.get("LANG", "")
+        if lang.startswith("pt"):
+            return "pt"
+        elif lang.startswith("en"):
+            return "en"
+        else:
+            return "fr"
+    except:
+        return "fr"
+
+# Langue actuelle de l'application
+CURRENT_LANG = get_system_language()
+print(f"🌍 Langue détectée: {CURRENT_LANG}")
+
+# Fonction helper pour obtenir les traductions
+def tr(key, **kwargs):
+    txt = MESSAGES[CURRENT_LANG].get(key, MESSAGES["fr"][key])
+    if kwargs:
+        try:
+            return txt.format(**kwargs)
+        except Exception:
+            return txt
+    return txt
+
+# Configuration Kivy
 os.environ['KIVY_NO_CONSOLELOG'] = '1'
 os.environ['KIVY_NO_FILELOG'] = '1'
 
-# Configuration Kivy pour supprimer le splash screen
 from kivy.config import Config
 Config.set('graphics', 'width', '300')
 Config.set('graphics', 'height', '600')
-Config.set('kivy', 'log_level', 'warning')  # Réduire les logs
-Config.set('kivy', 'show_fps', '0')  # Masquer les FPS
-Config.set('graphics', 'show_cursor', '1')  # Garder le curseur
+Config.set('kivy', 'log_level', 'warning')
+Config.set('kivy', 'show_cursor', '1')
 
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.uix.popup import Popup
-from kivy.clock import Clock
+from kivy.uix.label import Label
+from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
-from kivy.uix.label import Label
-from kivy.uix.scrollview import ScrollView
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.popup import Popup
+from kivy.graphics import Color, Rectangle, RoundedRectangle
+from kivy.clock import Clock
 from kivy.animation import Animation
-from kivy.uix.button import Button
+import random
+import os
 
-from signification import cards_signification
+# Import des significations selon la langue détectée
+try:
+    if CURRENT_LANG == "en":
+        from signification_en import get_cards_signification  # Maintenant correct !
+        print("✓ Significations EN importées")
+    elif CURRENT_LANG == "pt": 
+        from signification_pt import get_cards_signification
+        print("✓ Significations PT importées")
+    else:
+        from signification_fr import get_cards_signification
+        print("✓ Significations FR importées")
+except Exception as e:
+    print(f"✗ Erreur significations: {e}")
+    def get_cards_signification():
+        return {"Le Mat": {"droite": "Nouveau départ", "a l'envers": "Imprudence"}}
 
-
-class AutoScrollLabel(Label):
-    """Label avec scroll automatique au survol/touch"""
-    def __init__(self, **kwargs):
-        super(AutoScrollLabel, self).__init__(**kwargs)
-        self.scroll_animation = None
-        self.parent_scroll = None
-        
-    def on_parent(self, instance, parent):
-        """Trouve le ScrollView parent"""
-        if parent:
-            current = parent
-            while current and not isinstance(current, ScrollView):
-                current = current.parent
-            self.parent_scroll = current
-    
-    def on_touch_down(self, touch):
-        """Démarre le scroll automatique au touch/clic"""
-        if self.collide_point(*touch.pos) and self.parent_scroll:
-            self.start_auto_scroll()
-            return True
-        return super(AutoScrollLabel, self).on_touch_down(touch)
-    
-    def on_touch_up(self, touch):
-        """Arrête le scroll automatique"""
-        if self.scroll_animation:
-            self.scroll_animation.cancel(self.parent_scroll)
-            self.scroll_animation = None
-        return super(AutoScrollLabel, self).on_touch_up(touch)
-    
-    def start_auto_scroll(self):
-        """Démarre l'animation de scroll automatique"""
-        if not self.parent_scroll:
-            return
-            
-        # Calculer si on peut scroller
-        content_height = self.texture_size[1]
-        viewport_height = self.parent_scroll.height
-        
-        if content_height > viewport_height:
-            # Animation de scroll de haut en bas puis retour
-            self.scroll_animation = Animation(scroll_y=0, duration=3)
-            self.scroll_animation += Animation(scroll_y=1, duration=3)
-            self.scroll_animation.repeat = True
-            self.scroll_animation.start(self.parent_scroll)
+try:
+    from card_image_mapping import get_card_image_path
+    print("✓ Mapping images importé")
+except Exception as e:
+    print(f"✗ Erreur mapping: {e}")
+    def get_card_image_path(card, state):
+        base_path = "tarot_img/MajorArcanaCards"
+        if state == "a l'envers":
+            return os.path.join(base_path, f"{card} a l'envers.jpg")
+        return os.path.join(base_path, f"{card}.jpg")
 
 
-class RootScreen(ScreenManager):
-    def __init__(self, **kwargs):
-        super(RootScreen, self).__init__(**kwargs)
-        
-        # Détecter la plateforme
-        import platform
-        is_android = platform.system() == 'Linux' and hasattr(platform, 'machine') and 'android' in str(platform.machine()).lower()
-        
-        # Ajouter tous les écrans
-        card_screen = CardScreen()
-        card_screen.name = "main_screen"  # Nom explicite pour l'écran principal
-        
-        response_screen = CardResponseScreen() 
-        response_screen.name = "response_screen"
-        
-        self.add_widget(card_screen)
-        self.add_widget(response_screen)
-        
-        # Sur Android : ajouter et commencer par le splash screen
-        # Sur autres plateformes : aller directement au menu principal
-        if is_android:
-            splash_screen = SplashScreen()
-            self.add_widget(splash_screen)
-            self.current = "splash_screen"
-        else:
-            # Sur Windows/Desktop : aller directement au menu principal
-            self.current = "main_screen"
+try:
+    from card_name_mapping import get_card_name_for_lang
+    print("✓ Card name mapping importé")
+except Exception as e:
+    print(f"✗ Erreur card name mapping: {e}")
+    def get_card_name_for_lang(french_name, target_lang):
+        return french_name
 
 
-class CardScreen(Screen):
-    """Ecran principal de l'application"""
+# Système de compteur pour les publicités
+READING_COUNT = 0
+ADS_FREQUENCY = 3  # Afficher une pub toutes les 3 lectures
 
-    def __init__(self, **kwargs):
-        super(CardScreen, self).__init__(**kwargs)
+def should_show_ad():
+    """Détermine s'il faut afficher une publicité"""
+    global READING_COUNT
+    READING_COUNT += 1
+    return READING_COUNT % ADS_FREQUENCY == 0
 
-    def draw_card(self):
-        """Déclenche le tirage d'une carte depuis l'écran d'accueil avec animation"""
-        # Animation du bouton avant le tirage
-        self.animate_draw_button()
-        
-        # Récupérer l'écran de réponse
-        response_screen = self.manager.get_screen("response_screen")
-        
-        # Déclencher le chargement des données avec popup après l'animation
-        Clock.schedule_once(lambda dt: response_screen.show_loading_popup(), 0.8)
-        
-        # Changer d'écran après un délai pour permettre au popup de s'afficher
-        Clock.schedule_once(lambda dt: self.switch_to_response(), 0.9)
-    
-    def animate_draw_button(self):
-        """Anime le bouton de tirage de carte"""
-        # Essayer de trouver le bouton de tirage dans le fichier .kv
-        try:
-            # Animation de pulsation magique simple
-            button = self.ids.get('draw_button')  # Assumons que le bouton a cet ID
-            if button:
-                # Animation magique : pulsation d'opacité
-                magic_pulse = Animation(opacity=0.5, duration=0.2)
-                magic_pulse += Animation(opacity=1, duration=0.2)
-                magic_pulse += Animation(opacity=0.7, duration=0.2)
-                magic_pulse += Animation(opacity=1, duration=0.2)
-                
-                magic_pulse.start(button)
-                
-                print("Animation du bouton de tirage lancée")
-        except Exception as e:
-            print(f"Erreur animation bouton: {e}")
-    
-    def switch_to_response(self):
-        """Change vers l'écran de réponse"""
-        self.manager.current = "response_screen"
+def reset_reading_count():
+    """Remet le compteur à zéro (pour les tests)"""
+    global READING_COUNT
+    READING_COUNT = 0
 
-
-class LoadingPopup(Popup):
-    def __init__(self, show_ad=True, **kwargs):
-        super(LoadingPopup, self).__init__(**kwargs)
-        self.title = "JE TIRE UNE CARTE..."
-        # Style du titre pour correspondre au nom de la carte
-        self.title_color = [0.6, 0.4, 0.2, 1.0]  # Marron comme le nom de la carte
-        self.title_size = "22sp"  # Même taille que le nom de la carte
-        self.background = "tarot_img/bg.jpg"
-        
-        # Détecter si on est sur Android pour ajuster les tailles
-        import platform
-        is_android = platform.system() == 'Linux' and hasattr(platform, 'machine') and 'android' in str(platform.machine()).lower()
-        
-        content_layout = BoxLayout(orientation="vertical", spacing=10, padding=[10, 10, 10, 10])
-        
-        # Ajout de la pub en haut (si demandée) - plus petite sur Android
-        if show_ad:
-            ad_layout = self.create_ad_banner(is_android)
-            if ad_layout:
-                content_layout.add_widget(ad_layout)
-        
-        # GIF de la carte au centre - BEAUCOUP plus grand sur Android
-        gif_path = os.path.join(os.path.dirname(__file__), "tarot_img", "carte-unscreen.gif")
-        
-        if is_android:
-            # Sur Android : image beaucoup plus grande et popup plus grand
-            self.size_hint = (0.95, 0.9)  # Popup presque plein écran
-            animated_card = Image(
-                source=gif_path, 
-                anim_delay=0.05, 
-                size_hint=(1, 0.75),  # 75% de l'espace pour l'image
-                allow_stretch=True,
-                keep_ratio=True
-            )
-        else:
-            # Sur desktop : tailles normales
-            animated_card = Image(
-                source=gif_path, 
-                anim_delay=0.05, 
-                size_hint=(1, 0.6)
-            )
-        
-        # Ajouter une animation de pulsation d'opacité seulement
-        pulse_anim = Animation(opacity=0.7, duration=1)
-        pulse_anim += Animation(opacity=1, duration=1)
-        pulse_anim.repeat = True
-        pulse_anim.start(animated_card)
-        
-        content_layout.add_widget(animated_card)
-        
-        # Message d'attente en bas avec animation - plus petit sur Android
-        waiting_label = Label(
-            text="Concentration en cours...",
-            size_hint=(1, 0.08 if is_android else 0.1),  # Plus petit sur Android
-            font_size="16sp" if is_android else "14sp",  # Police plus grande sur Android
-            color=[0.6, 0.4, 0.2, 1.0],
-            halign='center'
-        )
-        
-        # Animation pulsante pour le texte (sans font_size pour éviter les erreurs)
-        pulse_text = Animation(opacity=0.7, duration=0.8)
-        pulse_text += Animation(opacity=1.0, duration=0.8)
-        pulse_text.repeat = True
-        pulse_text.start(waiting_label)
-        
-        content_layout.add_widget(waiting_label)
-        
-        self.content = content_layout
-    
-    def create_ad_banner(self, is_android=False):
-        """Crée une bannière publicitaire discrète"""
-        # Pour l'instant, simulation d'une pub simple
-        # En production, ici vous intégreriez AdMob, etc.
-        
-        # Simulation d'une pub thématique simple
-        ad_label = Label(
-            text="💎 Boutique Cristaux & Minéraux - Livraison gratuite 💎",
-            font_size="11sp" if is_android else "12sp",  # Police plus petite sur Android
-            color=[0.4, 0.3, 0.6, 1.0],  # Violet discret
-            halign='center',
-            size_hint=(1, 0.10 if is_android else 0.15),  # Plus petit sur Android
-            text_size=(None, None)
-        )
-        
-        return ad_label
-
-
-class FullScreenImagePopup(BoxLayout):
-    def __init__(self, image_path, **kwargs):
-        super(FullScreenImagePopup, self).__init__(**kwargs)
-        self.orientation = "vertical"
-        
-        # Background sombre semi-transparent
-        with self.canvas.before:
-            from kivy.graphics import Color, Rectangle
-            Color(0, 0, 0, 0.8)  # Fond noir semi-transparent
-            self.bg_rect = Rectangle(pos=self.pos, size=self.size)
-        
-        self.bind(pos=self.update_bg, size=self.update_bg)
-        
-        # Image plein écran avec toute la hauteur disponible
-        self.image = Image(
-            source=image_path,
-            size_hint=(1, 1),  # Prend toute la place disponible
-            allow_stretch=True,
-            keep_ratio=True  # Garde le ratio pour éviter la déformation
-        )
-        self.add_widget(self.image)
-        
-        # Animation subtile de l'image (léger changement d'opacité)
-        zoom_anim = Animation(opacity=0.9, duration=2)
-        zoom_anim += Animation(opacity=1, duration=2)
-        zoom_anim.repeat = True
-        
-        # Démarrer l'animation après un petit délai
-        Clock.schedule_once(lambda dt: zoom_anim.start(self.image), 0.5)
-    
-    def update_bg(self, instance, value):
-        """Met à jour le background"""
-        self.bg_rect.pos = instance.pos
-        self.bg_rect.size = instance.size
-    
-    def on_touch_down(self, touch):
-        """Ferme l'image plein écran quand on clique dessus"""
-        if self.collide_point(*touch.pos):
-            # Animation de fermeture
-            close_anim = Animation(opacity=0, duration=0.3)
-            close_anim.bind(on_complete=self.remove_from_parent)
-            close_anim.start(self)
-            return True
-        return super().on_touch_down(touch)
-    
-    def remove_from_parent(self, *args):
-        """Supprime le widget du parent"""
-        if self.parent:
-            self.parent.remove_widget(self)
-
-
-class CardResponseScreen(Screen):
-    """Ecran de réponse de l'application"""
-
-    def __init__(self, **kwargs):
-        super(CardResponseScreen, self).__init__(**kwargs)
-        self.path = "tarot_img/MajorArcanaCards"
-        self.cards = list(cards_signification.keys())
-        self.states = ["a l'endroit", "a l'envers"]
-        # Ces attributs seront liés dans on_kv_post
-        self._card_name = None
-        self._card_state = None
-        self._states_label = None
-        self._card_text = None
-        self._card_image = None
-        # Compteur pour les pubs interstitielles (maximise les revenus)
-        self.tirage_count = 0
-
-    def on_kv_post(self, base_widget):
-        # Link Python attributes to widgets defined in the .kv file by their ids
-        self._card_name = self.ids.get("card_name")
-        self._card_state = self.ids.get("card_state")
-        self._states_label = self.ids.get("states_label")
-        self._card_text = self.ids.get("card_text")
-        self._card_image = self.ids.get("card_image")
-
-    @property
-    def card_name(self):
-        return self._card_name
-    
-    @property 
-    def card_state(self):
-        return self._card_state
-        
-    @property
-    def states_label(self):
-        return self._states_label
-        
-    @property
-    def card_text(self):
-        return self._card_text
-        
-    @property
-    def card_image(self):
-        return self._card_image
-
-    def on_enter(self, *args):
-        # Le popup est maintenant déclenché depuis CardScreen.draw_card()
-        # Donc on ne fait rien ici pour éviter les doublons
-        pass
-
-    def show_loading_popup(self):
-        # Vérifier si l'utilisateur est premium (pour l'instant simulé)
-        is_premium = False  # À remplacer par la vraie logique premium
-        
-        # Afficher la pub seulement pour les utilisateurs gratuits
-        show_ad = not is_premium
-        
-        self.loading_popup = LoadingPopup(show_ad=show_ad)
-        self.loading_popup.open()
-        Clock.schedule_once(
-            self.load_card_data, 3
-        )  # Appeler load_card_data après un court délai
-
-    def load_card_data(self, dt):
-        """Charge les données de la carte après un court délai simulé (0.1 seconde)"""
-        try:
-            self.drawn_card = random.choice(self.cards)
-            self.state = random.choice(self.states)
-            
-            # Affichage séparé du nom de la carte et de son état
-            if self.card_name is not None:
-                self.card_name.text = self.drawn_card
-            if self.card_state is not None:
-                if self.state == "a l'envers":
-                    self.card_state.text = "⬇ À L'ENVERS ⬇"
-                else:
-                    self.card_state.text = "⬆ À L'ENDROIT ⬆"
-                    
-            if self.states_label is not None:
-                keywords = str(cards_signification[self.drawn_card][self.state])
-                self.states_label.text = keywords.upper()  # Mots-clés en MAJUSCULES pour plus d'impact
-
-            # Utiliser le système de mapping pour gérer les accents automatiquement
-            from card_image_mapping import get_card_image_path
-            image_path = get_card_image_path(self.drawn_card, self.state)
-
-            # Print the image path for debugging
-            # print("Image Path:", image_path)
-
-            if os.path.exists(image_path):
-                if self.card_image is not None:
-                    self.card_image.source = image_path
-                    self.card_image.bind(
-                        on_touch_down=self.on_image_click
-                    )  # Bind the touch event
-                else:
-                    print("card_image is None, cannot set source.")
-            else:
-                print("Image not found:", image_path)
-
-            if self.card_text is not None:
-                self.card_text.text = str(
-                    cards_signification[self.drawn_card][
-                        f"signification {self.state}"
-                    ]
-                )
-        except Exception as e:
-            # Handle any exceptions and print the error message
-            print("Error loading card data:", e)
-
-        self.loading_popup.dismiss()  # Close the loading popup
-        
-        # Ajouter des animations d'apparition pour les éléments
-        self.animate_card_appearance()
-
-    def reset(self):
-        """Réinitialise l'écran de réponse pour un nouveau tirage"""
-        if self.card_name is not None:
-            self.card_name.text = ""
-        if self.card_state is not None:
-            self.card_state.text = ""
-        if self.states_label is not None:
-            self.states_label.text = ""
-        if self.card_text is not None:
-            self.card_text.text = ""
-        if self.card_image is not None:
-            self.card_image.source = "tarot_img/Back.jpg"
-        
-        # Nettoyer le popup plein écran s'il existe
-        if hasattr(self, "full_screen_popup"):
-            if self.full_screen_popup.parent:
-                self.full_screen_popup.parent.remove_widget(self.full_screen_popup)
-            del self.full_screen_popup
-
-    def on_image_click(self, instance, touch):
-        """Affiche l'image en plein écran si l'utilisateur clique dessus avec animation"""
-        if self.card_image is not None and self.card_image.collide_point(*touch.pos):
-            if hasattr(self, "full_screen_popup"):
-                # Fermer le popup existant
-                if self.full_screen_popup.parent:
-                    self.full_screen_popup.parent.remove_widget(self.full_screen_popup)
-                del self.full_screen_popup
-            else:
-                # Utiliser le système de mapping pour obtenir le bon chemin
-                from card_image_mapping import get_card_image_path
-                image_path = get_card_image_path(self.drawn_card, self.state)
-                
-                print(f"Full screen image path: {image_path}")  # Debug
-                
-                # Vérifier que le fichier existe
-                if os.path.exists(image_path):
-                    # Créer le popup plein écran avec toute la hauteur
-                    self.full_screen_popup = FullScreenImagePopup(image_path)
-                    
-                    # Commencer invisible pour animation d'ouverture
-                    self.full_screen_popup.opacity = 0
-                    
-                    # Ajouter au parent principal (Screen) pour couvrir tout l'écran
-                    self.add_widget(self.full_screen_popup)
-                    
-                    # Animation d'ouverture
-                    open_anim = Animation(opacity=1, duration=0.4)
-                    open_anim.start(self.full_screen_popup)
-                else:
-                    print(f"Image not found for full screen: {image_path}")
-
-    def animate_button_press(self, button):
-        """Anime le bouton lors du clic pour un effet visuel"""
-        # Animation simple d'opacité
-        anim_press = Animation(opacity=0.5, duration=0.1)
-        anim_release = Animation(opacity=1, duration=0.1)
-        
-        # Chaîner les animations
-        anim_press.bind(on_complete=lambda *args: anim_release.start(button))
-        anim_press.start(button)
-
-    def on_button_hover(self, button, hover):
-        """Effet de survol pour le bouton"""
-        if hover:
-            # Légère modification d'opacité au survol
-            Animation(opacity=0.8, duration=0.2).start(button)
-        else:
-            # Retour à l'opacité normale
-            Animation(opacity=1, duration=0.2).start(button)
-
-    def on_button_press(self):
-        """Méthode appelée lors du clic sur le bouton nouveau tirage avec animations fun"""
-        try:
-            button = self.ids.back_button
-            if button:
-                print("Bouton trouvé, animation fun en cours...")
-                
-                # Animation simple et efficace d'opacité
-                pulse_anim = Animation(opacity=0.3, duration=0.1)
-                pulse_anim += Animation(opacity=1.0, duration=0.1)
-                pulse_anim += Animation(opacity=0.5, duration=0.1)
-                pulse_anim += Animation(opacity=1.0, duration=0.1)
-                pulse_anim += Animation(opacity=0.3, duration=0.1)
-                pulse_anim += Animation(opacity=1.0, duration=0.1)
-                
-                # Démarrer l'animation
-                pulse_anim.start(button)
-                
-                # Animation bonus: faire trembler le bouton
-                self.create_shake_animation(button)
-                
-                # Délai pour voir toutes les animations
-                Clock.schedule_once(lambda dt: self.change_screen(), 0.8)
-            else:
-                print("Bouton non trouvé, changement direct")
-                self.change_screen()
-        except Exception as e:
-            print(f"Erreur animation: {e}")
-            self.change_screen()
-    
-    def create_shake_animation(self, widget):
-        """Crée une animation de tremblement pour le widget (opacité uniquement)"""
-        # Animation de pulsation rapide pour simuler le tremblement
-        shake1 = Animation(opacity=0.8, duration=0.05)
-        shake2 = Animation(opacity=1.0, duration=0.05)
-        shake3 = Animation(opacity=0.7, duration=0.05)
-        shake4 = Animation(opacity=1.0, duration=0.05)
-        shake5 = Animation(opacity=0.9, duration=0.05)
-        shake6 = Animation(opacity=1.0, duration=0.05)
-        
-        # Chaîner les animations
-        shake_sequence = shake1 + shake2 + shake3 + shake4 + shake5 + shake6
-        
-        # Démarrer après un petit délai
-        Clock.schedule_once(lambda dt: shake_sequence.start(widget), 0.2)
-    
-    def animate_card_appearance(self):
-        """Anime l'apparition des éléments de la carte"""
-        # Animation de l'image de la carte (fondu seulement)
-        if self.card_image:
-            # Commencer invisible
-            self.card_image.opacity = 0
-            
-            # Animation d'apparition simple
-            fade_in = Animation(opacity=1, duration=0.8)
-            fade_in.start(self.card_image)
-        
-        # Animation du nom de la carte (fondu)
-        if self.card_name:
-            self.card_name.opacity = 0
-            
-            fade_in_name = Animation(opacity=1, duration=0.6)
-            
-            Clock.schedule_once(lambda dt: fade_in_name.start(self.card_name), 0.2)
-        
-        # Animation de l'état de la carte (pulsation simple)
-        if self.card_state:
-            self.card_state.opacity = 0
-            
-            # Animation de pulsation simple
-            pulse = Animation(opacity=1, duration=0.5)
-            
-            Clock.schedule_once(lambda dt: pulse.start(self.card_state), 0.4)
-        
-        # Animation du texte (typewriter effect simulé)
-        if self.card_text:
-            original_text = self.card_text.text
-            self.card_text.text = ""
-            self.card_text.opacity = 1
-            
-            # Effet typewriter
-            Clock.schedule_once(lambda dt: self.typewriter_effect(original_text), 0.8)
-        
-        # Animation des mots-clés (fondu simple)
-        if self.states_label:
-            self.states_label.opacity = 0
-            
-            bounce_in = Animation(opacity=1, duration=0.4)
-            
-            Clock.schedule_once(lambda dt: bounce_in.start(self.states_label), 0.6)
-    
-    def typewriter_effect(self, full_text):
-        """Simule un effet typewriter pour le texte"""
-        if not self.card_text:
-            return
-            
-        def add_char(dt, current_index=[0]):
-            if current_index[0] < len(full_text):
-                self.card_text.text = full_text[:current_index[0] + 1]
-                current_index[0] += 1
-                Clock.schedule_once(lambda dt: add_char(dt, current_index), 0.03)
-            else:
-                # Animation finale de brillance
-                self.create_text_glow_effect()
-        
-        add_char(0)
-    
-    def create_text_glow_effect(self):
-        """Crée un effet de brillance sur le texte"""
-        if self.card_text:
-            glow = Animation(opacity=0.7, duration=0.3)
-            glow += Animation(opacity=1, duration=0.3)
-            glow += Animation(opacity=0.8, duration=0.2)
-            glow += Animation(opacity=1, duration=0.2)
-            glow.start(self.card_text)
-    
-    def change_screen(self):
-        """Change vers l'écran principal avec logique d'interstitielle pour maximiser les revenus"""
-        self.tirage_count += 1
-        
-        # Vérifier si l'utilisateur est premium (pour l'instant simulé)
-        is_premium = False  # À remplacer par la vraie logique premium
-        
-        # Afficher interstitielle tous les 3 tirages pour utilisateurs gratuits
-        if not is_premium and self.tirage_count % 3 == 0:
-            print(f"Affichage interstitielle après {self.tirage_count} tirages - MAXIMISATION REVENUS!")
-            self.show_interstitial_ad()
-        else:
-            print(f"Tirage #{self.tirage_count} - Retour direct à l'accueil")
-            self.return_to_home()
-    
-    def show_interstitial_ad(self):
-        """Affiche une pub interstitielle puis retourne à l'accueil"""
-        self.interstitial_popup = InterstitialAdPopup()
-        
-        # Callback pour retourner à l'accueil après fermeture
-        def on_ad_close(*args):
-            Clock.schedule_once(lambda dt: self.return_to_home(), 0.5)
-        
-        self.interstitial_popup.bind(on_dismiss=on_ad_close)
-        self.interstitial_popup.open()
-    
-    def return_to_home(self):
-        """Retourne à l'écran d'accueil après reset"""
-        self.manager.current = "main_screen"
-        self.reset()
-
-
-class InterstitialAdPopup(Popup):
-    """Popup publicitaire interstitielle pour maximiser les revenus"""
+# Classe pour la publicité
+class AdPopup(Popup):
+    """Popup de publicité"""
     
     def __init__(self, **kwargs):
-        super(InterstitialAdPopup, self).__init__(**kwargs)
-        self.title = "MERCI POUR VOTRE CONSULTATION !"
-        self.title_color = [0.6, 0.4, 0.2, 1.0]
-        self.title_size = "20sp"
-        self.background = "tarot_img/bg.jpg"
-        self.size_hint = (0.9, 0.8)
-        self.auto_dismiss = False  # Force l'utilisateur à attendre
+        super(AdPopup, self).__init__(**kwargs)
+        self.title = ""
+        self.size_hint = (0.9, 0.7)
+        self.auto_dismiss = False
+        self.separator_height = 0
         
-        content_layout = BoxLayout(orientation="vertical", spacing=15, padding=[20, 20, 20, 20])
-        
-        # Message de remerciement
-        thanks_label = Label(
-            text="✨ J'espère que votre prédiction vous a plu ! ✨",
-            font_size="16sp",
-            color=[0.6, 0.4, 0.2, 1.0],
-            halign='center',
-            size_hint=(1, 0.2),
-            text_size=(None, None)
-        )
-        content_layout.add_widget(thanks_label)
-        
-        # Zone pub principale (ici vous mettrez AdMob)
-        ad_main = self.create_main_ad()
-        content_layout.add_widget(ad_main)
-        
-        # Message d'encouragement
-        encourage_label = Label(
-            text="🔮 Continuez à explorer les mystères du tarot ! 🔮",
-            font_size="14sp",
-            color=[0.4, 0.3, 0.6, 1.0],
-            halign='center',
-            size_hint=(1, 0.15),
-            text_size=(None, None)
-        )
-        content_layout.add_widget(encourage_label)
-        
-        # Bouton de fermeture stylé IDENTIQUE à celui de l'écran de réponse
-        self.close_button = Button(
-            text="✨ Nouveau tirage (3s) ✨",
-            size_hint=(0.7, 0.18),
-            pos_hint={'center_x': 0.5},
-            disabled=True,
-            background_normal='',  # Nécessaire pour avoir un background personnalisé
-            background_color=[0, 0, 0, 0],  # Transparent pour utiliser canvas.before
-            color=[1, 1, 1, 0.5],
-            font_size="18sp",  # Même taille que dans le .kv
-            bold=True
-        )
-        
-        # Ajouter le style visuel identique avec canvas.before
-        with self.close_button.canvas.before:
-            from kivy.graphics import Color, RoundedRectangle
-            self.button_color = Color(0.6, 0.4, 0.2, 0.5)  # Garder la référence pour changer la couleur
-            self.button_bg = RoundedRectangle(
-                pos=self.close_button.pos,
-                size=self.close_button.size,
-                radius=[25, 25, 25, 25]
-            )
-        
-        # Lier la mise à jour du background à la position/taille du bouton
-        def update_button_bg(instance, *args):
-            self.button_bg.pos = instance.pos
-            self.button_bg.size = instance.size
-        self.close_button.bind(pos=update_button_bg, size=update_button_bg)
-        
-        self.close_button.bind(on_press=self.close_ad)
-        content_layout.add_widget(self.close_button)
-        
-        self.content = content_layout
-        
-        # Timer pour activer le bouton après 3 secondes
-        self.countdown = 3
-        Clock.schedule_interval(self.update_countdown, 1)
-    
-    def create_main_ad(self):
-        """Crée la zone publicitaire principale (à remplacer par AdMob)"""
-        ad_layout = BoxLayout(orientation="vertical", spacing=10, size_hint=(1, 0.5))
-        
-        # Simulation de pub premium (apps de rencontre payent bien)
-        ad1 = Label(
-            text="💕 Trouvez l'Amour avec Astrologie+ 💕\n"
-                 "Compatibilité amoureuse basée sur votre thème astral",
-            font_size="14sp",
-            color=[0.8, 0.2, 0.4, 1.0],
-            halign='center',
-            size_hint=(1, 0.5),
-            text_size=(None, None)
-        )
-        
-        # Simulation de pub spiritualité (niche rentable)
-        ad2 = Label(
-            text="🔮 Formation Tarot Professionnel 🔮\n"
-                 "Devenez cartomancien certifié - Inscription gratuite",
-            font_size="14sp",
-            color=[0.4, 0.3, 0.8, 1.0],
-            halign='center',
-            size_hint=(1, 0.5),
-            text_size=(None, None)
-        )
-        
-        ad_layout.add_widget(ad1)
-        ad_layout.add_widget(ad2)
-        
-        # Animation de pulsation pour attirer l'attention
-        pulse = Animation(opacity=0.7, duration=1.5)
-        pulse += Animation(opacity=1, duration=1.5)
-        pulse.repeat = True
-        pulse.start(ad_layout)
-        
-        return ad_layout
-    
-    def update_countdown(self, dt):
-        """Met à jour le compte à rebours"""
-        self.countdown -= 1
-        if self.countdown > 0:
-            self.close_button.text = f"✨ Nouveau tirage ({self.countdown}s) ✨"
-        else:
-            self.close_button.text = "✨ Nouveau tirage ✨"
-            self.close_button.disabled = False
-            # Changer la couleur du background canvas au lieu de background_color
-            self.button_color.rgba = [0.6, 0.4, 0.2, 1.0]  # Opaque quand actif
-            self.close_button.color = [1, 1, 1, 1]
-            Clock.unschedule(self.update_countdown)
-            
-            # Animation du bouton disponible
-            glow = Animation(opacity=0.8, duration=0.5)
-            glow += Animation(opacity=1, duration=0.5)
-            glow.repeat = True
-            glow.start(self.close_button)
-    
-    def close_ad(self, instance):
-        """Ferme la pub et continue le flow"""
-        self.dismiss()
-
-
-class SplashScreen(Screen):
-    """Écran de démarrage personnalisé avec carte GIF"""
-    
-    def __init__(self, **kwargs):
-        super(SplashScreen, self).__init__(**kwargs)
-        self.name = "splash_screen"
-        
-        # Layout principal
-        layout = BoxLayout(orientation="vertical", padding=[20, 50, 20, 50])
+        layout = BoxLayout(orientation="vertical", spacing=20, padding=[20, 20, 20, 20])
         
         # Background
         with layout.canvas.before:
-            from kivy.graphics import Rectangle, Color
-            Color(0.1, 0.1, 0.1, 1)  # Fond sombre
-            self.bg_rect = Rectangle(pos=layout.pos, size=layout.size)
-        
+            Color(0.1, 0.15, 0.3, 0.95)
+            self.bg_rect = RoundedRectangle(
+                pos=layout.pos, 
+                size=layout.size,
+                radius=[15, 15, 15, 15]
+            )
         layout.bind(pos=self.update_bg, size=self.update_bg)
         
-        # Titre mystique
-        title = Label(
-            text="🔮 Ma Carte de Tarot 🔮",
-            font_size="28sp",
-            color=[0.9, 0.7, 0.3, 1.0],  # Doré mystique
+        # Titre publicité
+        ad_title = Label(
+            text=tr("support_app"),  # "Soutenez l'application"
+            font_size="20sp",
+            color=[0.9, 0.7, 0.3, 1],
+            size_hint_y=0.2,
+            bold=True,
+            halign='center'
+        )
+        layout.add_widget(ad_title)
+        
+        # Message
+        ad_message = Label(
+            text=tr("ad_message"),  # Message de soutien
+            font_size="16sp",
+            color=[1, 1, 1, 1],
+            size_hint_y=0.4,
             halign='center',
-            valign='middle',
-            size_hint=(1, 0.2),
+            valign='center',
+            text_size=(None, None)
+        )
+        layout.add_widget(ad_message)
+        
+        # Zone boutons
+        button_layout = BoxLayout(orientation="horizontal", spacing=20, size_hint_y=0.4)
+        
+        # Bouton "Plus tard"
+        later_btn = Button(
+            text=tr("later"),  # "Plus tard"
+            size_hint=(0.5, 1),
+            font_size="16sp",
+            background_normal='',
+            background_color=[0.5, 0.5, 0.5, 0.8],
+            color=[1, 1, 1, 1]
+        )
+        later_btn.bind(on_press=self.close_ad)
+        
+        # Bouton "Soutenir"
+        support_btn = Button(
+            text=tr("support"),  # "Soutenir"
+            size_hint=(0.5, 1),
+            font_size="16sp",
+            background_normal='',
+            background_color=[0.2, 0.7, 0.2, 1],
+            color=[1, 1, 1, 1],
             bold=True
         )
-        layout.add_widget(title)
+        support_btn.bind(on_press=self.open_support)
         
-        # GIF carte qui tourne (plus grand pour mobile)
-        self.spinning_card = Image(
-            source="tarot_img/carte-unscreen.gif",
-            anim_delay=0.08,  # Animation fluide
-            size_hint=(1, 0.6),
-            allow_stretch=True,
-            keep_ratio=True
-        )
-        layout.add_widget(self.spinning_card)
+        button_layout.add_widget(later_btn)
+        button_layout.add_widget(support_btn)
+        layout.add_widget(button_layout)
         
-        # Message de chargement
-        loading_label = Label(
-            text="Préparation des arcanes...",
-            font_size="18sp",
-            color=[0.7, 0.5, 0.3, 1.0],
-            halign='center',
-            size_hint=(1, 0.2)
-        )
-        layout.add_widget(loading_label)
+        self.content = layout
         
-        # Animation de pulsation pour le titre
-        pulse = Animation(opacity=0.7, duration=1.5)
-        pulse += Animation(opacity=1, duration=1.5)
-        pulse.repeat = True
-        pulse.start(title)
+        # Animation d'entrée
+        self.opacity = 0
+        entrance_anim = Animation(opacity=1, duration=0.3)
+        entrance_anim.start(self)
         
-        # Animation de rotation pour effet mystique
-        rotation = Animation(opacity=0.8, duration=2)
-        rotation += Animation(opacity=1, duration=2)
-        rotation.repeat = True
-        rotation.start(self.spinning_card)
-        
-        self.add_widget(layout)
-        
-        # Passer à l'écran principal après 3 secondes
-        Clock.schedule_once(self.go_to_main, 3)
+        # Auto-fermeture après 10 secondes
+        Clock.schedule_once(self.auto_close, 10)
     
     def update_bg(self, instance, value):
-        """Met à jour le background"""
         self.bg_rect.pos = instance.pos
         self.bg_rect.size = instance.size
     
-    def go_to_main(self, dt):
-        """Transition vers l'écran principal"""
-        self.manager.current = "main_screen"
+    def close_ad(self, instance):
+        print("🎯 Publicité fermée")
+        exit_anim = Animation(opacity=0, duration=0.2)
+        exit_anim.bind(on_complete=lambda *args: self.dismiss())
+        exit_anim.start(self)
+    
+    def open_support(self, instance):
+        print("💝 Ouverture page de soutien")
+        # Ici vous pouvez ajouter le lien vers votre page de soutien
+        self.close_ad(instance)
+    
+    def auto_close(self, dt):
+        print("⏰ Auto-fermeture publicité")
+        self.close_ad(None)
 
 
-class MaCarteDeTarotApp(App):
-    """Application principale"""
-
-    def __init__(self, **kwargs):
-        super(MaCarteDeTarotApp, self).__init__(**kwargs)
-
-    def build(self):
-        """Build the app"""
-        self.title = "Ma Carte de Tarot"
-        self.icon = "tarot_img/icon.png"  # Utiliser la nouvelle icône
+class FullScreenCardPopup(Popup):
+    """Popup plein écran pour afficher la carte"""
+    
+    def __init__(self, card_image_source, card_name, card_state, **kwargs):
+        super(FullScreenCardPopup, self).__init__(**kwargs)
         
-        # Supprimer complètement le splash screen et logo Kivy
-        from kivy.config import Config
-        Config.set('kivy', 'window_icon', 'tarot_img/icon.png')
-        Config.set('kivy', 'splash', '0')  # Désactiver le splash
+        self.title = ""
+        self.size_hint = (1, 1)
+        self.auto_dismiss = False
+        self.separator_height = 0
+        
+        layout = BoxLayout(orientation="vertical", spacing=0)
+        
+        with layout.canvas.before:
+            Color(0, 0, 0, 0.95)
+            self.bg_rect = Rectangle(pos=layout.pos, size=layout.size)
+        layout.bind(pos=self.update_bg, size=self.update_bg)
+        
+        # Header avec nom et état
+        header = BoxLayout(orientation="vertical", size_hint_y=0.15, padding=[20, 10])
+        
+        title_label = Label(
+            text=card_name,
+            font_size="26sp",
+            color=[0.9, 0.7, 0.3, 1],
+            halign='center',
+            bold=True
+        )
+        header.add_widget(title_label)
+        
+        state_label = Label(
+            text=card_state,
+            font_size="18sp",
+            color=[0.8, 0.6, 0.4, 1],
+            halign='center',
+            bold=True
+        )
+        header.add_widget(state_label)
+        layout.add_widget(header)
+        
+        # Zone carte cliquable
+        card_container = FloatLayout(size_hint_y=0.7)
+        
+        self.fullscreen_image = Image(
+            source=card_image_source,
+            size_hint=(0.9, 0.9),
+            pos_hint={'center_x': 0.5, 'center_y': 0.5},
+            allow_stretch=True,
+            keep_ratio=True
+        )
+        
+        close_button = Button(
+            text="",
+            background_color=[0, 0, 0, 0],
+            size_hint=(0.9, 0.9),
+            pos_hint={'center_x': 0.5, 'center_y': 0.5}
+        )
+        close_button.bind(on_press=self.close_fullscreen)
+        
+        card_container.add_widget(self.fullscreen_image)
+        card_container.add_widget(close_button)
+        layout.add_widget(card_container)
+        
+        # Footer
+        footer = BoxLayout(size_hint_y=0.15, padding=[20, 10])
+        instruction = Label(
+            text=tr("tap_to_return"),  # Au lieu de "Touchez la carte pour revenir"
+            font_size="16sp",
+            color=[0.7, 0.7, 0.7, 1],
+            halign='center',
+            italic=True
+        )
+        footer.add_widget(instruction)
+        layout.add_widget(footer)
+        
+        self.content = layout
+        
+        # Animation d'entrée
+        self.opacity = 0
+        entrance_anim = Animation(opacity=1, duration=0.3)
+        entrance_anim.start(self)
+    
+    def update_bg(self, instance, value):
+        self.bg_rect.pos = instance.pos
+        self.bg_rect.size = instance.size
+    
+    def close_fullscreen(self, instance):
+        exit_anim = Animation(opacity=0, duration=0.2)
+        exit_anim.bind(on_complete=lambda *args: self.dismiss())
+        exit_anim.start(self)
 
-        return RootScreen()
+
+class LoadingPopup(Popup):
+    """Popup de chargement avec animation d'images de dos de cartes"""
+    def __init__(self, **kwargs):
+        super(LoadingPopup, self).__init__(**kwargs)
+        self.title = ""
+        self.size_hint = (0.7, 0.5)
+        self.auto_dismiss = False
+        self.separator_height = 0
+
+        layout = BoxLayout(orientation="vertical", spacing=10, padding=[20, 20, 20, 20])
+
+        # Label de chargement
+        self.loading_label = Label(
+            text=tr("concentrating"),
+            font_size="18sp",
+            color=[0.9, 0.7, 0.3, 1],
+            halign='center'
+        )
+        layout.add_widget(self.loading_label)
+
+        # Zone animation
+        self.anim_zone = FloatLayout(size_hint_y=0.8)
+        layout.add_widget(self.anim_zone)
+
+        # Deux tas fixes
+        self.left_stack = Image(
+            source="tarot_img/Back.jpg",
+            size_hint=(0.25, 0.7),
+            pos_hint={'x': 0.05, 'center_y': 0.5},
+            opacity=1
+        )
+        self.right_stack = Image(
+            source="tarot_img/Back.jpg",
+            size_hint=(0.25, 0.7),
+            pos_hint={'x': 0.7, 'center_y': 0.5},
+            opacity=1
+        )
+        self.anim_zone.add_widget(self.left_stack)
+        self.anim_zone.add_widget(self.right_stack)
+
+        # Carte animée (au départ sur le tas de gauche)
+        self.animated_card = Image(
+            source="tarot_img/Back.jpg",
+            size_hint=(0.25, 0.7),
+            pos_hint={'x': 0.05, 'center_y': 0.5},
+            opacity=1
+        )
+        self.anim_zone.add_widget(self.animated_card)
+
+        self.content = layout
+
+        # Lance l'animation
+        self.shuffle_direction = "right"
+        self.shuffle_anim = None
+        self.start_shuffle_animation()
+
+        Clock.schedule_once(lambda dt: self.update_message(tr("preparing_arcana")), 1.5)
+        Clock.schedule_once(lambda dt: self.update_message(tr("drawing_card")), 3)
+
+    def start_shuffle_animation(self):
+        # Animation de gauche à droite ou droite à gauche
+        if self.shuffle_direction == "right":
+            anim = Animation(pos_hint={'x': 0.7, 'center_y': 0.5}, duration=0.4)
+            anim.bind(on_complete=lambda *a: self.switch_shuffle_direction())
+            anim.start(self.animated_card)
+        else:
+            anim = Animation(pos_hint={'x': 0.05, 'center_y': 0.5}, duration=0.4)
+            anim.bind(on_complete=lambda *a: self.switch_shuffle_direction())
+            anim.start(self.animated_card)
+
+    def switch_shuffle_direction(self):
+        # Change de direction et relance l'animation
+        self.shuffle_direction = "left" if self.shuffle_direction == "right" else "right"
+        self.start_shuffle_animation()
+
+    def update_message(self, message):
+        self.loading_label.text = message
+
+    def on_dismiss(self):
+        # Stoppe l'animation si besoin (optionnel)
+        if self.shuffle_anim:
+            self.shuffle_anim.cancel_all(self.animated_card)
+
+
+class RootScreen(ScreenManager):
+    """Gestionnaire d'écrans"""
+    
+    def __init__(self, **kwargs):
+        super(RootScreen, self).__init__(**kwargs)
+        print("RootScreen initialisé")
+
+
+class CardScreen(Screen):
+    """Écran principal"""
+    
+    def __init__(self, **kwargs):
+        super(CardScreen, self).__init__(**kwargs)
+        print("CardScreen créé")
+        
+        layout = BoxLayout(orientation="vertical", padding=10, spacing=10)
+        
+        # Background
+        with layout.canvas.before:
+            Color(0.2, 0.1, 0.3, 1)
+            self.bg = Rectangle(pos=layout.pos, size=layout.size)
+            if os.path.exists("tarot_img/bg.jpg"):
+                self.bg.source = "tarot_img/bg.jpg"
+                print("Background chargé")
+        layout.bind(pos=self.update_bg, size=self.update_bg)
+        
+        # Titre
+        self.title_label = Label(
+            text=tr("app_title"),
+            font_size="24sp",
+            color=[0.9, 0.7, 0.3, 1],
+            size_hint_y=0.15,
+            bold=True
+        )
+        layout.add_widget(self.title_label)
+        
+        # Zone carte
+        card_container = FloatLayout(size_hint_y=0.7)
+        
+        self.card_image = Image(
+            source="tarot_img/Back.jpg",
+            size_hint=(0.8, 0.9),
+            pos_hint={'center_x': 0.5, 'center_y': 0.5}
+        )
+        
+        self.draw_button = Button(
+            text="",
+            background_color=[0, 0, 0, 0],
+            size_hint=(0.8, 0.9),
+            pos_hint={'center_x': 0.5, 'center_y': 0.5}
+        )
+        self.draw_button.bind(on_press=self.draw_card)
+        
+        card_container.add_widget(self.card_image)
+        card_container.add_widget(self.draw_button)
+        layout.add_widget(card_container)
+        
+        # Instructions
+        self.instructions_label = Label(
+            text=tr("draw_instruction"),
+            font_size="18sp",
+            color=[0.7, 0.5, 0.3, 1],
+            size_hint_y=0.15,
+            halign='center'
+        )
+        layout.add_widget(self.instructions_label)
+        
+        # Bannière pub (cachée par défaut)
+        self.ad_banner = Label(
+            text=tr("crystals_ad"),  # ou une autre pub de ton choix
+            font_size="16sp",
+            color=[1, 0.8, 0.2, 1],
+            size_hint_y=0.08,
+            halign='center',
+            valign='middle'
+        )
+        self.ad_banner.opacity = 0
+        layout.add_widget(self.ad_banner)
+        
+        self.add_widget(layout)
+    
+    def update_bg(self, instance, value):
+        self.bg.pos = instance.pos
+        self.bg.size = instance.size
+    
+    def draw_card(self, instance):
+        print("=== NOUVEAU TIRAGE ===")
+        
+        # Animation
+        click_anim = Animation(opacity=0.3, duration=0.1)
+        click_anim += Animation(opacity=1, duration=0.1)
+        click_anim.start(self.draw_button)
+        
+        # Popup de chargement
+        self.loading_popup = LoadingPopup()
+        self.loading_popup.open()
+        
+        # Tirage après 4 secondes
+        Clock.schedule_once(self.perform_card_draw, 4)
+    
+    def perform_card_draw(self, dt):
+        try:
+            cards_signification = get_cards_signification()
+            cards = list(cards_signification.keys())
+            drawn_card = random.choice(cards)
+            drawn_state = random.choice(["droite", "a l'envers"])
+
+            print(f"Carte tirée: {drawn_card} - {drawn_state}")
+            print(f"📊 Lecture #{READING_COUNT + 1}")
+
+            if hasattr(self, 'loading_popup'):
+                self.loading_popup.dismiss()
+
+            def show_response_screen():
+                if self.manager:
+                    response_screen = self.manager.get_screen("response_screen")
+                    response_screen.setup_card(drawn_card, drawn_state)
+                    self.manager.current = "response_screen"
+
+            # Afficher la popup pub si besoin
+            if should_show_ad():
+                print("Affichage écran pub maximisé")
+                popup = AdsPopup(on_close_callback=show_response_screen)
+                popup.open()
+            else:
+                show_response_screen()
+
+        except Exception as e:
+            print(f"Erreur tirage: {e}")
+            if hasattr(self, 'loading_popup'):
+                self.loading_popup.dismiss()
+    
+    def on_enter(self, *args):
+        print("Entrée sur CardScreen")
+
+
+class ResponseScreen(Screen):
+    """Écran de réponse avec image cliquable"""
+    
+    def __init__(self, **kwargs):
+        super(ResponseScreen, self).__init__(**kwargs)
+        
+        self.current_card_name = ""
+        self.current_card_state = ""
+        
+        self.typewriter_event = None
+        self.typewriter_full_text = ""
+        self.typewriter_index = 0
+
+        from kivy.uix.scrollview import ScrollView
+        
+        main_layout = BoxLayout(orientation="vertical", padding=20, spacing=15)
+        
+        # Background
+        with main_layout.canvas.before:
+            Color(0.2, 0.1, 0.3, 1)
+            self.bg = Rectangle(pos=main_layout.pos, size=main_layout.size)
+            if os.path.exists("tarot_img/bg.jpg"):
+                self.bg.source = "tarot_img/bg.jpg"
+                print("Background chargé")
+        main_layout.bind(pos=self.update_bg, size=self.update_bg)
+        
+        # Nom de la carte
+        self.card_name_label = Label(
+            text="Votre carte",
+            font_size="22sp",
+            color=[0.9, 0.7, 0.3, 1],
+            size_hint_y=0.1,
+            bold=True
+        )
+        main_layout.add_widget(self.card_name_label)
+        
+        # État
+        self.card_state_label = Label(
+            text="",
+            font_size="18sp",
+            color=[0.8, 0.6, 0.4, 1],
+            size_hint_y=0.05,
+            bold=True
+        )
+        main_layout.add_widget(self.card_state_label)
+        
+        # Mots-clés
+        self.keywords_label = Label(
+            text="",
+            font_size="14sp",
+            color=[0.7, 0.7, 0.9, 1],
+            size_hint_y=0.05,
+            italic=True
+        )
+        main_layout.add_widget(self.keywords_label)
+        
+        # Container image CLIQUABLE
+        image_container = FloatLayout(size_hint_y=0.25)
+        
+        self.card_image = Image(
+            source="tarot_img/Back.jpg",
+            size_hint=(0.8, 1),
+            pos_hint={'center_x': 0.5, 'center_y': 0.5},
+            allow_stretch=True,
+            keep_ratio=True
+        )
+        
+        # Bouton invisible sur l'image
+        self.image_button = Button(
+            text="",
+            background_color=[0, 0, 0, 0],
+            size_hint=(0.8, 1),
+            pos_hint={'center_x': 0.5, 'center_y': 0.5}
+        )
+        self.image_button.bind(on_press=self.show_fullscreen_card)
+        
+        # Indication
+        overlay_label = Label(
+            text="🔍 Touchez pour agrandir",
+            font_size="12sp",
+            color=[1, 1, 1, 0.7],
+            size_hint=(0.8, 0.15),
+            pos_hint={'center_x': 0.5, 'bottom': 1},
+            halign='center'
+        )
+        
+        image_container.add_widget(self.card_image)
+        image_container.add_widget(self.image_button)
+        image_container.add_widget(overlay_label)
+        main_layout.add_widget(image_container)
+        
+        # Signification avec scroll
+        scroll = ScrollView(size_hint_y=0.4)
+        self.signification_label = Label(
+            text="Chargement...",
+            font_size="16sp",
+            color=[1, 1, 1, 1],
+            halign='center',
+            valign='top',
+            size_hint_y=None,
+            text_size=(self.width * 0.9, None)
+        )
+        self.signification_label.bind(
+            texture_size=lambda instance, value: setattr(instance, 'height', value[1])
+        )
+        scroll.add_widget(self.signification_label)
+        main_layout.add_widget(scroll)
+        
+        # Bouton retour
+        self.back_btn = Button(
+            text=tr("new_reading"),
+            size_hint=(0.7, 0.15),
+            pos_hint={'center_x': 0.5},
+            background_normal='',
+            background_color=[0, 0, 0, 0],
+            color=[1, 1, 1, 1],
+            font_size="18sp",
+            bold=True
+        )
+        
+        with self.back_btn.canvas.before:
+            Color(0.6, 0.4, 0.2, 1.0)
+            self.back_btn_bg = RoundedRectangle(
+                pos=self.back_btn.pos,
+                size=self.back_btn.size,
+                radius=[25, 25, 25, 25]
+            )
+        
+        self.back_btn.bind(pos=self.update_button_canvas, size=self.update_button_canvas)
+        self.back_btn.bind(on_press=self.go_back)
+        main_layout.add_widget(self.back_btn)
+        
+        # Bannière pub (cachée par défaut)
+        self.ad_banner = Label(
+            text=tr("crystals_ad"),  # ou une autre pub de ton choix
+            font_size="16sp",
+            color=[1, 0.8, 0.2, 1],
+            size_hint_y=0.08,
+            halign='center',
+            valign='middle'
+        )
+        self.ad_banner.opacity = 0
+        main_layout.add_widget(self.ad_banner)
+        
+        self.add_widget(main_layout)
+    
+    def show_fullscreen_card(self, instance):
+        """NOUVELLE FONCTIONNALITÉ: Affiche la carte en plein écran"""
+        print(f"Affichage plein écran: {self.current_card_name}")
+        
+        # Animation click
+        click_anim = Animation(opacity=0.7, duration=0.1)
+        click_anim += Animation(opacity=1, duration=0.1)
+        click_anim.start(self.card_image)
+        
+        # Popup plein écran
+        fullscreen_popup = FullScreenCardPopup(
+            card_image_source=self.card_image.source,
+            card_name=self.current_card_name,
+            card_state=self.card_state_label.text
+        )
+        fullscreen_popup.open()
+    
+    def setup_card(self, card_name, state):
+        print(f"=== SETUP CARTE: {card_name} - {state} ===")
+        
+        # Sauvegarder pour le plein écran
+        self.current_card_name = card_name
+        self.current_card_state = state
+        
+        # Convertir le nom selon la langue détectée
+        display_card_name = get_card_name_for_lang(card_name, CURRENT_LANG)
+        print(f"Nom affiché: {display_card_name}")
+        
+        # Nom affiché
+        self.card_name_label.text = display_card_name
+        
+        # État traduit avec conversion pour l'anglais
+        if state == "a l'envers":
+            self.card_state_label.text = tr("reversed")
+            lookup_state = "reversed"
+        else:
+            self.card_state_label.text = tr("upright") 
+            lookup_state = "upright"
+        
+        # Image (garder le nom français pour les fichiers)
+        try:
+            image_path = get_card_image_path(card_name, state)
+            if os.path.exists(image_path):
+                self.card_image.source = image_path
+                print(f"✓ Image chargée: {image_path}")
+            else:
+                print(f"✗ Image non trouvée: {image_path}")
+        except Exception as e:
+            print(f"✗ Erreur image: {e}")
+        
+        # Signification avec le bon nom de carte selon la langue
+        try:
+            cards_signification = get_cards_signification()
+            lookup_name = display_card_name if CURRENT_LANG == "en" else card_name
+            print(f"Recherche signification pour: {lookup_name}")
+            
+            if lookup_name in cards_signification:
+                card_data = cards_signification[lookup_name]
+                print(f"Clés disponibles: {list(card_data.keys())}")
+                
+                # Mots-clés
+                if lookup_state in card_data:
+                    self.keywords_label.text = f"💫 {card_data[lookup_state].upper()} 💫"
+                
+                # Signification détaillée
+                from signification_pt import get_card_state, get_signification_key  # Importer ici pour éviter les erreurs globales
+                lookup_state = get_card_state(state)  # <-- utilise la fonction du module PT
+                signif_key = get_signification_key(lookup_state)
+                if signif_key in card_data:
+                    signification = str(card_data[signif_key])
+                    self.start_typewriter(signification)
+                    print(f"✓ Signification trouvée avec clé: {signif_key}")
+                else:
+                    # Fallback sur les mots-clés si pas de signification détaillée
+                    if lookup_state in card_data:
+                        self.start_typewriter(f"Keywords: {card_data[lookup_state]}")
+                    else:
+                        self.start_typewriter("No description available")
+                
+                Clock.schedule_once(self.setup_text_wrapping, 0.1)
+            else:
+                self.signification_label.text = f"Card '{lookup_name}' not found"
+                print(f"✗ Carte '{lookup_name}' non trouvée dans: {list(cards_signification.keys())[:5]}...")
+                
+        except Exception as e:
+            print(f"✗ Erreur signification: {e}")
+            self.signification_label.text = "Error loading signification"
+    
+    def setup_text_wrapping(self, dt):
+        if self.signification_label and self.parent:
+            self.signification_label.text_size = (self.width * 0.9, None)
+            self.signification_label.height = self.signification_label.texture_size[1]
+    
+    def update_button_canvas(self, instance, value):
+        self.back_btn_bg.pos = instance.pos
+        self.back_btn_bg.size = instance.size
+    
+    def update_bg(self, instance, value):
+        self.bg.pos = instance.pos
+        self.bg.size = instance.size
+    
+    def go_back(self, instance):
+        if self.manager:
+            self.manager.current = "main_screen"
+    
+    def show_ad_banner(self):
+        self.ad_banner.opacity = 1
+
+    def hide_ad_banner(self):
+        self.ad_banner.opacity = 0
+
+    def start_typewriter(self, text, speed=0.02):
+        """Affiche le texte lettre par lettre (effet machine à écrire)"""
+        if self.typewriter_event:
+            self.typewriter_event.cancel()
+        self.typewriter_full_text = text
+        self.typewriter_index = 0
+        self.signification_label.text = ""
+        self.typewriter_event = Clock.schedule_interval(lambda dt: self.typewriter_step(speed), speed)
+
+    def typewriter_step(self, speed):
+        if self.typewriter_index < len(self.typewriter_full_text):
+            self.signification_label.text += self.typewriter_full_text[self.typewriter_index]
+            self.typewriter_index += 1
+            # Scroll automatique si besoin
+            if self.signification_label.parent:
+                self.signification_label.parent.scroll_y = 1
+        else:
+            if self.typewriter_event:
+                self.typewriter_event.cancel()
+            return False  # Stop le schedule
+
+
+class AdsPopup(Popup):
+    def __init__(self, on_close_callback, **kwargs):
+        super().__init__(**kwargs)
+        self.title = ""
+        self.size_hint = (0.95, 0.95)
+        self.auto_dismiss = False
+        self.separator_height = 0
+        self.on_close_callback = on_close_callback
+
+        layout = BoxLayout(orientation="vertical", spacing=20, padding=20)
+
+        ads = [
+            "💎 Crystals & Minerals Shop - Free shipping 💎",
+            "💕 Find Love with Astrology+ 💕",
+            "🔮 Professional Tarot Course 🔮"
+        ]
+        for ad_text in ads:
+            ad_label = Label(
+                text=ad_text,
+                font_size="16sp",
+                color=[1, 0.8, 0.2, 1],
+                halign='center',
+                valign='middle',
+                size_hint_x=1,
+                size_hint_y=None,
+                height=80,
+                text_size=(int(0.95 * 300), None),
+                shorten=False
+            )
+            layout.add_widget(ad_label)
+
+        self.countdown_seconds = 7
+        self.next_btn = Button(
+            text=f"✨ New reading ({self.countdown_seconds}s) ✨",
+            size_hint=(0.7, 0.15),
+            pos_hint={'center_x': 0.5},
+            background_normal='',
+            background_color=[0, 0, 0, 0],
+            color=[1, 1, 1, 1],
+            font_size="18sp",
+            bold=True,
+            disabled=True
+        )
+        with self.next_btn.canvas.before:
+            Color(0.6, 0.4, 0.2, 1.0)
+            self.btn_bg = RoundedRectangle(
+                pos=self.next_btn.pos,
+                size=self.next_btn.size,
+                radius=[25, 25, 25, 25]
+            )
+        self.next_btn.bind(pos=self.update_btn_canvas, size=self.update_btn_canvas)
+        self.next_btn.bind(on_press=self.close_popup)
+        layout.add_widget(self.next_btn)
+
+        self.content = layout
+        self.countdown_event = Clock.schedule_interval(self.update_countdown, 1)
+
+    def update_btn_canvas(self, instance, value):
+        self.btn_bg.pos = instance.pos
+        self.btn_bg.size = instance.size
+
+    def update_countdown(self, dt):
+        self.countdown_seconds -= 1
+        if self.countdown_seconds > 0:
+            self.next_btn.text = f"✨ New reading ({self.countdown_seconds}s) ✨"
+        else:
+            self.next_btn.text = "✨ New reading"
+            self.next_btn.disabled = False
+            if self.countdown_event:
+                self.countdown_event.cancel()
+
+    def close_popup(self, instance):
+        self.dismiss()
+        if self.on_close_callback:
+            self.on_close_callback()
+
+
+class TarotApp(App):
+    def build(self):
+        print("=== CONSTRUCTION APP TAROT ===")
+        self.title = tr("app_title")
+        
+        sm = RootScreen()
+        sm.add_widget(CardScreen(name="main_screen"))
+        sm.add_widget(ResponseScreen(name="response_screen"))
+        sm.current = "main_screen"
+        
+        return sm
     
     def on_start(self):
-        """Appelé après le build, quand l'app démarre"""
-        # S'assurer qu'aucun splash n'est visible
-        pass
+        print("=== APP TAROT DÉMARRÉE ===")
 
 
 if __name__ == "__main__":
-    MaCarteDeTarotApp().run()
+    TarotApp().run()

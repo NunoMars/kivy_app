@@ -6,113 +6,127 @@ Ce fichier permet de garder les beaux noms avec accents pour l'affichage
 tout en utilisant des noms de fichiers compatibles Android.
 """
 
-def normalize_card_name_for_file(card_name):
-    """
-    Convertit un nom de carte avec accents vers un nom de fichier sans accents
-    compatible avec Android.
-    
-    Args:
-        card_name (str): Nom de la carte avec accents (ex: "Le Cavalier D'Épée")
-    
-    Returns:
-        str: Nom normalisé sans accents (ex: "Le Cavalier D'Epee")
-    """
-    # Remplacements des caractères accentués
-    replacements = {
-        'É': 'E',
-        'È': 'E', 
-        'Ê': 'E',
-        'Ë': 'E',
-        'é': 'e',
-        'è': 'e',
-        'ê': 'e',
-        'ë': 'e',
-        'À': 'A',
-        'Á': 'A',
-        'Â': 'A',
-        'Ä': 'A',
-        'à': 'a',
-        'á': 'a',
-        'â': 'a',
-        'ä': 'a',
-        'Ù': 'U',
-        'Ú': 'U',
-        'Û': 'U',
-        'Ü': 'U',
-        'ù': 'u',
-        'ú': 'u',
-        'û': 'u',
-        'ü': 'u',
-        'Ç': 'C',
-        'ç': 'c',
-        'Ô': 'O',
-        'ô': 'o',
-        'Î': 'I',
-        'î': 'i',
-        ''': "'",  # Apostrophe courbe vers droite
-        ''': "'",  # Apostrophe courbe vers gauche
-        '"': '"',  # Guillemets courbes ouvrants
-        '"': '"',  # Guillemets courbes fermants (caractère différent)
-    }
-    
-    normalized = card_name
-    for old, new in replacements.items():
-        normalized = normalized.replace(old, new)
-    
-    return normalized
+import os
+import unicodedata
 
-def get_image_path(card_name, state="normal"):
-    """
-    Construit le chemin vers l'image d'une carte en gérant automatiquement
-    la normalisation du nom pour la compatibilité Android.
-    
-    Args:
-        card_name (str): Nom de la carte avec accents
-        state (str): "normal", "a l'endroit" ou "a l'envers"
-    
-    Returns:
-        str: Chemin vers le fichier image
-    """
-    # Normaliser le nom pour le fichier
-    normalized_name = normalize_card_name_for_file(card_name)
-    
-    # Gérer les différents états
-    if state == "a l'envers":
-        image_file_name = f"{normalized_name} {state}.jpg"
-    else:
-        # "normal" ou "a l'endroit" = carte droite
-        image_file_name = f"{normalized_name}.jpg"
-    
-    return f"tarot_img/MajorArcanaCards/{image_file_name}"
-
-# Mapping explicite pour les cas spéciaux (si nécessaire)
+# Mapping pour convertir TOUS les noms de cartes vers les VRAIS noms de fichiers
 SPECIAL_CARD_MAPPINGS = {
-    # Si certaines cartes ont des cas particuliers, les ajouter ici
-    # "Nom Original": "nom_fichier_special",
+    # Mappings anglais vers français (noms EXACTS des fichiers)
+    "The Fool": "Le Mat",
+    "The Magician": "Le Bateleur", 
+    "The High Priestess": "La Papesse",
+    "The Empress": "L'Imperatrice",
+    "The Emperor": "L'Empereur",
+    "The Hierophant": "Le Pape",
+    "The Lovers": "L'Amoureux",
+    "The Chariot": "Le Chariot",
+    "Justice": "La Justice",
+    "The Hermit": "L'Hermite",
+    "Wheel of Fortune": "La Roue de La Fortune",
+    "Strength": "La Force",
+    "The Hanged Man": "Le Pendu",
+    "Death": "La Mort",
+    "Temperance": "La Temperance",
+    "The Devil": "Le Diable",
+    "The Tower": "La Maison Dieu",
+    "The Star": "L'Etoile",
+    "The Moon": "La Lune",
+    "The Sun": "Le Soleil",
+    "Judgement": "Le Jugement",
+    "The World": "Le Monde",
+    
+    # Mappings portugais vers français (CORRIGER)
+    "O Louco": "Le Mat",
+    "O Mago": "Le Bateleur",
+    "A Papisa": "La Papesse",
+    "A Imperatriz": "L'Imperatrice",  # Pas "L Imperatrice"
+    "O Imperador": "L'Empereur",      # Pas "L Empereur"
+    "O Papa": "Le Pape",
+    "Os Amantes": "L'Amoureux",       # Pas "L Amoureux"
+    "O Carro": "Le Chariot",
+    "A Justiça": "La Justice",
+    "O Eremita": "L'Hermite",         # Pas "L Hermite"
+    "A Roda da Fortuna": "La Roue de La Fortune",  # Pas "La Roue de Fortune"
+    "A Força": "La Force",
+    "O Enforcado": "Le Pendu",
+    "A Morte": "La Mort",
+    "A Temperança": "La Temperance",  # Pas "Temperance"
+    "O Diabo": "Le Diable",
+    "A Torre": "La Maison Dieu",
+    "A Estrela": "L'Etoile",          # Pas "L Etoile"
+    "A Lua": "La Lune",
+    "O Sol": "Le Soleil",
+    "O Julgamento": "Le Jugement",
+    "O Mundo": "Le Monde",
+    
+    # Cartes mineures anglaises vers français (noms EXACTS des fichiers)
+    "Page of Wands": "Le Valet de Baton",
+    "Knight of Wands": "Le Cavalier de Baton",
+    "Queen of Wands": "La Reine de Baton",
+    "King of Wands": "Le Roi De Baton",
+    
+    "Page of Cups": "Le Valet De Coupe",
+    "Knight of Cups": "Le Cavalier De Coupe",
+    "Queen of Cups": "La Reine De Coupe",
+    "King of Cups": "Le Roi de Coupe",
+    
+    "Page of Swords": "Le Valet D'Epee",
+    "Knight of Swords": "Le Cavalier D'Epee",
+    "Queen of Swords": "La Reine D'Epee",
+    "King of Swords": "Le Roi D'Epee",
+    
+    "Page of Pentacles": "Le Valet De Deniers",
+    "Knight of Pentacles": "Le Cavalier de Deniers",
+    "Queen of Pentacles": "La Reine De Deniers",
+    "King of Pentacles": "Le Roi De Deniers",
+    
+    # Noms français corrigés pour correspondre EXACTEMENT aux fichiers
+    "L'Impératrice": "L'Imperatrice",
+    "L'Empereur": "L'Empereur", 
+    "L'Amoureux": "L'Amoureux",
+    "L'Hermite": "L'Hermite",
+    "La Roue de Fortune": "La Roue de La Fortune",  # IMPORTANT: "La" pas "la"
+    "Tempérance": "La Temperance",  # IMPORTANT: Ajouter "La"
+    "L'Étoile": "L'Etoile",
 }
 
-def get_card_image_path(card_name, state="normal"):
+def remove_accents(input_str):
+    """Supprime les accents d'une chaîne"""
+    nfkd_form = unicodedata.normalize('NFD', input_str)
+    return ''.join([c for c in nfkd_form if not unicodedata.combining(c)])
+
+def get_card_image_path(card_name, state="droite"):
     """
-    Version publique de get_image_path avec gestion des cas spéciaux.
+    Retourne le chemin complet vers l'image de la carte
+    Utilise les VRAIS noms de fichiers avec apostrophes et espaces exacts
     
     Args:
-        card_name (str): Nom de la carte avec accents
-        state (str): "normal" ou "a l'envers"
+        card_name: Nom de la carte (dans n'importe quelle langue)
+        state: État de la carte
     
     Returns:
-        str: Chemin vers le fichier image
+        str: Chemin complet vers l'image française
     """
-    # Vérifier s'il y a un mapping spécial
-    if card_name in SPECIAL_CARD_MAPPINGS:
-        mapped_name = SPECIAL_CARD_MAPPINGS[card_name]
-        if state == "a l'envers":
-            image_file_name = f"{mapped_name} {state}.jpg"
-        else:
-            image_file_name = f"{mapped_name}.jpg"
-        return f"tarot_img/MajorArcanaCards/{image_file_name}"
+    base_path = "tarot_img/MajorArcanaCards"
     
-    # Utiliser la normalisation automatique
-    return get_image_path(card_name, state)
+    # Convertir vers le nom français correspondant
+    if card_name in SPECIAL_CARD_MAPPINGS:
+        french_file_name = SPECIAL_CARD_MAPPINGS[card_name]
+    else:
+        # Fallback : utiliser le nom tel quel
+        french_file_name = card_name
+    
+    # Ajouter l'extension avec gestion de l'état inversé
+    if state in ["a l'envers", "invertida", "reversed", "umgekehrt", "rovesciata"]:
+        # IMPORTANT: Utiliser " a l'envers" (avec espaces et apostrophe exacte)
+        image_path = os.path.join(base_path, f"{french_file_name} a l'envers.jpg")
+        # Si l'image inversée n'existe pas, utiliser l'image normale
+        if not os.path.exists(image_path):
+            image_path = os.path.join(base_path, f"{french_file_name}.jpg")
+    else:
+        image_path = os.path.join(base_path, f"{french_file_name}.jpg")
+    
+    return image_path
 
 # Test des mappings les plus problématiques
 if __name__ == "__main__":

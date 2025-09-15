@@ -1,3 +1,4 @@
+
 [app]
 
 title = Ma Carte De Tarot
@@ -28,10 +29,10 @@ author = © Nuno Marcelino Copyright Info
 # (gérées automatiquement par le workflow, doublons supprimés)
 android.minapi = 21
 android.ndk_api = 21
-android.api = 34
+android.api = 35
 android.skip_update = False
 android.accept_sdk_license = True
-android.enable_androidx = True
+android.enable_androidx = False
 android.allow_backup = True
 android.copy_libs = 1
 android.logcat_filters = *:S python:D
@@ -41,10 +42,50 @@ android.logcat_filters = *:S python:D
 android.allow_resize = True
 android.resizeableActivity = True
 
+# Autorisations pour Play Store compliance
+android.permissions = com.google.android.gms.permission.AD_ID
+
 ## Format d'export (géré par le workflow)
+# Format de build par défaut pour Play Store
+android.release_artifact = aab
+android.debug_artifact = aab
+
+# Configuration de signature pour Play Store
+android.keystore = %(source.dir)s/googleplay.keystore
+android.keyalias = upload
+android.keystorepw = nunotheboss
+android.keyaliaspw = nunotheboss
+
+# Configuration pour améliorer la qualité de l'app Play Store
+# Activation de R8/ProGuard pour réduire la taille de l'app et des symboles de débogage
+android.gradle_dependencies = com.android.tools.build:gradle:8.1.1
+android.add_gradle_configuration = 
+    android {
+        buildTypes {
+            release {
+                minifyEnabled true
+                shrinkResources true
+                proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                ndk {
+                    debugSymbolLevel 'SYMBOL_TABLE'
+                }
+            }
+        }
+    }
 
 ## Dépendances gradle avec versions récentes (Play Store compliance)
-android.gradle_dependencies = androidx.annotation:annotation:1.6.0, androidx.fragment:fragment:1.5.7
+# Suppression des dépendances androidx pour éviter les conflits Kotlin
+# android.gradle_dependencies = androidx.annotation:annotation:1.6.0, androidx.fragment:fragment:1.5.7
+
+# Configuration pour résoudre les conflits Kotlin - DÉSACTIVÉ TEMPORAIREMENT
+# android.add_gradle_configuration = 
+#     configurations.all {
+#         resolutionStrategy.eachDependency { details ->
+#             if (details.requested.group == 'org.jetbrains.kotlin') {
+#                 details.useVersion '1.8.22'
+#             }
+#         }
+#     }
 
 
 [buildozer]

@@ -1,0 +1,234 @@
+{
+  "testers": [
+    {
+      "id": "6c978efc-5ed9-43cb-88fc-a6822e9a27ac",
+      "email": "testeur.tarot.1@gmail.com",
+      "name": "Marie Martin",
+      "device_model": "Samsung Galaxy S23",
+      "android_version": "10",
+      "location": "Paris",
+      "language": "fr-FR",
+      "test_scenarios": [
+        "Vérification des images de cartes",
+        "Performance de l'application",
+        "Test de stabilité long",
+        "Test de rotation d'écran",
+        "Test de l'interface utilisateur",
+        "Test sur écran large/tablette"
+      ],
+      "feedback_probability": 0.3108844545362965,
+      "crash_probability": 0.053482339393331295,
+      "usage_frequency": "occasional"
+    },
+    {
+      "id": "6c72a155-6ba4-4fea-be98-c344fe135742",
+      "email": "testeur.tarot.2@gmail.com",
+      "name": "Pierre Bernard",
+      "device_model": "Google Pixel 7",
+      "android_version": "11",
+      "location": "Lyon",
+      "language": "en-GB",
+      "test_scenarios": [
+        "Test de rotation d'écran",
+        "Test des significations",
+        "Test d'accessibilité",
+        "Test de l'interface utilisateur"
+      ],
+      "feedback_probability": 0.6471136245649483,
+      "crash_probability": 0.0481651438668702,
+      "usage_frequency": "occasional"
+    },
+    {
+      "id": "7ecf9068-90ed-412a-b45e-d1af13fdb2fc",
+      "email": "testeur.tarot.3@gmail.com",
+      "name": "Sarah Dubois",
+      "device_model": "OnePlus 11",
+      "android_version": "11",
+      "location": "Marseille",
+      "language": "de-DE",
+      "test_scenarios": [
+        "Test de l'interface utilisateur",
+        "Performance de l'application",
+        "Navigation dans l'interface",
+        "Tirage simple de cartes",
+        "Test sur écran large/tablette",
+        "Test de rotation d'écran"
+      ],
+      "feedback_probability": 0.6332290335526545,
+      "crash_probability": 0.06952962497863846,
+      "usage_frequency": "daily"
+    },
+    {
+      "id": "ca26493e-f1f7-4c9c-bc51-1e3987239cf7",
+      "email": "testeur.tarot.4@gmail.com",
+      "name": "Thomas Thomas",
+      "device_model": "Xiaomi 13",
+      "android_version": "12",
+      "location": "Toulouse",
+      "language": "fr-FR",
+      "test_scenarios": [
+        "Test de rotation d'écran",
+        "Test de stabilité long",
+        "Tirage simple de cartes"
+      ],
+      "feedback_probability": 0.7560089080426958,
+      "crash_probability": 0.02860094938151308,
+      "usage_frequency": "daily"
+    },
+    {
+      "id": "7ef8ce73-aca4-4ea4-899c-79ade44b62c6",
+      "email": "testeur.tarot.5@gmail.com",
+      "name": "Julie Robert",
+      "device_model": "Samsung Galaxy A54",
+      "android_version": "13",
+      "location": "Nice",
+      "language": "en-GB",
+      "test_scenarios": [
+        "Test d'accessibilité",
+        "Test de stabilité long",
+        "Test sur écran large/tablette",
+        "Test avec peu de mémoire"
+      ],
+      "feedback_probability": 0.8964646855295617,
+      "crash_probability": 0.026489944999861875,
+      "usage_frequency": "daily"
+    },
+    {
+      "id": "53ac7595-9165-4988-a19f-7ed736904244",
+      "email": "testeur.tarot.6@gmail.com",
+      "name": "Alexandre Petit",
+      "device_model": "Google Pixel 6a",
+      "android_version": "11",
+      "location": "Nantes",
+      "language": "en-GB",
+      "test_scenarios": [
+        "Navigation dans l'interface",
+        "Test de l'interface utilisateur",
+        "Test de stabilité long",
+        "Test de rotation d'écran",
+        "Test sur écran large/tablette",
+        "Test des significations"
+      ],
+      "feedback_probability": 0.4201528362805714,
+      "crash_probability": 0.02305647650421426,
+      "usage_frequency": "weekly"
+    },
+    {
+      "id": "985a2189-f7e2-48bc-b841-43f402cda647",
+      "email": "testeur.tarot.7@gmail.com",
+      "name": "Sophie Durand",
+      "device_model": "Huawei P50",
+      "android_version": "12",
+      "location": "Strasbourg",
+      "language": "fr-FR",
+      "test_scenarios": [
+        "Test de l'interface utilisateur",
+        "Test avec peu de mémoire",
+        "Vérification des images de cartes",
+        "Test de stabilité long",
+        "Test des significations"
+      ],
+      "feedback_probability": 0.34592121664777564,
+      "crash_probability": 0.05817194847108367,
+      "usage_frequency": "occasional"
+    },
+    {
+      "id": "30249103-5fa9-4aa1-88d8-7ca50bcd1013",
+      "email": "testeur.tarot.8@gmail.com",
+      "name": "Nicolas Leroy",
+      "device_model": "Sony Xperia 1 V",
+      "android_version": "13",
+      "location": "Montpellier",
+      "language": "de-DE",
+      "test_scenarios": [
+        "Tirage simple de cartes",
+        "Test d'accessibilité",
+        "Test de stabilité long",
+        "Test de rotation d'écran",
+        "Test sur écran large/tablette",
+        "Performance de l'application"
+      ],
+      "feedback_probability": 0.5449157122221879,
+      "crash_probability": 0.040548378523952336,
+      "usage_frequency": "occasional"
+    },
+    {
+      "id": "5974acc5-88de-4091-8718-e248fc656724",
+      "email": "testeur.tarot.9@gmail.com",
+      "name": "Emma Moreau",
+      "device_model": "Motorola Edge 40",
+      "android_version": "11",
+      "location": "Bordeaux",
+      "language": "fr-FR",
+      "test_scenarios": [
+        "Test de compatibilité",
+        "Test de rotation d'écran",
+        "Navigation dans l'interface",
+        "Vérification des images de cartes"
+      ],
+      "feedback_probability": 0.8434171645282669,
+      "crash_probability": 0.0758578217630177,
+      "usage_frequency": "daily"
+    },
+    {
+      "id": "d576ef01-8fb4-4842-9f9c-cb64fee5d7a3",
+      "email": "testeur.tarot.10@gmail.com",
+      "name": "Lucas Simon",
+      "device_model": "Nothing Phone 2",
+      "android_version": "12",
+      "location": "Lille",
+      "language": "es-ES",
+      "test_scenarios": [
+        "Tirage simple de cartes",
+        "Vérification des images de cartes",
+        "Test de l'interface utilisateur",
+        "Navigation dans l'interface"
+      ],
+      "feedback_probability": 0.39631061001376466,
+      "crash_probability": 0.04386758833676519,
+      "usage_frequency": "daily"
+    },
+    {
+      "id": "50e1b166-8469-47bf-a632-8b3213566f4e",
+      "email": "testeur.tarot.11@gmail.com",
+      "name": "Camille Laurent",
+      "device_model": "Oppo Find X6",
+      "android_version": "11",
+      "location": "Rennes",
+      "language": "es-ES",
+      "test_scenarios": [
+        "Test de stabilité long",
+        "Test de rotation d'écran",
+        "Test de compatibilité",
+        "Navigation dans l'interface",
+        "Test des significations"
+      ],
+      "feedback_probability": 0.7042879965187822,
+      "crash_probability": 0.05585043337238887,
+      "usage_frequency": "weekly"
+    },
+    {
+      "id": "15f8dec9-49f5-48f7-bc38-98a3dc3f9f7f",
+      "email": "testeur.tarot.12@gmail.com",
+      "name": "Antoine Lefebvre",
+      "device_model": "Realme GT3",
+      "android_version": "10",
+      "location": "Tours",
+      "language": "es-ES",
+      "test_scenarios": [
+        "Test avec peu de mémoire",
+        "Navigation dans l'interface",
+        "Tirage simple de cartes"
+      ],
+      "feedback_probability": 0.8697926793097897,
+      "crash_probability": 0.03988319350516653,
+      "usage_frequency": "weekly"
+    }
+  ],
+  "metadata": {
+    "created": "2025-07-09T19:23:06.802090",
+    "app_name": "Ma Carte De Tarot",
+    "package_name": "org.tarot.macartedetarot",
+    "test_period": 14
+  }
+}

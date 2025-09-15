@@ -15,8 +15,9 @@
 
         # Titre en haut
         Label:
-            text: "Bienvenue dans le tarot divinatoire"
-            font_size: "20sp"  # Plus grand pour mobile
+            id: app_title_label
+            text: "Loading..."
+            font_size: "20sp"
             halign: 'center'
             valign: 'middle'
             bold: True
@@ -26,14 +27,14 @@
             size_hint_y: 0.15
             text_size: self.size
 
-        # Zone carte (70% de l'écran pour plus de place)
+        # Zone carte (70% de l'écran)
         FloatLayout:
             size_hint_y: 0.7
             Button:
                 id: draw_button
                 background_color: 0, 0, 0, 0
                 on_press: root.draw_card()
-                size_hint: 0.8, 0.9  # Plus grand pour mobile
+                size_hint: 0.8, 0.9
                 pos_hint: {'center_x': 0.5, 'center_y': 0.5}
                 Image:
                     id: card_image
@@ -46,8 +47,9 @@
         
         # Instructions en bas
         Label:
-            text: "Touchez la carte\npour une prédiction"
-            font_size: "18sp"  # Plus grand pour mobile
+            id: instruction_label
+            text: "Loading..."
+            font_size: "18sp"
             multiline: True
             halign: 'center'
             valign: 'middle'
@@ -56,7 +58,6 @@
             outline_width: 4
             size_hint_y: 0.15
             text_size: self.size
-
 
 <CardResponseScreen>:
     name: "response_screen"
@@ -162,10 +163,10 @@
                         radius: [15, 15, 15, 15]
                 padding: [30, 20, 30, 20]
 
-        # Bouton "Nouveau tirage" - en bas
+        # Bouton "Nouveau tirage" - sera mis à jour par Python
         Button:
             id: back_button
-            text: "Nouveau tirage"
+            text: "Loading..."  # Texte temporaire
             size_hint: 0.7, None
             height: dp(50)
             pos_hint: {'center_x': 0.5}
@@ -180,4 +181,4 @@
             background_color: 0, 0, 0, 0
             color: 1, 1, 1, 1
             font_size: "18sp"
-            bold: True 
+            bold: True
