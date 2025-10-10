@@ -176,10 +176,10 @@ jobs:
           # Préparer les répertoires buildozer
           mkdir -p ~/.buildozer/android/platform
           
-          # Copier le SDK avec structure complète
-          if [ ! -d ~/.buildozer/android/platform/android-sdk ]; then
-            echo "📁 Copying Android SDK to buildozer location..."
-            cp -r $ANDROID_HOME ~/.buildozer/android/platform/android-sdk
+          # Créer un lien symbolique vers le SDK au lieu de copier
+          if [ ! -L ~/.buildozer/android/platform/android-sdk ]; then
+            echo "� Creating symlink to Android SDK..."
+            ln -s $ANDROID_HOME ~/.buildozer/android/platform/android-sdk
           fi
           
           # Créer la structure des outils pour compatibilité buildozer
@@ -249,20 +249,20 @@ jobs:
           # Copier le NDK avec tous les noms possibles
           NDK_PATH="$ANDROID_HOME/ndk/${{ env.NDK_VERSION }}"
           if [ -d "$NDK_PATH" ]; then
-            echo "📁 Copying Android NDK to buildozer location..."
+            echo "� Creating symlink to Android NDK..."
             # Format principal attendu par buildozer
-            if [ ! -d ~/.buildozer/android/platform/android-ndk-r${{ env.NDK_VERSION }} ]; then
-              cp -r "$NDK_PATH" ~/.buildozer/android/platform/android-ndk-r${{ env.NDK_VERSION }}
+            if [ ! -L ~/.buildozer/android/platform/android-ndk-r${{ env.NDK_VERSION }} ]; then
+              ln -s "$NDK_PATH" ~/.buildozer/android/platform/android-ndk-r${{ env.NDK_VERSION }}
             fi
             # Format court pour NDK 25b (r25b)
-            if [ ! -d ~/.buildozer/android/platform/android-ndk-r25b ]; then
-              cp -r "$NDK_PATH" ~/.buildozer/android/platform/android-ndk-r25b
+            if [ ! -L ~/.buildozer/android/platform/android-ndk-r25b ]; then
+              ln -s "$NDK_PATH" ~/.buildozer/android/platform/android-ndk-r25b
             fi
             # Format attendu par p4a
-            if [ ! -d ~/.buildozer/android/platform/android-ndk-r25.2.9519653 ]; then
-              cp -r "$NDK_PATH" ~/.buildozer/android/platform/android-ndk-r25.2.9519653
+            if [ ! -L ~/.buildozer/android/platform/android-ndk-r25.2.9519653 ]; then
+              ln -s "$NDK_PATH" ~/.buildozer/android/platform/android-ndk-r25.2.9519653
             fi
-            echo "✅ NDK copied successfully"
+            echo "✅ NDK symlinks created successfully"
           else
             echo "❌ NDK not found at $NDK_PATH"
           fi
