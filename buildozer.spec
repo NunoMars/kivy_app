@@ -31,8 +31,10 @@ author = © Nuno Marcelino Copyright Info
 # (gérées automatiquement par le workflow, doublons supprimés)
 android.minapi = 21
 android.ndk_api = 21
-android.api = 35
+android.api = 34
 android.skip_update = False
+android.ndk_path = /home/runner/.buildozer/android/platform/android-ndk-r25.2.9519653
+android.sdk_path = /home/runner/.buildozer/android/platform/android-sdk
 android.accept_sdk_license = True
 android.enable_androidx = True
 android.allow_backup = True
