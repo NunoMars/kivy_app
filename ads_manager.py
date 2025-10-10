@@ -11,6 +11,14 @@ from kivy.app import App
 from kivy.utils import platform
 from kivy.logger import Logger
 
+# Import kivmob from libs folder (embedded in app)
+import sys
+import os
+# Add libs to path if not already there
+libs_path = os.path.join(os.path.dirname(__file__), 'libs')
+if libs_path not in sys.path:
+    sys.path.insert(0, libs_path)
+
 try:
     from kivmob import KivMob, TestIds
 except Exception as e:

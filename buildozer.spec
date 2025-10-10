@@ -13,10 +13,12 @@ source.dir = .
 source.include_exts = py,png,jpg,gif,kv,atlas
 source.exclude_exts = spec,md,txt
 source.exclude_dirs = tests, bin, venv, .github, __pycache__, .git, .vscode, guides
+source.include_patterns = libs/*.py
 
-version = 1.8
+version = 1.9
 
-requirements = python3,kivy==2.3.0,pillow==10.0.0,kivmob,requests
+# Note: kivmob doit être inclus manuellement via libs/ car non disponible sur PyPI
+requirements = python3,kivy==2.3.0,pillow==10.0.0,requests
 
 icon.filename = %(source.dir)s/tarot_img/icon.png
 orientation = portrait
@@ -32,7 +34,7 @@ android.ndk_api = 21
 android.api = 35
 android.skip_update = False
 android.accept_sdk_license = True
-android.enable_androidx = False
+android.enable_androidx = True
 android.allow_backup = True
 android.copy_libs = 1
 android.logcat_filters = *:S python:D
@@ -64,8 +66,8 @@ android.keyaliaspw = nunotheboss
 
 # Configuration pour améliorer la qualité de l'app Play Store
 # Activation de R8/ProGuard pour réduire la taille de l'app et des symboles de débogage
-# + Google Play Services Ads pour AdMob
-android.gradle_dependencies = com.android.tools.build:gradle:8.1.1,com.google.android.gms:play-services-ads:22.6.0
+# + Google Play Services Ads pour AdMob (version compatible avec androidx)
+android.gradle_dependencies = com.android.tools.build:gradle:8.1.1,com.google.android.gms:play-services-ads:21.5.0
 android.add_gradle_configuration = 
     android {
         buildTypes {
