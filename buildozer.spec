@@ -14,9 +14,9 @@ source.include_exts = py,png,jpg,gif,kv,atlas
 source.exclude_exts = spec,md,txt
 source.exclude_dirs = tests, bin, venv, .github, __pycache__, .git, .vscode, guides
 
-version = 1.7
+version = 1.8
 
-requirements = python3,kivy==2.3.0,pillow==10.0.0
+requirements = python3,kivy==2.3.0,pillow==10.0.0,kivmob,requests
 
 icon.filename = %(source.dir)s/tarot_img/icon.png
 orientation = portrait
@@ -42,8 +42,14 @@ android.logcat_filters = *:S python:D
 android.allow_resize = True
 android.resizeableActivity = True
 
-# Autorisations pour Play Store compliance
-android.permissions = com.google.android.gms.permission.AD_ID
+# Autorisations pour Play Store compliance + AdMob
+android.permissions = INTERNET,ACCESS_NETWORK_STATE,com.google.android.gms.permission.AD_ID
+
+# AdMob App ID metadata
+android.meta_data = com.google.android.gms.ads.APPLICATION_ID=@string/admob_app_id
+
+# Ressources Android pour AdMob
+android.add_resources = resources/
 
 ## Format d'export (géré par le workflow)
 # Format de build par défaut pour Play Store
@@ -58,7 +64,8 @@ android.keyaliaspw = nunotheboss
 
 # Configuration pour améliorer la qualité de l'app Play Store
 # Activation de R8/ProGuard pour réduire la taille de l'app et des symboles de débogage
-android.gradle_dependencies = com.android.tools.build:gradle:8.1.1
+# + Google Play Services Ads pour AdMob
+android.gradle_dependencies = com.android.tools.build:gradle:8.1.1,com.google.android.gms:play-services-ads:22.6.0
 android.add_gradle_configuration = 
     android {
         buildTypes {

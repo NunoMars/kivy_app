@@ -1,0 +1,168 @@
+================================================================================
+  🎉 BANNIÈRE ADMOB INTÉGRÉE - RÉSUMÉ
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    ✅ STATUT : INTÉGRATION TERMINÉE                     │
+└─────────────────────────────────────────────────────────────────────────┘
+
+🔑 TES IDS ADMOB (PRODUCTION)
+═══════════════════════════════════════════════════════════════════════════
+  App ID       : ca-app-pub-5749803259882370~1482612480
+  Bannière     : ca-app-pub-5749803259882370/8646786637
+  Interstitielle : (à créer)
+
+
+📱 COMPORTEMENT DE LA BANNIÈRE
+═══════════════════════════════════════════════════════════════════════════
+  
+  ✅ Affichage : Écran de réponse (après tirage de carte)
+  ✅ Position  : Bas de l'écran (configurable)
+  ✅ Masquage  : Automatique au retour à l'écran de tirage
+  
+  
+🔧 FICHIERS MODIFIÉS/CRÉÉS
+═══════════════════════════════════════════════════════════════════════════
+
+  ✨ config.production.json           → Tes IDs de production
+  ✅ resources/values/strings.xml     → App ID mis à jour
+  ✅ main.py                          → on_enter/on_leave ajoutés
+  ✅ deploy_config.ps1                → Support config.production.json
+
+
+🚀 COMMENT TESTER
+═══════════════════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ ÉTAPE 1 : BUILD L'APK                                              │
+│                                                                     │
+│   buildozer android release                                        │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ ÉTAPE 2 : INSTALLER SUR ANDROID                                    │
+│                                                                     │
+│   adb install -r bin/macartedetarot-*.aab                          │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ ÉTAPE 3A : TESTER MODE TEST (bannière Google)                     │
+│                                                                     │
+│   Par défaut : config.default.json (mode TEST)                     │
+│   → Tire une carte                                                 │
+│   → Bannière de test Google apparaît (label "Test Ad")            │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ ÉTAPE 3B : TESTER MODE PRODUCTION (ta bannière)                   │
+│                                                                     │
+│   .\deploy_config.ps1 prod                                         │
+│   → Tire une carte                                                 │
+│   → TA bannière apparaît (après 1h max, délai Google)            │
+└─────────────────────────────────────────────────────────────────────┘
+
+
+⏰ DÉLAI IMPORTANT
+═══════════════════════════════════════════════════════════════════════════
+
+  ⚠️  Google AdMob : Délai d'1 heure max pour nouveaux blocs
+  
+  Pendant ce délai :
+    → Espace blanc ou bannière vide
+  
+  Après 1 heure :
+    → Ta vraie bannière avec pubs
+    → Dashboard AdMob actif (impressions comptées sous 24-48h)
+
+
+📊 REVENUS ESTIMÉS
+═══════════════════════════════════════════════════════════════════════════
+
+  Bannière seule (eCPM France €1) :
+  
+    1,000 utilisateurs/mois × 10 tirages = €10/mois
+    10,000 utilisateurs/mois × 10 tirages = €100/mois
+  
+  
+  RECOMMANDATION : Ajouter Interstitielle
+  ══════════════════════════════════════════
+  
+  Bannière (€1) + Interstitielle (€3, freq 5) :
+  
+    1,000 utilisateurs/mois → €16/mois
+    10,000 utilisateurs/mois → €160/mois
+
+
+🔜 PROCHAINES ÉTAPES
+═══════════════════════════════════════════════════════════════════════════
+
+  [ ] 1. Build et tester mode TEST
+  
+  [ ] 2. Déployer config production (.\deploy_config.ps1 prod)
+  
+  [ ] 3. Attendre 1h (délai AdMob)
+  
+  [ ] 4. Vérifier bannière s'affiche
+  
+  [ ] 5. Créer bloc Interstitiel sur AdMob :
+         https://apps.admob.com/
+         → Ad units → Add ad unit → Interstitial
+  
+  [ ] 6. Mettre à jour config.production.json :
+         "admob_inter_id": "ca-app-pub-5749803259882370/XXXXXXXXXX"
+         "interstitial_enabled": true
+  
+  [ ] 7. Redéployer et tester système hybride
+
+
+🐛 DEBUGGING
+═══════════════════════════════════════════════════════════════════════════
+
+  Bannière ne s'affiche pas ?
+  
+    1. Vérifier config :
+       adb shell run-as org.tarot.macartedetarot cat files/config.json
+       → "banner_enabled": true
+    
+    2. Vérifier logs :
+       adb logcat -s "AdMob:* ResponseScreen:*"
+       → "Showing banner"
+    
+    3. Attendre 1 heure (nouveaux blocs AdMob)
+    
+    4. Tester avec IDs Google de test :
+       .\deploy_config.ps1 test
+
+
+✅ CHECKLIST
+═══════════════════════════════════════════════════════════════════════════
+
+  [✅] Bloc bannière créé sur AdMob
+  [✅] config.production.json créé
+  [✅] resources/values/strings.xml mis à jour
+  [✅] main.py modifié (on_enter/on_leave)
+  [✅] deploy_config.ps1 mis à jour
+  [✅] Documentation complète
+  
+  [⏳] Build APK
+  [⏳] Test mode TEST
+  [⏳] Test mode PRODUCTION
+  [⏳] Vérification bannière après 1h
+  [⏳] Création bloc interstitiel
+  [⏳] Système hybride actif
+
+
+📚 DOCUMENTATION
+═══════════════════════════════════════════════════════════════════════════
+
+  📋 docs/ADMOB_BANNER_INTEGRATION.md  → Guide bannière complet
+  📋 docs/ADMOB_QUICK_REFERENCE.md     → Commandes rapides
+  📋 docs/ADMOB_WORKFLOW.md            → Workflow complet
+  📋 ADMOB_COMPLETE.txt                → Vue d'ensemble
+
+
+================================================================================
+  🎉 TA BANNIÈRE EST PRÊTE À MONÉTISER !
+  
+  💰 Prochaine étape : Créer le bloc interstitiel pour doubler les revenus
+================================================================================

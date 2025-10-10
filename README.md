@@ -1,4 +1,54 @@
-# 🃏 Ma Carte de Tarot - Application And## 🔐 Configuration des Secrets GitHub
+# 🃏 Ma Carte de Tarot - Applicatio# 🃏 Ma Carte de Tarot - Application Android
+
+Application Kivy de tirage de cartes de tarot avec déploiement automatique sur Google Play Store et **monétisation AdMob**.
+
+## 🚀 Déploiement
+
+Pour créer une nouvelle version :
+
+```bash
+# Créer un tag et pousser (déclenche automatiquement le build)
+git tag v1.0.2
+git push origin v1.0.2
+```
+
+Le pipeline GitHub Actions se charge automatiquement de :
+
+- Compiler l'application Android (AAB)
+
+## 💰 Monétisation AdMob
+
+L'application intègre un système de publicités AdMob avec **configuration JSON dynamique** (pas besoin de rebuild pour changer les IDs).
+
+### 📚 Documentation AdMob
+
+| Fichier | Description |
+|---------|-------------|
+| **[ADMOB_QUICK_REFERENCE.md](docs/ADMOB_QUICK_REFERENCE.md)** | � Guide de référence rapide (commandes, config) |
+| **[ADMOB_WORKFLOW.md](docs/ADMOB_WORKFLOW.md)** | 🔄 Workflow complet test → production |
+| **[ADMOB_INTEGRATION.md](docs/ADMOB_INTEGRATION.md)** | 📖 Documentation technique complète |
+| **[ADMOB_INTEGRATION_EXAMPLE.py](docs/ADMOB_INTEGRATION_EXAMPLE.py)** | 💻 Exemples de code |
+
+### ⚡ Démarrage Rapide AdMob
+
+```powershell
+# Déployer config en mode TEST (IDs Google de test)
+.\deploy_config.ps1 test
+
+# Déployer config en mode PRODUCTION (tes IDs AdMob)
+.\deploy_config.ps1 prod
+```
+
+**Avantage :** Change les IDs AdMob **sans rebuilder l'APK** !
+
+### 🎯 Fichiers AdMob
+
+- `ads_manager.py` - Gestionnaire AdMob (250+ lignes)
+- `config.default.json` - Config embarquée (mode TEST par défaut)
+- `deploy_config.ps1` - Script PowerShell de déploiement
+- `resources/values/strings.xml` - AdMob App ID Android
+
+**Voir [ADMOB_QUICK_REFERENCE.md](docs/ADMOB_QUICK_REFERENCE.md) pour plus de détails.**iguration des Secrets GitHub
 
 https://play.google.com/apps/internaltest/4699508915394093740
 

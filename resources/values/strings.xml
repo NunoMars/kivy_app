@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- AdMob App ID - Ma Carte de Tarot PRODUCTION -->
+    <string name="admob_app_id">ca-app-pub-5749803259882370~1482612480</string>
+</resources>

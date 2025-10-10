@@ -26,6 +26,9 @@ production.keystore
 *service-account*.json
 *google-play*.json
 
+# AdMob Configuration (contient IDs sensibles)
+config.json
+
 # Fichiers temporaires
 *-unsigned.aab
 *-release.aab

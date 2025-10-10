@@ -1,0 +1,10 @@
+{
+  "ads_enabled": true,
+  "ads_test_mode": false,
+  "admob_app_id": "ca-app-pub-XXXXXXXXXXXXXXXX~YYYYYYYYYY",
+  "admob_banner_id": "ca-app-pub-XXXXXXXXXXXXXXXX/ZZZZZZZZZZ",
+  "admob_interstitial_id": "ca-app-pub-XXXXXXXXXXXXXXXX/AAAAAAAAAA",
+  "ads_frequency": 5,
+  "banner_position": "bottom",
+  "remote_config_url": ""
+}

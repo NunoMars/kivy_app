@@ -58,6 +58,8 @@ import random
 import os
 
 # Import des significations selon la langue détectée
+# Import du gestionnaire de publicités AdMob
+from ads_manager import load_config, AdsManager, maybe_fetch_remote_config
 try:
     if CURRENT_LANG == "en":
         from signification_en import get_cards_signification  # Maintenant correct !
@@ -504,19 +506,16 @@ class CardScreen(Screen):
             if hasattr(self, 'loading_popup'):
                 self.loading_popup.dismiss()
 
-            def show_response_screen():
-                if self.manager:
-                    response_screen = self.manager.get_screen("response_screen")
-                    response_screen.setup_card(drawn_card, drawn_state)
-                    self.manager.current = "response_screen"
-
-            # Afficher la popup pub si besoin
-            if should_show_ad():
-                print("Affichage écran pub maximisé")
-                popup = AdsPopup(on_close_callback=show_response_screen)
-                popup.open()
-            else:
-                show_response_screen()
+            # Notifier AdMob du tirage (gère automatiquement la fréquence)
+            app = App.get_running_app()
+            if hasattr(app, 'ads'):
+                app.ads.on_card_drawn()
+            
+            # Afficher directement l'écran de réponse (AdMob gère l'interstitiel)
+            if self.manager:
+                response_screen = self.manager.get_screen("response_screen")
+                response_screen.setup_card(drawn_card, drawn_state)
+                self.manager.current = "response_screen"
 
         except Exception as e:
             print(f"Erreur tirage: {e}")
@@ -783,6 +782,24 @@ class ResponseScreen(Screen):
 
     def hide_ad_banner(self):
         self.ad_banner.opacity = 0
+    
+    def on_enter(self, *args):
+        """Afficher la bannière AdMob quand on entre sur cet écran"""
+        super().on_enter(*args)
+        print("📱 ResponseScreen: on_enter - Affichage bannière AdMob")
+        
+        app = App.get_running_app()
+        if hasattr(app, 'ads') and hasattr(app.ads, 'show_banner'):
+            app.ads.show_banner()
+    
+    def on_leave(self, *args):
+        """Masquer la bannière AdMob quand on quitte cet écran"""
+        super().on_leave(*args)
+        print("📱 ResponseScreen: on_leave - Masquage bannière AdMob")
+        
+        app = App.get_running_app()
+        if hasattr(app, 'ads') and hasattr(app.ads, 'hide_banner'):
+            app.ads.hide_banner()
 
     def start_typewriter(self, text, speed=0.02):
         """Affiche le texte lettre par lettre (effet machine à écrire)"""
@@ -887,6 +904,20 @@ class TarotApp(App):
     def build(self):
         print("=== CONSTRUCTION APP TAROT ===")
         self.title = tr("app_title")
+        
+        # Initialisation AdMob avec configuration JSON
+        print("📱 Chargement configuration AdMob...")
+        self.cfg = load_config()
+        print(f"   → Mode test: {self.cfg.get('ads_test_mode')}")
+        print(f"   → Pubs activées: {self.cfg.get('ads_enabled')}")
+        print(f"   → Fréquence: {self.cfg.get('ads_frequency')} tirages")
+        
+        # Optionnel : récupérer config à distance
+        maybe_fetch_remote_config(self.cfg)
+        
+        # Initialiser le gestionnaire de publicités
+        self.ads = AdsManager(self.cfg)
+        print("✅ AdMob initialisé")
         
         sm = RootScreen()
         sm.add_widget(CardScreen(name="main_screen"))
