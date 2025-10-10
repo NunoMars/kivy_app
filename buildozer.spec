@@ -18,7 +18,7 @@ source.include_patterns = libs/*.py
 version = 1.9
 
 # Note: kivmob doit être inclus manuellement via libs/ car non disponible sur PyPI
-requirements = python3,kivy==2.3.1,pillow==10.0.0,requests==2.32.3
+requirements = python3,kivy==2.3.0,pillow==10.0.0,requests==2.32.3
 
 icon.filename = %(source.dir)s/tarot_img/icon.png
 orientation = portrait
