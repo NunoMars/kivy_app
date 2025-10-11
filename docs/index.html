@@ -1,182 +1,356 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ma Carte de Tarot - Documentation</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Ma Carte de Tarot · Official Website</title>
+    <meta name="description" content="Choose your language and explore the official Ma Carte de Tarot experience with downloads, privacy policy, terms and support resources.">
+    <link rel="canonical" href="https://nunomars.github.io/kivy_app/">
+    <link rel="alternate" hreflang="fr" href="https://nunomars.github.io/kivy_app/fr/">
+    <link rel="alternate" hreflang="en" href="https://nunomars.github.io/kivy_app/en/">
+    <link rel="alternate" hreflang="es" href="https://nunomars.github.io/kivy_app/es/">
+    <link rel="alternate" hreflang="pt" href="https://nunomars.github.io/kivy_app/pt/">
+    <link rel="alternate" hreflang="x-default" href="https://nunomars.github.io/kivy_app/">
+    <link rel="icon" href="https://nunomars.github.io/kivy_app/tarot_img/tapis.ico">
+    <meta property="og:title" content="Ma Carte de Tarot">
+    <meta property="og:description" content="Multilingual hub for the Ma Carte de Tarot Android app.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nunomars.github.io/kivy_app/">
+    <meta property="og:image" content="https://nunomars.github.io/kivy_app/tarot_img/carte_1.gif">
     <style>
+        :root {
+            color-scheme: light dark;
+            --bg-top: #4c1d95;
+            --bg-bottom: #0ea5e9;
+            --panel: rgba(255, 255, 255, 0.92);
+            --text: #1f2937;
+            --muted: #475569;
+            --accent: #5b21b6;
+            --accent-soft: rgba(14, 165, 233, 0.16);
+        }
         * {
-            margin: 0;
-            padding: 0;
             box-sizing: border-box;
         }
-        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            margin: 0;
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            background: linear-gradient(140deg, var(--bg-top), var(--bg-bottom));
+            color: var(--text);
         }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
         header {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 980px;
+            margin: 0 auto;
+            padding: clamp(2.5rem, 6vw, 4rem) clamp(1.5rem, 5vw, 3rem) 2rem;
             text-align: center;
+            color: #f8fafc;
         }
-        
-        h1 {
-            color: #764ba2;
-            font-size: 2.5em;
-            margin-bottom: 10px;
+        header h1 {
+            margin: 0 0 1rem;
+            font-size: clamp(2.6rem, 6vw, 3.5rem);
+            letter-spacing: 0.06em;
         }
-        
-        .subtitle {
-            color: #667eea;
-            font-size: 1.2em;
+        header p {
+            margin: 0 auto;
+            max-width: 640px;
+            font-size: 1.1rem;
+            line-height: 1.8;
         }
-        
-        .card {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        main {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 clamp(1.5rem, 5vw, 3rem) clamp(3rem, 7vw, 5rem);
         }
-        
-        h2 {
-            color: #764ba2;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #667eea;
+        .panel {
+            background: var(--panel);
+            border-radius: 28px;
+            padding: clamp(1.8rem, 4vw, 3.2rem);
+            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
         }
-        
-        h3 {
-            color: #667eea;
-            margin-top: 20px;
-            margin-bottom: 10px;
+        .badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            justify-content: center;
+            margin-bottom: 2.4rem;
         }
-        
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .feature-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-        
-        .feature-icon {
-            font-size: 3em;
-            margin-bottom: 10px;
-        }
-        
         .badge {
-            display: inline-block;
-            padding: 5px 15px;
-            background: #667eea;
-            color: white;
-            border-radius: 20px;
-            font-size: 0.9em;
-            margin: 5px;
+            padding: 0.45rem 1.1rem;
+            border-radius: 999px;
+            background: rgba(76, 29, 149, 0.85);
+            color: #f8fafc;
+            font-size: 0.9rem;
+            letter-spacing: 0.04em;
         }
-        
-        .download-btn {
-            display: inline-block;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px 40px;
+        .language-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: clamp(1rem, 3vw, 1.8rem);
+        }
+        .language-card {
+            background: rgba(15, 23, 42, 0.06);
+            border-radius: 22px;
+            padding: 1.8rem 1.6rem;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .language-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(76, 29, 149, 0.12), rgba(14, 165, 233, 0.18));
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+        .language-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25);
+        }
+        .language-card:hover::after {
+            opacity: 1;
+        }
+        .language-card h2 {
+            margin: 0 0 0.5rem;
+            font-size: 1.35rem;
+            position: relative;
+            z-index: 1;
+        }
+        .language-card p {
+            margin: 0 0 1.2rem;
+            color: var(--muted);
+            position: relative;
+            z-index: 1;
+        }
+        .language-card a {
+            position: relative;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.55rem 1.15rem;
+            border-radius: 999px;
             text-decoration: none;
-            border-radius: 30px;
-            font-size: 1.1em;
-            font-weight: bold;
-            margin: 20px 10px;
-            transition: transform 0.3s;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            background: var(--accent);
+            color: #f8fafc;
+            font-weight: 600;
+            transition: background 0.2s ease;
         }
-        
-        .download-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        .language-card a:hover {
+            background: #7c3aed;
         }
-        
-        .code-block {
-            background: #2d3748;
-            color: #68d391;
-            padding: 15px;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 15px 0;
-            font-family: 'Courier New', monospace;
-        }
-        
         footer {
             text-align: center;
-            color: white;
-            padding: 20px;
-            margin-top: 40px;
+            color: rgba(248, 250, 252, 0.85);
+            padding: 0 1.5rem 3rem;
+            font-size: 0.95rem;
         }
-        
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            margin: 20px 0;
-        }
-        
-        .stat-item {
-            text-align: center;
-        }
-        
-        .stat-number {
-            font-size: 2.5em;
-            color: #764ba2;
-            font-weight: bold;
-        }
-        
-        .stat-label {
-            color: #667eea;
-            font-size: 0.9em;
+        footer a {
+            color: #e0f2fe;
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🔮 Ma Carte de Tarot</h1>
-            <p class="subtitle">Application de tirage de cartes de tarot avec monétisation AdMob</p>
-            <div style="margin-top: 20px;">
-                <span class="badge">v1.8</span>
-                <span class="badge">Android</span>
-                <span class="badge">AdMob Intégré</span>
-                <span class="badge">Multi-langue</span>
+    <header>
+        <h1>Ma Carte de Tarot</h1>
+        <p>Explore the official Ma Carte de Tarot resources in your language: Android download links, privacy policy, terms of service, screenshots and support details updated for Google Play compliance.</p>
+    </header>
+    <main>
+        <div class="panel">
+            <div class="badge-row">
+                <span class="badge">Multilingual</span>
+                <span class="badge">Android · Kivy</span>
+                <span class="badge">AdMob compliant</span>
             </div>
-        </header>
+            <div class="language-grid">
+                <div class="language-card">
+                    <h2>Français</h2>
+                    <p>Site officiel, politique de confidentialité et assistance en français.</p>
+                    <a href="./fr/">Explorer en français →</a>
+                </div>
+                <div class="language-card">
+                    <h2>English</h2>
+                    <p>English edition with full feature overview and compliance resources.</p>
+                    <a href="./en/">Explore in English →</a>
+                </div>
+                <div class="language-card">
+                    <h2>Español</h2>
+                    <p>Sitio oficial, políticas y soporte disponibles en español latino.</p>
+                    <a href="./es/">Explorar en español →</a>
+                </div>
+                <div class="language-card">
+                    <h2>Português</h2>
+                    <p>Versão em português com recursos, privacidade e suporte.</p>
+                    <a href="./pt/">Explorar em português →</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>© 2025 Nuno Marcelino · <a href="https://github.com/NunoMars/kivy_app" target="_blank" rel="noopener">GitHub</a></p>
+    </footer>
+</body>
+</html>
 
-        <div class="card">
-            <h2>📱 Télécharger l'Application</h2>
-            <div style="text-align: center;">
-                <a href="https://play.google.com/apps/internaltest/4699508915394093740" class="download-btn">
-                    📲 Tests Internes Play Store
-                </a>
-                <a href="https://github.com/NunoMars/kivy_app" class="download-btn">
-                    📦 Code Source GitHub
-                </a>
-            </div>
+            margin: 0 0 0.35rem;            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+            color: var(--accent);            color: white;
+
+            font-size: 1.35rem;            padding: 15px 40px;
+
+        }            text-decoration: none;
+
+        .language-card p {            border-radius: 30px;
+
+            margin: 0 0 1rem;            font-size: 1.1em;
+
+            font-size: 0.95rem;            font-weight: bold;
+
+            color: #475569;            margin: 20px 10px;
+
+        }            transition: transform 0.3s;
+
+        .language-card a {            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+
+            display: inline-flex;        }
+
+            align-items: center;        
+
+            gap: 0.5rem;        .download-btn:hover {
+
+            padding: 0.55rem 1.2rem;            transform: translateY(-3px);
+
+            border-radius: 999px;            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+
+            background: #fff;        }
+
+            color: var(--accent);        
+
+            font-weight: 600;        .code-block {
+
+            text-decoration: none;            background: #2d3748;
+
+            border: 1px solid rgba(76, 29, 149, 0.18);            color: #68d391;
+
+            transition: background 0.2s ease, color 0.2s ease;            padding: 15px;
+
+        }            border-radius: 8px;
+
+        .language-card a:hover {            overflow-x: auto;
+
+            background: linear-gradient(120deg, var(--accent) 0%, var(--accent-2) 100%);            margin: 15px 0;
+
+            color: #fff;            font-family: 'Courier New', monospace;
+
+        }        }
+
+        footer {        
+
+            margin-top: 2.75rem;        footer {
+
+            text-align: center;            text-align: center;
+
+            font-size: 0.9rem;            color: white;
+
+            color: #475569;            padding: 20px;
+
+        }            margin-top: 40px;
+
+        footer a {        }
+
+            color: inherit;        
+
+            text-decoration: none;        .stats {
+
+            font-weight: 600;            display: flex;
+
+        }            justify-content: space-around;
+
+    </style>            margin: 20px 0;
+
+</head>        }
+
+<body>        
+
+    <main>        .stat-item {
+
+        <header>            text-align: center;
+
+            <h1>Ma Carte de Tarot</h1>        }
+
+            <p>Select your language to explore the official website, downloads and support resources.</p>        
+
+            <div class="badge-list">        .stat-number {
+
+                <span class="badge">Android · v1.9</span>            font-size: 2.5em;
+
+                <span class="badge">78 Tarot Cards</span>            color: #764ba2;
+
+                <span class="badge">AdMob Ready</span>            font-weight: bold;
+
+                <span class="badge">Multilingual Support</span>        }
+
+            </div>        
+
+        </header>        .stat-label {
+
+        <section class="languages">            color: #667eea;
+
+            <article class="language-card">            font-size: 0.9em;
+
+                <h2>Français</h2>        }
+
+                <p>Site officiel, documentation, assistance et politique de confidentialité en français.</p>    </style>
+
+                <a href="./fr/">Explorer la version française →</a></head>
+
+            </article><body>
+
+            <article class="language-card">    <div class="container">
+
+                <h2>English</h2>        <header>
+
+                <p>Official website, feature overview, privacy policy and support in English.</p>            <h1>🔮 Ma Carte de Tarot</h1>
+
+                <a href="./en/">Visit the English edition →</a>            <p class="subtitle">Application de tirage de cartes de tarot avec monétisation AdMob</p>
+
+            </article>            <div style="margin-top: 20px;">
+
+            <article class="language-card">                <span class="badge">v1.8</span>
+
+                <h2>Español</h2>                <span class="badge">Android</span>
+
+                <p>Sitio oficial, funciones destacadas, política de privacidad y soporte en español.</p>                <span class="badge">AdMob Intégré</span>
+
+                <a href="./es/">Abrir la versión en español →</a>                <span class="badge">Multi-langue</span>
+
+            </article>            </div>
+
+            <article class="language-card">        </header>
+
+                <h2>Português</h2>
+
+                <p>Site oficial, recursos principais, política de privacidade e suporte em português.</p>        <div class="card">
+
+                <a href="./pt/">Acessar a edição em português →</a>            <h2>📱 Télécharger l'Application</h2>
+
+            </article>            <div style="text-align: center;">
+
+        </section>                <a href="https://play.google.com/apps/internaltest/4699508915394093740" class="download-btn">
+
+        <footer>                    📲 Tests Internes Play Store
+
+            <p>© 2025 Nuno Marcelino · <a href="https://github.com/NunoMars/kivy_app">GitHub Repository</a></p>                </a>
+
+        </footer>                <a href="https://github.com/NunoMars/kivy_app" class="download-btn">
+
+    </main>                    📦 Code Source GitHub
+
+</body>                </a>
+
+</html>            </div>
+
         </div>
 
         <div class="card">

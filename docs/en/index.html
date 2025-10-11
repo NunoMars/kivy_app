@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Ma Carte de Tarot · Official English Website</title>
+    <meta name="description" content="Official English website for Ma Carte de Tarot, the Android tarot reading app built with Kivy. Discover features, download links, privacy policy and support resources.">
+    <link rel="canonical" href="https://nunomars.github.io/kivy_app/en/">
+    <link rel="alternate" hreflang="fr" href="https://nunomars.github.io/kivy_app/fr/">
+    <link rel="alternate" hreflang="en" href="https://nunomars.github.io/kivy_app/en/">
+    <link rel="alternate" hreflang="es" href="https://nunomars.github.io/kivy_app/es/">
+    <link rel="alternate" hreflang="pt" href="https://nunomars.github.io/kivy_app/pt/">
+    <link rel="alternate" hreflang="x-default" href="https://nunomars.github.io/kivy_app/">
+    <link rel="icon" href="https://nunomars.github.io/kivy_app/tarot_img/tapis.ico">
+    <meta property="og:title" content="Ma Carte de Tarot · English Edition">
+    <meta property="og:description" content="Explore the features, screenshots and privacy policy of Ma Carte de Tarot, the multilingual tarot reading experience for Android.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nunomars.github.io/kivy_app/en/">
+    <meta property="og:image" content="https://nunomars.github.io/kivy_app/tarot_img/carte_1.gif">
+    <style>
+        :root {
+            color-scheme: light dark;
+            --bg: #0f172a;
+            --bg-top: #4c1d95;
+            --bg-bottom: #0ea5e9;
+            --panel: rgba(15, 23, 42, 0.75);
+            --text: #f8fafc;
+            --muted: #cbd5f5;
+            --accent: #38bdf8;
+            --accent-strong: #f97316;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            background: radial-gradient(circle at top, var(--bg-top), var(--bg-bottom));
+            color: var(--text);
+        }
+        header {
+            padding: clamp(2rem, 5vw, 3rem) clamp(1.5rem, 6vw, 4rem) 1rem;
+            max-width: 1080px;
+            margin: 0 auto;
+        }
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        nav .brand {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+        }
+        nav a.language-switch {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: inline-flex;
+            gap: 0.4rem;
+            align-items: center;
+        }
+        nav a.language-switch span {
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            background: rgba(248, 250, 252, 0.12);
+        }
+        .hero {
+            margin-top: clamp(1.5rem, 4vw, 3rem);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: clamp(1.5rem, 4vw, 3rem);
+            align-items: center;
+        }
+        .hero-text h1 {
+            font-size: clamp(2.4rem, 6vw, 3.5rem);
+            margin: 0 0 1rem;
+        }
+        .hero-text p {
+            margin: 0 0 1.5rem;
+            color: var(--muted);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+        .cta-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+        .cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.85rem 1.6rem;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 600;
+            color: #0f172a;
+            background: var(--accent);
+        }
+        .cta.secondary {
+            background: rgba(248, 250, 252, 0.14);
+            color: var(--muted);
+        }
+        .hero-card {
+            background: rgba(248, 250, 252, 0.08);
+            border-radius: 24px;
+            padding: 1.5rem;
+            backdrop-filter: blur(12px);
+            display: grid;
+            gap: 1rem;
+        }
+        .hero-card h2 {
+            margin: 0;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent);
+        }
+        .hero-card ul {
+            margin: 0;
+            padding-left: 1.1rem;
+            display: grid;
+            gap: 0.4rem;
+            color: var(--muted);
+        }
+        main {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 clamp(1.5rem, 6vw, 4rem) clamp(3rem, 8vw, 6rem);
+        }
+        section {
+            margin-top: clamp(3rem, 8vw, 5rem);
+            background: rgba(15, 23, 42, 0.72);
+            border-radius: 24px;
+            padding: clamp(1.75rem, 5vw, 3rem);
+            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.38);
+        }
+        section h2 {
+            margin: 0 0 0.75rem;
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+        }
+        section p {
+            color: var(--muted);
+            margin: 0 0 1.25rem;
+            line-height: 1.7;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+        .feature {
+            background: rgba(248, 250, 252, 0.05);
+            border-radius: 18px;
+            padding: 1.2rem 1.4rem;
+            border: 1px solid rgba(56, 189, 248, 0.18);
+        }
+        .feature h3 {
+            margin: 0 0 0.55rem;
+            font-size: 1.1rem;
+            color: var(--accent);
+        }
+        .feature p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+        .secondary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.6rem;
+        }
+        .secondary-card {
+            padding: 1.4rem;
+            background: rgba(248, 250, 252, 0.06);
+            border-radius: 18px;
+            border: 1px solid rgba(59, 130, 246, 0.22);
+        }
+        .secondary-card h3 {
+            margin: 0 0 0.5rem;
+            color: var(--accent-strong);
+            font-size: 1.05rem;
+        }
+        .stat-band {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .stat {
+            flex: 1 1 140px;
+            background: rgba(248, 250, 252, 0.08);
+            padding: 1.1rem;
+            border-radius: 16px;
+            text-align: center;
+        }
+        .stat strong {
+            display: block;
+            font-size: 1.8rem;
+            color: var(--accent);
+        }
+        footer {
+            padding: 2rem clamp(1.5rem, 6vw, 4rem) 3rem;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="brand">MA CARTE DE TAROT</div>
+            <a class="language-switch" href="../fr/" aria-label="Switch to French">
+                <span>FR</span>
+                <span>EN</span>
+                <span>ES</span>
+                <span>PT</span>
+            </a>
+        </nav>
+        <div class="hero">
+            <div class="hero-text">
+                <h1>Your intuitive tarot reading companion.</h1>
+                <p>Ma Carte de Tarot brings the power of the 78-card tarot deck to Android. Built with Kivy, the app delivers fluid animations, dynamic spreads and detailed interpretations in four languages. Stay focused on guidance while the app handles ritual, history and AdMob monetisation.</p>
+                <div class="cta-group">
+                    <a class="cta" href="https://play.google.com/apps/internaltest/4699508915394093740" rel="noopener" target="_blank">Join the Android test track</a>
+                    <a class="cta secondary" href="https://github.com/NunoMars/kivy_app" rel="noopener" target="_blank">Browse source on GitHub</a>
+                </div>
+            </div>
+            <aside class="hero-card" aria-label="Key highlights">
+                <h2>Highlights</h2>
+                <ul>
+                    <li>78 Major & Minor Arcana cards with upright/reversed meanings.</li>
+                    <li>Multilingual UI: French, English, Spanish and Portuguese.</li>
+                    <li>Configurable AdMob banner and interstitial cadence.</li>
+                    <li>Zero build surprises thanks to automated GitHub Actions delivery.</li>
+                </ul>
+            </aside>
+        </div>
+    </header>
+    <main>
+        <section id="features">
+            <h2>Feature overview</h2>
+            <p>The application was designed for quick daily readings as well as deep, multi-card spreads. Everything runs on-device with smooth graphics powered by Kivy 2.3.1.</p>
+            <div class="feature-grid" role="list">
+                <article class="feature" role="listitem">
+                    <h3>Immersive tarot deck</h3>
+                    <p>Explore the iconic Marseille-inspired artwork with zoom gestures, card history and upright/reversed symbolism for each draw.</p>
+                </article>
+                <article class="feature" role="listitem">
+                    <h3>Accessible interpretations</h3>
+                    <p>Instant explanations summarise themes, guidance and cautions so readers of every level can follow along without external notes.</p>
+                </article>
+                <article class="feature" role="listitem">
+                    <h3>Multilingual experience</h3>
+                    <p>Switch language at runtime. All texts (UI, card meanings, support content) are translated by native speakers in FR · EN · ES · PT.</p>
+                </article>
+                <article class="feature" role="listitem">
+                    <h3>Configurable monetisation</h3>
+                    <p>Monetise responsibly with a banner on results screens and a full-screen interstitial every three card draws (default value).</p>
+                </article>
+            </div>
+            <div class="stat-band" aria-label="Key statistics">
+                <div class="stat">
+                    <strong>1.9</strong>
+                    <span>Current Android version</span>
+                </div>
+                <div class="stat">
+                    <strong>78</strong>
+                    <span>Cards with detailed meanings</span>
+                </div>
+                <div class="stat">
+                    <strong>4</strong>
+                    <span>Fully supported languages</span>
+                </div>
+                <div class="stat">
+                    <strong>Open</strong>
+                    <span>Source code on GitHub</span>
+                </div>
+            </div>
+        </section>
+        <section id="monetisation">
+            <h2>AdMob integration</h2>
+            <p>Ma Carte de Tarot integrates AdMob through a custom fork of KivMob. Ad configuration lives in <code>config.json</code> so product teams can tweak revenue strategies without recompiling.</p>
+            <div class="secondary-grid">
+                <article class="secondary-card">
+                    <h3>Banner placement</h3>
+                    <p>Shows at the bottom of the results screen with a subtle background to preserve readability and session flow.</p>
+                </article>
+                <article class="secondary-card">
+                    <h3>Interstitial cadence</h3>
+                    <p>Default frequency: <strong>every three draws</strong>. The value can be adjusted remotely via the configuration file pushed to <code>user_data_dir</code>.</p>
+                </article>
+                <article class="secondary-card">
+                    <h3>Testing made simple</h3>
+                    <p>Toggle test mode with <code>ads_test_mode=true</code> to switch to the official AdMob sample IDs before release submission.</p>
+                </article>
+            </div>
+        </section>
+        <section id="support">
+            <h2>Support &amp; compliance</h2>
+            <p>You are covered from privacy to store listing localisation.</p>
+            <div class="secondary-grid">
+                <article class="secondary-card">
+                    <h3>Privacy &amp; terms</h3>
+                    <p>Read the <a href="./privacy-policy.html">privacy policy</a> and <a href="./terms-of-service.html">terms of service</a> prepared for Google Play compliance.</p>
+                </article>
+                <article class="secondary-card">
+                    <h3>Issue tracking</h3>
+                    <p>Open tickets, feature ideas or localisation tweaks on <a href="https://github.com/NunoMars/kivy_app/issues" target="_blank" rel="noopener">GitHub Issues</a>.</p>
+                </article>
+                <article class="secondary-card">
+                    <h3>Release automation</h3>
+                    <p>GitHub Actions builds APK &amp; AAB artefacts on each tag (v1.9+), generates signed packages and uploads them to Google Play internal testing.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>© 2025 Nuno Marcelino · <a href="mailto:support@macartedetarot.app">support@macartedetarot.app</a> · <a href="https://github.com/NunoMars/kivy_app">GitHub</a></p>
+    </footer>
+</body>
+</html>
