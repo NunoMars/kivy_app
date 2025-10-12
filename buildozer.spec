@@ -58,7 +58,7 @@ android.release_keyalias_passwd = nunotheboss
 # Activation de R8/ProGuard pour réduire la taille de l'app et des symboles de débogage
 # + Google Play Services Ads pour AdMob (version compatible avec androidx)
 # Google Play Billing KTX (modern API) + AdMob
-android.gradle_dependencies = com.google.android.gms:play-services-ads:21.5.0, implementation "com.android.billingclient:billing-ktx:8.0.0"
+android.gradle_dependencies = com.google.android.gms:play-services-ads:21.5.0, com.android.billingclient:billing-ktx:8.0.0
 
 # Utiliser la branche master de python-for-android pour récupérer corrections récentes
 # (corrige notamment des échecs de compilation OpenSSL avec toolchains récents)
