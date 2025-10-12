@@ -46,11 +46,15 @@ def load_config() -> dict:
     
     # 1) Configuration utilisateur (prioritaire)
     try:
-        user_config_path = os.path.join(app.user_data_dir, "config.json")
-        if os.path.exists(user_config_path):
-            with open(user_config_path, "r", encoding="utf-8") as f:
-                cfg = json.load(f)
-            Logger.info(f"AdMob: Loaded user config from {user_config_path}")
+        # Vérifier que l'app est lancée avant d'accéder à user_data_dir
+        if app is not None:
+            user_config_path = os.path.join(app.user_data_dir, "config.json")
+            if os.path.exists(user_config_path):
+                with open(user_config_path, "r", encoding="utf-8") as f:
+                    cfg = json.load(f)
+                Logger.info(f"AdMob: Loaded user config from {user_config_path}")
+        else:
+            Logger.info("AdMob: App not yet running, skipping user config")
     except Exception as e:
         Logger.warning(f"AdMob: Failed to read user config: {e}")
 

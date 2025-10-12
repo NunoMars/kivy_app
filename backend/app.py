@@ -33,30 +33,40 @@ def pick_first_available(models: Iterable[str]) -> str | None:
     return None
 
 SYSTEM_PROMPT = (
-    "Tu es Mme T, une voyante authentique et chaleureuse qui utilise le tarot de Marseille. "
-    "Tu parles comme une vraie personne, pas comme un chatbot. "
+    "Tu es Mme T, une guide spirituelle chaleureuse qui interprète les symboles du tarot de Marseille. "
+    "Tu aides les gens à comprendre les messages des cartes pour éclairer leurs choix de vie. "
+    "Tu parles naturellement, comme une amie bienveillante, pas comme un chatbot. "
     "\n\n"
+    "⚠️ IMPORTANT - CADRE ÉTHIQUE:\n"
+    "• Le tarot est un OUTIL DE RÉFLEXION, pas de prédiction certaine\n"
+    "• Tu GUIDES et ÉCLAIRES, tu ne décides pas à la place de la personne\n"
+    "• Utilise des formulations ouvertes: 'les cartes suggèrent', 'je sens que', 'il semble que'\n"
+    "• Rappelle subtilement que c'est la personne qui a le pouvoir de créer son avenir\n"
+    "\n"
     "STYLE DE RÉPONSE:\n"
-    "• Sois COURTE et DIRECTE (max 3-4 phrases)\n"
-    "• Parle naturellement, tutoie l'utilisateur\n"
-    "• Utilise des émojis avec parcimonie (1-2 max) 💫🌸✨\n"
-    "• Évite les formules corporate comme 'N'hésitez pas à revenir'\n"
-    "• Ne répète pas systématiquement la carte si elle est déjà dans le contexte\n"
+    "• COURTE et DIRECTE (max 3-4 phrases)\n"
+    "• Tutoiement naturel et chaleureux\n"
+    "• Émojis avec parcimonie (1-2 max) 💫🌸✨\n"
+    "• Évite les formules corporate ou mystico-commerciales\n"
+    "• Ne répète pas la carte si elle est déjà mentionnée dans le contexte\n"
     "\n"
     "GESTION DES QUESTIONS:\n"
-    "• Si on te demande QUAND: donne une période approximative (saison, mois, année)\n"
-    "• Si on insiste plusieurs fois: sois honnête 'Le tarot n'est pas un agenda, mais je vois...'\n"
-    "• Réponds DIRECTEMENT à la question, sans tourner autour du pot\n"
-    "• Si c'est une question de suivi, continue la conversation naturellement\n"
+    "• QUAND: 'Les énergies pointent vers [saison/période]' au lieu de dates précises\n"
+    "• OUI/NON: 'Les cartes penchent vers le oui' plutôt que 'Oui absolument'\n"
+    "• INSISTANCE: 'Le tarot montre des possibilités, pas un destin figé'\n"
+    "• SUIVI: Continue la conversation avec cohérence et empathie\n"
     "\n"
-    "EXEMPLES DE TON:\n"
-    "❌ 'Chère âme, pour ta question, L'Étoile à l'endroit nous parle d'espoir...'\n"
-    "✅ 'L'Étoile à l'endroit, c'est un super signe ! Oui, ça va se faire.'\n"
+    "EXEMPLES DE TON ADAPTÉ:\n"
+    "❌ 'Tu vas absolument te marier l'année prochaine'\n"
+    "✅ 'L'Empereur suggère une belle stabilité affective à venir. Je sens du concret d'ici 6-8 mois !'\n"
     "\n"
-    "❌ 'Je t'invite à garder patience et à cultiver ton optimisme...'\n"
-    "✅ 'Patience ma belle, je vois le printemps prochain. Reste toi-même !'\n"
+    "❌ 'Le tarot prédit que tu auras des enfants'\n"
+    "✅ 'Les cartes montrent une énergie de créativité et de nouveaux départs. Si c'est ton souhait, c'est bien parti !'\n"
     "\n"
-    "Reste mystique mais accessible, comme une amie qui lit vraiment dans les cartes."
+    "❌ 'Chère âme, laisse les énergies cosmiques t'illuminer'\n"
+    "✅ 'Ça se présente bien ma belle ! Fais-toi confiance ✨'\n"
+    "\n"
+    "Reste mystique, bienveillante et honnête. Tu accompagnes, tu n'imposes pas."
 )
 
 def detect_language(text: str) -> str:
@@ -100,11 +110,17 @@ def consulter_madame_t(message: str, contexte: str = "") -> str:
             model = genai.GenerativeModel(
                 model_name,
                 generation_config={
-                    "temperature": 1.0,  # Plus de créativité et naturel
-                    "top_p": 0.95,
+                    "temperature": 0.85,  # Réduit pour moins de blocages (était 1.0)
+                    "top_p": 0.90,        # Réduit pour plus de cohérence (était 0.95)
                     "top_k": 40,
-                    "max_output_tokens": 300,  # Réponses plus courtes (≈200 mots)
+                    "max_output_tokens": 300,
                 },
+                safety_settings={
+                    "HARM_CATEGORY_HARASSMENT": "BLOCK_NONE",
+                    "HARM_CATEGORY_HATE_SPEECH": "BLOCK_ONLY_HIGH",
+                    "HARM_CATEGORY_SEXUALLY_EXPLICIT": "BLOCK_MEDIUM_AND_ABOVE",
+                    "HARM_CATEGORY_DANGEROUS_CONTENT": "BLOCK_ONLY_HIGH",
+                }
             )
         except Exception as model_exc:
             # Tentative avec les autres candidats si le premier échoue
@@ -117,11 +133,17 @@ def consulter_madame_t(message: str, contexte: str = "") -> str:
                     model = genai.GenerativeModel(
                         candidate,
                         generation_config={
-                            "temperature": 1.0,
-                            "top_p": 0.95,
+                            "temperature": 0.85,
+                            "top_p": 0.90,
                             "top_k": 40,
                             "max_output_tokens": 300,
                         },
+                        safety_settings={
+                            "HARM_CATEGORY_HARASSMENT": "BLOCK_NONE",
+                            "HARM_CATEGORY_HATE_SPEECH": "BLOCK_ONLY_HIGH",
+                            "HARM_CATEGORY_SEXUALLY_EXPLICIT": "BLOCK_MEDIUM_AND_ABOVE",
+                            "HARM_CATEGORY_DANGEROUS_CONTENT": "BLOCK_ONLY_HIGH",
+                        }
                     )
                     fallback_name = candidate
                     break
@@ -152,10 +174,31 @@ def consulter_madame_t(message: str, contexte: str = "") -> str:
         # Génération de la réponse
         result = model.generate_content(final_prompt)
         
-        if result.text:
-            return result.text
-        else:
-            return "❌ Aucune réponse n'a été générée. Veuillez réessayer."
+        # Vérifier si une réponse a été générée
+        if result and result.candidates:
+            candidate = result.candidates[0]
+            
+            # Vérifier finish_reason
+            # 0 = UNSPECIFIED, 1 = STOP (succès), 2 = SAFETY (bloqué), 3 = MAX_TOKENS, etc.
+            finish_reason = candidate.finish_reason
+            
+            if finish_reason == 2:  # SAFETY - Contenu bloqué
+                return (
+                    "Ah ma belle, le tarot me montre quelque chose mais les énergies "
+                    "sont un peu troubles aujourd'hui. Reformule ta question différemment "
+                    "et je pourrai mieux te guider ! ✨"
+                )
+            
+            # Essayer d'accéder au texte
+            try:
+                if result.text:
+                    return result.text
+            except ValueError:
+                # Si result.text lève une exception, extraire manuellement
+                if candidate.content and candidate.content.parts:
+                    return candidate.content.parts[0].text
+        
+        return "❌ Aucune réponse n'a été générée. Veuillez réessayer."
         
     except Exception as e:
         error_msg = str(e)

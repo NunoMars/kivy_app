@@ -67,6 +67,12 @@ def tr(key, **kwargs):
             return txt
     return txt
 
+# Variables globales MME_T (initialisées AVANT Kivy pour éviter les crashes Android)
+MME_T_BACKEND_URL = _normalize_mme_t_backend_url(
+    os.environ.get("MME_T_BACKEND_URL", DEFAULT_MME_T_SPACE)
+)
+MME_T_DEFAULT_MODEL = os.environ.get("MME_T_MODEL", "gemini-1.5-flash")
+
 # Configuration Kivy
 os.environ['KIVY_NO_CONSOLELOG'] = '1'
 os.environ['KIVY_NO_FILELOG'] = '1'
@@ -123,10 +129,7 @@ except Exception as jnius_exc:  # pragma: no cover - desktop fallback
 
         return decorator
 
-MME_T_BACKEND_URL = _normalize_mme_t_backend_url(
-    os.environ.get("MME_T_BACKEND_URL", DEFAULT_MME_T_SPACE)
-)
-MME_T_DEFAULT_MODEL = os.environ.get("MME_T_MODEL", "gemini-1.5-flash")
+# Variables MME_T déjà initialisées plus haut (lignes ~68-72)
 
 SIGNIFICATION_KEY_MAP = {
     "fr": {
