@@ -39,8 +39,8 @@ android.allow_backup = True
 android.copy_libs = 1
 android.logcat_filters = *:S python:D
 
-# Autorisations pour Play Store compliance + AdMob
-android.permissions = INTERNET,ACCESS_NETWORK_STATE,com.google.android.gms.permission.AD_ID
+# Autorisations pour Play Store compliance + AdMob + stabilité Android + achats in-app
+android.permissions = INTERNET,ACCESS_NETWORK_STATE,com.google.android.gms.permission.AD_ID,WAKE_LOCK,VIBRATE,RECEIVE_BOOT_COMPLETED,FOREGROUND_SERVICE,com.android.vending.BILLING
 
 # AdMob App ID metadata (production)
 android.meta_data = com.google.android.gms.ads.APPLICATION_ID=ca-app-pub-5749803259882370~1482612480

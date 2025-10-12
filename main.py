@@ -458,6 +458,9 @@ class InAppPurchaseManager:
 
     GOOGLE_PRODUCT_ID = "chat_luna_premium"
     AMAZON_PRODUCT_ID = "chat_luna_premium"
+    
+    # Clé publique RSA Google Play (pour vérification des achats)
+    GOOGLE_LICENSE_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlQdX/Dp4UftihEbt9Nrhje6bhQaMThyy+Z3JHg/13gxejmcFIzLYWvF/pgtNUETgpClh8xownnac4qojSNce8dE6id4w4lRy9OVC9guURAQAdHK1JBL9ekfLyfKxZjMoj/09/ZY1QKXbO7xnbDxsKIQ8HSplv2XS9Li9rczwttSW5bvTwxaib6HrXo/7gdRPflvokgE7z2uXmUZDqXvKnWC4kGEX7gYrXGyvP7eEUcYzSxwEJ0C/Qkci+wPI9PLM3xakhcUB6Pmuenmc2SNu2Nb34kO8t+rylQ2WV2/O2nG0wiDUKmyXplp0pcpiIgtaWlerBrTRDireqB0Jz2Y9DQIDAQAB"
 
     def __init__(self, on_success=None, on_error=None):
         self.on_success = on_success
@@ -912,6 +915,20 @@ class FullScreenCardPopup(Popup):
         self.opacity = 0
         entrance_anim = Animation(opacity=1, duration=0.3)
         entrance_anim.start(self)
+    
+    def on_open(self):
+        """Masquer les bannières AdMob quand le popup s'ouvre"""
+        super().on_open()
+        print("📱 FullScreenCardPopup: on_open - Affichage bannière AdMob en bas")
+        
+        app = App.get_running_app()
+        if hasattr(app, 'ads') and hasattr(app.ads, 'show_banner'):
+            app.ads.show_banner()
+    
+    def on_dismiss(self):
+        """Garder la bannière visible sur ResponseScreen"""
+        super().on_dismiss()
+        print("📱 FullScreenCardPopup: on_dismiss - Bannière reste visible")
     
     def update_bg(self, instance, value):
         self.bg_rect.pos = instance.pos
@@ -1676,7 +1693,7 @@ class MmeTChatPopup(Popup):
                 "model": self.model_id,
                 "context": full_context,
             }
-            threading.Thread(target=self._perform_request, args=(payload,), daemon=True).start()
+            threading.Thread(target=self._perform_request, args=(payload,), daemon=False).start()
         
         Clock.schedule_once(lambda dt: _delayed_send(), 2.5)
 
@@ -1686,7 +1703,7 @@ class MmeTChatPopup(Popup):
                 reply = self._call_gradio_backend(payload["message"], payload.get("context") or "")
             else:
                 url = self.backend_url.rstrip("/") + "/chat"
-                response = requests.post(url, json=payload, timeout=25)
+                response = requests.post(url, json=payload, timeout=15)  # Réduit de 25 à 15s
                 response.raise_for_status()
                 data = response.json()
                 reply = (data.get("reply") or "").strip()
@@ -1819,7 +1836,7 @@ class MmeTChatPopup(Popup):
                 print(f"📡 Tentative {endpoint}: {full_url}")
                 print(f"📤 Payload: {payload}")
                 
-                response = requests.post(full_url, json=payload, timeout=60)
+                response = requests.post(full_url, json=payload, timeout=20)  # Réduit de 60 à 20s pour Android
                 print(f"📊 Status: {response.status_code}")
                 
                 if response.status_code == 404:
@@ -1841,6 +1858,12 @@ class MmeTChatPopup(Popup):
                 
                 print(f"⚠️ Format de réponse inattendu: {type(data)}")
                 
+            except requests.exceptions.Timeout:
+                print(f"⏰ Timeout sur {endpoint} après 20s, passage au suivant...")
+                continue
+            except requests.exceptions.ConnectionError:
+                print(f"🌐 Erreur de connexion sur {endpoint}, passage au suivant...")
+                continue
             except requests.exceptions.HTTPError as http_err:
                 print(f"✗ HTTP Error sur {endpoint}: {http_err}")
                 if response.status_code != 404:
@@ -2477,40 +2500,64 @@ class AdsPopup(Popup):
 
 class TarotApp(App):
     def build(self):
-        print("=== CONSTRUCTION APP TAROT ===")
-        self.title = tr("app_title")
-        
-        # Initialisation AdMob avec configuration JSON
-        print("📱 Chargement configuration AdMob...")
-        self.cfg = load_config()
-        print(f"   → Mode test: {self.cfg.get('ads_test_mode')}")
-        print(f"   → Pubs activées: {self.cfg.get('ads_enabled')}")
-        print(f"   → Fréquence: {self.cfg.get('ads_frequency')} tirages")
-        
-        # Optionnel : récupérer config à distance
-        maybe_fetch_remote_config(self.cfg)
-        
-        # Initialiser le gestionnaire de publicités
-        self.ads = AdsManager(self.cfg)
-        print("✅ AdMob initialisé")
-        
-        sm = RootScreen()
-        sm.add_widget(CardScreen(name="main_screen"))
-        sm.add_widget(ResponseScreen(name="response_screen"))
-        sm.current = "main_screen"
-        self.screen_manager = sm
+        try:
+            print("=== CONSTRUCTION APP TAROT ===")
+            self.title = tr("app_title")
+            
+            # Initialisation AdMob avec configuration JSON
+            print("📱 Chargement configuration AdMob...")
+            self.cfg = load_config()
+            print(f"   → Mode test: {self.cfg.get('ads_test_mode')}")
+            print(f"   → Pubs activées: {self.cfg.get('ads_enabled')}")
+            print(f"   → Fréquence: {self.cfg.get('ads_frequency')} tirages")
+            
+            # Optionnel : récupérer config à distance
+            maybe_fetch_remote_config(self.cfg)
+            
+            # Initialiser le gestionnaire de publicités
+            self.ads = AdsManager(self.cfg)
+            print("✅ AdMob initialisé")
+            
+            sm = RootScreen()
+            sm.add_widget(CardScreen(name="main_screen"))
+            sm.add_widget(ResponseScreen(name="response_screen"))
+            sm.current = "main_screen"
+            self.screen_manager = sm
 
-        self.billing = InAppPurchaseManager(
-            on_success=self.on_purchase_success,
-            on_error=self.on_purchase_error,
-        )
-        self.billing.add_state_listener(self.on_billing_state_change)
-        self.billing.initialize()
-        
-        return sm
+            self.billing = InAppPurchaseManager(
+                on_success=self.on_purchase_success,
+                on_error=self.on_purchase_error,
+            )
+            self.billing.add_state_listener(self.on_billing_state_change)
+            self.billing.initialize()
+            
+            return sm
+            
+        except Exception as e:
+            print(f"❌ ERREUR CRITIQUE dans build(): {e}")
+            import traceback
+            traceback.print_exc()
+            # Retourner un écran d'erreur basique
+            return self._create_error_screen(f"Erreur d'initialisation: {str(e)}")
     
     def on_start(self):
-        print("=== APP TAROT DÉMARRÉE ===")
+        try:
+            print("=== APP TAROT DÉMARRÉE ===")
+        except Exception as e:
+            print(f"❌ ERREUR dans on_start(): {e}")
+            import traceback
+            traceback.print_exc()
+    
+    def _create_error_screen(self, message):
+        """Crée un écran d'erreur basique en cas de problème critique"""
+        from kivy.uix.label import Label
+        from kivy.uix.boxlayout import BoxLayout
+        
+        layout = BoxLayout(orientation='vertical', padding=20, spacing=10)
+        layout.add_widget(Label(text="Erreur critique", font_size=24, bold=True))
+        layout.add_widget(Label(text=message, font_size=16))
+        layout.add_widget(Label(text="Veuillez redémarrer l'application", font_size=14))
+        return layout
 
     def _get_response_screen(self):
         if hasattr(self, "screen_manager") and self.screen_manager and self.screen_manager.has_screen("response_screen"):
@@ -2533,5 +2580,33 @@ class TarotApp(App):
             screen.show_purchase_error(message)
 
 
+def handle_global_exception(exc_type, exc_value, exc_traceback):
+    """Gestionnaire d'exceptions global pour capturer les erreurs non gérées"""
+    if issubclass(exc_type, KeyboardInterrupt):
+        # Ne pas capturer les interruptions clavier (Ctrl+C)
+        sys.__excepthook__(exc_type, exc_value, exc_traceback)
+        return
+    
+    print("❌ EXCEPTION NON GÉRÉE:")
+    print(f"   Type: {exc_type.__name__}")
+    print(f"   Message: {exc_value}")
+    import traceback
+    traceback.print_exc()
+    
+    # Essayer de garder l'app stable si possible
+    try:
+        from kivy.app import App
+        app = App.get_running_app()
+        if app and hasattr(app, 'screen_manager'):
+            # Afficher un message d'erreur sur l'écran actuel
+            pass  # Pour l'instant, juste logger
+    except:
+        pass  # Éviter les boucles d'erreurs
+
+
 if __name__ == "__main__":
+    # Installer le gestionnaire d'exceptions global
+    import sys
+    sys.excepthook = handle_global_exception
+    
     TarotApp().run()

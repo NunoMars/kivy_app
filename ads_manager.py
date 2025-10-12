@@ -255,7 +255,7 @@ def maybe_fetch_remote_config(cfg: dict):
         except Exception as e:
             Logger.error(f"AdMob: Remote config fetch failed: {e}")
     
-    threading.Thread(target=_work, daemon=True).start()
+    threading.Thread(target=_work, daemon=False).start()
 
 
 # Exemple d'utilisation dans main.py:
