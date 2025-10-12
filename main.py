@@ -1252,7 +1252,8 @@ class MmeTChatPopup(Popup):
         **kwargs,
     ):
         kwargs.setdefault("title", "")
-        kwargs.setdefault("size_hint", (0.9, 0.85))
+        kwargs.setdefault("size_hint", (1, 1))  # Plein écran
+        kwargs.setdefault("separator_height", 0)
         super().__init__(**kwargs)
 
         self.language = (language or "fr").lower()
@@ -1262,6 +1263,7 @@ class MmeTChatPopup(Popup):
         self.backend_url = _normalize_mme_t_backend_url(MME_T_BACKEND_URL or DEFAULT_MME_T_SPACE)
         self.is_gradio_space = "hf.space" in (self.backend_url or "")
         self.context_text = context_text or ""
+        self.conversation_history = []  # Historique [{"role": "user"/"assistant", "content": "..."}]
         self.model_id = MME_T_DEFAULT_MODEL
         self.awaiting_reply = False
         self.typewriter_event = None
@@ -1626,6 +1628,12 @@ class MmeTChatPopup(Popup):
         if not question:
             return
         
+        # LOG: Afficher la question dans le terminal
+        print(f"\n{'='*60}")
+        print(f"👤 QUESTION UTILISATEUR:")
+        print(f"   {question}")
+        print(f"{'='*60}\n")
+        
         # Afficher le message utilisateur
         self.add_message(question, sender="user")
         self.question_input.text = ""
@@ -1643,12 +1651,27 @@ class MmeTChatPopup(Popup):
             self.awaiting_reply = True
             self.send_btn.text = "..."
             
+            # Ajouter la question à l'historique
+            self.conversation_history.append({"role": "user", "content": question})
+            
+            # Construire le contexte complet avec l'historique
+            full_context = self.context_text
+            if len(self.conversation_history) > 1:  # Si on a déjà des échanges
+                history_text = "\n\nHistorique de la conversation:\n"
+                # Prendre tous les échanges sauf la question actuelle
+                for entry in self.conversation_history[:-1]:
+                    role = "Vous" if entry["role"] == "user" else "Mme T"
+                    history_text += f"{role}: {entry['content']}\n"
+                full_context = full_context + history_text
+            
+            print(f"[MME T DEBUG] Contexte envoyé (avec historique):\n{full_context}\n")
+            
             payload = {
                 "message": question,
                 "language": self.language,
                 "session_id": self.session_id,
                 "model": self.model_id,
-                "context": self.context_text,
+                "context": full_context,
             }
             threading.Thread(target=self._perform_request, args=(payload,), daemon=True).start()
         
@@ -1666,13 +1689,27 @@ class MmeTChatPopup(Popup):
                 reply = (data.get("reply") or "").strip()
                 if not reply:
                     raise ValueError("Réponse vide")
+            
+            # LOG: Afficher la réponse dans le terminal
+            print(f"\n{'='*60}")
+            print(f"🔮 RÉPONSE MME T:")
+            print(f"   {reply}")
+            print(f"{'='*60}\n")
+            
             Clock.schedule_once(lambda dt: self._on_success(reply), 0)
-        except Exception:
+        except Exception as e:
+            print(f"\n{'='*60}")
+            print(f"❌ ERREUR MME T:")
+            print(f"   {str(e)}")
+            print(f"{'='*60}\n")
             Clock.schedule_once(lambda dt: self._on_error(), 0)
 
     def _on_success(self, reply_text):
         # Arrêter l'animation de chargement
         self._stop_loading_animation()
+        
+        # Ajouter la réponse à l'historique
+        self.conversation_history.append({"role": "assistant", "content": reply_text})
         
         self.awaiting_reply = False
         # Réactiver les champs pour permettre la conversation continue
@@ -1712,6 +1749,14 @@ class MmeTChatPopup(Popup):
 
     def _call_gradio_backend(self, message: str, context_text: str) -> str:
         """Appelle le backend Gradio avec le client officiel ou REST en fallback"""
+        
+        # LOG: Afficher les paramètres envoyés
+        print(f"\n{'='*60}")
+        print(f"📤 ENVOI AU BACKEND:")
+        print(f"   Message: {message}")
+        print(f"   Contexte: {context_text or '(vide)'}")
+        print(f"   URL: {self.backend_url}")
+        print(f"{'='*60}\n")
         
         # Méthode 1: Client Gradio officiel (recommandé)
         if GRADIO_CLIENT_AVAILABLE:

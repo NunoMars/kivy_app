@@ -12,7 +12,8 @@ __pycache__/
 .buildozer/
 bin/
 dist/
-
+venv/
+.env
 # Android signing keys (NEVER commit these!)
 *.keystore
 *.keystore.base64
