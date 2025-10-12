@@ -15,8 +15,8 @@ source.exclude_exts = spec,md,txt
 source.exclude_dirs = tests, bin, venv, .github, __pycache__, .git, .vscode, guides
 source.include_patterns = libs/*.py
 
-version = 1.9
-android.numeric_version = 1021110
+version = 1.11
+android.numeric_version = 1110000
 
 # Note: kivmob doit être inclus manuellement via libs/ car non disponible sur PyPI
 requirements = python3==3.9.18,kivy==2.3.1,pillow==10.0.0,requests==2.32.3,gradio_client>=1.13.0,fsspec,httpx,huggingface-hub,websockets,typing-extensions
@@ -57,7 +57,8 @@ android.release_keyalias_passwd = nunotheboss
 # Configuration pour améliorer la qualité de l'app Play Store
 # Activation de R8/ProGuard pour réduire la taille de l'app et des symboles de débogage
 # + Google Play Services Ads pour AdMob (version compatible avec androidx)
-android.gradle_dependencies = com.google.android.gms:play-services-ads:21.5.0
+# + Google Play Billing Library v6.0.1+ pour les dernières fonctionnalités de monétisation
+android.gradle_dependencies = com.google.android.gms:play-services-ads:21.5.0, com.android.billingclient:billing:6.0.1
 
 ## Dépendances gradle avec versions récentes (Play Store compliance)
 # Suppression des dépendances androidx pour éviter les conflits Kotlin

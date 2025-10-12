@@ -1,5 +1,46 @@
 __version__ = "0.01"
 
+# Configuration Kivy pour les emojis
+import os
+import platform
+if platform.system() == 'Linux' and 'DISPLAY' not in os.environ:
+    # Sur Linux headless, désactiver complètement PIL
+    import kivy.core.text
+    # Patcher la liste des providers pour exclure pil
+    original_providers = kivy.core.text.providers
+    kivy.core.text.providers = [p for p in original_providers if p != 'pil']
+    print(f"📝 Providers texte headless: {kivy.core.text.providers}")
+else:
+    # Sur Android ou desktop avec display, utiliser pil pour les emojis
+    os.environ['KIVY_TEXT'] = 'pil'
+
+import kivy
+kivy.require('2.3.1')
+
+# Configuration des polices pour supporter les emojis
+from kivy.config import Config
+import platform
+
+if platform.system() == 'Linux' and 'DISPLAY' not in os.environ:
+    # Mode headless - configuration minimale
+    Config.set('kivy', 'default_font', ['DejaVuSans.ttf'])
+else:
+    # Mode normal - polices avec emoji
+    Config.set('kivy', 'default_font', [
+        'DejaVuSans.ttf',
+        '/usr/share/fonts/truetype/noto/NotoColorEmoji.ttf'
+    ])
+
+    # Forcer l'utilisation de PIL pour le rendu texte (meilleur support emoji)
+    try:
+        from kivy.core.text import LabelBase
+        LabelBase.register(name='emoji',
+                           fn_regular='/usr/share/fonts/truetype/noto/NotoColorEmoji.ttf')
+    except Exception as e:
+        print(f"⚠️ Impossible de charger la police emoji: {e}")
+        # Fallback sans police emoji
+        pass
+
 import os
 import random
 import locale
