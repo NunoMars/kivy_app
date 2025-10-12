@@ -16,9 +16,10 @@ source.exclude_dirs = tests, bin, venv, .github, __pycache__, .git, .vscode, gui
 source.include_patterns = libs/*.py
 
 version = 1.9
+android.numeric_version = 1021110
 
 # Note: kivmob doit être inclus manuellement via libs/ car non disponible sur PyPI
-requirements = python3,kivy==2.3.1,pillow==10.0.0,requests==2.32.3
+requirements = python3==3.9.18,kivy==2.3.1,pillow==10.0.0,requests==2.32.3,gradio_client>=1.13.0,fsspec,httpx,huggingface-hub,websockets,typing-extensions
 
 icon.filename = %(source.dir)s/tarot_img/icon.png
 orientation = portrait
@@ -31,58 +32,32 @@ author = © Nuno Marcelino Copyright Info
 # (gérées automatiquement par le workflow, doublons supprimés)
 android.minapi = 21
 android.ndk_api = 21
-android.api = 34
-android.skip_update = False
-android.ndk_path = /home/runner/.buildozer/android/platform/android-ndk-r25.2.9519653
-android.sdk_path = /home/runner/.buildozer/android/platform/android-sdk
+android.api = 35
 android.accept_sdk_license = True
 android.enable_androidx = True
 android.allow_backup = True
 android.copy_libs = 1
 android.logcat_filters = *:S python:D
 
-# Support des écrans larges et appareils pliables (Android 16+)
-# Permettre redimensionnement libre pour tablettes et pliables
-android.allow_resize = True
-android.resizeableActivity = True
-
 # Autorisations pour Play Store compliance + AdMob
 android.permissions = INTERNET,ACCESS_NETWORK_STATE,com.google.android.gms.permission.AD_ID
 
-# AdMob App ID metadata
-android.meta_data = com.google.android.gms.ads.APPLICATION_ID=@string/admob_app_id
-
-# Ressources Android pour AdMob
-android.add_resources = resources/
+# AdMob App ID metadata (production)
+android.meta_data = com.google.android.gms.ads.APPLICATION_ID=ca-app-pub-5749803259882370~1482612480
 
 ## Format d'export (géré par le workflow)
 # Format de build par défaut pour Play Store
 android.release_artifact = aab
-android.debug_artifact = aab
-
-# Configuration de signature pour Play Store
-android.keystore = %(source.dir)s/googleplay.keystore
-android.keyalias = upload
-android.keystorepw = nunotheboss
-android.keyaliaspw = nunotheboss
+android.debug_artifact = apk
+android.release_keystore = %(source.dir)s/googleplay.keystore
+android.release_keystore_passwd = nunotheboss
+android.release_keyalias = upload
+android.release_keyalias_passwd = nunotheboss
 
 # Configuration pour améliorer la qualité de l'app Play Store
 # Activation de R8/ProGuard pour réduire la taille de l'app et des symboles de débogage
 # + Google Play Services Ads pour AdMob (version compatible avec androidx)
-android.gradle_dependencies = com.android.tools.build:gradle:8.1.1,com.google.android.gms:play-services-ads:21.5.0
-android.add_gradle_configuration = 
-    android {
-        buildTypes {
-            release {
-                minifyEnabled true
-                shrinkResources true
-                proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-                ndk {
-                    debugSymbolLevel 'SYMBOL_TABLE'
-                }
-            }
-        }
-    }
+android.gradle_dependencies = com.google.android.gms:play-services-ads:21.5.0
 
 ## Dépendances gradle avec versions récentes (Play Store compliance)
 # Suppression des dépendances androidx pour éviter les conflits Kotlin

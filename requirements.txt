@@ -1,16 +1,4 @@
-certifi==2025.10.5
-charset-normalizer==3.4.3
-click==8.3.0
-docutils==0.22.2
-idna==3.10
 Kivy==2.3.1
-Kivy-Garden
 Pillow==10.0.0
-mypy-extensions==1.1.0
-packaging==25.0
-pathspec==0.12.1
-platformdirs==4.5.0
-Pygments==2.19.2
 requests==2.32.3
-tomli==2.3.0
-urllib3==2.5.0
+gradio_client>=1.13.0

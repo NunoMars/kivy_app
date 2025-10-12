@@ -2,6 +2,29 @@
 
 Application Kivy de tirage de cartes de tarot avec déploiement automatique sur Google Play Store et **monétisation AdMob**.
 
+## ☁️ Backend Gemini (FastAPI)
+
+Un micro-service FastAPI (`backend/app.py`) expose un endpoint `/chat` pour relayer les demandes vers Google Gemini. Idéal pour l’hébergement sur **Hugging Face Spaces**.
+
+### Déploiement rapide sur Hugging Face
+
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn app:app --host 0.0.0.0 --port 7860
+```
+
+Variables d’environnement requises :
+
+- `GEMINI_API_KEY` : clé API Google Generative AI.
+
+Dans Hugging Face Spaces (type « FastAPI »), ajoutez le fichier `backend/requirements.txt` et définissez `GEMINI_API_KEY` dans les Secrets Space Settings.
+
+### Contrat API
+
+- `POST /chat` accepte `message` (texte), `language` (optionnel) et `session_id` (recommandé). Chaque `session_id` ne recoit qu’une seule guidance : toute requete ulterieure renvoie un message de politesse invitant a revenir plus tard.
+- La langue de reponse suit `language` si fourni, sinon elle est detectee automatiquement.
+
 ## 🚀 Déploiement
 
 Pour créer une nouvelle version :

@@ -116,17 +116,30 @@ def get_card_image_path(card_name, state="droite"):
         # Fallback : utiliser le nom tel quel
         french_file_name = card_name
     
-    # Ajouter l'extension avec gestion de l'état inversé
-    if state in ["a l'envers", "invertida", "reversed", "umgekehrt", "rovesciata"]:
-        # IMPORTANT: Utiliser " a l'envers" (avec espaces et apostrophe exacte)
-        image_path = os.path.join(base_path, f"{french_file_name} a l'envers.jpg")
-        # Si l'image inversée n'existe pas, utiliser l'image normale
-        if not os.path.exists(image_path):
-            image_path = os.path.join(base_path, f"{french_file_name}.jpg")
-    else:
-        image_path = os.path.join(base_path, f"{french_file_name}.jpg")
-    
-    return image_path
+    candidates = []
+
+    def _normalized_names(name: str):
+        seen = set()
+        for variant in (name, remove_accents(name)):
+            cleaned = variant.strip()
+            if cleaned and cleaned not in seen:
+                seen.add(cleaned)
+                yield cleaned
+
+    reversed_suffixes = [" a l'envers.jpg", ".jpg"]
+    normal_suffixes = [".jpg"]
+
+    suffixes = reversed_suffixes if state in ["a l'envers", "invertida", "reversed", "umgekehrt", "rovesciata"] else normal_suffixes
+
+    for candidate_name in _normalized_names(french_file_name):
+        for suffix in suffixes:
+            path_candidate = os.path.join(base_path, f"{candidate_name}{suffix}")
+            candidates.append(path_candidate)
+            if os.path.exists(path_candidate):
+                return path_candidate
+
+    # Fallback ultime vers le dos de carte
+    return os.path.join("tarot_img", "Back.jpg")
 
 # Test des mappings les plus problématiques
 if __name__ == "__main__":
