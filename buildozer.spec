@@ -40,7 +40,7 @@ android.copy_libs = 1
 android.logcat_filters = *:S python:D
 
 # Autorisations pour Play Store compliance + AdMob + stabilité Android + achats in-app
-android.permissions = INTERNET,ACCESS_NETWORK_STATE,com.google.android.gms.permission.AD_ID,WAKE_LOCK,VIBRATE,RECEIVE_BOOT_COMPLETED,FOREGROUND_SERVICE,com.android.vending.BILLING
+android.permissions = INTERNET,ACCESS_NETWORK_STATE,com.google.android.gms.permission.AD_ID,WAKE_LOCK,VIBRATE,RECEIVE_BOOT_COMPLETED,FOREGROUND_SERVICE
 
 # AdMob App ID metadata (production)
 android.meta_data = com.google.android.gms.ads.APPLICATION_ID=ca-app-pub-5749803259882370~1482612480
@@ -57,8 +57,12 @@ android.release_keyalias_passwd = nunotheboss
 # Configuration pour améliorer la qualité de l'app Play Store
 # Activation de R8/ProGuard pour réduire la taille de l'app et des symboles de débogage
 # + Google Play Services Ads pour AdMob (version compatible avec androidx)
-# + Google Play Billing Library v6.0.1+ pour les dernières fonctionnalités de monétisation
-android.gradle_dependencies = com.google.android.gms:play-services-ads:21.5.0, com.android.billingclient:billing:6.0.1
+# Google Play Billing KTX (modern API) + AdMob
+android.gradle_dependencies = com.google.android.gms:play-services-ads:21.5.0, implementation "com.android.billingclient:billing-ktx:8.0.0"
+
+# Utiliser la branche master de python-for-android pour récupérer corrections récentes
+# (corrige notamment des échecs de compilation OpenSSL avec toolchains récents)
+p4a.branch = master
 
 ## Dépendances gradle avec versions récentes (Play Store compliance)
 # Suppression des dépendances androidx pour éviter les conflits Kotlin
