@@ -15,8 +15,8 @@ source.exclude_exts = spec,md,txt
 source.exclude_dirs = tests, bin, venv, .github, __pycache__, .git, .vscode, guides
 source.include_patterns = libs/*.py
 
-version = 1.11
-android.numeric_version = 1110000
+version = 1.12
+android.numeric_version = 1120000
 
 # Note: kivmob doit être inclus manuellement via libs/ car non disponible sur PyPI
 requirements = python3==3.9.18,kivy==2.3.1,pillow==10.0.0,requests==2.32.3,gradio_client>=1.13.0,fsspec,httpx,huggingface-hub,websockets,typing-extensions
