@@ -16,7 +16,7 @@ version = 1.13
 android.numeric_version = 1130000
 
 # Dépendances Python
-requirements = python3==3.11, kivy==2.3.1, requests==2.32.3, certifi, urllib3, idna, chardet, charset-normalizer, pyjnius, android
+requirements = python3==3.11.5, kivy==2.3.1, requests==2.32.3, certifi, urllib3, idna, chardet, charset-normalizer, pyjnius, android
 
 
 icon.filename = %(source.dir)s/tarot_img/icon.png
