@@ -17,6 +17,22 @@ from typing import Optional
 # Third-party
 import platform
 import requests
+import traceback
+import time
+
+
+# ### FIX OFFLINE: connectivity helper
+def has_internet(timeout: float = 2.0) -> bool:
+    """Return True if we can reach a lightweight endpoint quickly.
+
+    This is intentionally conservative (short timeout) to avoid blocking startup.
+    """
+    try:
+        # small, cacheable URL returning 204 when reachable
+        r = requests.head("https://www.google.com/generate_204", timeout=timeout)
+        return r.status_code in (200, 204)
+    except Exception:
+        return False
 
 # Local modules
 from translations import MESSAGES
@@ -35,12 +51,9 @@ except Exception:
     def maybe_fetch_remote_config(cfg):
         return None
 
-# Optional gradio client
-try:
-    from gradio_client import Client as GradioClient
-    GRADIO_CLIENT_AVAILABLE = True
-except Exception:
-    GRADIO_CLIENT_AVAILABLE = False
+
+# We removed gradio_client to keep the APK small; use REST fallback via requests only.
+GRADIO_CLIENT_AVAILABLE = False
 
 # --- Kivy configuration (doit précéder l'import de Kivy lui-même) ---
 # Choix du provider de texte / emoji selon plateforme
@@ -66,15 +79,40 @@ elif platform.system() == "Windows":
 
 # Kivy Config must be set before importing Kivy widgets
 from kivy.config import Config  # noqa: E402
+# Désactiver l'antialiasing / multisampling pour éviter le MSAA sur Android
+try:
+    Config.set("graphics", "multisamples", "0")
+except Exception:
+    # Si la configuration ne peut pas être appliquée à ce stade, continuer sans planter
+    pass
 available_emoji = [p for p in emoji_paths if os.path.exists(p)]
-Config.set("kivy", "default_font", ["DejaVuSans.ttf"] + available_emoji)
-if available_emoji:
-    try:
-        from kivy.core.text import LabelBase
 
-        LabelBase.register(name="emoji", fn_regular=available_emoji[0])
+# Add a local fonts/ resource path (if present) so we can ship fonts with the app.
+from kivy.resources import resource_add_path, resource_find
+BASE_DIR = os.path.dirname(__file__)
+FONTS_DIR = os.path.join(BASE_DIR, "fonts")
+if os.path.isdir(FONTS_DIR):
+    try:
+        resource_add_path(FONTS_DIR)
     except Exception:
+        # non-fatal: continue without adding custom fonts
         pass
+
+### FIX POLICE — début main.py
+import os
+from kivy.core.text import LabelBase
+from kivy.resources import resource_add_path, resource_find
+
+BASE_DIR = os.path.dirname(__file__)
+FONTS_DIR = os.path.join(BASE_DIR, "fonts")
+resource_add_path(FONTS_DIR)
+
+try:
+    LabelBase.register(name="Body", fn_regular="fonts/DejaVuSans.ttf")
+    # Dans tes .kv :  font_name: "Body"
+except Exception as e:
+    print("### FIX POLICE: fallback police Kivy ->", e)
+### FIN FIX POLICE
 
 os.environ.setdefault("KIVY_NO_CONSOLELOG", "1")
 os.environ.setdefault("KIVY_NO_FILELOG", "1")
@@ -416,8 +454,56 @@ class TarotApp(App):
         print("🛑 Application arrêtée")
 
 
+def _write_startup_traceback(exc: BaseException) -> None:
+    """Write exception traceback to /sdcard and to a local fallback file for diagnosis."""
+    try:
+        import traceback as _traceback
+        from datetime import datetime as _dt
+
+        tb = _traceback.format_exc()
+        now = _dt.utcnow().isoformat() + "Z"
+        contents = f"Timestamp: {now}\nException: {exc!r}\n\nTraceback:\n{tb}\n"
+
+        # Try writing to Android sdcard if available
+        sdcard_path = "/sdcard/macartedetarot_startup_traceback.txt"
+        written = False
+        try:
+            if os.path.exists("/sdcard"):
+                with open(sdcard_path, "w", encoding="utf-8") as f:
+                    f.write(contents)
+                written = True
+        except Exception:
+            written = False
+
+        # Fallback: write to current working directory
+        if not written:
+            local_path = os.path.join(BASE_DIR, "startup_traceback.txt")
+            try:
+                with open(local_path, "w", encoding="utf-8") as f:
+                    f.write(contents)
+                written = True
+            except Exception:
+                written = False
+
+        # Also print to stdout to be visible in logs
+        try:
+            print("--- Startup traceback written ---")
+            print(contents)
+        except Exception:
+            pass
+    except Exception:
+        # If even logging fails, there's nothing else we can do here
+        pass
+
+
 if __name__ == "__main__":
-    TarotApp().run()
+    try:
+        TarotApp().run()
+    except BaseException as e:
+        # Catch any exception during startup/runtime and persist it for analysis
+        _write_startup_traceback(e)
+        # Re-raise so the process exits with the original error (useful locally)
+        raise
 
 
 

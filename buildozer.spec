@@ -1,83 +1,65 @@
-
 [app]
-
 title = Ma Carte De Tarot
 package.name = macartedetarot
 package.domain = org.tarot
 source.dir = .
 
-# Architecture Android ciblée
-# (gérée automatiquement par le workflow, doublons supprimés)
+# Fichiers à embarquer
+source.include_exts = py,kv,png,jpg,ttf,otf,mp3,mp4,json,ini
+source.exclude_exts = spec,md
+source.exclude_dirs = tests, bin, venv, .github, __pycache__, .git, .vscode, guides, backend, docs, play_store_screenshots, tarot_img/MajorArcanaCards_backup, scripts
+source.include_patterns = libs/*.py, fonts/*.ttf, fonts/*.otf
+# (optionnel mais sûr)
+# android.add_assets = fonts:fonts
 
-# Inclusions
-source.include_exts = py,png,jpg,gif,kv,atlas
-source.exclude_exts = spec,md,txt
-source.exclude_dirs = tests, bin, venv, .github, __pycache__, .git, .vscode, guides
-source.include_patterns = libs/*.py
+version = 1.13
+android.numeric_version = 1130000
 
-version = 1.12
-android.numeric_version = 1120000
+# Dépendances Python
+requirements = python3==3.11, kivy==2.3.1, requests==2.32.3, certifi, urllib3, idna, chardet, charset-normalizer, pyjnius, android
 
-# Note: kivmob doit être inclus manuellement via libs/ car non disponible sur PyPI
-requirements = python3==3.9.18,kivy==2.3.1,pillow==10.0.0,requests==2.32.3,gradio_client>=1.13.0,fsspec,httpx,huggingface-hub,websockets,typing-extensions
 
 icon.filename = %(source.dir)s/tarot_img/icon.png
+presplash.filename = %(source.dir)s/tarot_img/MajorArcanaCards/La Mort.jpg
 orientation = portrait
-
 fullscreen = 0
+author = © Nuno Marcelino
 
-author = © Nuno Marcelino Copyright Info
-
-## Android spécificités
-# (gérées automatiquement par le workflow, doublons supprimés)
+# Android SDK (aligné p4a 2025)
+android.api = 35
 android.minapi = 21
 android.ndk_api = 21
-android.api = 35
 android.accept_sdk_license = True
 android.enable_androidx = True
 android.allow_backup = True
 android.copy_libs = 1
-android.logcat_filters = *:S python:D
+android.logcat_filters = *:E PythonActivity:V python:I libc:E AndroidRuntime:E linker:E
 
-# Autorisations pour Play Store compliance + AdMob + stabilité Android + achats in-app
-android.permissions = INTERNET,ACCESS_NETWORK_STATE,com.google.android.gms.permission.AD_ID,WAKE_LOCK,VIBRATE,RECEIVE_BOOT_COMPLETED,FOREGROUND_SERVICE
+# Permissions
+android.permissions = INTERNET, ACCESS_NETWORK_STATE, com.google.android.gms.permission.AD_ID, WAKE_LOCK, VIBRATE, RECEIVE_BOOT_COMPLETED, FOREGROUND_SERVICE, BILLING, POST_NOTIFICATIONS
 
-# AdMob App ID metadata (production)
+# AdMob App ID
 android.meta_data = com.google.android.gms.ads.APPLICATION_ID=ca-app-pub-5749803259882370~1482612480
 
-## Format d'export (géré par le workflow)
-# Format de build par défaut pour Play Store
-android.release_artifact = aab
+# Formats de build
+android.release_artifact = apk
 android.debug_artifact = apk
-android.release_keystore = %(source.dir)s/googleplay.keystore
+android.archs = arm64-v8a
+
+# Dépendances Gradle (versions existantes)
+android.add_gradle_repositories = mavenCentral()
+android.gradle_dependencies = com.google.android.gms:play-services-ads:23.6.0, com.android.billingclient:billing-ktx:8.0.0
+
+# p4a
+p4a.branch = master
+# p4a.local_recipes = ./p4a_local_recipes
+# p4a.bootstrap = sdl2
+
+# Signature release 
+android.release_keystore = googleplay.keystore
 android.release_keystore_passwd = nunotheboss
 android.release_keyalias = upload
 android.release_keyalias_passwd = nunotheboss
-
-# Configuration pour améliorer la qualité de l'app Play Store
-# Activation de R8/ProGuard pour réduire la taille de l'app et des symboles de débogage
-# + Google Play Services Ads pour AdMob (version compatible avec androidx)
-# Google Play Billing KTX (modern API) + AdMob
-android.gradle_dependencies = com.google.android.gms:play-services-ads:21.5.0, com.android.billingclient:billing-ktx:8.0.0
-
-# Utiliser la branche master de python-for-android pour récupérer corrections récentes
-# (corrige notamment des échecs de compilation OpenSSL avec toolchains récents)
-p4a.branch = master
-
-## Dépendances gradle avec versions récentes (Play Store compliance)
-# Suppression des dépendances androidx pour éviter les conflits Kotlin
-# android.gradle_dependencies = androidx.annotation:annotation:1.6.0, androidx.fragment:fragment:1.5.7
-
-# Configuration pour résoudre les conflits Kotlin - DÉSACTIVÉ TEMPORAIREMENT
-# android.add_gradle_configuration = 
-#     configurations.all {
-#         resolutionStrategy.eachDependency { details ->
-#             if (details.requested.group == 'org.jetbrains.kotlin') {
-#                 details.useVersion '1.8.22'
-#             }
-#         }
-#     }
-
 
 [buildozer]
 log_level = 2

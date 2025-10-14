@@ -10,6 +10,7 @@ import os
 import random
 import threading
 import uuid
+import json
 
 # Kivy imports
 from kivy.app import App
@@ -49,12 +50,8 @@ except Exception:
     def maybe_fetch_remote_config(cfg):
         return None
 
-# Optional gradio client
-try:
-    from gradio_client import Client as GradioClient
-    GRADIO_CLIENT_AVAILABLE = True
-except Exception:
-    GRADIO_CLIENT_AVAILABLE = False
+# Gradio client removed for mobile optimization; always use REST fallback via requests
+GRADIO_CLIENT_AVAILABLE = False
 
 # Billing manager
 try:
@@ -1054,35 +1051,7 @@ class MmeTChatPopup(Popup):
         print(f"   URL: {self.backend_url}")
         print(f"{'='*60}\n")
 
-        # Méthode 1: Client Gradio officiel (recommandé)
-        if GRADIO_CLIENT_AVAILABLE:
-            try:
-                print("🔮 Connexion via Gradio Client...")
-                # Extraire le Space ID depuis l'URL (ex: Loupy222/mme_t)
-                space_id = self._extract_space_id(self.backend_url)
-
-                if space_id:
-                    print(f"📡 Space ID: {space_id}")
-                    client = GradioClient(space_id)
-                    print("✅ Client connecté!")
-
-                    result = client.predict(
-                        message=message,
-                        contexte=context_text or "",
-                        api_name="/predict"
-                    )
-
-                    if isinstance(result, str) and result.strip():
-                        print(f"✅ Réponse reçue ({len(result)} caractères)")
-                        return result.strip()
-                    else:
-                        print(f"⚠️ Format inattendu: {type(result)}")
-
-            except Exception as client_exc:
-                print(f"⚠️ Gradio Client échoué: {client_exc}")
-                print("🔄 Basculement vers REST API...")
-
-        # Méthode 2: REST API Fallback
+        # Méthode 1: REST API (Gradio moderne avec SSE)
         base_url = (self.backend_url or "").rstrip("/")
         print(f"🔗 Tentative de connexion REST à: {base_url}")
 
@@ -1098,11 +1067,63 @@ class MmeTChatPopup(Popup):
             "data": [message, context_text or ""]
         }
 
-        # Tester plusieurs endpoints Gradio possibles
-        # Priorité sur /predict (Gradio moderne), ensuite garder les anciens endpoints
+        print("🔄 Utilisation de l'API Gradio moderne avec SSE...")
+
+        try:
+            # Endpoint Gradio moderne
+            api_url = f"{base_url}/gradio_api/call/predict"
+            print(f"📡 Requête vers: {api_url}")
+
+            # Envoyer la requête
+            response = requests.post(api_url, json=payload, timeout=30)
+            response.raise_for_status()
+
+            event_data = response.json()
+            event_id = event_data.get("event_id")
+            if not event_id:
+                raise ValueError("Aucun event_id reçu")
+
+            print(f"📋 Event ID: {event_id}")
+
+            # Écouter les événements SSE
+            sse_url = f"{api_url}/{event_id}"
+            print(f"🎧 Écoute SSE: {sse_url}")
+
+            sse_response = requests.get(sse_url, stream=True, timeout=60)
+
+            full_response = ""
+            for line in sse_response.iter_lines():
+                if line:
+                    line_str = line.decode('utf-8')
+                    print(f"SSE: {line_str}")  # Debug
+                    if line_str.startswith('data: '):
+                        try:
+                            data = json.loads(line_str[6:])  # Enlever 'data: '
+                            if isinstance(data, list) and data:
+                                result = data[0]
+                                if isinstance(result, str) and result.strip():
+                                    full_response = result.strip()
+                                    print(f"✅ Réponse SSE reçue ({len(full_response)} caractères)")
+                                    return full_response
+                        except json.JSONDecodeError:
+                            continue
+                    elif line_str == 'event: complete':
+                        print("🔄 Événement complete reçu, attente de données...")
+                        continue  # Continue reading for data
+
+            if full_response:
+                return full_response
+            else:
+                raise ValueError("Aucune réponse valide reçue via SSE")
+
+        except Exception as sse_exc:
+            print(f"⚠️ Échec SSE: {sse_exc}")
+            print("🔄 Basculement vers anciens endpoints REST...")
+
+        # Méthode 3: Anciens endpoints REST (fallback)
         endpoints = [
             "/predict",
-            "/call/consulter_btn",  # ID du bouton "Consulter"
+            "/call/consulter_btn",
             "/api/consulter_madame_t",
             "/api/predict",
             "/run/predict",
@@ -1112,9 +1133,8 @@ class MmeTChatPopup(Popup):
             try:
                 full_url = f"{base_url}{endpoint}"
                 print(f"📡 Tentative {endpoint}: {full_url}")
-                print(f"📤 Payload: {payload}")
 
-                response = requests.post(full_url, json=payload, timeout=20)  # Réduit de 60 à 20s pour Android
+                response = requests.post(full_url, json=payload, timeout=20)
                 print(f"📊 Status: {response.status_code}")
 
                 if response.status_code == 404:

@@ -707,7 +707,9 @@ class ResponseScreen(Screen):
             if drawn and isinstance(drawn, (list, tuple)) and len(drawn) > 0:
                 # Construire une ligne courte listant toutes les cartes
                 def fmt(c, s):
-                    return f"{get_card_name_for_lang(c, CURRENT_LANG)} ({'droite' if s=='droite' else "à l'envers"})"
+                    # Eviter les guillemets imbriqués en construisant l'état séparément
+                    state = "droite" if s == "droite" else "à l'envers"
+                    return f"{get_card_name_for_lang(c, CURRENT_LANG)} ({state})"
 
                 drawn_summary = " | ".join(fmt(c, s) for c, s in drawn)
                 parts.append(f"Tirage ({len(drawn)}): {drawn_summary}")
