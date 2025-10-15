@@ -1,0 +1,561 @@
+{
+  "summary_count": 8,
+  "report": {
+    "es.json": [
+      {
+        "card": "El Loco",
+        "field": "signification upright",
+        "length": 74,
+        "ref_length": null
+      },
+      {
+        "card": "El Mago",
+        "field": "signification upright",
+        "length": 95,
+        "ref_length": null
+      },
+      {
+        "card": "La Sacerdotisa",
+        "field": "signification upright",
+        "length": 77,
+        "ref_length": null
+      },
+      {
+        "card": "La Emperatriz",
+        "field": "signification upright",
+        "length": 67,
+        "ref_length": null
+      },
+      {
+        "card": "El Emperador",
+        "field": "signification upright",
+        "length": 84,
+        "ref_length": null
+      },
+      {
+        "card": "El Papa",
+        "field": "signification reversed",
+        "length": 74,
+        "ref_length": null
+      },
+      {
+        "card": "Los Enamorados",
+        "field": "signification upright",
+        "length": 78,
+        "ref_length": null
+      },
+      {
+        "card": "El Carro",
+        "field": "signification upright",
+        "length": 69,
+        "ref_length": null
+      },
+      {
+        "card": "La Fuerza",
+        "field": "signification upright",
+        "length": 78,
+        "ref_length": null
+      },
+      {
+        "card": "El Ermitaño",
+        "field": "signification upright",
+        "length": 79,
+        "ref_length": null
+      },
+      {
+        "card": "La Rueda de la Fortuna",
+        "field": "signification upright",
+        "length": 86,
+        "ref_length": null
+      },
+      {
+        "card": "El Colgado",
+        "field": "signification upright",
+        "length": 92,
+        "ref_length": null
+      },
+      {
+        "card": "La Muerte",
+        "field": "signification upright",
+        "length": 86,
+        "ref_length": null
+      },
+      {
+        "card": "La Templanza",
+        "field": "signification upright",
+        "length": 79,
+        "ref_length": null
+      },
+      {
+        "card": "El Diablo",
+        "field": "signification upright",
+        "length": 76,
+        "ref_length": null
+      },
+      {
+        "card": "La Torre",
+        "field": "signification upright",
+        "length": 84,
+        "ref_length": null
+      },
+      {
+        "card": "La Estrella",
+        "field": "signification upright",
+        "length": 65,
+        "ref_length": null
+      },
+      {
+        "card": "La Luna",
+        "field": "signification upright",
+        "length": 79,
+        "ref_length": null
+      },
+      {
+        "card": "El Sol",
+        "field": "signification upright",
+        "length": 68,
+        "ref_length": null
+      },
+      {
+        "card": "El Juicio",
+        "field": "signification upright",
+        "length": 81,
+        "ref_length": null
+      },
+      {
+        "card": "El Mundo",
+        "field": "signification upright",
+        "length": 88,
+        "ref_length": null
+      }
+    ],
+    "zh.json": [
+      {
+        "card": "愚者",
+        "field": "signification upright",
+        "length": 100,
+        "ref_length": null
+      },
+      {
+        "card": "魔术师",
+        "field": "signification upright",
+        "length": 91,
+        "ref_length": null
+      },
+      {
+        "card": "女祭司",
+        "field": "signification upright",
+        "length": 84,
+        "ref_length": null
+      },
+      {
+        "card": "女皇",
+        "field": "signification upright",
+        "length": 65,
+        "ref_length": null
+      },
+      {
+        "card": "皇帝",
+        "field": "signification upright",
+        "length": 62,
+        "ref_length": null
+      },
+      {
+        "card": "教皇",
+        "field": "signification upright",
+        "length": 60,
+        "ref_length": null
+      },
+      {
+        "card": "恋人",
+        "field": "signification upright",
+        "length": 64,
+        "ref_length": null
+      },
+      {
+        "card": "战车",
+        "field": "signification upright",
+        "length": 59,
+        "ref_length": null
+      },
+      {
+        "card": "力量",
+        "field": "signification upright",
+        "length": 68,
+        "ref_length": null
+      },
+      {
+        "card": "隐士",
+        "field": "signification upright",
+        "length": 53,
+        "ref_length": null
+      },
+      {
+        "card": "命运之轮",
+        "field": "signification upright",
+        "length": 63,
+        "ref_length": null
+      },
+      {
+        "card": "倒吊人",
+        "field": "signification upright",
+        "length": 58,
+        "ref_length": null
+      },
+      {
+        "card": "死亡",
+        "field": "signification upright",
+        "length": 52,
+        "ref_length": null
+      },
+      {
+        "card": "节制",
+        "field": "signification upright",
+        "length": 61,
+        "ref_length": null
+      },
+      {
+        "card": "魔鬼",
+        "field": "signification upright",
+        "length": 57,
+        "ref_length": null
+      },
+      {
+        "card": "塔",
+        "field": "signification upright",
+        "length": 62,
+        "ref_length": null
+      },
+      {
+        "card": "星",
+        "field": "signification upright",
+        "length": 56,
+        "ref_length": null
+      },
+      {
+        "card": "月亮",
+        "field": "signification upright",
+        "length": 63,
+        "ref_length": null
+      },
+      {
+        "card": "太阳",
+        "field": "signification upright",
+        "length": 57,
+        "ref_length": null
+      },
+      {
+        "card": "审判",
+        "field": "signification upright",
+        "length": 55,
+        "ref_length": null
+      },
+      {
+        "card": "世界",
+        "field": "signification upright",
+        "length": 55,
+        "ref_length": null
+      }
+    ],
+    "tr.json": [
+      {
+        "card": "İmparatoriçe",
+        "field": "signification upright",
+        "length": 95,
+        "ref_length": null
+      },
+      {
+        "card": "İmparator",
+        "field": "signification upright",
+        "length": 88,
+        "ref_length": null
+      },
+      {
+        "card": "Hiyerofant",
+        "field": "signification upright",
+        "length": 102,
+        "ref_length": null
+      }
+    ],
+    "ru.json": [
+      {
+        "card": "Звезда",
+        "field": "signification upright",
+        "length": 117,
+        "ref_length": null
+      },
+      {
+        "card": "Солнце",
+        "field": "signification upright",
+        "length": 96,
+        "ref_length": null
+      }
+    ],
+    "it.json": [
+      {
+        "card": "L'Imperatrice",
+        "field": "signification upright",
+        "length": 174,
+        "ref_length": 379
+      }
+    ],
+    "pt_br.json": [
+      {
+        "card": "O Louco",
+        "field": "signification reversed",
+        "length": 134,
+        "ref_length": 263
+      },
+      {
+        "card": "O Mago",
+        "field": "signification upright",
+        "length": 97,
+        "ref_length": 453
+      },
+      {
+        "card": "A Sacerdotisa",
+        "field": "signification upright",
+        "length": 95,
+        "ref_length": null
+      },
+      {
+        "card": "A Imperatriz",
+        "field": "signification upright",
+        "length": 91,
+        "ref_length": 265
+      },
+      {
+        "card": "O Imperador",
+        "field": "signification upright",
+        "length": 78,
+        "ref_length": 253
+      },
+      {
+        "card": "O Hierofante",
+        "field": "signification upright",
+        "length": 92,
+        "ref_length": null
+      },
+      {
+        "card": "Os Amantes",
+        "field": "signification upright",
+        "length": 101,
+        "ref_length": 385
+      },
+      {
+        "card": "O Carro",
+        "field": "signification upright",
+        "length": 69,
+        "ref_length": 359
+      },
+      {
+        "card": "A Força",
+        "field": "signification upright",
+        "length": 80,
+        "ref_length": 355
+      },
+      {
+        "card": "O Eremita",
+        "field": "signification upright",
+        "length": 78,
+        "ref_length": 345
+      },
+      {
+        "card": "A Roda da Fortuna",
+        "field": "signification upright",
+        "length": 83,
+        "ref_length": 357
+      },
+      {
+        "card": "O Enforcado",
+        "field": "signification upright",
+        "length": 105,
+        "ref_length": 372
+      },
+      {
+        "card": "A Morte",
+        "field": "signification upright",
+        "length": 94,
+        "ref_length": 328
+      },
+      {
+        "card": "A Temperança",
+        "field": "signification upright",
+        "length": 88,
+        "ref_length": null
+      },
+      {
+        "card": "O Diabo",
+        "field": "signification upright",
+        "length": 77,
+        "ref_length": null
+      },
+      {
+        "card": "A Torre",
+        "field": "signification upright",
+        "length": 101,
+        "ref_length": null
+      },
+      {
+        "card": "A Estrela",
+        "field": "signification upright",
+        "length": 69,
+        "ref_length": 325
+      },
+      {
+        "card": "A Lua",
+        "field": "signification upright",
+        "length": 71,
+        "ref_length": 339
+      },
+      {
+        "card": "O Sol",
+        "field": "signification upright",
+        "length": 72,
+        "ref_length": 347
+      },
+      {
+        "card": "O Julgamento",
+        "field": "signification upright",
+        "length": 94,
+        "ref_length": 353
+      },
+      {
+        "card": "O Mundo",
+        "field": "signification upright",
+        "length": 88,
+        "ref_length": 370
+      }
+    ],
+    "es_latam.json": [
+      {
+        "card": "El Loco",
+        "field": "signification upright",
+        "length": 74,
+        "ref_length": null
+      },
+      {
+        "card": "El Mago",
+        "field": "signification upright",
+        "length": 98,
+        "ref_length": null
+      },
+      {
+        "card": "La Sacerdotisa",
+        "field": "signification upright",
+        "length": 74,
+        "ref_length": null
+      },
+      {
+        "card": "La Emperatriz",
+        "field": "signification upright",
+        "length": 96,
+        "ref_length": null
+      },
+      {
+        "card": "El Emperador",
+        "field": "signification upright",
+        "length": 78,
+        "ref_length": null
+      },
+      {
+        "card": "El Papa",
+        "field": "signification upright",
+        "length": 81,
+        "ref_length": null
+      },
+      {
+        "card": "Los Enamorados",
+        "field": "signification upright",
+        "length": 75,
+        "ref_length": null
+      },
+      {
+        "card": "El Carro",
+        "field": "signification upright",
+        "length": 65,
+        "ref_length": null
+      },
+      {
+        "card": "La Fuerza",
+        "field": "signification upright",
+        "length": 73,
+        "ref_length": null
+      },
+      {
+        "card": "El Ermitaño",
+        "field": "signification upright",
+        "length": 79,
+        "ref_length": null
+      },
+      {
+        "card": "La Rueda",
+        "field": "signification upright",
+        "length": 78,
+        "ref_length": null
+      },
+      {
+        "card": "El Colgado",
+        "field": "signification upright",
+        "length": 94,
+        "ref_length": null
+      },
+      {
+        "card": "La Muerte",
+        "field": "signification upright",
+        "length": 84,
+        "ref_length": null
+      },
+      {
+        "card": "La Templanza",
+        "field": "signification upright",
+        "length": 77,
+        "ref_length": null
+      },
+      {
+        "card": "El Diablo",
+        "field": "signification upright",
+        "length": 82,
+        "ref_length": null
+      },
+      {
+        "card": "La Torre",
+        "field": "signification upright",
+        "length": 76,
+        "ref_length": null
+      },
+      {
+        "card": "La Estrella",
+        "field": "signification upright",
+        "length": 51,
+        "ref_length": null
+      },
+      {
+        "card": "La Luna",
+        "field": "signification upright",
+        "length": 72,
+        "ref_length": null
+      },
+      {
+        "card": "El Sol",
+        "field": "signification reversed",
+        "length": 69,
+        "ref_length": null
+      },
+      {
+        "card": "El Juicio",
+        "field": "signification upright",
+        "length": 81,
+        "ref_length": null
+      }
+    ],
+    "de.json": [
+      {
+        "card": "Die Sonne",
+        "field": "signification upright",
+        "length": 116,
+        "ref_length": null
+      }
+    ]
+  }
+}

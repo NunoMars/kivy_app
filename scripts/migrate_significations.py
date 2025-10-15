@@ -50,8 +50,9 @@ def main():
 
     # Prefer JSON-based sources via i18n.lang files
     try:
-        import i18n
-        lang_dir = os.path.join(os.path.dirname(i18n.__file__), 'lang')
+        import i18n_loader as i18n
+        lang_dir = os.path.join(os.path.dirname(__file__), '..', 'i18n', 'lang')
+        lang_dir = os.path.abspath(lang_dir)
         files = [f for f in os.listdir(lang_dir) if f.endswith('.json')]
         data = {}
         for f in files:

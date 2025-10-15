@@ -107,214 +107,130 @@
   },
   "significations": {
     "Il Matto": {
-      "diritta": "nuovi inizi, spontaneità, libertà, avventura, potenziale",
-      "rovesciata": "imprudenza, mancanza di direzione, esitazione",
-      "signification diritta": "Il Matto rappresenta il salto nel vuoto con fiducia e la disponibilità ad esplorare nuove possibilità.",
-      "signification rovesciata": "Rovesciato, può indicare decisioni avventate o mancanza di preparazione.",
       "upright": "nuovi inizi, spontaneità, libertà, avventura, potenziale",
       "reversed": "imprudenza, mancanza di direzione, esitazione",
-      "signification upright": "Il Matto rappresenta il salto nel vuoto con fiducia e la disponibilità ad esplorare nuove possibilità.",
-      "signification reversed": "Rovesciato, può indicare decisioni avventate o mancanza di preparazione."
+      "signification upright": "Il Matto simboleggia l'inizio di un viaggio: l'audacia di affrontare l'ignoto con fiducia e apertura. Invita alla spontaneità, all'avventura e al coraggio di cogliere le opportunità che si presentano.",
+      "signification reversed": "Rovesciato, Il Matto può indicare imprudenza, decisioni affrettate o scarsa preparazione. Consiglia di equilibrare l'entusiasmo con una valutazione attenta dei rischi."
     },
     "Il Mago": {
-      "diritta": "risorse, iniziativa, creatività, azione",
-      "rovesciata": "inganno, manipolazione, dispersione delle energie",
-      "signification diritta": "Il Mago simboleggia la capacità di trasformare idee in realtà usando gli strumenti a disposizione.",
-      "signification rovesciata": "Rovesciato, può indicare uso ingannevole delle proprie abilità.",
       "upright": "risorse, iniziativa, creatività, azione",
       "reversed": "inganno, manipolazione, dispersione delle energie",
-      "signification upright": "Il Mago simboleggia la capacità di trasformare idee in realtà usando gli strumenti a disposizione.",
-      "signification reversed": "Rovesciato, può indicare uso ingannevole delle proprie abilità."
+      "signification upright": "Il Mago rappresenta la volontà creativa e la capacità di convertire intenzioni in azioni concrete usando le risorse disponibili. Incoraggia l'iniziativa, la comunicazione chiara e la fiducia nei propri talenti.",
+      "signification reversed": "Rovesciato, Il Mago può avvertire di manipolazione, inganno o dispersione di energie. Indica la necessità di riallineare intenzioni e mezzi."
     },
     "La Papessa": {
-      "diritta": "intuito, saggezza interiore, mistero, calma",
-      "rovesciata": "segreti nascosti, intuizione bloccata, confusione",
-      "signification diritta": "La Papessa invita a fidarsi dell'intuito e della conoscenza interiore.",
-      "signification rovesciata": "Rovesciata, indica intuizione ignorata o informazioni non chiare.",
       "upright": "intuito, saggezza interiore, mistero, calma",
       "reversed": "segreti nascosti, intuizione bloccata, confusione",
-      "signification upright": "La Papessa invita a fidarsi dell'intuito e della conoscenza interiore.",
-      "signification reversed": "Rovesciata, indica intuizione ignorata o informazioni non chiare."
+      "signification upright": "La Papessa simboleggia la saggezza interiore, il mistero e l'ascolto dell'intuizione profonda. Invita all'introspezione e al rispetto dei silenzi che contengono verità.",
+      "signification reversed": "Rovesciata, può indicare intuizione bloccata, segreti nascosti o rifiuto della propria saggezza. Consiglia di ritrovare calma e onestà verso se stessi."
     },
     "L'Imperatrice": {
-      "diritta": "fertilità, abbondanza, creatività, cura",
-      "rovesciata": "dipendenza, blocco creativo, ipercontrollo",
-      "signification diritta": "L'Imperatrice rappresenta la crescita, la cura e l'abbondanza creativa.",
-      "signification rovesciata": "Rovesciata, può indicare blocchi creativi o eccesso di protezione.",
       "upright": "fertilità, abbondanza, creatività, cura",
       "reversed": "dipendenza, blocco creativo, ipercontrollo",
-      "signification upright": "L'Imperatrice rappresenta la crescita, la cura e l'abbondanza creativa.",
-      "signification reversed": "Rovesciata, può indicare blocchi creativi o eccesso di protezione."
+      "signification upright": "L'Imperatrice incarna la fertilità, l'abbondanza e la creatività nutritiva. Evoca cura, connessione con la natura e la capacità di far nascere e sostenere progetti con amore.",
+      "signification reversed": "Rovesciata, può segnalare blocchi creativi, dipendenza o controllo eccessivo. Invita a lasciare spazio alla naturale crescita."
     },
     "L'Imperatore": {
-      "diritta": "struttura, autorità, stabilità, responsabilità",
-      "rovesciata": "rigidità, tirannia, abuso di potere",
-      "signification diritta": "L'Imperatore porta ordine e disciplina; incoraggia la leadership responsabile.",
-      "signification rovesciata": "Rovesciato, può indicare controllo eccessivo o abuso di potere.",
       "upright": "struttura, autorità, stabilità, responsabilità",
       "reversed": "rigidità, tirannia, abuso di potere",
-      "signification upright": "L'Imperatore porta ordine e disciplina; incoraggia la leadership responsabile.",
-      "signification reversed": "Rovesciato, può indicare controllo eccessivo o abuso di potere."
+      "signification upright": "L'Imperatore rappresenta autorità, struttura e responsabilità; è colui che crea ordine dal caos e protegge con decisione. Incoraggia confini chiari e pianificazione razionale.",
+      "signification reversed": "Rovesciato, segnala rigidezza, tirannia o abuso di potere. Consiglia di bilanciare autorità e empatia."
     },
     "Il Papa": {
-      "diritta": "tradizione, insegnamento, guida morale, spiritualità",
-      "rovesciata": "dogmatismo, manipolazione, conformismo",
-      "signification diritta": "Il Papa rappresenta l'insegnamento, i valori condivisi e la ricerca di guida spirituale.",
-      "signification rovesciata": "Rovesciato, può indicare dogmatismo o perdita della propria voce interiore.",
       "upright": "tradizione, insegnamento, guida morale, spiritualità",
       "reversed": "dogmatismo, manipolazione, conformismo",
-      "signification upright": "Il Papa rappresenta l'insegnamento, i valori condivisi e la ricerca di guida spirituale.",
-      "signification reversed": "Rovesciato, può indicare dogmatismo o perdita della propria voce interiore."
+      "signification upright": "Il Papa simboleggia l'insegnamento spirituale e la trasmissione di saggezza all'interno di una comunità. Evoca rite, guida e valori condivisi che sostengono la crescita.",
+      "signification reversed": "Rovesciato, può indicare dogmatismo, manipolazione o una tradizione che soffoca l'autenticità. Invita a discernere e cercare una spiritualità libera da abusi."
     },
     "Gli Amanti": {
-      "diritta": "scelta, amore, armonia, relazione",
-      "rovesciata": "conflitto, separazione, scelta sbagliata",
-      "signification diritta": "Gli Amanti parlano di scelte emotive importanti e dell'allineamento dei valori.",
-      "signification rovesciata": "Rovesciata, indica conflitti di valore o decisioni affrettate.",
       "upright": "scelta, amore, armonia, relazione",
       "reversed": "conflitto, separazione, scelta sbagliata",
-      "signification upright": "Gli Amanti parlano di scelte emotive importanti e dell'allineamento dei valori.",
-      "signification reversed": "Rovesciata, indica conflitti di valore o decisioni affrettate."
+      "signification upright": "Gli Amanti rappresentano una scelta cruciale del cuore: l'unione, l'impegno autentico e l'allineamento tra desideri e valori. Indicano la maturità emotiva necessaria per scegliere con integrità.",
+      "signification reversed": "Rovesciato, può indicare una scelta sbagliata, conflitto interiore o incapacità di impegnarsi. Consiglia di rivedere i principi che guidano la decisione."
     },
     "Il Carro": {
-      "diritta": "vittoria della volontà, avanzamento, controllo, successo",
-      "rovesciata": "perdita di controllo, conflitto, direzione incerta",
-      "signification diritta": "Il Carro indica progresso raggiunto con determinazione e disciplina.",
-      "signification rovesciata": "Rovesciato, suggerisce frammentazione delle forze o perdita di direzione.",
       "upright": "vittoria della volontà, avanzamento, controllo, successo",
       "reversed": "perdita di controllo, conflitto, direzione incerta",
-      "signification upright": "Il Carro indica progresso raggiunto con determinazione e disciplina.",
-      "signification reversed": "Rovesciato, suggerisce frammentazione delle forze o perdita di direzione."
+      "signification upright": "Il Carro simboleggia vittoria e progresso ottenuti grazie alla determinazione, al controllo e all'equilibrio delle forze opposte. Incoraggia la disciplina e la padronanza di sé.",
+      "signification reversed": "Rovesciato, avverte di perdita di controllo, conflitti interni o dispersione. Indica la necessità di riallineare obiettivi e azioni."
     },
     "La Forza": {
-      "diritta": "coraggio, controllo interiore, gentilezza, resilienza",
-      "rovesciata": "insicurezza, rabbia incontrollata, abuso di forza",
-      "signification diritta": "La Forza simboleggia la capacità di affrontare le sfide con compassione e coraggio.",
-      "signification rovesciata": "Rovesciata, può indicare perdita di equilibrio emotivo o aggressività.",
       "upright": "coraggio, controllo interiore, gentilezza, resilienza",
       "reversed": "insicurezza, rabbia incontrollata, abuso di forza",
-      "signification upright": "La Forza simboleggia la capacità di affrontare le sfide con compassione e coraggio.",
-      "signification reversed": "Rovesciata, può indicare perdita di equilibrio emotivo o aggressività."
+      "signification upright": "La Forza rappresenta la maestria su sé stessi attraverso la dolcezza e la compassione anziché la violenza. Evoca coraggio morale, pazienza e persuasione efficace.",
+      "signification reversed": "Rovesciato, può segnalare perdita di autocontrollo, aggressività o vulnerabilità. Consiglia di ritrovare calma e discernimento."
     },
     "L'Eremita": {
-      "diritta": "ricerca della verità, introspezione, guida interiore, ritiro",
-      "rovesciata": "isolamento, rifiuto di consigli, stoltezza solitaria",
-      "signification diritta": "L'Eremita invita alla riflessione e alla ricerca interiore per trovare chiarezza.",
-      "signification rovesciata": "Rovesciato, può indicare isolamento dannoso o rifiuto dell'aiuto.",
       "upright": "ricerca della verità, introspezione, guida interiore, ritiro",
       "reversed": "isolamento, rifiuto di consigli, stoltezza solitaria",
-      "signification upright": "L'Eremita invita alla riflessione e alla ricerca interiore per trovare chiarezza.",
-      "signification reversed": "Rovesciato, può indicare isolamento dannoso o rifiuto dell'aiuto."
+      "signification upright": "L'Eremita simboleggia la ricerca interiore e la saggezza che nasce dal ritiro meditativo. Invita all'ascolto profondo e alla condivisione della luce acquisita con chi ne ha bisogno.",
+      "signification reversed": "Rovesciato, può indicare isolamento sterile, orgoglio o rifiuto dell'aiuto. Suggerisce di aprirsi quando la solitudine impedisce la crescita."
     },
     "La Ruota della Fortuna": {
-      "diritta": "cicli, destino, cambiamento, opportunità",
-      "rovesciata": "resistenza al cambiamento, sfortuna persistente, stasi",
-      "signification diritta": "La Ruota indica i cicli della vita e l'arrivo di nuove opportunità.",
-      "signification rovesciata": "Rovesciata, segnala resistenza al cambiamento o ripetizione di eventi passati.",
       "upright": "cicli, destino, cambiamento, opportunità",
       "reversed": "resistenza al cambiamento, sfortuna persistente, stasi",
-      "signification upright": "La Ruota indica i cicli della vita e l'arrivo di nuove opportunità.",
-      "signification reversed": "Rovesciata, segnala resistenza al cambiamento o ripetizione di eventi passati."
+      "signification upright": "La Ruota della Fortuna rappresenta i cicli naturali della vita e l'azione del destino. Indica svolte di fortuna e la necessità di cogliere il momento favorevole.",
+      "signification reversed": "Rovesciato, può indicare stagnazione, ripetizione di schemi o cattiva sorte. Consiglia di rivedere i modelli ricorrenti per rompere il ciclo."
     },
     "L'Appeso": {
-      "diritta": "sacrificio, attesa, nuovo punto di vista, distacco",
-      "rovesciata": "sacrificio inutile, ostinazione, stagnazione",
-      "signification diritta": "L'Appeso chiede una pausa per contemplare una nuova prospettiva; il distacco volontario può portare saggezza.",
-      "signification rovesciata": "Rovesciato, può indicare sacrifici senza scopo o rifiuto del cambiamento.",
       "upright": "sacrificio, attesa, nuovo punto di vista, distacco",
       "reversed": "sacrificio inutile, ostinazione, stagnazione",
-      "signification upright": "L'Appeso chiede una pausa per contemplare una nuova prospettiva; il distacco volontario può portare saggezza.",
-      "signification reversed": "Rovesciato, può indicare sacrifici senza scopo o rifiuto del cambiamento."
+      "signification upright": "L'Appeso rappresenta la pausa e il sacrificio volontario finalizzati ad ottenere una nuova prospettiva. Insegna la pazienza e il valore del lasciare andare per vedere con chiarezza.",
+      "signification reversed": "Rovesciato, può indicare sacrifici inutili, testardaggine o immobilismo. Invita a riconsiderare le motivazioni dietro il sacrificio."
     },
     "La Morte": {
-      "diritta": "trasformazione, fine di un ciclo, rinascita",
-      "rovesciata": "resistenza al cambiamento, paura del nuovo, stagnazione",
-      "signification diritta": "La Morte indica la necessità di lasciare andare il vecchio per permettere la rinascita.",
-      "signification rovesciata": "Rovesciata, segnala attaccamento al passato che impedisce la trasformazione.",
       "upright": "trasformazione, fine di un ciclo, rinascita",
       "reversed": "resistenza al cambiamento, paura del nuovo, stagnazione",
-      "signification upright": "La Morte indica la necessità di lasciare andare il vecchio per permettere la rinascita.",
-      "signification reversed": "Rovesciata, segnala attaccamento al passato che impedisce la trasformazione."
+      "signification upright": "La Morte simboleggia la trasformazione profonda: la fine necessaria di un ciclo che permette la rinascita. Non indica la morte fisica ma la purificazione e il nuovo inizio.",
+      "signification reversed": "Rovesciato, può segnalare paura di lasciare andare o resistenza al cambiamento. Indica la necessità di affrontare il lutto per aprirsi al nuovo."
     },
     "La Temperanza": {
-      "diritta": "equilibrio, guarigione, armonia, temperanza",
-      "rovesciata": "squilibrio, eccessi, impazienza",
-      "signification diritta": "La Temperanza incoraggia la moderazione e l'unione armoniosa delle forze.",
-      "signification rovesciata": "Rovesciata, indica perdita di equilibrio o mancanza di moderazione.",
       "upright": "equilibrio, guarigione, armonia, temperanza",
       "reversed": "squilibrio, eccessi, impazienza",
-      "signification upright": "La Temperanza incoraggia la moderazione e l'unione armoniosa delle forze.",
-      "signification reversed": "Rovesciata, indica perdita di equilibrio o mancanza di moderazione."
+      "signification upright": "La Temperanza rappresenta l'arte di mescolare armoniosamente opposti per favorire la guarigione e la crescita graduale. Invita alla pazienza e alla ricerca del punto di equilibrio.",
+      "signification reversed": "Rovesciato, può indicare disequilibrio, eccessi o impazienza. Suggerisce di ritrovare misura e autocontrollo."
     },
     "Il Diavolo": {
-      "diritta": "dipendenze, illusioni, materialismo, tentazioni",
-      "rovesciata": "liberazione, consapevolezza, rottura delle catene",
-      "signification diritta": "Il Diavolo mette in luce le catene che tengono prigionieri; invita a riconoscerle per poterle spezzare.",
-      "signification rovesciata": "Rovesciata, segnala inizio di liberazione e presa di coscienza.",
       "upright": "dipendenze, illusioni, materialismo, tentazioni",
       "reversed": "liberazione, consapevolezza, rottura delle catene",
-      "signification upright": "Il Diavolo mette in luce le catene che tengono prigionieri; invita a riconoscerle per poterle spezzare.",
-      "signification reversed": "Rovesciata, segnala inizio di liberazione e presa di coscienza."
+      "signification upright": "Il Diavolo rivela attaccamenti e dipendenze che limitano la libertà. Indica la presenza di tentazioni e la necessità di affrontare le proprie ombre per riconquistare autonomia.",
+      "signification reversed": "Rovesciato, annuncia processi di liberazione, consapevolezza e rottura di vincoli. Indica il potenziale per riappropriarsi del proprio potere."
     },
     "La Torre": {
-      "diritta": "crollo, rivelazione, cambiamento improvviso, risveglio",
-      "rovesciata": "resistenza al cambiamento, crollo attenuato, rallentamento",
-      "signification diritta": "La Torre indica la caduta di strutture fittizie e la rivelazione di verità scomode.",
-      "signification rovesciata": "Rovesciata, può indicare una trasformazione meno traumatica o ritardata.",
       "upright": "crollo, rivelazione, cambiamento improvviso, risveglio",
       "reversed": "resistenza al cambiamento, crollo attenuato, rallentamento",
-      "signification upright": "La Torre indica la caduta di strutture fittizie e la rivelazione di verità scomode.",
-      "signification reversed": "Rovesciata, può indicare una trasformazione meno traumatica o ritardata."
+      "signification upright": "La Torre segnala il crollo di strutture illusorie e l'arrivo di una rivelazione che costringe a ricostruire. Anche se dolorosa, questa rottura è liberatoria e necessaria per la verità.",
+      "signification reversed": "Rovesciato, può indicare resistenza al cambiamento o trasformazione ritardata. Suggerisce di cogliere le lezioni prima che la crisi si imponga."
     },
     "Le Stelle": {
-      "diritta": "speranza, ispirazione, guarigione, ottimismo",
-      "rovesciata": "delusione, perdita di fede, scoraggiamento",
-      "signification diritta": "Le Stelle portano speranza e una promessa di guarigione e rinnovamento.",
-      "signification rovesciata": "Rovesciata, invita a ritrovare fiducia e speranza.",
       "upright": "speranza, ispirazione, guarigione, ottimismo",
       "reversed": "delusione, perdita di fede, scoraggiamento",
-      "signification upright": "Le Stelle portano speranza e una promessa di guarigione e rinnovamento.",
-      "signification reversed": "Rovesciata, invita a ritrovare fiducia e speranza."
+      "signification upright": "Le Stelle rappresentano speranza, ispirazione e rinnovamento spirituale. Portano fiducia, guarigione e la sensazione che il futuro possa migliorare.",
+      "signification reversed": "Rovesciato, può indicare perdita di fiducia o scoraggiamento. Invita a cercare fonti di ispirazione per recuperare speranza."
     },
     "La Luna": {
-      "diritta": "illusione, intuizione, inconscio, paure, mistero",
-      "rovesciata": "chiarificazione, verità emergente, fine delle illusioni",
-      "signification diritta": "La Luna indica influenze nascoste, sogni e paure interiori; invita a fidarsi dell'intuito.",
-      "signification rovesciata": "Rovesciata, segnala che la verità emerge e la confusione diminuisce.",
       "upright": "illusione, intuizione, inconscio, paure, mistero",
       "reversed": "chiarificazione, verità emergente, fine delle illusioni",
-      "signification upright": "La Luna indica influenze nascoste, sogni e paure interiori; invita a fidarsi dell'intuito.",
-      "signification reversed": "Rovesciata, segnala che la verità emerge e la confusione diminuisce."
+      "signification upright": "La Luna rivela illusioni, confusione e paure nascoste dell'inconscio. Avverte contro le proiezioni e invita a procedere con cautela, nutrendo l'intuizione.",
+      "signification reversed": "Rovesciato, annuncia chiarificazione, verità che emerge e riconnessione con l'intuito autentico. Indica la fine di una fase di confusione."
     },
     "Il Sole": {
-      "diritta": "gioia, successo, vitalità, realizzazione",
-      "rovesciata": "vanità, eccessiva fiducia, gloria effimera",
-      "signification diritta": "Il Sole simboleggia chiarezza, energia positiva e celebrazione dei risultati.",
-      "signification rovesciata": "Rovesciato, avverte contro l'arroganza e l'illusione di successo duraturo.",
       "upright": "gioia, successo, vitalità, realizzazione",
       "reversed": "vanità, eccessiva fiducia, gloria effimera",
-      "signification upright": "Il Sole simboleggia chiarezza, energia positiva e celebrazione dei risultati.",
-      "signification reversed": "Rovesciato, avverte contro l'arroganza e l'illusione di successo duraturo."
+      "signification upright": "Il Sole rappresenta gioia, chiarezza e piena realizzazione. Porta riconoscimento, energia positiva e celebrazione dei risultati raggiunti.",
+      "signification reversed": "Rovesciato, può indicare vanità o orgoglio eccessivo. Consiglia umiltà e condivisione della propria luce."
     },
     "Il Giudizio": {
-      "diritta": "risveglio, chiamata, valutazione, rinascita",
-      "rovesciata": "rifiuto della crescita, colpa, cieco giudizio",
-      "signification diritta": "Il Giudizio indica un momento di riconoscimento e possibile rinascita interiore.",
-      "signification rovesciata": "Rovesciata, può indicare rifiuto di cambiare o accettare la responsabilità.",
       "upright": "risveglio, chiamata, valutazione, rinascita",
       "reversed": "rifiuto della crescita, colpa, cieco giudizio",
-      "signification upright": "Il Giudizio indica un momento di riconoscimento e possibile rinascita interiore.",
-      "signification reversed": "Rovesciata, può indicare rifiuto di cambiare o accettare la responsabilità."
+      "signification upright": "Il Giudizio simboleggia la chiamata interiore, l'esame di coscienza e la possibilità di rinascita. Invita al perdono, all'assunzione di responsabilità e al risveglio spirituale.",
+      "signification reversed": "Rovesciato, può indicare rifiuto del cambiamento, senso di colpa paralizzante o giudizio severo. Consiglia perdono e accettazione per poter evolvere."
     },
     "Il Mondo": {
-      "diritta": "compiutezza, armonia, integrazione, successo",
-      "rovesciata": "incompletezza, paura della chiusura, perfezionismo",
-      "signification diritta": "Il Mondo rappresenta il completamento di un ciclo e l'integrazione delle esperienze.",
-      "signification rovesciata": "Rovesciata, indica frustrazione per obiettivi non raggiunti o paura del completamento.",
       "upright": "compiutezza, armonia, integrazione, successo",
       "reversed": "incompletezza, paura della chiusura, perfezionismo",
-      "signification upright": "Il Mondo rappresenta il completamento di un ciclo e l'integrazione delle esperienze.",
-      "signification reversed": "Rovesciata, indica frustrazione per obiettivi non raggiunti o paura del completamento."
+      "signification upright": "Il Mondo rappresenta la realizzazione totale, l'armonia universale e la conclusione soddisfacente di un ciclo. Simboleggia l'integrazione delle esperienze e uno stato di pienezza.",
+      "signification reversed": "Rovesciato, può indicare perfezionismo paralizzante, paura della conclusione o sensazione di incompletezza. Invita a riconoscere i traguardi e a lasciar andare il controllo."
     }
   }
 }

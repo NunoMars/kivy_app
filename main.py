@@ -37,8 +37,8 @@ def has_internet(timeout: float = 2.0) -> bool:
         return False
 
 # Local modules
-import i18n
-MESSAGES = getattr(i18n, 'MESSAGES', {})
+import i18n_loader as i18n_loader_module
+MESSAGES = getattr(i18n_loader_module, 'MESSAGES', {})
 
 # Ads manager (local) — import sécurisé car peut échouer en environnement non-Android
 try:
@@ -280,23 +280,22 @@ def get_system_language() -> str:
 CURRENT_LANG = get_system_language()
 print(f"🌍 Langue détectée: {CURRENT_LANG}")
 
-# Communiquer la langue au module translations pour cohérence globale
+# Communiquer la langue au loader i18n pour cohérence globale
 try:
-    # keep existing behaviour: inform translations of chosen lang
-    if hasattr(i18n, 'set_app_language'):
-        i18n.set_app_language(CURRENT_LANG)
+    # keep existing behaviour: inform i18n loader of chosen lang
+    if hasattr(i18n_loader_module, 'set_app_language'):
+        i18n_loader_module.set_app_language(CURRENT_LANG)
 except Exception:
     pass
 
 
 def tr(key: str, **kwargs) -> str:
-    # delegate to i18n.tr which uses the app-wide language detection
+    # delegate to i18n_loader.tr which uses the app-wide language detection
     try:
-        if hasattr(i18n, 'tr'):
-            return i18n.tr(key, **kwargs)
+        return i18n_loader_module.tr(key, **kwargs)
     except Exception:
         pass
-    # fallback simple implementation
+    # fallback simple implementation (no code-level translations available)
     txt = MESSAGES.get(CURRENT_LANG, MESSAGES.get("fr", {})).get(key, "")
     if kwargs and isinstance(txt, str):
         try:
@@ -313,13 +312,13 @@ MME_T_DEFAULT_MODEL = os.environ.get("MME_T_MODEL", "gemini-1.5-flash")
 
 # Signification loader centralisé (JSON via i18n). Utiliser l'API i18n unique.
 try:
-    # S'appuyer uniquement sur i18n pour les signification (pas de fallback vers d'autres modules)
-    get_cards_signification = i18n.get_cards_signification
-    print("✓ Significations loader importé via i18n")
+    # S'appuyer uniquement sur i18n_loader pour les significations
+    get_cards_signification = i18n_loader_module.get_cards_signification
+    print("✓ Significations loader importé via i18n_loader")
 except Exception as e:
-    print(f"✗ Erreur: i18n.get_cards_signification introuvable: {e}")
+    print(f"✗ Erreur: i18n_loader.get_cards_signification introuvable: {e}")
     def get_cards_signification():
-        # Par sécurité, retourner un dictionnaire vide si i18n ne fournit pas la fonction.
+        # Par sécurité, retourner un dictionnaire vide si i18n_loader ne fournit pas la fonction.
         return {}
 
 try:

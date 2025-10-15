@@ -54,210 +54,126 @@
   },
   "significations": {
     "O Louco": {
-      "direita": "novos começos, espontaneidade, liberdade, aventura, potencial",
-      "invertida": "imprudência, falta de direção, negligência, hesitação",
-      "signification direita": "O Louco simboliza o salto para o desconhecido com confiança. Incentiva a espontaneidade e a abertura para novas oportunidades.",
-      "signification invertida": "Invertido, O Louco pode indicar decisões impulsivas ou falta de planejamento; é um aviso para equilibrar coragem com responsabilidade.",
       "upright": "novos começos, espontaneidade, liberdade, aventura, potencial",
       "reversed": "imprudência, falta de direção, negligência, hesitação",
       "signification upright": "O Louco simboliza o salto para o desconhecido com confiança. Incentiva a espontaneidade e a abertura para novas oportunidades.",
       "signification reversed": "Invertido, O Louco pode indicar decisões impulsivas ou falta de planejamento; é um aviso para equilibrar coragem com responsabilidade."
     },
     "O Mago": {
-      "direita": "início, recursos, entusiasmo, energia, criatividade",
-      "invertida": "ilusão, manipulação, dispersão, falta de foco",
-      "signification direita": "O Mago representa a habilidade de transformar ideias em ação usando os recursos à sua disposição.",
-      "signification invertida": "Invertido, pode significar manipulação ou uso enganoso das próprias habilidades.",
       "upright": "início, recursos, entusiasmo, energia, criatividade",
       "reversed": "ilusão, manipulação, dispersão, falta de foco",
       "signification upright": "O Mago representa a habilidade de transformar ideias em ação usando os recursos à sua disposição.",
       "signification reversed": "Invertido, pode significar manipulação ou uso enganoso das próprias habilidades."
     },
     "A Sacerdotisa": {
-      "direita": "intuição, sabedoria, mistério, conhecimento interior",
-      "invertida": "segredos ocultos, intuição bloqueada, superficialidade",
-      "signification direita": "A Sacerdotisa convida à introspecção e à escuta da voz interior; é símbolo de sabedoria oculta.",
-      "signification invertida": "Invertido, alerta para a rejeição da intuição ou manipulação de informações.",
       "upright": "intuição, sabedoria, mistério, conhecimento interior",
       "reversed": "segredos ocultos, intuição bloqueada, superficialidade",
       "signification upright": "A Sacerdotisa convida à introspecção e à escuta da voz interior; é símbolo de sabedoria oculta.",
       "signification reversed": "Invertido, alerta para a rejeição da intuição ou manipulação de informações."
     },
     "A Imperatriz": {
-      "direita": "fertilidade, abundância, criatividade, nutrição, conexão com a natureza",
-      "invertida": "dependência, negligência, bloqueio criativo, controle excessivo",
-      "signification direita": "A Imperatriz simboliza cuidado, criatividade e prosperidade; é um convite ao florescimento.",
-      "signification invertida": "Invertido, pode apontar para negligência ou bloqueio na expressão criativa.",
       "upright": "fertilidade, abundância, criatividade, nutrição, conexão com a natureza",
       "reversed": "dependência, negligência, bloqueio criativo, controle excessivo",
       "signification upright": "A Imperatriz simboliza cuidado, criatividade e prosperidade; é um convite ao florescimento.",
       "signification reversed": "Invertido, pode apontar para negligência ou bloqueio na expressão criativa."
     },
     "O Imperador": {
-      "direita": "autoridade, estrutura, controle, estabilidade, responsabilidade",
-      "invertida": "tirania, rigidez, abuso de poder, falta de flexibilidade",
-      "signification direita": "O Imperador representa ordem e liderança; incentiva planejamento e disciplina.",
-      "signification invertida": "Invertido, alerta para abuso de poder ou rigidez excessiva.",
       "upright": "autoridade, estrutura, controle, estabilidade, responsabilidade",
       "reversed": "tirania, rigidez, abuso de poder, falta de flexibilidade",
       "signification upright": "O Imperador representa ordem e liderança; incentiva planejamento e disciplina.",
       "signification reversed": "Invertido, alerta para abuso de poder ou rigidez excessiva."
     },
     "O Hierofante": {
-      "direita": "tradição, ensino, guia moral, iniciação",
-      "invertida": "dogmatismo, manipulação, tradições estagnadas",
-      "signification direita": "O Hierofante simboliza sabedoria transmitida e ensinamentos formais; pode indicar um mentor.",
-      "signification invertida": "Invertido, aponta para dogmatismo ou a necessidade de encontrar seu próprio caminho.",
       "upright": "tradição, ensino, guia moral, iniciação",
       "reversed": "dogmatismo, manipulação, tradições estagnadas",
       "signification upright": "O Hierofante simboliza sabedoria transmitida e ensinamentos formais; pode indicar um mentor.",
       "signification reversed": "Invertido, aponta para dogmatismo ou a necessidade de encontrar seu próprio caminho."
     },
     "Os Amantes": {
-      "direita": "escolha difícil, união, amor, dualidade, decisão importante",
-      "invertida": "má escolha, separação, indecisão, conflito interno",
-      "signification direita": "Os Amantes falam de escolhas que afetam o coração e os valores; enfatizam autenticidade nas relações.",
-      "signification invertida": "Invertido, pode indicar uma escolha errada ou conflito de valores.",
       "upright": "escolha difícil, união, amor, dualidade, decisão importante",
       "reversed": "má escolha, separação, indecisão, conflito interno",
       "signification upright": "Os Amantes falam de escolhas que afetam o coração e os valores; enfatizam autenticidade nas relações.",
       "signification reversed": "Invertido, pode indicar uma escolha errada ou conflito de valores."
     },
     "O Carro": {
-      "direita": "domínio de forças opostas, vontade triunfante, progresso, vitória",
-      "invertida": "perda de controle, forças dispersas, fracasso por falta de direção",
-      "signification direita": "O Carro anuncia avanço e conquista através do foco e da determinação.",
-      "signification invertida": "Invertido, indica perda de rumo ou falta de coordenação dos esforços.",
       "upright": "domínio de forças opostas, vontade triunfante, progresso, vitória",
       "reversed": "perda de controle, forças dispersas, fracasso por falta de direção",
       "signification upright": "O Carro anuncia avanço e conquista através do foco e da determinação.",
       "signification reversed": "Invertido, indica perda de rumo ou falta de coordenação dos esforços."
     },
     "A Força": {
-      "direita": "força interior, autocontrole, coragem, gentileza",
-      "invertida": "fraqueza, perda de controle, agressividade",
-      "signification direita": "A Força simboliza coragem calma e a capacidade de vencer desafios com compaixão.",
-      "signification invertida": "Invertido, pode indicar perda de controle emocional ou uso indevido da força.",
       "upright": "força interior, autocontrole, coragem, gentileza",
       "reversed": "fraqueza, perda de controle, agressividade",
       "signification upright": "A Força simboliza coragem calma e a capacidade de vencer desafios com compaixão.",
       "signification reversed": "Invertido, pode indicar perda de controle emocional ou uso indevido da força."
     },
     "O Eremita": {
-      "direita": "busca de sabedoria, introspecção, retiro, guia interior",
-      "invertida": "isolamento estéril, recusa de conselhos, orgulho espiritual",
-      "signification direita": "O Eremita convida ao silêncio e à reflexão para encontrar clareza e propósito.",
-      "signification invertida": "Invertido, pode significar isolamento prejudicial ou recusa à ajuda.",
       "upright": "busca de sabedoria, introspecção, retiro, guia interior",
       "reversed": "isolamento estéril, recusa de conselhos, orgulho espiritual",
       "signification upright": "O Eremita convida ao silêncio e à reflexão para encontrar clareza e propósito.",
       "signification reversed": "Invertido, pode significar isolamento prejudicial ou recusa à ajuda."
     },
     "A Roda da Fortuna": {
-      "direita": "ciclos, carma, oportunidade, mudança de sorte",
-      "invertida": "azar persistente, resistência às mudanças, estagnação",
-      "signification direita": "A Roda da Fortuna lembra que a vida é cíclica; momentos favoráveis chegam e partem.",
-      "signification invertida": "Invertido, indica resistência à mudança ou consequências de ações passadas.",
       "upright": "ciclos, carma, oportunidade, mudança de sorte",
       "reversed": "azar persistente, resistência às mudanças, estagnação",
       "signification upright": "A Roda da Fortuna lembra que a vida é cíclica; momentos favoráveis chegam e partem.",
       "signification reversed": "Invertido, indica resistência à mudança ou consequências de ações passadas."
     },
     "O Enforcado": {
-      "direita": "sacrifício voluntário, espera, nova perspectiva, desprendimento",
-      "invertida": "sacrifício inútil, teimosia, resistência à mudança",
-      "signification direita": "O Enforcado pede uma pausa consciente para ver as coisas de outro ângulo; é um convite ao desprendimento.",
-      "signification invertida": "Invertido, sinaliza sacrifícios sem propósito ou resistência que impede o progresso.",
       "upright": "sacrifício voluntário, espera, nova perspectiva, desprendimento",
       "reversed": "sacrifício inútil, teimosia, resistência à mudança",
       "signification upright": "O Enforcado pede uma pausa consciente para ver as coisas de outro ângulo; é um convite ao desprendimento.",
       "signification reversed": "Invertido, sinaliza sacrifícios sem propósito ou resistência que impede o progresso."
     },
     "A Morte": {
-      "direita": "transformação profunda, fim de ciclo, renascimento",
-      "invertida": "resistência à mudança, estagnação, medo do desconhecido",
-      "signification direita": "A Morte anuncia transformação e renovação; é o fim necessário para que algo novo possa nascer.",
-      "signification invertida": "Invertido, revela apego ao passado e bloqueio no processo de renovação.",
       "upright": "transformação profunda, fim de ciclo, renascimento",
       "reversed": "resistência à mudança, estagnação, medo do desconhecido",
       "signification upright": "A Morte anuncia transformação e renovação; é o fim necessário para que algo novo possa nascer.",
       "signification reversed": "Invertido, revela apego ao passado e bloqueio no processo de renovação."
     },
     "A Temperança": {
-      "direita": "alquimia, cura, equilíbrio, transformação gradual",
-      "invertida": "desequilíbrio, excessos, impaciência",
-      "signification direita": "A Temperança incentiva equilíbrio e combinação harmoniosa das forças para promover cura.",
-      "signification invertida": "Invertido, alerta para excesso ou falta de moderação.",
       "upright": "alquimia, cura, equilíbrio, transformação gradual",
       "reversed": "desequilíbrio, excessos, impaciência",
       "signification upright": "A Temperança incentiva equilíbrio e combinação harmoniosa das forças para promover cura.",
       "signification reversed": "Invertido, alerta para excesso ou falta de moderação."
     },
     "O Diabo": {
-      "direita": "dependências, ilusões, materialismo, tentações",
-      "invertida": "libertação, conscientização, quebra de correntes",
-      "signification direita": "O Diabo revela as amarras que prendem, chamando atenção para vícios e apegos.",
-      "signification invertida": "Invertido, indica processo de libertação e tomada de consciência.",
       "upright": "dependências, ilusões, materialismo, tentações",
       "reversed": "libertação, conscientização, quebra de correntes",
       "signification upright": "O Diabo revela as amarras que prendem, chamando atenção para vícios e apegos.",
       "signification reversed": "Invertido, indica processo de libertação e tomada de consciência."
     },
     "A Torre": {
-      "direita": "abalo, revelação, destruição libertadora, despertar brusco",
-      "invertida": "resistência à mudança, queda suavizada, transformação gradual",
-      "signification direita": "A Torre anuncia rupturas que derrubam estruturas falsas, abrindo espaço para reconstrução verdadeira.",
-      "signification invertida": "Invertido, pode indicar uma mudança menos violenta ou retardada, ainda assim necessária.",
       "upright": "abalo, revelação, destruição libertadora, despertar brusco",
       "reversed": "resistência à mudança, queda suavizada, transformação gradual",
       "signification upright": "A Torre anuncia rupturas que derrubam estruturas falsas, abrindo espaço para reconstrução verdadeira.",
       "signification reversed": "Invertido, pode indicar uma mudança menos violenta ou retardada, ainda assim necessária."
     },
     "A Estrela": {
-      "direita": "esperança, inspiração, espiritualidade, otimismo",
-      "invertida": "desespero, perda de fé, pessimismo",
-      "signification direita": "A Estrela traz esperança e renovação; é símbolo de cura e inspiração.",
-      "signification invertida": "Invertido, chama à restauração da fé e do otimismo.",
       "upright": "esperança, inspiração, espiritualidade, otimismo",
       "reversed": "desespero, perda de fé, pessimismo",
       "signification upright": "A Estrela traz esperança e renovação; é símbolo de cura e inspiração.",
       "signification reversed": "Invertido, chama à restauração da fé e do otimismo."
     },
     "A Lua": {
-      "direita": "ilusões, confusão, medos, inconsciente, mistérios",
-      "invertida": "clareza, verdade revelada, fim das ilusões",
-      "signification direita": "A Lua aponta para medos ocultos e a necessidade de confiar na intuição.",
-      "signification invertida": "Invertido, indica que a verdade vem à tona e a confusão diminui.",
       "upright": "ilusões, confusão, medos, inconsciente, mistérios",
       "reversed": "clareza, verdade revelada, fim das ilusões",
       "signification upright": "A Lua aponta para medos ocultos e a necessidade de confiar na intuição.",
       "signification reversed": "Invertido, indica que a verdade vem à tona e a confusão diminui."
     },
     "O Sol": {
-      "direita": "alegria, sucesso, vitalidade, realização",
-      "invertida": "vaidade, orgulho excessivo, sucesso temporário",
-      "signification direita": "O Sol simboliza clareza, energia e celebração dos resultados alcançados.",
-      "signification invertida": "Invertido, alerta para o risco de orgulho ou sucesso ilusório.",
       "upright": "alegria, sucesso, vitalidade, realização",
       "reversed": "vaidade, orgulho excessivo, sucesso temporário",
       "signification upright": "O Sol simboliza clareza, energia e celebração dos resultados alcançados.",
       "signification reversed": "Invertido, alerta para o risco de orgulho ou sucesso ilusório."
     },
     "O Julgamento": {
-      "direita": "renascimento, chamado, avaliação, transformação final",
-      "invertida": "cegueira espiritual, recusa em evoluir, culpa",
-      "signification direita": "O Julgamento indica um momento de chamada e avaliação interior, com potencial de renascimento.",
-      "signification invertida": "Invertido, pode mostrar resistência à mudança ou dificuldade em perdoar a si mesmo.",
       "upright": "renascimento, chamado, avaliação, transformação final",
       "reversed": "cegueira espiritual, recusa em evoluir, culpa",
       "signification upright": "O Julgamento indica um momento de chamada e avaliação interior, com potencial de renascimento.",
       "signification reversed": "Invertido, pode mostrar resistência à mudança ou dificuldade em perdoar a si mesmo."
     },
     "O Mundo": {
-      "direita": "conclusão, harmonia, ciclo completo, integridade",
-      "invertida": "falha perto do objetivo, perfeccionismo, incompletude",
-      "signification direita": "O Mundo representa a conclusão bem-sucedida de um ciclo e a integração das experiências.",
-      "signification invertida": "Invertido, indica frustração por não completar algo ou medo do fechamento.",
       "upright": "conclusão, harmonia, ciclo completo, integridade",
       "reversed": "falha perto do objetivo, perfeccionismo, incompletude",
       "signification upright": "O Mundo representa a conclusão bem-sucedida de um ciclo e a integração das experiências.",

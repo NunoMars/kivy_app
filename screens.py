@@ -24,8 +24,8 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.animation import Animation
 
 # Local modules
-from translations import tr, get_system_language
-from i18n import SIGNIFICATION_KEY_MAP, get_cards_signification, get_card_name_for_lang, get_card_image_path
+from i18n_loader import tr, get_system_language
+from i18n_loader import SIGNIFICATION_KEY_MAP, get_cards_signification, get_card_name_for_lang, get_card_image_path
 
 # Popups
 from popups import LoadingPopup, FullScreenCardPopup, MmeTChatPopup, AdsPopup
@@ -698,12 +698,12 @@ class ResponseScreen(Screen):
                 elif keyword_key and keyword_key in card_data:
                     self.start_typewriter(card_data[keyword_key])
                 else:
-                    self.start_typewriter(tr("no_description") if 'no_description' in globals() else "No description available")
+                    self.start_typewriter(tr("no_description"))
 
                 Clock.schedule_once(self.setup_text_wrapping, 0.1)
             else:
                 # Aucun résultat trouvé dans les modules de signification
-                self.signification_label.text = tr("no_description") if hasattr(__import__('translations'), 'tr') else "No description available"
+                self.signification_label.text = tr("no_description")
                 print(f"✗ Aucun résultat pour candidats {candidates} dans les signification disponibles ({len(cards_signification)} entrées)")
 
         except Exception as e:

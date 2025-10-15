@@ -34,7 +34,7 @@ from kivy.core.window import Window
 import requests
 
 # Local modules
-from i18n import (
+from i18n_loader import (
     MESSAGES,
     tr,
     get_system_language,

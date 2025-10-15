@@ -1,36 +1,10 @@
-from __future__ import annotations
+"""DEPRECATED: i18n.py removed.
 
-# Clés de mapping pour accéder aux bons champs de signification selon la langue
-SIGNIFICATION_KEY_MAP = {
-    "fr": {
-        "keywords": {"upright": "a l'endroit", "reversed": "a l'envers"},
-        "detail": {
-            "upright": "signification a l'endroit",
-            "reversed": "signification a l'envers",
-        },
-    },
-    "en": {
-        "keywords": {"upright": "upright", "reversed": "reversed"},
-        "detail": {
-            "upright": "signification upright",
-            "reversed": "signification reversed",
-        },
-    },
-    "pt": {
-        "keywords": {"upright": "direita", "reversed": "invertida"},
-        "detail": {
-            "upright": "signification direita",
-            "reversed": "signification invertida",
-        },
-    },
-    # Add additional languages detected in i18n/lang/*.json
-    "pt_br": {
-        "keywords": {"upright": "direita", "reversed": "invertida"},
-        "detail": {
-            "upright": "signification direita",
-            "reversed": "signification invertida",
-        },
-    },
+This file was replaced by `i18n_loader.py`. Importing this module will
+raise ImportError to prevent accidental usage of legacy in-code mappings.
+"""
+
+raise ImportError("i18n.py is deprecated; use i18n_loader.py which reads JSON bundles")
     "es": {
         "keywords": {"upright": "a la derecha", "reversed": "invertida"},
         "detail": {

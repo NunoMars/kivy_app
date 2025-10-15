@@ -56,20 +56,20 @@
     "Deli": {
       "upright": "yeni başlangıçlar, doğaçlama, özgürlük, macera, potansiyel",
       "reversed": "düşüncesizlik, yön kaybı, ihmal, tereddüt",
-      "signification upright": "Deli, bilinmeyene adım atma cesaretini ve yeni başlangıçları simgeler. Özgürlük ve macera ruhunu kucaklamaya davet eder.",
-      "signification reversed": "Ters pozisyonda Deli, düşüncesiz davranışlara, plan eksikliğine veya yanlış adımlara işaret edebilir."
+      "signification upright": "Deli, bilinmeyene adım atma cesaretini, masumiyeti ve yeni başlangıçların getirdiği taze potansiyeli simgeler. Bu pozisyon, risk almanın ve kalpten ilerlemenin zamanıdır; önünüze çıkan fırsatları merak ve açıklıkla karşılamanız önerilir.",
+      "signification reversed": "Ters durduğunda, Deli aşırı dikkatsizlik, hazırlıksız adımlar veya sorumsuz davranışlara işaret edebilir. Bu uyarı, hevesin kontrolsüzce hareket etmeye neden olmaması gerektiğini ve biraz daha özen gerektiğini gösterir."
     },
     "Büyücü": {
       "upright": "başlangıç, kaynaklar, coşku, enerji, yaratıcılık",
       "reversed": "yanılsama, manipülasyon, odak eksikliği, aldatma",
-      "signification upright": "Büyücü, fikirleri gerçeğe dönüştürme gücünü ve elinizdeki kaynakları kullanma becerisini simgeler.",
-      "signification reversed": "Ters pozisyon, yeteneklerin yanlış amaçlarla kullanılması veya enerjinin dağılması anlamına gelebilir."
+      "signification upright": "Büyücü, niyetinizi gerçeğe dönüştürme kapasitenizi, elinizdeki araçları akıllıca kullanma yeteneğinizi ve inisiyatif alma çağrısını simgeler. Gücünüzü odaklayarak fırsatları somut sonuçlara çevirebileceğiniz bir dönemdesiniz.",
+      "signification reversed": "Ters pozisyon, manipülasyon, sahte gösteriler veya dikkat dağınıklığına işaret edebilir. Yeteneklerinizi doğru amaçlarla kullanıp kullanmadığınızı gözden geçirmeniz ve dürüst niyetlerle hareket etmeniz önemlidir."
     },
     "Başrahip": {
       "upright": "sezgi, bilgelik, sırlar, içsel bilgi",
       "reversed": "gizli sırlar, bilinçli görmezden gelme, kapalı sezgi",
-      "signification upright": "Başrahip, iç sesinize kulak vermenizi ve gizli bilgileri keşfetmenizi tavsiye eder.",
-      "signification reversed": "Ters pozisyonda, sezgilerin bloke olması veya bilgilerin manipüle edilmesi söz konusu olabilir."
+      "signification upright": "Başrahip, geleneksel bilgeliğe, ruhsal öğretilere ve içsel rehberliğe vurgu yapar. Öğrenme, ritüel ve rehberlik yoluyla büyüme mümkündür; içsel disiplin ve saygıyla ilerlemek fayda sağlar.",
+      "signification reversed": "Ters pozisyon, dogmatizm, kör bağlılık veya bilginin kötüye kullanımı riskini gösterir. Kendi doğrularınızı sorgulamak ve fanatik yaklaşımlardan kaçınmak gerektiğini işaret eder."
     },
     "İmparatoriçe": {
       "upright": "bereket, bolluk, yaratıcılık, bakım, doğa ile bağlantı",
@@ -92,92 +92,92 @@
     "Aşıklar": {
       "upright": "seçim, birlik, aşk, ikilik, önemli karar",
       "reversed": "kötü seçim, kopuş, kararsızlık, iç çatışma",
-      "signification upright": "Aşıklar, değerlerin ve duyguların uyumunu, ilişkinin önemli bir seçim dönemini vurgular.",
-      "signification reversed": "Ters pozisyon yanlış seçimleri veya ilişkide uyumsuzluğu işaret edebilir."
+      "signification upright": "Aşıklar, kalpten yapılan seçimleri, değerlerin uyumunu ve bağlantıların derin anlamını sembolize eder. Hem duygusal birliktelikleri hem de yaşam yolunda yapılan etik tercihleri temsil eder; içsel uyum rehberiniz olsun.",
+      "signification reversed": "Ters pozisyon, uyumsuz tercihleri, kararsızlığı veya ilişkilerde yanlış yönlendirmeleri gösterir. Seçimlerinizin ardındaki motivasyonları dikkatle değerlendirmek ve kişisel bütünlüğe öncelik vermek gerekir."
     },
     "Savaş Arabası": {
       "upright": "zıt güçlerin kontrolü, irade gücü, zafer, ilerleme",
       "reversed": "kontrol kaybı, enerji bölünmesi, hedef kaybı",
-      "signification upright": "Savaş Arabası, kararlılık ve odakla engellerin aşılacağını gösterir.",
-      "signification reversed": "Ters pozisyon, niyetin dağılması veya yön kaybı anlamına gelebilir."
+      "signification upright": "Savaş Arabası, irade gücünüzle zıt yönleri birleştirip hedefe doğru ilerleyebileceğinizi simgeler. Disiplin, kararlılık ve kontrollü enerji, başarıyı beraberinde getirir.",
+      "signification reversed": "Ters pozisyon, kontrol kaybı, aceleci davranış veya amaçsız enerji kullanımı nedeniyle başarısızlığa işaret edebilir. Rotayı yeniden gözden geçirip stratejinizi netleştirmeniz önerilir."
     },
     "Güç": {
       "upright": "iç güç, sabır, şefkat, cesaret",
       "reversed": "zayıflık, kontrol kaybı, şiddet, korkaklık",
-      "signification upright": "Güç, yumuşak güç ve sabırla zorlukları aşma yetisini temsil eder.",
-      "signification reversed": "Ters pozisyon, içsel gücün zayıflaması veya aşırı güç kullanımı anlamına gelebilir."
+      "signification upright": "Güç, cesaretinizi ve şefkatinizi birleştirerek içsel engelleri aşma yeteneğini simgeler. Zorluklara nazik ama kararlı bir duruşla yaklaşmak, gerçek gücün kaynağıdır.",
+      "signification reversed": "Ters pozisyon, sabırsızlık, öfke veya güç gösterisinin zararlarını işaret edebilir. Kendinizi sakinleştirip empatiyle hareket etmeniz önem taşır."
     },
     "Keşiş": {
       "upright": "bilgelik arayışı, içe dönme, rehberlik, yalnızlık",
       "reversed": "izolasyon, öğüt reddi, görmezden gelme",
-      "signification upright": "Keşiş, içsel arayış ve yalnızlıkla kazanılan bilgelik dönemini simgeler.",
-      "signification reversed": "Ters pozisyon zararlı izolasyon veya dış yardımın reddedilmesini işaret edebilir."
+      "signification upright": "Keşiş, geri çekilerek öz bilince yönelme, derin içsel sorgulama ve olgunlaşma dönemini temsil eder. İçsel ışığı aramak ve öğrendiklerinizi bilgelikle paylaşmak için uygun bir zamandır.",
+      "signification reversed": "Ters pozisyon, sağlıksız yalnızlık, akıl verene kapalı olma veya gereksiz gurur nedeniyle büyümenin engellenmesi anlamına gelebilir. Dengeyi bulmak için topluluk ve rehberlikle ilişki kurun."
     },
     "Kader Çarkı": {
       "upright": "döngüler, kader, fırsat, değişim",
       "reversed": "süregelen şanssızlık, değişime direnç, durgunluk",
-      "signification upright": "Kader Çarkı, hayatın döngülerini ve fırsatların gelip geçmesini hatırlatır.",
-      "signification reversed": "Ters pozisyon, değişime direnç veya olumsuz döngüleri işaret eder."
+      "signification upright": "Kader Çarkı, yaşamın sürekli akışı, fırsatların gel-gitleri ve değişimin kaçınılmaz doğasını hatırlatır. Dönemsel şans ve derslerle karşılaşırsınız; akışı ciddiyetle okuyup zamanlamayı kullanın.",
+      "signification reversed": "Ters pozisyon, kırılgan şans, tekrarlayan olumsuz döngüler veya değişime direnç göstergesidir. Kalıpları tanıyıp bilinçli değişiklikler yapmanız gereklidir."
     },
     "Asılan Adam": {
       "upright": "fedakârlık, bekleme, perspektif değişimi, bırakma",
       "reversed": "anlamsız fedakârlık, inat, değişime direnç",
-      "signification upright": "Asılan Adam, farklı bir perspektiften bakmak için bilinçli bir erteleme veya fedakârlık sürecini simgeler.",
-      "signification reversed": "Ters pozisyon, boşa yapılan fedakârlıklar veya gelişimi engelleyen inatçılığı gösterir."
+      "signification upright": "Asılan Adam, bilinçli bir duruş, fedakârlık ve iç gözlemle yeni bir bakış açısı kazanmayı simgeler. Beklemek ve teslim olmak, başlangıçta pasif görünse de uzun vadede netlik sağlar.",
+      "signification reversed": "Ters pozisyon, anlamsız fedakârlıklar, inat veya değişimi reddetme sonucu durgunluğa işaret edebilir. Fedakarlığın hedefini ve değerini yeniden değerlendirin."
     },
     "Ölüm": {
       "upright": "derin dönüşüm, döngünün sonu, yeniden doğuş",
       "reversed": "değişime direnç, durgunluk, bilinmeze korku",
-      "signification upright": "Ölüm, fiziksel son değil; eskiyi temizleyip yeninin gelmesini sağlayan dönüşüm sürecidir.",
-      "signification reversed": "Ters pozisyon, geçmişe tutunma veya dönüşümü engelleyen direnç anlamına gelebilir."
+      "signification upright": "Ölüm, radikal dönüşümü, bir döngünün sonunu ve ardından gelen yeniden doğuşu simgeler. Eski alışkanlıkları bırakmak, hayatınızda yeni bir alan açar; bu süreç iyileştirici ve arındırıcıdır.",
+      "signification reversed": "Ters pozisyon, değişime direnç, kayıptan kaçınma veya sürecin ertelenmesiyle ilişkili tıkanıklıkları gösterir. Geçmişi bırakmak için yas ve kabullenme gerekebilir."
     },
     "Ölçülülük": {
       "upright": "denge, şifa, uyum, kademeli dönüşüm",
       "reversed": "dengesizlik, aşırılık, sabırsızlık, kaos",
-      "signification upright": "Ölçülülük, karşıtları uyum içinde birleştirerek denge ve şifa getirmeyi öğütler.",
-      "signification reversed": "Ters pozisyon, dengesizlik veya aceleci davranışların zararını gösterir."
+      "signification upright": "Ölçülülük, zıtları uyum içinde dengeleyerek iyileşme ve uyum sağlama sanatını temsil eder. Sabır, ölçülü davranış ve orta yolun seçimiyle ilerlemek faydalıdır.",
+      "signification reversed": "Ters pozisyon, aşırılık, sabırsızlık veya yanlış harmanlamaların yol açtığı dengesizlikleri işaret eder. Dengeli adımlar atılması gerektiğini belirtir."
     },
     "Şeytan": {
       "upright": "bağımlılıklar, yanılsamalar, maddecilik, ayartma",
       "reversed": "kurtuluş, farkındalık, zincirlerin kırılması",
-      "signification upright": "Şeytan, bizi bağlayan kötü alışkanlıkları ve bağımlılıkları gün yüzüne çıkarır.",
-      "signification reversed": "Ters pozisyon, bağımlılıklardan kurtulma ve özgürleşme sürecini gösterir."
+      "signification upright": "Şeytan, bağımlılıklar, korkular ve maddi ya da psikolojik bağlarla sınırlanmayı aydınlatır. Görünmeyen zincirleri tanımak, özgürleşme yolunun ilk adımıdır.",
+      "signification reversed": "Ters pozisyon, bağımlılıklar ve sınırlamalardan kurtulma, farkındalık kazanma ve güçlenme sürecinin başladığını gösterir."
     },
     "Kule": {
       "upright": "sarsıntı, açığa çıkma, yıkıcı özgürleşme, ani değişim",
       "reversed": "değişime direnç, yumuşatılmış çöküş, kademeli yeniden yapılanma",
-      "signification upright": "Kule, yanlış yapıların yıkılması ve acı verici ama gerekli uyanışları simgeler.",
-      "signification reversed": "Ters pozisyon, daha yavaş veya daha az şiddetli bir yıkımı ve yeniden yapılanmayı gösterebilir."
+      "signification upright": "Kule, yanılsamaların ve kırılgan yapıların aniden çöktüğünü, zorlayıcı ama arındırıcı bir uyanışı sembolize eder. Kriz ne kadar sarsıcı olursa olsun, gerçeklik ortaya çıkar ve daha sağlam temeller inşa edilebilir.",
+      "signification reversed": "Ters pozisyon, krizin ertelenmesi, hafifletilmesi veya yüzleşilmemiş sorunların ertelemeyle sürdüğünü gösterebilir. Yine de ders alınması gereklidir."
     },
     "Yıldız": {
       "upright": "umut, ilham, ruhsal yenilenme, iyimserlik",
       "reversed": "umutsuzluk, inanç kaybı, karamsarlık",
-      "signification upright": "Yıldız, umut ve ilham kaynağıdır; ruhsal tazelenme ve yeniden güçlenme vaat eder.",
-      "signification reversed": "Ters pozisyon, umudun yeniden bulunması gerektiğini işaret eder."
+      "signification upright": "Yıldız, umut, ilham ve ruhsal yenilenmeyi müjdeler. İyileşme ve ilham dolu bir döneme giriyorsunuz; inancınızı tazeleyin ve vizyonunuzu besleyin.",
+      "signification reversed": "Ters pozisyon, umutsuzluk veya ilham kaybı yaşandığını; yeniden güven ve ilham kaynakları bulma ihtiyacını işaret eder."
     },
     "Ay": {
       "upright": "şaşırtma, kafa karışıklığı, korkular, bilinçaltı, sırlar",
       "reversed": "açığa çıkma, gerçeklerin ortaya çıkışı, illüzyonun sona ermesi",
-      "signification upright": "Ay, bilinçaltı korkuları ve belirsizlikleri gösterir; sezgilere güvenilmesi gerektiğini hatırlatır.",
-      "signification reversed": "Ters pozisyon, gerçeklerin ortaya çıkması ve karmaşanın azalması anlamına gelir."
+      "signification upright": "Ay, bilinçaltının, rüyaların ve gizemlerin dünyasını yansıtır; belirsizlik ve yanılsamalarla karşılaşabilirsiniz. İç sesinize güvenmek ve acele kararlar vermemek önemlidir.",
+      "signification reversed": "Ters pozisyon, belirsizliklerin çözülmesi, gerçeklerin gün yüzüne çıkması ve sezgilerin netleşmeye başlaması anlamına gelir."
     },
     "Güneş": {
       "upright": "sevinç, başarı, canlılık, kutlama",
       "reversed": "kibir, gösteriş, geçici başarı",
-      "signification upright": "Güneş, netlik, enerji ve başarıyı temsil eder; olumlu bir dönemi müjdeler.",
-      "signification reversed": "Ters pozisyon, aşırı gurur veya yüzeysel başarının risklerine işaret eder."
+      "signification upright": "Güneş, neşe, canlılık ve başarının simgesidir; başarı ve berraklıkla dolu bir dönem sizi bekliyor. Başarılar kutlanmalı ve enerjinizi paylaşmalısınız.",
+      "signification reversed": "Ters pozisyon, kibir veya yüzeysel başarıların uyarısıdır; alçakgönüllülük ve gerçek değerleri hatırlamak önemlidir."
     },
     "Mahkeme": {
       "upright": "yeniden doğuş, çağrı, hesaplaşma, içsel değerlendirme",
       "reversed": "gelişimi reddetme, sert yargı, suçluluk duygusu",
-      "signification upright": "Mahkeme, uyanış ve geçmişin değerlendirilmesi için çağrıdır; içsel dönüşüm fırsatı sunar.",
-      "signification reversed": "Ters pozisyon, değişim çağrılarını reddetme veya kendini suçlama eğilimini gösterir."
+      "signification upright": "Mahkeme, içsel bir çağrı, muhasebe ve yeniden doğuşu simgeler. Geçmişin derslerini görüp sorumluluk almak, ruhsal bir arınma ve yeni bir başlangıç sağlar.",
+      "signification reversed": "Ters pozisyon, değişimi reddetme, kendini affetmeme veya ağır suçluluk duygularıyla tıkanma riskini gösterir. Affetme ve sorumluluk arasında denge kurmak gerekir."
     },
     "Dünya": {
       "upright": "tamamlama, uyum, döngünün sonu, bütünlük",
       "reversed": "hedefe yakın başarısızlık, mükemmeliyetçilik, tamamlanmamışlık",
-      "signification upright": "Dünya, bir döngünün başarıyla tamamlanmasını ve bütünlüğü simgeler.",
-      "signification reversed": "Ters pozisyon, hedefe ulaşamama ya da tamamlama korkusunu gösterebilir."
+      "signification upright": "Dünya, tamamlama, bütünlük ve başarı hissini temsil eder; emeklerinizin karşılığını alacağınız, döngünün tamamlandığı ve yeni bir seviyeye geçtiğiniz bir dönemdir.",
+      "signification reversed": "Ters pozisyon, eksiklik hissi, mükemmeliyetçilik ya da tamamlanmadan kaynaklanan kaygılar olabilir. Başarıyı kabul edip bir sonraki adımı planlamak önemlidir."
     }
   }
 }
