@@ -1,0 +1,183 @@
+{
+  "messages": {
+    "draw_card": "抽一张牌",
+    "drawing_card": "正在抽牌...",
+    "concentrating": "专注中...",
+    "preparing_arcana": "正在准备奥秘...",
+    "upright": "⬆ 正位 ⬆",
+    "reversed": "⬇ 逆位 ⬇",
+    "thanks": "✨ 希望你喜欢你的解读！ ✨",
+    "continue_exploring": "🔮 继续探索塔罗的奥秘！ 🔮",
+    "new_reading": "✨ 新的解读",
+    "new_reading_countdown": "✨ 新的解读 ({seconds}s) ✨",
+    "app_title": "欢迎来到占卜塔罗",
+    "draw_instruction": "点击牌\n获取预测",
+    "crystals_ad": "💎 水晶与矿物商店 - 免费送货 💎",
+    "love_ad": "💕 用Astrology+寻找爱情 💕\n基于你的出生星盘的匹配",
+    "tarot_course_ad": "🔮 专业塔罗课程 🔮\n成为认证的塔罗师 - 免费注册",
+    "tap_to_return": "点击牌返回",
+    "touch_to_enlarge": "🔍 点击放大",
+    "your_card": "你的牌",
+    "support_app": "支持应用",
+    "ad_message": "你喜欢这个免费应用吗？\n帮助我们维护和改进它！",
+    "later": "稍后",
+    "support": "支持",
+    "done": "完成",
+    "premium_button_base": "Mme T 高级聊天",
+    "premium_button_price_suffix": " ({price})",
+    "premium_button_provider_suffix": " - {provider}",
+    "provider_google": "Google Play",
+    "provider_amazon": "Amazon Appstore",
+    "provider_simulation": "演示模式",
+    "provider_disabled": "不可用",
+    "loading": "加载中...",
+    "signification_error": "解读加载错误",
+    "loading_messages": [
+      "🔮 正在专注你的问题...",
+      "🃏 正在洗牌...",
+      "✨ 能量正在对齐...",
+      "🌙 正在咨询星辰...",
+      "💫 正在解读奥秘..."
+    ],
+    "chat_mme_t": "Mme T 聊天",
+    "mme_t_intro": "你好 ✨ 我是Mme T，你的占卜师。今天有什么问题困扰你？我能为你做些什么？",
+    "mme_t_thanks": "感谢咨询Mme T。随时欢迎再次来访获取新的指引。",
+    "store_preparing": "商店准备中...",
+    "store_preparing_retry": "商店准备中，请稍后重试",
+    "store_unavailable_platform": "该平台无法使用商店",
+    "store_mobile_only": "仅可在移动端购买",
+    "thanks_for_support": "感谢您的支持！",
+    "thanks_for_support_via": "感谢通过{provider}的支持！",
+    "configure_backend_hint": "配置MME_T_BACKEND_URL以启用Mme T咨询。",
+    "purchase_error_title": "购买失败",
+    "thanks_title": "谢谢！"
+  },
+  "significations": {
+    "愚者": {
+      "upright": "新的开始、天真、自由、冒险、潜力",
+      "reversed": "鲁莽、迷失方向、疏忽、犹豫",
+      "signification upright": "愚者象征着新的旅程和无畏地迈向未知。它鼓励我们保持开放与信任，勇于冒险并拥抱潜力。",
+      "signification reversed": "逆位的愚者可能表示缺乏计划或轻率行事，提醒在自由与责任间找到平衡。"
+    },
+    "魔术师": {
+      "upright": "开始、资源、热情、行动力、创造力",
+      "reversed": "幻象、操控、分心、欺骗",
+      "signification upright": "魔术师代表将想法转化为现实的能力，提示你拥有实现目标的工具与资源。",
+      "signification reversed": "逆位的魔术师可能暗示操控或误导，或能量分散，缺乏专注。"
+    },
+    "女祭司": {
+      "upright": "直觉、智慧、潜意识、秘密",
+      "reversed": "隐藏的秘密、故意忽视、直觉受阻",
+      "signification upright": "女祭司象征内在的智慧与直觉，提醒倾听内心的声音和神秘的信息。",
+      "signification reversed": "逆位可能表明信息被隐藏或直觉被阻塞，需要更多的内省。"
+    },
+    "女皇": {
+      "upright": "丰饶、养育、创造力、自然、关怀",
+      "reversed": "依赖、被忽视、创造阻滞、过度控制",
+      "signification upright": "女皇代表滋养与创造，鼓励你拥抱丰盛与关怀的力量。",
+      "signification reversed": "逆位可能表示过度依赖或缺乏自我关照，创造力受阻。"
+    },
+    "皇帝": {
+      "upright": "权威、秩序、稳定、责任",
+      "reversed": "专制、僵化、滥权、缺乏弹性",
+      "signification upright": "皇帝象征秩序与结构，提醒建立清晰的框架与承担责任。",
+      "signification reversed": "逆位提示权力滥用或过度控制，需要寻求更灵活的方式。"
+    },
+    "教皇": {
+      "upright": "传统、教导、精神导师、仪式",
+      "reversed": "教条主义、刻板、盲从",
+      "signification upright": "教皇代表传承的智慧与正规教导，有时指导师或制度性的学习。",
+      "signification reversed": "逆位警示教条或无需盲从，鼓励发展个人信念。"
+    },
+    "恋人": {
+      "upright": "选择、连接、爱、重要决策",
+      "reversed": "错误选择、分离、犹豫、冲突",
+      "signification upright": "恋人牌强调关系中的选择与价值观的一致，是深刻联结与重要抉择的象征。",
+      "signification reversed": "逆位表示选择失误或内心冲突，可能导致关系裂痕。"
+    },
+    "战车": {
+      "upright": "意志力、驾驭对立力量、胜利、进展",
+      "reversed": "失控、分散力量、因方向不明而失败",
+      "signification upright": "战车象征通过意志力和决心取得进展，掌控不同力量以达成目标。",
+      "signification reversed": "逆位表示方向混乱或控制力下降，需要重新聚焦。"
+    },
+    "力量": {
+      "upright": "内在力量、勇气、温柔的影响、耐心",
+      "reversed": "软弱、控制力丧失、暴力或懦弱",
+      "signification upright": "力量强调用同情与耐心克服困难，而不是武力。它显示真正的勇气来自内心。",
+      "signification reversed": "逆位可能说明内心力量被削弱或失控的情绪。"
+    },
+    "隐士": {
+      "upright": "寻求真理、内省、退隐、引导",
+      "reversed": "孤立、拒绝建议、闭塞",
+      "signification upright": "隐士鼓励沉静与反思，通过内在探索获得智慧与方向。",
+      "signification reversed": "逆位可能表明自我隔离或拒绝外界有益的指引。"
+    },
+    "命运之轮": {
+      "upright": "循环、因果、机会、命运的转变",
+      "reversed": "不顺、抗拒变化、停滞",
+      "signification upright": "命运之轮提醒我们生活在不断变化的循环中，机会与挑战交替出现。",
+      "signification reversed": "逆位提示时局不利或因循守旧，需顺应变化或打破旧模式。"
+    },
+    "倒吊人": {
+      "upright": "自愿的牺牲、暂停、换个角度、放下",
+      "reversed": "徒劳的牺牲、固执、抗拒改变",
+      "signification upright": "倒吊人提示通过暂停与让步获得新视角，常是必要的转化阶段。",
+      "signification reversed": "逆位表示牺牲无意义或顽固不化，阻碍成长。"
+    },
+    "死亡": {
+      "upright": "重大转变、结束与重生、清理旧秩序",
+      "reversed": "抗拒改变、停滞、害怕未知",
+      "signification upright": "死亡象征必要的结束与随之而来的新生，是清除旧事物以迎接更新的过程。",
+      "signification reversed": "逆位表示对改变的抗拒，阻碍转化与成长。"
+    },
+    "节制": {
+      "upright": "平衡、治愈、节制、渐进的转化",
+      "reversed": "失衡、过度、急躁、混乱",
+      "signification upright": "节制鼓励温和的整合与缓步前进，通过平衡达到治愈与和谐。",
+      "signification reversed": "逆位提示失衡或追求快速结果而破坏和谐。"
+    },
+    "魔鬼": {
+      "upright": "束缚、欲望、幻象、依赖",
+      "reversed": "觉醒、解脱、挣脱束缚",
+      "signification upright": "魔鬼揭示束缚我们的欲望与习惯，挑战我们面对阴影与依赖。",
+      "signification reversed": "逆位说明正在觉察并逐步摆脱不良依赖与限制。"
+    },
+    "塔": {
+      "upright": "剧变、觉醒、破坏性的解放、突发之变",
+      "reversed": "抗拒变革、缓和的崩解、渐进的重建",
+      "signification upright": "塔代表突如其来的破坏，虽痛苦却能清除虚假与不稳固的结构，带来重建契机。",
+      "signification reversed": "逆位可能表示变革被延缓或变得不那么剧烈，但仍促使必要的调整。"
+    },
+    "星": {
+      "upright": "希望、灵感、恢复、乐观",
+      "reversed": "绝望、失去信心、悲观",
+      "signification upright": "星星带来希望与疗愈，是恢复信心与灵感的象征。",
+      "signification reversed": "逆位表示需要重建信念与希望。"
+    },
+    "月亮": {
+      "upright": "幻象、迷惑、恐惧、潜意识、隐秘",
+      "reversed": "清晰、真相显现、幻象终结",
+      "signification upright": "月亮揭示潜意识与隐秘的恐惧，提醒谨慎并倾听内在指引。",
+      "signification reversed": "逆位预示真相浮出水面，幻象开始消散。"
+    },
+    "太阳": {
+      "upright": "喜悦、成功、活力、成就",
+      "reversed": "虚荣、浮夸的自豪、暂时的成功",
+      "signification upright": "太阳象征光明、能量与清晰，是成就与庆祝的象征。",
+      "signification reversed": "逆位提醒注意骄傲或表面成功的不稳定性。"
+    },
+    "审判": {
+      "upright": "重生、觉醒、审视、召唤",
+      "reversed": "拒绝成长、苛责、内疚",
+      "signification upright": "审判代表内在或外在的唤醒，是评估与重整人生方向的时刻。",
+      "signification reversed": "逆位可能表现为逃避改变或受困于自责。"
+    },
+    "世界": {
+      "upright": "完成、和谐、周期的终结、整体性",
+      "reversed": "临近目标失败、完美主义、未完成",
+      "signification upright": "世界象征任务完成与整合，是旅程的圆满结束与庆祝。",
+      "signification reversed": "逆位表明接近成功却受阻或对完成感到恐惧。"
+    }
+  }
+}

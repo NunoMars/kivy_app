@@ -1,0 +1,432 @@
+{
+  "messages": {
+    "draw_card": "TIRER UNE CARTE",
+    "drawing_card": "JE TIRE UNE CARTE...",
+    "concentrating": "Concentration en cours...",
+    "preparing_arcana": "Préparation des arcanes...",
+    "upright": "⬆ À L'ENDROIT ⬆",
+    "reversed": "⬇ À L'ENVERS ⬇",
+    "thanks": "✨ J'espère que votre prédiction vous a plu ! ✨",
+    "continue_exploring": "🔮 Continuez à explorer les mystères du tarot ! 🔮",
+    "new_reading": "✨ Nouveau tirage",
+    "new_reading_countdown": "✨ Nouveau tirage ({seconds}s) ✨",
+    "app_title": "Bienvenue dans le tarot divinatoire",
+    "draw_instruction": "Touchez la carte\npour une prédiction",
+    "mme_t_intro": "Bonjour ✨ Je suis Mme T, ta cartomancienne. Quelle question te préoccupe aujourd'hui ? En quoi puis-je t'aider ?",
+    "mme_t_thanks": "Merci d'avoir consulté Mme T. Reviens quand tu veux pour une nouvelle guidance.",
+    "crystals_ad": "💎 Boutique Cristaux & Minéraux - Livraison gratuite 💎",
+    "love_ad": "💕 Trouvez l'Amour avec Astrologie+ 💕\nCompatibilité amoureuse basée sur votre thème astral",
+    "tarot_course_ad": "🔮 Formation Tarot Professionnel 🔮\nDevenez cartomancien certifié - Inscription gratuite",
+    "tap_to_return": "Touchez la carte pour revenir",
+    "touch_to_enlarge": "🔍 Touchez pour agrandir",
+    "your_card": "Votre carte",
+    "support_app": "Soutenez l'application",
+    "ad_message": "Cette application gratuite vous plaît ?\nAidez-nous à la maintenir et l'améliorer !",
+    "later": "Plus tard",
+    "support": "Soutenir",
+    "done": "Terminer",
+    "premium_button_base": "Chat avec Mme T Premium",
+    "premium_button_price_suffix": " ({price})",
+    "premium_button_provider_suffix": " - {provider}",
+    "provider_google": "Google Play",
+    "provider_amazon": "Amazon Appstore",
+    "provider_simulation": "Mode démo",
+    "provider_disabled": "Indisponible",
+    "loading": "Chargement...",
+    "signification_error": "Erreur de chargement de la signification",
+    "store_preparing": "Boutique en cours de préparation...",
+    "store_preparing_retry": "Boutique en cours de préparation, réessayez dans un instant",
+    "store_unavailable_platform": "Boutique indisponible sur cette plateforme",
+    "store_mobile_only": "Achat disponible sur mobile",
+    "chat_mme_t": "Chat Mme T",
+    "loading_messages": [
+      "🔮 Je me concentre sur ta question...",
+      "🃏 Mélange des cartes en cours...",
+      "✨ Les énergies s'alignent...",
+      "🌙 Consultation des astres...",
+      "💫 Interprétation des arcanes..."
+    ]
+  },
+  "significations": {
+    "Le Bateleur": {
+      "a l'endroit": "commencement, ressource, enthousiasme, énergie, créativité",
+      "a l'envers": "illusion, manipulation, manque de focus, dispersion, tromperie",
+      "signification a l'endroit": "Le Bateleur est la carte du tarot représentant le commencement, l'énergie vitale et l'action. Il symbolise la confiance en soi, la créativité et la volonté d'agir. C'est une carte qui incite à prendre des décisions, à transformer les idées en actions concrètes et à saisir les opportunités. Le Bateleur invite également à l'exploration, à la communication claire et à l'expression créative. C'est une carte qui rappelle l'importance de l'initiative et de la confiance en ses propres talents et ressources pour atteindre ses objectifs.",
+      "signification a l'envers": "Le Bateleur inversé révèle l'illusion, la manipulation ou l'usage de ses talents à des fins malhonnêtes. Cette position peut indiquer une dispersion des énergies, un manque de focus ou la tendance à tromper autrui par de belles paroles. C'est parfois le charlatan qui abuse de la confiance d'autrui ou la personne qui se ment à elle-même sur ses véritables capacités.",
+      "upright": "commencement, ressource, enthousiasme, énergie, créativité",
+      "reversed": "illusion, manipulation, manque de focus, dispersion, tromperie",
+      "signification upright": "Le Bateleur est la carte du tarot représentant le commencement, l'énergie vitale et l'action. Il symbolise la confiance en soi, la créativité et la volonté d'agir. C'est une carte qui incite à prendre des décisions, à transformer les idées en actions concrètes et à saisir les opportunités. Le Bateleur invite également à l'exploration, à la communication claire et à l'expression créative. C'est une carte qui rappelle l'importance de l'initiative et de la confiance en ses propres talents et ressources pour atteindre ses objectifs.",
+      "signification reversed": "Le Bateleur inversé révèle l'illusion, la manipulation ou l'usage de ses talents à des fins malhonnêtes. Cette position peut indiquer une dispersion des énergies, un manque de focus ou la tendance à tromper autrui par de belles paroles. C'est parfois le charlatan qui abuse de la confiance d'autrui ou la personne qui se ment à elle-même sur ses véritables capacités."
+    },
+    "La Papesse": {
+      "a l'endroit": "intuition, sagesse, connaissance, mystère, secrets",
+      "a l'envers": "secrets cachés, ignorance volontaire, intuition bloquée, superficialité",
+      "signification a l'endroit": "La Papesse est la carte du tarot représentant la sagesse, la connaissance et l'intuition. Elle symbolise la recherche de la vérité, la spiritualité et la connaissance de soi. C'est une carte qui invite à l'introspection, à l'écoute de son intuition et à la recherche de la vérité. La Papesse est une carte qui rappelle l'importance de la sagesse et de la connaissance pour atteindre ses objectifs.",
+      "signification a l'envers": "La Papesse inversée révèle des secrets cachés, l'ignorance volontaire ou une intuition bloquée par les préjugés. Cette position peut indiquer la superficialité, le refus d'accéder à la sagesse intérieure ou l'usage de la connaissance pour manipuler autrui. C'est parfois la fausse spiritualité ou la science sans conscience.",
+      "upright": "intuition, sagesse, connaissance, mystère, secrets",
+      "reversed": "secrets cachés, ignorance volontaire, intuition bloquée, superficialité",
+      "signification upright": "La Papesse est la carte du tarot représentant la sagesse, la connaissance et l'intuition. Elle symbolise la recherche de la vérité, la spiritualité et la connaissance de soi. C'est une carte qui invite à l'introspection, à l'écoute de son intuition et à la recherche de la vérité. La Papesse est une carte qui rappelle l'importance de la sagesse et de la connaissance pour atteindre ses objectifs.",
+      "signification reversed": "La Papesse inversée révèle des secrets cachés, l'ignorance volontaire ou une intuition bloquée par les préjugés. Cette position peut indiquer la superficialité, le refus d'accéder à la sagesse intérieure ou l'usage de la connaissance pour manipuler autrui. C'est parfois la fausse spiritualité ou la science sans conscience."
+    },
+    "L'Imperatrice": {
+      "a l'endroit": "fertilité, créativité, abondance, maternité, connexion à la nature",
+      "a l'envers": "stérilité, créativité bloquée, surprotection, dépendance excessive",
+      "signification a l'endroit": "L'Impératrice représente la force créatrice féminine, la fertilité sous toutes ses formes et l'abondance naturelle. Cette carte évoque la maternité bienveillante, la connexion profonde avec la nature et la capacité à faire naître et grandir. Elle symbolise la sensualité saine, l'intuition créatrice et l'amour inconditionnel qui nourrit la vie. C'est la Grande Mère universelle.",
+      "signification a l'envers": "L'Impératrice inversée peut révéler une créativité bloquée, des problèmes de fertilité ou une maternité étouffante. Cette position peut indiquer la surprotection qui empêche l'autonomie, la dépendance excessive ou la déconnexion avec les cycles naturels de la vie.",
+      "upright": "fertilité, créativité, abondance, maternité, connexion à la nature",
+      "reversed": "stérilité, créativité bloquée, surprotection, dépendance excessive",
+      "signification upright": "L'Impératrice représente la force créatrice féminine, la fertilité sous toutes ses formes et l'abondance naturelle. Cette carte évoque la maternité bienveillante, la connexion profonde avec la nature et la capacité à faire naître et grandir. Elle symbolise la sensualité saine, l'intuition créatrice et l'amour inconditionnel qui nourrit la vie. C'est la Grande Mère universelle.",
+      "signification reversed": "L'Impératrice inversée peut révéler une créativité bloquée, des problèmes de fertilité ou une maternité étouffante. Cette position peut indiquer la surprotection qui empêche l'autonomie, la dépendance excessive ou la déconnexion avec les cycles naturels de la vie."
+    },
+    "L'Empereur": {
+      "a l'endroit": "autorité légitime, structure, ordre, responsabilité, protection paternelle",
+      "a l'envers": "tyrannie, rigidité excessive, abus d'autorité, manque de structure",
+      "signification a l'endroit": "L'Empereur représente l'autorité légitime et la capacité à créer l'ordre à partir du chaos. Cette carte évoque la responsabilité, la protection paternelle et la structure nécessaire au développement. Elle symbolise le leader sage qui utilise son pouvoir pour protéger et organiser, établissant des lois justes et des limites saines. C'est l'autorité au service du bien commun.",
+      "signification a l'envers": "L'Empereur inversé révèle l'abus d'autorité, la tyrannie ou une rigidité excessive qui étouffe la créativité. Cette position peut indiquer un manque de structure nécessaire, l'incapacité à prendre ses responsabilités ou à l'inverse, un contrôle oppressant qui empêche l'épanouissement d'autrui.",
+      "upright": "autorité légitime, structure, ordre, responsabilité, protection paternelle",
+      "reversed": "tyrannie, rigidité excessive, abus d'autorité, manque de structure",
+      "signification upright": "L'Empereur représente l'autorité légitime et la capacité à créer l'ordre à partir du chaos. Cette carte évoque la responsabilité, la protection paternelle et la structure nécessaire au développement. Elle symbolise le leader sage qui utilise son pouvoir pour protéger et organiser, établissant des lois justes et des limites saines. C'est l'autorité au service du bien commun.",
+      "signification reversed": "L'Empereur inversé révèle l'abus d'autorité, la tyrannie ou une rigidité excessive qui étouffe la créativité. Cette position peut indiquer un manque de structure nécessaire, l'incapacité à prendre ses responsabilités ou à l'inverse, un contrôle oppressant qui empêche l'épanouissement d'autrui."
+    },
+    "Le Pape": {
+      "a l'endroit": "enseignement spirituel, tradition sacrée, guidance morale, initiation, sagesse transmise",
+      "a l'envers": "dogmatisme, manipulation religieuse, tradition sclérosée, faux prophète",
+      "signification a l'endroit": "Le Pape représente l'enseignement spirituel authentique et la transmission de la sagesse sacrée. Cette carte évoque le guide spirituel, l'initiateur qui relie l'humain au divin par la connaissance traditionnelle. Elle symbolise la morale éclairée, les rites de passage et l'apprentissage des mystères. C'est le pont entre le visible et l'invisible, l'enseignant qui révèle les vérités éternelles.",
+      "signification a l'envers": "Le Pape inversé révèle le dogmatisme aveugle, la manipulation par le pouvoir religieux ou une tradition devenue sclérosée. Cette position peut indiquer un faux prophète, l'usage de la spiritualité à des fins personnelles ou le rejet stérile de toute guidance traditionnelle.",
+      "upright": "enseignement spirituel, tradition sacrée, guidance morale, initiation, sagesse transmise",
+      "reversed": "dogmatisme, manipulation religieuse, tradition sclérosée, faux prophète",
+      "signification upright": "Le Pape représente l'enseignement spirituel authentique et la transmission de la sagesse sacrée. Cette carte évoque le guide spirituel, l'initiateur qui relie l'humain au divin par la connaissance traditionnelle. Elle symbolise la morale éclairée, les rites de passage et l'apprentissage des mystères. C'est le pont entre le visible et l'invisible, l'enseignant qui révèle les vérités éternelles.",
+      "signification reversed": "Le Pape inversé révèle le dogmatisme aveugle, la manipulation par le pouvoir religieux ou une tradition devenue sclérosée. Cette position peut indiquer un faux prophète, l'usage de la spiritualité à des fins personnelles ou le rejet stérile de toute guidance traditionnelle."
+    },
+    "L'Amoureux": {
+      "a l'endroit": "choix difficile, union, amour, dualité, décision importante",
+      "a l'envers": "mauvais choix, séparation, indécision, conflit intérieur",
+      "signification a l'endroit": "L'Amoureux représente avant tout un choix crucial à faire, souvent entre deux voies opposées. Cette carte évoque l'union, l'amour véritable, mais aussi la nécessité de choisir entre différentes options de vie. Elle symbolise la maturité émotionnelle, l'engagement authentique et l'harmonie entre les opposés. C'est l'équilibre entre passion et raison, entre désir et responsabilité.",
+      "signification a l'envers": "L'Amoureux inversé indique un mauvais choix, une séparation ou une profonde indécision. Cette position révèle des conflits intérieurs, l'incapacité à choisir ou des décisions prises pour de mauvaises raisons. Elle peut signaler des relations déséquilibrées, des infidélités ou l'incapacité à s'engager authentiquement. C'est parfois le regret d'un choix passé.",
+      "upright": "choix difficile, union, amour, dualité, décision importante",
+      "reversed": "mauvais choix, séparation, indécision, conflit intérieur",
+      "signification upright": "L'Amoureux représente avant tout un choix crucial à faire, souvent entre deux voies opposées. Cette carte évoque l'union, l'amour véritable, mais aussi la nécessité de choisir entre différentes options de vie. Elle symbolise la maturité émotionnelle, l'engagement authentique et l'harmonie entre les opposés. C'est l'équilibre entre passion et raison, entre désir et responsabilité.",
+      "signification reversed": "L'Amoureux inversé indique un mauvais choix, une séparation ou une profonde indécision. Cette position révèle des conflits intérieurs, l'incapacité à choisir ou des décisions prises pour de mauvaises raisons. Elle peut signaler des relations déséquilibrées, des infidélités ou l'incapacité à s'engager authentiquement. C'est parfois le regret d'un choix passé."
+    },
+    "Le Chariot": {
+      "a l'endroit": "maîtrise des forces opposées, volonté triomphante, progression, victoire par l'équilibre",
+      "a l'envers": "perte de contrôle, forces dispersées, échec par manque de direction, conflit intérieur",
+      "signification a l'endroit": "Le Chariot représente la victoire obtenue par la maîtrise des forces opposées. Cette carte évoque la capacité à diriger des énergies contradictoires vers un même but, comme un conducteur maîtrisant ses chevaux. Elle symbolise la volonté triomphante, l'équilibre dynamique et la progression constante malgré les obstacles. C'est l'art de transformer les oppositions en complémentarités.",
+      "signification a l'envers": "Le Chariot inversé révèle la perte de contrôle, l'incapacité à harmoniser les forces en présence ou l'échec dû à un manque de direction claire. Cette position peut indiquer des énergies dispersées, des conflits intérieurs paralysants ou l'illusion de maîtriser ce qui nous échappe en réalité.",
+      "upright": "maîtrise des forces opposées, volonté triomphante, progression, victoire par l'équilibre",
+      "reversed": "perte de contrôle, forces dispersées, échec par manque de direction, conflit intérieur",
+      "signification upright": "Le Chariot représente la victoire obtenue par la maîtrise des forces opposées. Cette carte évoque la capacité à diriger des énergies contradictoires vers un même but, comme un conducteur maîtrisant ses chevaux. Elle symbolise la volonté triomphante, l'équilibre dynamique et la progression constante malgré les obstacles. C'est l'art de transformer les oppositions en complémentarités.",
+      "signification reversed": "Le Chariot inversé révèle la perte de contrôle, l'incapacité à harmoniser les forces en présence ou l'échec dû à un manque de direction claire. Cette position peut indiquer des énergies dispersées, des conflits intérieurs paralysants ou l'illusion de maîtriser ce qui nous échappe en réalité."
+    },
+    "La Justice": {
+      "a l'endroit": "justice, équilibre, vérité, loi, équité",
+      "a l'envers": "injustice, déséquilibre, partialité, corruption, vengeance",
+      "signification a l'endroit": "La Justice est la carte du tarot représentant la justice, l'équilibre et la vérité. Elle symbolise la loi, l'équité et la vérité. C'est une carte qui invite à la justice, à l'équilibre et à la vérité. La Justice est une carte qui rappelle l'importance de la justice et de l'équilibre pour atteindre ses objectifs.",
+      "signification a l'envers": "La Justice inversée révèle l'injustice, la partialité ou la corruption des systèmes. Cette position peut indiquer un déséquilibre des forces, la vengeance qui remplace la justice, ou l'incapacité à voir la vérité par parti pris. C'est parfois le jugement erroné ou l'abus du système judiciaire.",
+      "upright": "justice, équilibre, vérité, loi, équité",
+      "reversed": "injustice, déséquilibre, partialité, corruption, vengeance",
+      "signification upright": "La Justice est la carte du tarot représentant la justice, l'équilibre et la vérité. Elle symbolise la loi, l'équité et la vérité. C'est une carte qui invite à la justice, à l'équilibre et à la vérité. La Justice est une carte qui rappelle l'importance de la justice et de l'équilibre pour atteindre ses objectifs.",
+      "signification reversed": "La Justice inversée révèle l'injustice, la partialité ou la corruption des systèmes. Cette position peut indiquer un déséquilibre des forces, la vengeance qui remplace la justice, ou l'incapacité à voir la vérité par parti pris. C'est parfois le jugement erroné ou l'abus du système judiciaire."
+    },
+    "L'Hermite": {
+      "a l'endroit": "quête spirituelle, sagesse, introspection, guide intérieur, solitude constructive",
+      "a l'envers": "isolement stérile, refus des conseils, orgueil spirituel, solitude subie",
+      "signification a l'endroit": "L'Hermite représente la quête spirituelle et la recherche de la vérité intérieure. Cette carte évoque la sagesse acquise par l'expérience, la nécessité de se retirer du monde pour mieux se comprendre. Elle symbolise le guide spirituel, celui qui éclaire le chemin des autres grâce à sa propre illumination. C'est la solitude choisie pour l'évolution personnelle.",
+      "signification a l'envers": "L'Hermite inversé indique un isolement stérile, le refus d'écouter les conseils avisés ou un orgueil spirituel qui empêche l'apprentissage. Cette position peut révéler une solitude subie plutôt que choisie, ou l'incapacité à partager sa sagesse avec autrui par égoïsme ou misanthropie.",
+      "upright": "quête spirituelle, sagesse, introspection, guide intérieur, solitude constructive",
+      "reversed": "isolement stérile, refus des conseils, orgueil spirituel, solitude subie",
+      "signification upright": "L'Hermite représente la quête spirituelle et la recherche de la vérité intérieure. Cette carte évoque la sagesse acquise par l'expérience, la nécessité de se retirer du monde pour mieux se comprendre. Elle symbolise le guide spirituel, celui qui éclaire le chemin des autres grâce à sa propre illumination. C'est la solitude choisie pour l'évolution personnelle.",
+      "signification reversed": "L'Hermite inversé indique un isolement stérile, le refus d'écouter les conseils avisés ou un orgueil spirituel qui empêche l'apprentissage. Cette position peut révéler une solitude subie plutôt que choisie, ou l'incapacité à partager sa sagesse avec autrui par égoïsme ou misanthropie."
+    },
+    "La Roue de La Fortune": {
+      "a l'endroit": "cycles naturels, karma, opportunité, changement de fortune, destin en mouvement",
+      "a l'envers": "malchance persistante, résistance aux cycles, mauvais karma, stagnation",
+      "signification a l'endroit": "La Roue de Fortune représente les cycles naturels de la vie et l'action du karma. Cette carte évoque les changements de fortune, les opportunités qui se présentent et l'importance de saisir le bon moment. Elle symbolise le destin en mouvement, les leçons de l'expérience et la compréhension que tout est en perpétuel changement. C'est l'acceptation des hauts et des bas de l'existence.",
+      "signification a l'envers": "La Roue de Fortune inversée peut indiquer une période de malchance persistante, la résistance aux cycles naturels ou les conséquences d'un mauvais karma. Cette position révèle parfois la stagnation volontaire, l'incapacité à saisir les opportunités ou la répétition d'erreurs qui maintiennent dans l'échec.",
+      "upright": "cycles naturels, karma, opportunité, changement de fortune, destin en mouvement",
+      "reversed": "malchance persistante, résistance aux cycles, mauvais karma, stagnation",
+      "signification upright": "La Roue de Fortune représente les cycles naturels de la vie et l'action du karma. Cette carte évoque les changements de fortune, les opportunités qui se présentent et l'importance de saisir le bon moment. Elle symbolise le destin en mouvement, les leçons de l'expérience et la compréhension que tout est en perpétuel changement. C'est l'acceptation des hauts et des bas de l'existence.",
+      "signification reversed": "La Roue de Fortune inversée peut indiquer une période de malchance persistante, la résistance aux cycles naturels ou les conséquences d'un mauvais karma. Cette position révèle parfois la stagnation volontaire, l'incapacité à saisir les opportunités ou la répétition d'erreurs qui maintiennent dans l'échec."
+    },
+    "La Force": {
+      "a l'endroit": "force intérieure, maîtrise de soi, courage, douceur, persuasion",
+      "a l'envers": "faiblesse, manque de contrôle, violence, brutalité, lâcheté",
+      "signification a l'endroit": "La Force représente la maîtrise de ses instincts par la douceur plutôt que par la violence. Cette carte évoque la force intérieure, le courage moral et la capacité à surmonter les obstacles par la persuasion et la patience. Elle symbolise l'intelligence émotionnelle, la compassion ferme et la victoire de l'esprit sur la matière. C'est dominer ses pulsions destructrices par l'amour et la sagesse.",
+      "signification a l'envers": "La Force inversée indique un manque de maîtrise de soi, l'usage de la violence là où la douceur serait plus efficace, ou inversement, une faiblesse excessive face aux défis. Cette position peut révéler la lâcheté, l'incapacité à se défendre ou l'usage abusif de son pouvoir sur autrui.",
+      "upright": "force intérieure, maîtrise de soi, courage, douceur, persuasion",
+      "reversed": "faiblesse, manque de contrôle, violence, brutalité, lâcheté",
+      "signification upright": "La Force représente la maîtrise de ses instincts par la douceur plutôt que par la violence. Cette carte évoque la force intérieure, le courage moral et la capacité à surmonter les obstacles par la persuasion et la patience. Elle symbolise l'intelligence émotionnelle, la compassion ferme et la victoire de l'esprit sur la matière. C'est dominer ses pulsions destructrices par l'amour et la sagesse.",
+      "signification reversed": "La Force inversée indique un manque de maîtrise de soi, l'usage de la violence là où la douceur serait plus efficace, ou inversement, une faiblesse excessive face aux défis. Cette position peut révéler la lâcheté, l'incapacité à se défendre ou l'usage abusif de son pouvoir sur autrui."
+    },
+    "Le Pendu": {
+      "a l'endroit": "sacrifice volontaire, attente, nouvelle perspective, lâcher-prise, initiation",
+      "a l'envers": "sacrifice inutile, entêtement, résistance au changement, impatience",
+      "signification a l'endroit": "Le Pendu représente un sacrifice volontaire pour obtenir une nouvelle perspective. Cette carte évoque l'acceptation d'une période de suspension, d'attente nécessaire pour voir les choses sous un angle différent. C'est le lâcher-prise, l'abandon de nos certitudes pour accéder à une sagesse supérieure. Le Pendu nous enseigne la patience et la valeur de la contemplation face à l'action précipitée.",
+      "signification a l'envers": "Le Pendu inversé indique un sacrifice qui ne mène nulle part, un entêtement stérile ou une résistance au changement nécessaire. Cette position peut révéler de l'impatience face à une situation qui demande pourtant du temps. C'est parfois le refus d'accepter une perspective différente ou l'incapacité à lâcher prise sur des situations dépassées.",
+      "upright": "sacrifice volontaire, attente, nouvelle perspective, lâcher-prise, initiation",
+      "reversed": "sacrifice inutile, entêtement, résistance au changement, impatience",
+      "signification upright": "Le Pendu représente un sacrifice volontaire pour obtenir une nouvelle perspective. Cette carte évoque l'acceptation d'une période de suspension, d'attente nécessaire pour voir les choses sous un angle différent. C'est le lâcher-prise, l'abandon de nos certitudes pour accéder à une sagesse supérieure. Le Pendu nous enseigne la patience et la valeur de la contemplation face à l'action précipitée.",
+      "signification reversed": "Le Pendu inversé indique un sacrifice qui ne mène nulle part, un entêtement stérile ou une résistance au changement nécessaire. Cette position peut révéler de l'impatience face à une situation qui demande pourtant du temps. C'est parfois le refus d'accepter une perspective différente ou l'incapacité à lâcher prise sur des situations dépassées."
+    },
+    "La Mort": {
+      "a l'endroit": "transformation profonde, fin d'un cycle, renaissance, changement radical, purification",
+      "a l'envers": "résistance au changement, stagnation, peur de l'inconnu, transformation bloquée",
+      "signification a l'endroit": "La Mort ne prédit pas la mort physique mais une transformation profonde et nécessaire. Cette carte annonce la fin d'un cycle de vie et le début d'un nouveau chapitre. Elle symbolise la métamorphose, la purification et la renaissance après avoir abandonné ce qui ne nous sert plus. C'est l'acceptation du changement inévitable pour permettre une évolution spirituelle.",
+      "signification a l'envers": "La Mort inversée révèle une résistance au changement nécessaire, la peur de lâcher prise sur le passé ou l'incapacité à accepter que certaines situations soient définitivement terminées. Cette position indique une stagnation volontaire ou l'illusion qu'on peut empêcher l'évolution naturelle des choses.",
+      "upright": "transformation profonde, fin d'un cycle, renaissance, changement radical, purification",
+      "reversed": "résistance au changement, stagnation, peur de l'inconnu, transformation bloquée",
+      "signification upright": "La Mort ne prédit pas la mort physique mais une transformation profonde et nécessaire. Cette carte annonce la fin d'un cycle de vie et le début d'un nouveau chapitre. Elle symbolise la métamorphose, la purification et la renaissance après avoir abandonné ce qui ne nous sert plus. C'est l'acceptation du changement inévitable pour permettre une évolution spirituelle.",
+      "signification reversed": "La Mort inversée révèle une résistance au changement nécessaire, la peur de lâcher prise sur le passé ou l'incapacité à accepter que certaines situations soient définitivement terminées. Cette position indique une stagnation volontaire ou l'illusion qu'on peut empêcher l'évolution naturelle des choses."
+    },
+    "La Temperance": {
+      "a l'endroit": "alchimie, guérison, protection divine, équilibre des forces, transformation graduelle",
+      "a l'envers": "déséquilibre, excès, impatience, mélange chaotique, désharmonie",
+      "signification a l'endroit": "La Tempérance représente l'art de mélanger harmonieusement les opposés pour créer quelque chose de nouveau et d'équilibré. Cette carte évoque la guérison, la transformation graduelle et la protection divine. Elle symbolise l'alchimie spirituelle, la patience dans l'évolution et la capacité à trouver le juste milieu. C'est l'ange gardien qui veille sur notre progression.",
+      "signification a l'envers": "La Tempérance inversée révèle des déséquilibres, l'incapacité à harmoniser les forces opposées ou l'impatience face aux transformations graduelles. Cette position peut indiquer des excès, des mélanges chaotiques qui ne donnent rien de constructif, ou la perte de la protection spirituelle par orgueil.",
+      "upright": "alchimie, guérison, protection divine, équilibre des forces, transformation graduelle",
+      "reversed": "déséquilibre, excès, impatience, mélange chaotique, désharmonie",
+      "signification upright": "La Tempérance représente l'art de mélanger harmonieusement les opposés pour créer quelque chose de nouveau et d'équilibré. Cette carte évoque la guérison, la transformation graduelle et la protection divine. Elle symbolise l'alchimie spirituelle, la patience dans l'évolution et la capacité à trouver le juste milieu. C'est l'ange gardien qui veille sur notre progression.",
+      "signification reversed": "La Tempérance inversée révèle des déséquilibres, l'incapacité à harmoniser les forces opposées ou l'impatience face aux transformations graduelles. Cette position peut indiquer des excès, des mélanges chaotiques qui ne donnent rien de constructif, ou la perte de la protection spirituelle par orgueil."
+    },
+    "Le Diable": {
+      "a l'endroit": "dépendances, illusions, matérialisme, tentations, chaînes",
+      "a l'envers": "libération, prise de conscience, liberté retrouvée, rupture des chaînes",
+      "signification a l'endroit": "Le Diable représente les dépendances, les illusions et les chaînes qui nous emprisonnent. Cette carte évoque la soumission aux désirs matériels, les addictions, et les relations toxiques. Elle met en garde contre les illusions qui nous aveuglent et nous empêchent d'évoluer. Le Diable nous rappelle que nous sommes souvent nos propres geôliers et que la libération commence par la prise de conscience de nos entraves.",
+      "signification a l'envers": "Le Diable inversé annonce une libération des chaînes qui nous entravaient. C'est la prise de conscience de nos dépendances et la volonté de s'en affranchir. Cette position indique une rupture avec les illusions, une désintoxication (au sens propre ou figuré), et le courage de briser les liens toxiques. C'est un retour vers l'authenticité et la liberté personnelle après avoir reconnu ses erreurs.",
+      "upright": "dépendances, illusions, matérialisme, tentations, chaînes",
+      "reversed": "libération, prise de conscience, liberté retrouvée, rupture des chaînes",
+      "signification upright": "Le Diable représente les dépendances, les illusions et les chaînes qui nous emprisonnent. Cette carte évoque la soumission aux désirs matériels, les addictions, et les relations toxiques. Elle met en garde contre les illusions qui nous aveuglent et nous empêchent d'évoluer. Le Diable nous rappelle que nous sommes souvent nos propres geôliers et que la libération commence par la prise de conscience de nos entraves.",
+      "signification reversed": "Le Diable inversé annonce une libération des chaînes qui nous entravaient. C'est la prise de conscience de nos dépendances et la volonté de s'en affranchir. Cette position indique une rupture avec les illusions, une désintoxication (au sens propre ou figuré), et le courage de briser les liens toxiques. C'est un retour vers l'authenticité et la liberté personnelle après avoir reconnu ses erreurs."
+    },
+    "La Maison Dieu": {
+      "a l'endroit": "bouleversement, révélation, destruction libératrice, éveil brutal, changement soudain",
+      "a l'envers": "résistance au changement, destruction évitée, chute atténuée, transformation progressive",
+      "signification a l'endroit": "La Maison Dieu, aussi appelée La Tour, représente un bouleversement soudain et nécessaire. Cette carte annonce la destruction de structures obsolètes, l'effondrement d'illusions ou de situations qui nous empêchaient d'avancer. Bien que douloureuse, cette destruction est libératrice et permet une reconstruction sur de meilleures bases. C'est l'éveil brutal à une vérité cachée, la fin d'une période d'aveuglement.",
+      "signification a l'envers": "La Maison Dieu inversée peut indiquer une résistance au changement nécessaire ou un bouleversement moins brutal. Les transformations se font plus graduellement, permettant une adaptation progressive. Cette position peut aussi signifier qu'une catastrophe a été évitée de justesse ou que les leçons du changement ont été intégrées. C'est parfois la peur de l'effondrement qui paralyse l'action.",
+      "upright": "bouleversement, révélation, destruction libératrice, éveil brutal, changement soudain",
+      "reversed": "résistance au changement, destruction évitée, chute atténuée, transformation progressive",
+      "signification upright": "La Maison Dieu, aussi appelée La Tour, représente un bouleversement soudain et nécessaire. Cette carte annonce la destruction de structures obsolètes, l'effondrement d'illusions ou de situations qui nous empêchaient d'avancer. Bien que douloureuse, cette destruction est libératrice et permet une reconstruction sur de meilleures bases. C'est l'éveil brutal à une vérité cachée, la fin d'une période d'aveuglement.",
+      "signification reversed": "La Maison Dieu inversée peut indiquer une résistance au changement nécessaire ou un bouleversement moins brutal. Les transformations se font plus graduellement, permettant une adaptation progressive. Cette position peut aussi signifier qu'une catastrophe a été évitée de justesse ou que les leçons du changement ont été intégrées. C'est parfois la peur de l'effondrement qui paralyse l'action."
+    },
+    "L'Etoile": {
+      "a l'endroit": "espoir, inspiration, spiritualité, générosité, optimisme",
+      "a l'envers": "désespoir, perte de foi, pessimisme, égoïsme, illusions perdues",
+      "signification a l'endroit": "L'Étoile est la carte du tarot représentant l'espoir, l'inspiration et la spiritualité. Elle symbolise la générosité, l'optimisme et la spiritualité. C'est une carte qui invite à l'espoir, à l'inspiration et à la spiritualité. L'Étoile est une carte qui rappelle l'importance de l'espoir et de l'inspiration pour atteindre ses objectifs.",
+      "signification a l'envers": "L'Étoile inversée révèle le désespoir, la perte de foi en l'avenir ou un pessimisme profond. Cette position peut indiquer des illusions perdues, l'égoïsme qui remplace la générosité, ou la déconnexion spirituelle. C'est parfois la dépression qui suit une grande déception ou l'incapacité à voir la beauté du monde.",
+      "upright": "espoir, inspiration, spiritualité, générosité, optimisme",
+      "reversed": "désespoir, perte de foi, pessimisme, égoïsme, illusions perdues",
+      "signification upright": "L'Étoile est la carte du tarot représentant l'espoir, l'inspiration et la spiritualité. Elle symbolise la générosité, l'optimisme et la spiritualité. C'est une carte qui invite à l'espoir, à l'inspiration et à la spiritualité. L'Étoile est une carte qui rappelle l'importance de l'espoir et de l'inspiration pour atteindre ses objectifs.",
+      "signification reversed": "L'Étoile inversée révèle le désespoir, la perte de foi en l'avenir ou un pessimisme profond. Cette position peut indiquer des illusions perdues, l'égoïsme qui remplace la générosité, ou la déconnexion spirituelle. C'est parfois la dépression qui suit une grande déception ou l'incapacité à voir la beauté du monde."
+    },
+    "La Lune": {
+      "a l'endroit": "illusions, confusion, peurs, inconscient, mystères",
+      "a l'envers": "clarification, vérité révélée, fin des illusions, intuition retrouvée",
+      "signification a l'endroit": "La Lune révèle un monde d'illusions, de confusion et de peurs cachées. Cette carte évoque les mystères de l'inconscient, les rêves troublants, et les situations où rien n'est ce qu'il paraît être. Elle met en garde contre les tromperies, les malentendus et les projections de nos propres angoisses sur la réalité. La Lune nous invite à naviguer prudemment dans l'obscurité de l'incertitude.",
+      "signification a l'envers": "La Lune inversée annonce la dissipation des illusions et le retour de la clarté. Les mystères se révèlent, les malentendus se dissipent, et la vérité émerge enfin. Cette position indique une reconnexion avec l'intuition authentique, libérée des peurs et des projections. C'est la fin d'une période de confusion et l'accès à une compréhension plus claire de la situation.",
+      "upright": "illusions, confusion, peurs, inconscient, mystères",
+      "reversed": "clarification, vérité révélée, fin des illusions, intuition retrouvée",
+      "signification upright": "La Lune révèle un monde d'illusions, de confusion et de peurs cachées. Cette carte évoque les mystères de l'inconscient, les rêves troublants, et les situations où rien n'est ce qu'il paraît être. Elle met en garde contre les tromperies, les malentendus et les projections de nos propres angoisses sur la réalité. La Lune nous invite à naviguer prudemment dans l'obscurité de l'incertitude.",
+      "signification reversed": "La Lune inversée annonce la dissipation des illusions et le retour de la clarté. Les mystères se révèlent, les malentendus se dissipent, et la vérité émerge enfin. Cette position indique une reconnexion avec l'intuition authentique, libérée des peurs et des projections. C'est la fin d'une période de confusion et l'accès à une compréhension plus claire de la situation."
+    },
+    "Le Soleil": {
+      "a l'endroit": "joie, bonheur, réussite, accomplissement, célébration",
+      "a l'envers": "orgueil excessif, ego surdimensionné, succès temporaire, illusion de grandeur",
+      "signification a l'endroit": "Le Soleil représente la joie pure, l'accomplissement rayonnant et le succès mérité. Cette carte évoque l'épanouissement total, la reconnaissance publique et la célébration de ses réalisations. Elle symbolise l'enfant intérieur libéré, la créativité qui s'exprime pleinement et l'harmonie entre l'être et ses aspirations. C'est l'illumination qui dissipe toutes les ombres.",
+      "signification a l'envers": "Le Soleil inversé révèle l'orgueil excessif, l'ego qui aveugle le jugement ou l'illusion de grandeur. Cette position peut indiquer un succès temporaire qui cache des fondations fragiles, la vanité qui isole des autres, ou l'incapacité à partager sa lumière avec autrui. C'est parfois l'arrogance qui précède la chute.",
+      "upright": "joie, bonheur, réussite, accomplissement, célébration",
+      "reversed": "orgueil excessif, ego surdimensionné, succès temporaire, illusion de grandeur",
+      "signification upright": "Le Soleil représente la joie pure, l'accomplissement rayonnant et le succès mérité. Cette carte évoque l'épanouissement total, la reconnaissance publique et la célébration de ses réalisations. Elle symbolise l'enfant intérieur libéré, la créativité qui s'exprime pleinement et l'harmonie entre l'être et ses aspirations. C'est l'illumination qui dissipe toutes les ombres.",
+      "signification reversed": "Le Soleil inversé révèle l'orgueil excessif, l'ego qui aveugle le jugement ou l'illusion de grandeur. Cette position peut indiquer un succès temporaire qui cache des fondations fragiles, la vanité qui isole des autres, ou l'incapacité à partager sa lumière avec autrui. C'est parfois l'arrogance qui précède la chute."
+    },
+    "Le Jugement": {
+      "a l'endroit": "renaissance spirituelle, appel divin, résurrection, bilan de vie, transformation finale",
+      "a l'envers": "surdité spirituelle, refus de l'évolution, jugement sévère, culpabilité",
+      "signification a l'endroit": "Le Jugement représente la renaissance spirituelle et l'appel divin à une transformation profonde. Cette carte évoque la résurrection symbolique, le bilan de vie et l'éveil à une conscience supérieure. Elle symbolise l'absolution, le pardon et la possibilité de renaître purifié de ses erreurs passées. C'est l'appel de l'âme vers sa mission véritable.",
+      "signification a l'envers": "Le Jugement inversé révèle la surdité aux appels spirituels, le refus d'évoluer ou un jugement trop sévère envers soi-même ou autrui. Cette position peut indiquer la culpabilité paralysante, l'incapacité à pardonner ou la résistance aux transformations nécessaires pour l'évolution de l'âme.",
+      "upright": "renaissance spirituelle, appel divin, résurrection, bilan de vie, transformation finale",
+      "reversed": "surdité spirituelle, refus de l'évolution, jugement sévère, culpabilité",
+      "signification upright": "Le Jugement représente la renaissance spirituelle et l'appel divin à une transformation profonde. Cette carte évoque la résurrection symbolique, le bilan de vie et l'éveil à une conscience supérieure. Elle symbolise l'absolution, le pardon et la possibilité de renaître purifié de ses erreurs passées. C'est l'appel de l'âme vers sa mission véritable.",
+      "signification reversed": "Le Jugement inversé révèle la surdité aux appels spirituels, le refus d'évoluer ou un jugement trop sévère envers soi-même ou autrui. Cette position peut indiquer la culpabilité paralysante, l'incapacité à pardonner ou la résistance aux transformations nécessaires pour l'évolution de l'âme."
+    },
+    "Le Monde": {
+      "a l'endroit": "accomplissement total, réalisation, harmonie universelle, cycle achevé, maîtrise complète",
+      "a l'envers": "échec proche du but, perfectionnisme paralysant, isolement, cycle inachevé",
+      "signification a l'endroit": "Le Monde représente l'accomplissement total et l'harmonie universelle. Cette carte évoque la réalisation complète d'un cycle, la maîtrise parfaite de tous les éléments et l'intégration harmonieuse de toutes les expériences. Elle symbolise le succès durable, la reconnaissance méritée et l'état de grâce où tout concourt à l'épanouissement. C'est l'aboutissement du voyage initiatique du Mat.",
+      "signification a l'envers": "Le Monde inversé peut indiquer un échec frustrant alors qu'on était proche du but, le perfectionnisme qui paralyse ou l'isolement malgré le succès apparent. Cette position révèle parfois un cycle inachevé, l'incapacité à savourer ses réussites ou la peur de l'accomplissement qui pourrait signifier la fin d'une quête.",
+      "upright": "accomplissement total, réalisation, harmonie universelle, cycle achevé, maîtrise complète",
+      "reversed": "échec proche du but, perfectionnisme paralysant, isolement, cycle inachevé",
+      "signification upright": "Le Monde représente l'accomplissement total et l'harmonie universelle. Cette carte évoque la réalisation complète d'un cycle, la maîtrise parfaite de tous les éléments et l'intégration harmonieuse de toutes les expériences. Elle symbolise le succès durable, la reconnaissance méritée et l'état de grâce où tout concourt à l'épanouissement. C'est l'aboutissement du voyage initiatique du Mat.",
+      "signification reversed": "Le Monde inversé peut indiquer un échec frustrant alors qu'on était proche du but, le perfectionnisme qui paralyse ou l'isolement malgré le succès apparent. Cette position révèle parfois un cycle inachevé, l'incapacité à savourer ses réussites ou la peur de l'accomplissement qui pourrait signifier la fin d'une quête."
+    },
+    "Le Mat": {
+      "a l'endroit": "nouveau départ, innocence, spontanéité, aventure, potentiel infini",
+      "a l'envers": "imprudence, naïveté dangereuse, irresponsabilité, étourderie",
+      "signification a l'endroit": "Le Mat représente le commencement absolu, l'innocent qui entreprend son voyage initiatique avec confiance et spontanéité. Cette carte évoque la liberté totale, l'absence de préjugés et le potentiel infini qui précède toute expérience. C'est l'esprit d'aventure, la foi en l'avenir et le courage de partir vers l'inconnu sans garanties mais avec optimisme.",
+      "signification a l'envers": "Le Mat inversé révèle l'imprudence excessive, la naïveté qui mène aux dangers, ou l'irresponsabilité face aux conséquences de ses actes. Cette position peut indiquer l'étourderie, l'incapacité à apprendre de ses erreurs, ou un manque de préparation face aux défis de la vie.",
+      "upright": "nouveau départ, innocence, spontanéité, aventure, potentiel infini",
+      "reversed": "imprudence, naïveté dangereuse, irresponsabilité, étourderie",
+      "signification upright": "Le Mat représente le commencement absolu, l'innocent qui entreprend son voyage initiatique avec confiance et spontanéité. Cette carte évoque la liberté totale, l'absence de préjugés et le potentiel infini qui précède toute expérience. C'est l'esprit d'aventure, la foi en l'avenir et le courage de partir vers l'inconnu sans garanties mais avec optimisme.",
+      "signification reversed": "Le Mat inversé révèle l'imprudence excessive, la naïveté qui mène aux dangers, ou l'irresponsabilité face aux conséquences de ses actes. Cette position peut indiquer l'étourderie, l'incapacité à apprendre de ses erreurs, ou un manque de préparation face aux défis de la vie."
+    },
+    "Le Roi De Bâton": {
+      "a l'endroit": "leadership charismatique, vision entrepreneuriale, autorité naturelle, créativité dirigée",
+      "a l'envers": "tyrannie créative, autoritarisme impulsif, domination excessive, colère destructrice",
+      "signification a l'endroit": "Le Roi de Bâton incarne le leader charismatique qui inspire par sa vision et sa créativité. Il représente l'autorité naturelle qui guide sans contraindre, l'entrepreneur visionnaire et le créateur qui transforme ses idées en réalité. Cette carte évoque la capacité à mobiliser les énergies collectives au service d'un projet noble et ambitieux.",
+      "signification a l'envers": "Le Roi de Bâton inversé révèle l'autoritarisme impulsif, la tyrannie créative ou l'usage destructeur de son charisme. Cette position peut indiquer une domination excessive, des décisions prises dans la colère, ou la tendance à écraser les autres par sa personnalité. C'est le leader qui a perdu de vue l'intérêt commun.",
+      "upright": "leadership charismatique, vision entrepreneuriale, autorité naturelle, créativité dirigée",
+      "reversed": "tyrannie créative, autoritarisme impulsif, domination excessive, colère destructrice",
+      "signification upright": "Le Roi de Bâton incarne le leader charismatique qui inspire par sa vision et sa créativité. Il représente l'autorité naturelle qui guide sans contraindre, l'entrepreneur visionnaire et le créateur qui transforme ses idées en réalité. Cette carte évoque la capacité à mobiliser les énergies collectives au service d'un projet noble et ambitieux.",
+      "signification reversed": "Le Roi de Bâton inversé révèle l'autoritarisme impulsif, la tyrannie créative ou l'usage destructeur de son charisme. Cette position peut indiquer une domination excessive, des décisions prises dans la colère, ou la tendance à écraser les autres par sa personnalité. C'est le leader qui a perdu de vue l'intérêt commun."
+    },
+    "La Reine de Bâton": {
+      "a l'endroit": "créativité rayonnante, passion contagieuse, générosité chaleureuse, inspiration fertile",
+      "a l'envers": "jalousie créative, possessivité excessive, colère destructrice, égoïsme artistique",
+      "signification a l'endroit": "La Reine de Bâton rayonne de créativité et de passion contagieuse. Elle représente l'inspiration fertile, la générosité chaleureuse et la capacité à nourrir les projets créatifs d'autrui. Cette carte évoque la muse inspiratrice, l'artiste accomplie et la femme qui transforme tout ce qu'elle touche par sa passion authentique et son énergie vitale.",
+      "signification a l'envers": "La Reine de Bâton inversée révèle la jalousie créative, la possessivité excessive ou l'égoïsme artistique. Cette position peut indiquer une colère destructrice qui consume la créativité, la tendance à vampiriser l'énergie d'autrui, ou l'incapacité à partager son inspiration par peur de la concurrence.",
+      "upright": "créativité rayonnante, passion contagieuse, générosité chaleureuse, inspiration fertile",
+      "reversed": "jalousie créative, possessivité excessive, colère destructrice, égoïsme artistique",
+      "signification upright": "La Reine de Bâton rayonne de créativité et de passion contagieuse. Elle représente l'inspiration fertile, la générosité chaleureuse et la capacité à nourrir les projets créatifs d'autrui. Cette carte évoque la muse inspiratrice, l'artiste accomplie et la femme qui transforme tout ce qu'elle touche par sa passion authentique et son énergie vitale.",
+      "signification reversed": "La Reine de Bâton inversée révèle la jalousie créative, la possessivité excessive ou l'égoïsme artistique. Cette position peut indiquer une colère destructrice qui consume la créativité, la tendance à vampiriser l'énergie d'autrui, ou l'incapacité à partager son inspiration par peur de la concurrence."
+    },
+    "Le Cavalier de Bâton": {
+      "a l'endroit": "action impulsive, aventure passionnée, départ soudain, voyage d'exploration, énergie en mouvement",
+      "a l'envers": "impulsivité destructrice, fuite irresponsable, agitation stérile, impatience paralysante",
+      "signification a l'endroit": "Le Cavalier de Bâton incarne l'action impulsive et l'aventure passionnée. Il représente le départ soudain vers de nouveaux horizons, l'exploration audacieuse et l'énergie créatrice en mouvement. Cette carte évoque l'esprit pionnier, le voyageur intrépide et celui qui n'hésite pas à quitter sa zone de confort pour poursuivre ses rêves.",
+      "signification a l'envers": "Le Cavalier de Bâton inversé révèle l'impulsivité destructrice, la fuite irresponsable ou l'agitation stérile. Cette position peut indiquer l'impatience qui paralyse l'action constructive, les départs précipités qui mènent nulle part, ou l'incapacité à persévérer dans l'effort une fois l'enthousiasme initial retombé.",
+      "upright": "action impulsive, aventure passionnée, départ soudain, voyage d'exploration, énergie en mouvement",
+      "reversed": "impulsivité destructrice, fuite irresponsable, agitation stérile, impatience paralysante",
+      "signification upright": "Le Cavalier de Bâton incarne l'action impulsive et l'aventure passionnée. Il représente le départ soudain vers de nouveaux horizons, l'exploration audacieuse et l'énergie créatrice en mouvement. Cette carte évoque l'esprit pionnier, le voyageur intrépide et celui qui n'hésite pas à quitter sa zone de confort pour poursuivre ses rêves.",
+      "signification reversed": "Le Cavalier de Bâton inversé révèle l'impulsivité destructrice, la fuite irresponsable ou l'agitation stérile. Cette position peut indiquer l'impatience qui paralyse l'action constructive, les départs précipités qui mènent nulle part, ou l'incapacité à persévérer dans l'effort une fois l'enthousiasme initial retombé."
+    },
+    "Le Valet de Bâton": {
+      "a l'endroit": "messager créatif, nouvelle inspiration, projet naissant, enthousiasme juvénile",
+      "a l'envers": "fausse promesse, projet avorté, enthousiasme superficiel, impatience créative",
+      "signification a l'endroit": "Le Valet de Bâton apporte des messages créatifs, de nouvelles inspirations ou annonce le début d'un projet passionnant. Il représente l'enthousiasme juvénile, la fraîcheur de l'approche créative et l'émergence d'idées innovantes. Cette carte évoque l'apprenti artiste, l'étudiant passionné et l'esprit qui découvre ses talents.",
+      "signification a l'envers": "Le Valet de Bâton inversé met en garde contre les fausses promesses créatives, l'enthousiasme superficiel ou l'impatience qui fait avorter les projets. Cette position peut révéler une approche immature de la créativité, la tendance à abandonner dès les premiers obstacles, ou les illusions sur ses propres capacités.",
+      "upright": "messager créatif, nouvelle inspiration, projet naissant, enthousiasme juvénile",
+      "reversed": "fausse promesse, projet avorté, enthousiasme superficiel, impatience créative",
+      "signification upright": "Le Valet de Bâton apporte des messages créatifs, de nouvelles inspirations ou annonce le début d'un projet passionnant. Il représente l'enthousiasme juvénile, la fraîcheur de l'approche créative et l'émergence d'idées innovantes. Cette carte évoque l'apprenti artiste, l'étudiant passionné et l'esprit qui découvre ses talents.",
+      "signification reversed": "Le Valet de Bâton inversé met en garde contre les fausses promesses créatives, l'enthousiasme superficiel ou l'impatience qui fait avorter les projets. Cette position peut révéler une approche immature de la créativité, la tendance à abandonner dès les premiers obstacles, ou les illusions sur ses propres capacités."
+    },
+    "Le Roi De Deniers": {
+      "a l'endroit": "prospérité établie, maîtrise financière, générosité sage, leadership matériel",
+      "a l'envers": "avarice, corruption, abus de richesse, matérialisme excessif",
+      "signification a l'endroit": "Le Roi de Deniers représente la prospérité établie, la maîtrise financière et le leadership dans le domaine matériel. Il incarne la générosité sage, l'investissement réfléchi et la capacité à créer de la richesse durable. Cette carte évoque l'entrepreneur accompli, le mécène généreux et celui qui met sa réussite au service du bien commun.",
+      "signification a l'envers": "Le Roi de Deniers inversé révèle l'avarice, la corruption ou l'abus de richesse. Cette position peut indiquer un matérialisme excessif qui étouffe les valeurs humaines, la tendance à corrompre par l'argent, ou l'incapacité à partager sa prospérité avec ceux qui en ont besoin.",
+      "upright": "prospérité établie, maîtrise financière, générosité sage, leadership matériel",
+      "reversed": "avarice, corruption, abus de richesse, matérialisme excessif",
+      "signification upright": "Le Roi de Deniers représente la prospérité établie, la maîtrise financière et le leadership dans le domaine matériel. Il incarne la générosité sage, l'investissement réfléchi et la capacité à créer de la richesse durable. Cette carte évoque l'entrepreneur accompli, le mécène généreux et celui qui met sa réussite au service du bien commun.",
+      "signification reversed": "Le Roi de Deniers inversé révèle l'avarice, la corruption ou l'abus de richesse. Cette position peut indiquer un matérialisme excessif qui étouffe les valeurs humaines, la tendance à corrompre par l'argent, ou l'incapacité à partager sa prospérité avec ceux qui en ont besoin."
+    },
+    "La Reine De Deniers": {
+      "a l'endroit": "abondance nourricière, générosité terre-à-terre, prospérité partagée, sagesse domestique",
+      "a l'envers": "avarice protectrice, matérialisme possessif, négligence du foyer, gaspillage",
+      "signification a l'endroit": "La Reine de Deniers incarne l'abondance nourricière et la générosité terre-à-terre. Elle représente la prospérité partagée, la sagesse domestique et la capacité à créer un environnement nourrissant et sécurisant. Cette carte évoque la mère attentive, l'hôtesse généreuse et celle qui fait fructifier les ressources familiales avec amour et intelligence.",
+      "signification a l'envers": "La Reine de Deniers inversée révèle l'avarice protectrice, le matérialisme possessif ou la négligence du foyer. Cette position peut indiquer une générosité mal placée qui mène au gaspillage, l'incapacité à gérer les ressources familiales, ou l'obsession des biens matériels au détriment des relations humaines.",
+      "upright": "abondance nourricière, générosité terre-à-terre, prospérité partagée, sagesse domestique",
+      "reversed": "avarice protectrice, matérialisme possessif, négligence du foyer, gaspillage",
+      "signification upright": "La Reine de Deniers incarne l'abondance nourricière et la générosité terre-à-terre. Elle représente la prospérité partagée, la sagesse domestique et la capacité à créer un environnement nourrissant et sécurisant. Cette carte évoque la mère attentive, l'hôtesse généreuse et celle qui fait fructifier les ressources familiales avec amour et intelligence.",
+      "signification reversed": "La Reine de Deniers inversée révèle l'avarice protectrice, le matérialisme possessif ou la négligence du foyer. Cette position peut indiquer une générosité mal placée qui mène au gaspillage, l'incapacité à gérer les ressources familiales, ou l'obsession des biens matériels au détriment des relations humaines."
+    },
+    "Le Cavalier de Deniers": {
+      "a l'endroit": "travail assidu, méthode, persévérance, responsabilité, pragmatisme",
+      "a l'envers": "obsession du travail, routine excessive, manque d'ambition, paresse",
+      "signification a l'endroit": "Le Cavalier de Deniers représente le travailleur méthodique et persévérant. Il avance lentement mais sûrement vers ses objectifs matériels et financiers. Cette carte évoque la responsabilité, le pragmatisme et la capacité à accomplir un travail de longue haleine. C'est la patience et la ténacité au service de l'accomplissement concret.",
+      "signification a l'envers": "Le Cavalier de Deniers inversé peut indiquer une obsession excessive du travail au détriment de tout le reste, ou à l'inverse, de la paresse et un manque d'ambition. Cette position révèle parfois une routine sclérosante, l'incapacité à prendre des risques calculés, ou une approche trop rigide des projets.",
+      "upright": "travail assidu, méthode, persévérance, responsabilité, pragmatisme",
+      "reversed": "obsession du travail, routine excessive, manque d'ambition, paresse",
+      "signification upright": "Le Cavalier de Deniers représente le travailleur méthodique et persévérant. Il avance lentement mais sûrement vers ses objectifs matériels et financiers. Cette carte évoque la responsabilité, le pragmatisme et la capacité à accomplir un travail de longue haleine. C'est la patience et la ténacité au service de l'accomplissement concret.",
+      "signification reversed": "Le Cavalier de Deniers inversé peut indiquer une obsession excessive du travail au détriment de tout le reste, ou à l'inverse, de la paresse et un manque d'ambition. Cette position révèle parfois une routine sclérosante, l'incapacité à prendre des risques calculés, ou une approche trop rigide des projets."
+    },
+    "Le Valet De Deniers": {
+      "a l'endroit": "étudiant appliqué, apprentissage pratique, nouvelle opportunité matérielle, diligence",
+      "a l'envers": "paresse studieuse, opportunisme, superficialité dans l'apprentissage, négligence",
+      "signification a l'endroit": "Le Valet de Deniers représente l'étudiant appliqué, l'apprentissage pratique et l'émergence de nouvelles opportunités matérielles. Il évoque la diligence, la persévérance dans l'étude et la capacité à transformer la théorie en applications concrètes. Cette carte symbolise l'apprenti sérieux qui pose les fondations de sa future réussite.",
+      "signification a l'envers": "Le Valet de Deniers inversé révèle la paresse dans les études, l'opportunisme de court terme ou la superficialité dans l'apprentissage. Cette position peut indiquer la négligence, l'incapacité à persévérer dans l'effort, ou la tendance à chercher des raccourcis qui compromettent la qualité du travail.",
+      "upright": "étudiant appliqué, apprentissage pratique, nouvelle opportunité matérielle, diligence",
+      "reversed": "paresse studieuse, opportunisme, superficialité dans l'apprentissage, négligence",
+      "signification upright": "Le Valet de Deniers représente l'étudiant appliqué, l'apprentissage pratique et l'émergence de nouvelles opportunités matérielles. Il évoque la diligence, la persévérance dans l'étude et la capacité à transformer la théorie en applications concrètes. Cette carte symbolise l'apprenti sérieux qui pose les fondations de sa future réussite.",
+      "signification reversed": "Le Valet de Deniers inversé révèle la paresse dans les études, l'opportunisme de court terme ou la superficialité dans l'apprentissage. Cette position peut indiquer la négligence, l'incapacité à persévérer dans l'effort, ou la tendance à chercher des raccourcis qui compromettent la qualité du travail."
+    },
+    "Le Roi de Coupe": {
+      "a l'endroit": "maîtrise émotionnelle, compassion sage, équilibre affectif, leadership bienveillant",
+      "a l'envers": "manipulation émotionnelle, froideur calculée, chantage affectif, instabilité masquée",
+      "signification a l'endroit": "Le Roi de Coupe représente la maîtrise émotionnelle et la compassion sage. Il incarne l'équilibre parfait entre sensibilité et contrôle, l'empathie qui n'entrave pas le jugement et le leadership bienveillant. Cette carte évoque le conseiller avisé, le thérapeute compatissant et l'homme qui unit intelligence du cœur et sagesse de l'esprit.",
+      "signification a l'envers": "Le Roi de Coupe inversé révèle la manipulation émotionnelle, la froideur calculée ou le chantage affectif. Cette position peut indiquer une instabilité émotionnelle masquée derrière une façade de contrôle, l'usage des sentiments d'autrui à des fins personnelles, ou l'incapacité à gérer ses propres émotions malgré les apparences.",
+      "upright": "maîtrise émotionnelle, compassion sage, équilibre affectif, leadership bienveillant",
+      "reversed": "manipulation émotionnelle, froideur calculée, chantage affectif, instabilité masquée",
+      "signification upright": "Le Roi de Coupe représente la maîtrise émotionnelle et la compassion sage. Il incarne l'équilibre parfait entre sensibilité et contrôle, l'empathie qui n'entrave pas le jugement et le leadership bienveillant. Cette carte évoque le conseiller avisé, le thérapeute compatissant et l'homme qui unit intelligence du cœur et sagesse de l'esprit.",
+      "signification reversed": "Le Roi de Coupe inversé révèle la manipulation émotionnelle, la froideur calculée ou le chantage affectif. Cette position peut indiquer une instabilité émotionnelle masquée derrière une façade de contrôle, l'usage des sentiments d'autrui à des fins personnelles, ou l'incapacité à gérer ses propres émotions malgré les apparences."
+    },
+    "La Reine De Coupe": {
+      "a l'endroit": "intuition profonde, empathie authentique, amour inconditionnel, guidance spirituelle",
+      "a l'envers": "émotivité excessive, dépendance affective, illusions sentimentales, sacrifice destructeur",
+      "signification a l'endroit": "La Reine de Coupe incarne l'intuition profonde et l'empathie authentique. Elle représente l'amour inconditionnel, la guidance spirituelle et la capacité à comprendre les besoins émotionnels d'autrui. Cette carte évoque la mère spirituelle, l'amie fidèle et celle qui offre un refuge émotionnel aux âmes blessées par sa seule présence bienveillante.",
+      "signification a l'envers": "La Reine de Coupe inversée révèle l'émotivité excessive, la dépendance affective ou les illusions sentimentales. Cette position peut indiquer un sacrifice destructeur de soi au profit d'autrui, l'incapacité à poser des limites saines, ou la tendance à se perdre dans les émotions des autres au détriment de son propre équilibre.",
+      "upright": "intuition profonde, empathie authentique, amour inconditionnel, guidance spirituelle",
+      "reversed": "émotivité excessive, dépendance affective, illusions sentimentales, sacrifice destructeur",
+      "signification upright": "La Reine de Coupe incarne l'intuition profonde et l'empathie authentique. Elle représente l'amour inconditionnel, la guidance spirituelle et la capacité à comprendre les besoins émotionnels d'autrui. Cette carte évoque la mère spirituelle, l'amie fidèle et celle qui offre un refuge émotionnel aux âmes blessées par sa seule présence bienveillante.",
+      "signification reversed": "La Reine de Coupe inversée révèle l'émotivité excessive, la dépendance affective ou les illusions sentimentales. Cette position peut indiquer un sacrifice destructeur de soi au profit d'autrui, l'incapacité à poser des limites saines, ou la tendance à se perdre dans les émotions des autres au détriment de son propre équilibre."
+    },
+    "Le Cavalier De Coupe": {
+      "a l'endroit": "romance, invitation, charme, proposition émotionnelle, séduction",
+      "a l'envers": "illusions romantiques, manipulation émotionnelle, promesses vides",
+      "signification a l'endroit": "Le Cavalier de Coupe apporte des messages d'amour, des invitations romantiques ou des propositions émotionnelles importantes. Il représente le charme, la séduction noble et l'expression créative des sentiments. Cette carte évoque l'arrivée d'opportunités dans le domaine affectif ou artistique, portées par une personne charmante et inspirante.",
+      "signification a l'envers": "Le Cavalier de Coupe inversé met en garde contre les illusions romantiques, les manipulations émotionnelles ou les promesses qui ne seront pas tenues. Cette position peut révéler des intentions peu sincères derrière des apparences charmantes, ou une tendance à idéaliser les situations amoureuses.",
+      "upright": "romance, invitation, charme, proposition émotionnelle, séduction",
+      "reversed": "illusions romantiques, manipulation émotionnelle, promesses vides",
+      "signification upright": "Le Cavalier de Coupe apporte des messages d'amour, des invitations romantiques ou des propositions émotionnelles importantes. Il représente le charme, la séduction noble et l'expression créative des sentiments. Cette carte évoque l'arrivée d'opportunités dans le domaine affectif ou artistique, portées par une personne charmante et inspirante.",
+      "signification reversed": "Le Cavalier de Coupe inversé met en garde contre les illusions romantiques, les manipulations émotionnelles ou les promesses qui ne seront pas tenues. Cette position peut révéler des intentions peu sincères derrière des apparences charmantes, ou une tendance à idéaliser les situations amoureuses."
+    },
+    "Le Valet De Coupe": {
+      "a l'endroit": "message émotionnel, inspiration artistique, éveil sensible, créativité naissante",
+      "a l'envers": "immaturité émotionnelle, sensibilité blessée, créativité bloquée, naïveté dangereuse",
+      "signification a l'endroit": "Le Valet de Coupe apporte des messages émotionnels, de l'inspiration artistique ou annonce un éveil sensible. Il représente la créativité naissante dans le domaine des arts, l'ouverture du cœur et la réceptivité aux influences subtiles. Cette carte évoque l'artiste en herbe, l'amoureux sincère et l'âme pure qui découvre la richesse du monde émotionnel.",
+      "signification a l'envers": "Le Valet de Coupe inversé révèle l'immaturité émotionnelle, la sensibilité blessée ou la créativité bloquée. Cette position peut indiquer une naïveté dangereuse face aux manipulations affectives, l'incapacité à exprimer ses sentiments de manière constructive, ou les blessures émotionnelles qui empêchent l'épanouissement artistique.",
+      "upright": "message émotionnel, inspiration artistique, éveil sensible, créativité naissante",
+      "reversed": "immaturité émotionnelle, sensibilité blessée, créativité bloquée, naïveté dangereuse",
+      "signification upright": "Le Valet de Coupe apporte des messages émotionnels, de l'inspiration artistique ou annonce un éveil sensible. Il représente la créativité naissante dans le domaine des arts, l'ouverture du cœur et la réceptivité aux influences subtiles. Cette carte évoque l'artiste en herbe, l'amoureux sincère et l'âme pure qui découvre la richesse du monde émotionnel.",
+      "signification reversed": "Le Valet de Coupe inversé révèle l'immaturité émotionnelle, la sensibilité blessée ou la créativité bloquée. Cette position peut indiquer une naïveté dangereuse face aux manipulations affectives, l'incapacité à exprimer ses sentiments de manière constructive, ou les blessures émotionnelles qui empêchent l'épanouissement artistique."
+    },
+    "Le Roi D'Épée": {
+      "a l'endroit": "intelligence, autorité juste, clarté d'esprit, objectivité, justice",
+      "a l'envers": "tyrannie, abus de pouvoir, froideur excessive, manipulation mentale",
+      "signification a l'endroit": "Le Roi d'Épée représente l'intelligence supérieure, l'autorité basée sur la connaissance et la justice. Il symbolise la clarté d'esprit, l'objectivité et la capacité à trancher les situations complexes avec sagesse. Cette carte évoque le leader éclairé, le juge équitable et le penseur qui met son intelligence au service du bien commun.",
+      "signification a l'envers": "Le Roi d'Épée inversé révèle l'abus de pouvoir intellectuel, la tyrannie froide ou l'usage de l'intelligence pour manipuler autrui. Cette position peut indiquer un manque d'empathie, une autorité despotique ou l'usage de la connaissance pour dominer plutôt que pour servir.",
+      "upright": "intelligence, autorité juste, clarté d'esprit, objectivité, justice",
+      "reversed": "tyrannie, abus de pouvoir, froideur excessive, manipulation mentale",
+      "signification upright": "Le Roi d'Épée représente l'intelligence supérieure, l'autorité basée sur la connaissance et la justice. Il symbolise la clarté d'esprit, l'objectivité et la capacité à trancher les situations complexes avec sagesse. Cette carte évoque le leader éclairé, le juge équitable et le penseur qui met son intelligence au service du bien commun.",
+      "signification reversed": "Le Roi d'Épée inversé révèle l'abus de pouvoir intellectuel, la tyrannie froide ou l'usage de l'intelligence pour manipuler autrui. Cette position peut indiquer un manque d'empathie, une autorité despotique ou l'usage de la connaissance pour dominer plutôt que pour servir."
+    },
+    "La Reine D'Épée": {
+      "a l'endroit": "indépendance, lucidité, franchise, intelligence pragmatique, expérience de la douleur",
+      "a l'envers": "amertume, rancune, critique destructrice, froideur excessive",
+      "signification a l'endroit": "La Reine d'Épée représente l'indépendance conquise par l'expérience, souvent douloureuse. Elle symbolise la lucidité, la franchise et l'intelligence pragmatique. Cette carte évoque une femme qui a appris la vie à ses dépens et qui peut maintenant offrir des conseils précieux, même s'ils semblent parfois tranchants. C'est la sagesse née de l'épreuve.",
+      "signification a l'envers": "La Reine d'Épée inversée révèle l'amertume qui ronge, la rancune tenace ou la critique destructrice née de ses propres blessures. Cette position peut indiquer une froideur excessive, l'incapacité à pardonner ou l'usage de ses expériences passées pour blesser autrui plutôt que pour l'aider.",
+      "upright": "indépendance, lucidité, franchise, intelligence pragmatique, expérience de la douleur",
+      "reversed": "amertume, rancune, critique destructrice, froideur excessive",
+      "signification upright": "La Reine d'Épée représente l'indépendance conquise par l'expérience, souvent douloureuse. Elle symbolise la lucidité, la franchise et l'intelligence pragmatique. Cette carte évoque une femme qui a appris la vie à ses dépens et qui peut maintenant offrir des conseils précieux, même s'ils semblent parfois tranchants. C'est la sagesse née de l'épreuve.",
+      "signification reversed": "La Reine d'Épée inversée révèle l'amertume qui ronge, la rancune tenace ou la critique destructrice née de ses propres blessures. Cette position peut indiquer une froideur excessive, l'incapacité à pardonner ou l'usage de ses expériences passées pour blesser autrui plutôt que pour l'aider."
+    },
+    "Le Cavalier D'Épée": {
+      "a l'endroit": "action impulsive, courage, combativité, changement brutal, héroïsme",
+      "a l'envers": "imprudence, agression, destruction, colère aveugle",
+      "signification a l'endroit": "Le Cavalier d'Épée représente l'action rapide et courageuse, parfois impulsive. Il symbolise l'intervention héroïque, la défense de ses idéaux avec détermination. Cette carte évoque les changements brutaux mais nécessaires, l'esprit combatif et la volonté de trancher dans le vif pour résoudre les problèmes.",
+      "signification a l'envers": "Le Cavalier d'Épée inversé révèle l'imprudence, l'agression destructrice ou la colère aveugle. Cette position met en garde contre les actions précipitées qui causent plus de dégâts qu'elles n'apportent de solutions. C'est parfois la violence gratuite ou l'incapacité à contrôler ses impulsions destructrices.",
+      "upright": "action impulsive, courage, combativité, changement brutal, héroïsme",
+      "reversed": "imprudence, agression, destruction, colère aveugle",
+      "signification upright": "Le Cavalier d'Épée représente l'action rapide et courageuse, parfois impulsive. Il symbolise l'intervention héroïque, la défense de ses idéaux avec détermination. Cette carte évoque les changements brutaux mais nécessaires, l'esprit combatif et la volonté de trancher dans le vif pour résoudre les problèmes.",
+      "signification reversed": "Le Cavalier d'Épée inversé révèle l'imprudence, l'agression destructrice ou la colère aveugle. Cette position met en garde contre les actions précipitées qui causent plus de dégâts qu'elles n'apportent de solutions. C'est parfois la violence gratuite ou l'incapacité à contrôler ses impulsions destructrices."
+    },
+    "Le Valet D'Épée": {
+      "a l'endroit": "curiosité intellectuelle, messages importants, espionnage, vigilance, agilité mentale",
+      "a l'envers": "indiscrétion, espionnage malveillant, mensonges, manipulation d'informations",
+      "signification a l'endroit": "Le Valet d'Épée représente la curiosité intellectuelle, l'arrivée de nouvelles importantes ou la nécessité d'être vigilant. Il symbolise l'esprit vif, la capacité d'observation et l'agilité mentale. Cette carte évoque celui qui collecte des informations, surveille les situations et apporte des messages cruciaux. C'est l'intelligence au service de la découverte.",
+      "signification a l'envers": "Le Valet d'Épée inversé révèle l'indiscrétion, l'espionnage malveillant ou la manipulation d'informations. Cette position peut indiquer des mensonges, des rumeurs malveillantes ou l'usage de la connaissance pour nuire plutôt que pour éclairer. C'est parfois le bavardage destructeur ou la trahison de confiance.",
+      "upright": "curiosité intellectuelle, messages importants, espionnage, vigilance, agilité mentale",
+      "reversed": "indiscrétion, espionnage malveillant, mensonges, manipulation d'informations",
+      "signification upright": "Le Valet d'Épée représente la curiosité intellectuelle, l'arrivée de nouvelles importantes ou la nécessité d'être vigilant. Il symbolise l'esprit vif, la capacité d'observation et l'agilité mentale. Cette carte évoque celui qui collecte des informations, surveille les situations et apporte des messages cruciaux. C'est l'intelligence au service de la découverte.",
+      "signification reversed": "Le Valet d'Épée inversé révèle l'indiscrétion, l'espionnage malveillant ou la manipulation d'informations. Cette position peut indiquer des mensonges, des rumeurs malveillantes ou l'usage de la connaissance pour nuire plutôt que pour éclairer. C'est parfois le bavardage destructeur ou la trahison de confiance."
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "typeCheckingMode": "off",
+  "exclude": [
+    "**/tarot_img/**",
+    "**/build/**",
+    "**/.venv/**"
+  ]
+}

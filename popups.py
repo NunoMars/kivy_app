@@ -28,13 +28,20 @@ from kivy.uix.scrollview import ScrollView
 from kivy.uix.textinput import TextInput
 from kivy.core.clipboard import Clipboard
 from kivy.animation import Animation
+from kivy.core.window import Window
 
 # Third-party
 import requests
 
 # Local modules
-from translations import MESSAGES, tr
-from signification import get_card_image_path
+from i18n import (
+    MESSAGES,
+    tr,
+    get_system_language,
+    get_card_image_path,
+    get_card_name_for_lang,
+    get_french_card_name,
+)
 
 # Ads manager (local) — import sécurisé car peut échouer en environnement non-Android
 try:
@@ -93,7 +100,7 @@ class ChatBubble(BoxLayout):
 
         self.label = Label(
             text="",
-            font_size="15sp",
+            font_size="19sp",  # Agrandir la police des messages
             color=text_color,
             halign="left",
             valign="top",
@@ -478,19 +485,6 @@ class LoadingPopup(Popup):
 class MmeTChatPopup(Popup):
     """Fenetre modale modernisée pour la consultation premium avec Mme T."""
 
-    INTRO_TEXTS = {
-        "fr": "Bonjour ✨ Je suis Mme T, ta cartomancienne. Quelle question te preoccupe aujourd'hui ? En quoi puis-je t'aider ?",
-        "en": "Hello ✨ I'm Mme T, your card reader. What question is on your mind today? How can I help you?",
-        "es": "Hola ✨ Soy Mme T, tu cartomante. ¿Que pregunta te preocupa hoy? ¿En que puedo ayudarte?",
-        "pt": "Ola ✨ Sou Mme T, a tua cartomante. Que questao te preocupa hoje? Em que posso ajudar-te?",
-    }
-
-    THANK_TEXTS = {
-        "fr": "Merci d'avoir consulte Mme T. Reviens quand tu veux pour une nouvelle guidance.",
-        "en": "Thank you for consulting Mme T. Come back anytime for another guidance.",
-        "es": "Gracias por consultar a Mme T. Vuelve cuando quieras para otra guia.",
-        "pt": "Obrigada por consultar Mme T. Volta quando quiseres para outra orientacao.",
-    }
 
     def __init__(
         self,
@@ -576,23 +570,67 @@ class MmeTChatPopup(Popup):
 
         main_layout.add_widget(header)
 
-        # Barre de miniatures des cartes tirées — affichée immédiatement pour patienter
+        # Miniatures simples sous le header, centrées
         try:
             app = App.get_running_app()
-            drawn = getattr(app, "last_drawn_cards", None)
-            if drawn:
-                mini_bar = BoxLayout(size_hint_y=None, height=dp(100), spacing=dp(8), padding=[dp(6), dp(6)])
-                for cname, cstate in drawn:
-                    try:
-                        imgpath = get_card_image_path(cname, cstate)
-                        thumb = Image(source=imgpath, size_hint=(None, None), size=(dp(56), dp(90)))
-                    except Exception:
-                        thumb = Image(source="tarot_img/Back.jpg", size_hint=(None, None), size=(dp(56), dp(90)))
-                    mini_bar.add_widget(thumb)
-                main_layout.add_widget(mini_bar)
         except Exception:
-            # Ne pas bloquer l'ouverture du popup pour des erreurs d'affichage
-            pass
+            app = None
+
+        drawn = None
+        if app:
+            drawn = getattr(app, "last_drawn_cards", None)
+
+        slots = []
+        if drawn and isinstance(drawn, (list, tuple)) and len(drawn) > 0:
+            for item in drawn[:3]:
+                try:
+                    cname, cstate = item
+                except Exception:
+                    cname, cstate = item, None
+                slots.append((cname, cstate))
+        while len(slots) < 3:
+            slots.append((None, None))
+
+        miniatures = BoxLayout(orientation="horizontal", spacing=dp(18), size_hint=(1, None), height=dp(180), padding=[0,0,0,0])
+        for cname, cstate in slots:
+            try:
+                imgpath = get_card_image_path(cname, cstate) if cname else "tarot_img/Back.jpg"
+                thumb_img = Image(
+                    source=imgpath,
+                    size_hint=(None, None),
+                    size=(dp(110), dp(175)),
+                    allow_stretch=True,
+                    keep_ratio=True,
+                )
+                thumb = Button(
+                    size_hint=(None, None),
+                    size=(dp(110), dp(175)),
+                    background_normal='',
+                    background_color=[0, 0, 0, 0],
+                )
+                thumb.add_widget(thumb_img)
+                def _open_fullscreen(instance, cname=cname, cstate=cstate, imgpath=imgpath):
+                    try:
+                        popup = FullScreenCardPopup(
+                            card_image_source=imgpath,
+                            card_name=(get_card_name_for_lang(get_french_card_name(cname), get_system_language()) if cname else tr('your_card')),
+                            card_state=("À l'envers" if cstate and 'envers' in str(cstate).lower() else "À l'endroit"),
+                        )
+                        popup.open()
+                    except Exception:
+                        try:
+                            popup = FullScreenCardPopup(card_image_source=imgpath, card_name=(cname or tr('your_card')), card_state=(cstate or ""))
+                            popup.open()
+                        except Exception:
+                            pass
+                thumb.bind(on_press=_open_fullscreen)
+            except Exception:
+                thumb = Button(size_hint=(None, None), size=(dp(110), dp(175)), background_normal='', background_color=[0, 0, 0, 0])
+            miniatures.add_widget(thumb)
+        # Centrer le BoxLayout horizontal dans la popup
+        main_layout.add_widget(miniatures)
+
+        self.content = main_layout
 
         self.status_label = Label(
             text=self._status_prefix(),
@@ -682,7 +720,149 @@ class MmeTChatPopup(Popup):
             self.send_btn.disabled = True
             self.status_label.text = self._label("no_backend")
         else:
-            self.start_typewriter(self.INTRO_TEXTS.get(self.language, self.INTRO_TEXTS["fr"]), sender="mme_t")
+            # Use translated introduction text via translations.tr()
+            try:
+                intro = tr('mme_t_intro')
+            except Exception:
+                # Fallback to English literal if translations not available
+                intro = "Hello ✨ I'm Mme T, your card reader. What question is on your mind today? How can I help you?"
+            self.start_typewriter(intro, sender="mme_t")
+
+    def on_open(self, *args):
+        """S'assure que la barre de miniatures reste bien parentée et centrée au moment
+        où le popup devient visible (certains parents peuvent reparenter plus tard)."""
+        # Call base implementation and then ensure our card bar is parented.
+        try:
+            super().on_open()
+        except Exception:
+            # Not critical; continue with debug logging
+            pass
+
+        # Debug léger pour vérifier que l'instance ouverte est bien notre popup
+        try:
+            print(f"[MME_T DEBUG] MmeTChatPopup.on_open id={id(self)} language={self.language}")
+            if hasattr(self, 'card_bar'):
+                try:
+                    print(
+                        f"[MME_T DEBUG] card_bar children={len(self.card_bar.children)} size={getattr(self.card_bar, 'size', None)} pos_hint={getattr(self.card_bar, 'pos_hint', None)}"
+                    )
+                except Exception:
+                    pass
+        except Exception:
+            pass
+
+        # Faire un reparent court après l'ouverture pour garantir la visibilité
+        try:
+            Clock.schedule_once(self._ensure_card_bar, 0.02)
+        except Exception:
+            print("[MME_T DEBUG] Failed to schedule _ensure_card_bar")
+
+    # Pas d'overlay fallback — card_anchor prend la largeur du contenu.
+
+    # overlay fallback removed — centrer dans la popup via card_anchor
+
+    def on_dismiss(self, *_args):
+        # appeler le on_dismiss original
+        try:
+            super().on_dismiss()
+        except Exception:
+            pass
+
+    def _ensure_card_bar(self, dt):
+        """Assure que la barre de miniatures est bien insérée sous le header et centrée.
+        Cette méthode est planifiée juste après l'ouverture du popup pour contrer
+        d'éventuels reparentings effectués par d'autres parties du code."""
+        try:
+            print(f"[MME_T DEBUG] _ensure_card_bar called id={id(self)}")
+            if not hasattr(self, 'card_bar') or not hasattr(self, 'card_anchor'):
+                print("[MME_T DEBUG] No card_bar/card_anchor present")
+                return
+
+            # Si content est un BoxLayout, on essaye d'insérer la card_anchor juste après le header
+            if hasattr(self, 'content') and isinstance(self.content, BoxLayout):
+                try:
+                    # Vérifier si card_anchor est déjà dedans
+                    if self.card_anchor.parent is not self.content:
+                        # Retirer d'un parent précédent si besoin
+                        try:
+                            if self.card_anchor.parent:
+                                self.card_anchor.parent.remove_widget(self.card_anchor)
+                        except Exception:
+                            pass
+                        # Insérer à l'index 1 (après header) si possible
+                        try:
+                            self.content.add_widget(self.card_anchor, index=1)
+                            print("[MME_T DEBUG] card_anchor added at index=1")
+                        except Exception:
+                            try:
+                                self.content.add_widget(self.card_anchor)
+                                print("[MME_T DEBUG] card_anchor added at end")
+                            except Exception as e:
+                                print(f"[MME_T DEBUG] Failed to add card_anchor: {e}")
+                except Exception:
+                    # Sécurité : ne pas faire échouer l'ensemble si un problème interne survient
+                    print("[MME_T DEBUG] exception while handling content/card_anchor")
+
+            # Forcer pos_hint/center pour la barre
+            try:
+                self.card_bar.pos_hint = {'center_x': 0.5}
+            except Exception:
+                pass
+
+            # Log final state
+            try:
+                print(f"[MME_T DEBUG] card_bar parent={getattr(self.card_bar, 'parent', None)} children={len(self.card_bar.children)} size={getattr(self.card_bar, 'size', None)}")
+            except Exception:
+                pass
+
+            # Schedule a deeper layout dump a tick later when positions are resolved
+            try:
+                Clock.schedule_once(self._dump_layout_state, 0.01)
+            except Exception:
+                pass
+        except Exception as e:
+            print(f"[MME_T DEBUG] _ensure_card_bar exception: {e}")
+
+    def _dump_layout_state(self, dt):
+        """Imprime l'état de `self.content` et les positions absolues des widgets clés.
+        Utile pour diagnostiquer pourquoi la barre n'apparait pas à l'écran à l'endroit attendu."""
+        try:
+            if not hasattr(self, 'content'):
+                print("[MME_T DEBUG] _dump_layout_state: no content")
+                return
+            print("[MME_T DEBUG] ---- Dump layout state ----")
+            try:
+                for idx, child in enumerate(list(self.content.children)):
+                    info = f"idx={idx} class={child.__class__.__name__} size={getattr(child, 'size', None)} pos={getattr(child, 'pos', None)}"
+                    print(f"[MME_T DEBUG] content_child: {info}")
+            except Exception as e:
+                print(f"[MME_T DEBUG] error listing content children: {e}")
+
+            # card_anchor and card_bar absolute position
+            try:
+                if hasattr(self, 'card_anchor'):
+                    ca = self.card_anchor
+                    print(f"[MME_T DEBUG] card_anchor size={ca.size} pos={ca.pos}")
+                    try:
+                        wx, wy = ca.to_window(ca.x, ca.y)
+                        print(f"[MME_T DEBUG] card_anchor to_window={wx, wy}")
+                    except Exception:
+                        pass
+                if hasattr(self, 'card_bar'):
+                    cb = self.card_bar
+                    print(f"[MME_T DEBUG] card_bar size={cb.size} pos={cb.pos}")
+                    try:
+                        wx, wy = cb.to_window(cb.x, cb.y)
+                        print(f"[MME_T DEBUG] card_bar to_window={wx, wy}")
+                    except Exception:
+                        pass
+            except Exception as e:
+                print(f"[MME_T DEBUG] error dumping positions: {e}")
+            print("[MME_T DEBUG] ---- End dump ----")
+        except Exception as e:
+            print(f"[MME_T DEBUG] _dump_layout_state exception: {e}")
+
+        
 
     def _status_prefix(self):
         base = {
@@ -697,7 +877,16 @@ class MmeTChatPopup(Popup):
         }.get(self.provider, "")
         return f"{base}{' - ' + provider_label if provider_label else ''}"
 
-    def _label(self, key):
+    def _label(self, key, **kwargs):
+        # Try centralized translations first (translations.tr)
+        try:
+            txt = tr(key, **kwargs)
+            # tr() may return the key itself when missing; only use if different
+            if txt and txt != key:
+                return txt
+        except Exception:
+            pass
+
         labels = {
             # 'send' short label kept below; long variant removed to avoid duplication
             "ask_hint": {
@@ -740,10 +929,11 @@ class MmeTChatPopup(Popup):
                 "es": "Lectura completada",
                 "pt": "Consulta concluida",
             },
-            # quick controls removed: show_all / copy
-        }
+                # quick controls removed: show_all / copy
+            }
         bundle = labels.get(key, {})
-        return bundle.get(self.language, bundle.get("en", ""))
+        # Prefer French fallback, then English. Returning empty string only as last resort.
+        return bundle.get(self.language, bundle.get("fr", bundle.get("en", "")))
 
     def _on_show_all(self):
         """Afficher immédiatement la réponse complète (arrête l'effet machine à écrire)."""
@@ -763,9 +953,9 @@ class MmeTChatPopup(Popup):
         # Trouver la dernière réponse dans l'historique (assistant)
         last = None
         for entry in reversed(self.conversation_history):
-            if entry.get("role") == "assistant":
-                last = entry.get("content")
-                break
+                if entry.get("role") == "assistant":
+                    last = entry.get("content")
+                    break
         if not last:
             return
         try:
@@ -805,6 +995,13 @@ class MmeTChatPopup(Popup):
         self._typewriter_on_complete = on_complete
         self._active_bubble = self._create_message_bubble("", sender)
         self._update_bubble_widths()
+        # Scroll initial pour s'assurer que la bulle est visible, puis throttling
+        try:
+            self._scroll_to_widget(self._active_bubble)
+        except Exception:
+            pass
+        # Nombre de caractères entre deux scrolls (évite les sauts fréquents)
+        self._typewriter_scroll_throttle = 6
         if not self._typewriter_source:
             self._finalize_typewriter()
             return
@@ -823,7 +1020,13 @@ class MmeTChatPopup(Popup):
         self._typewriter_index += 1
         if self._active_bubble:
             self._active_bubble.set_text(self._typewriter_source[: self._typewriter_index])
-            self._scroll_to_widget(self._active_bubble)
+            # Ne pas scroller à chaque caractère — seulement tous les N caractères
+            try:
+                if self._typewriter_scroll_throttle <= 1 or (self._typewriter_index % getattr(self, '_typewriter_scroll_throttle', 6) == 0):
+                    self._scroll_to_widget(self._active_bubble)
+            except Exception:
+                # En cas d'erreur, éviter de casser la frappe
+                pass
         return True
 
     def _finalize_typewriter(self):

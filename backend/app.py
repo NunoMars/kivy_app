@@ -105,12 +105,24 @@ def language_directive(lang_code: str) -> str:
     mapping = {
         "fr": "français",
         "en": "anglais",
-        "es": "espagnol",
-        "pt": "portugais",
+        "es": "espagnol (Espagne)",
+        "es_latam": "espagnol latino-américain",
+        "pt": "portugais (Portugal)",
+        "pt_br": "portugais brésilien",
         "it": "italien",
         "de": "allemand",
+        "ja": "japonais",
+        "ru": "russe",
+        "tr": "turc",
+        "zh": "chinois simplifié",
     }
-    return f"Réponds en {mapping.get(lang_code, 'français')}."
+    langue = mapping.get(lang_code, 'français')
+    # Consigne plus explicite pour Gemini :
+    return (
+        f"Réponds uniquement en {langue}. "
+        f"Adapte le ton et les formulations à la culture locale si besoin. "
+        f"N'utilise aucune autre langue, même pour les formules de politesse."
+    )
 
 def reformulate_sensitive_question(question: str) -> str:
     """Reformule les questions sensibles pour éviter les blocages Gemini"""

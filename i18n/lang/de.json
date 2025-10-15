@@ -1,0 +1,181 @@
+{
+  "messages": {
+    "draw_card": "KARTE ZIEHEN",
+    "drawing_card": "KARTE WIRD GEZOGEN...",
+    "concentrating": "Konzentriere mich...",
+    "preparing_arcana": "Bereite die Arkana vor...",
+    "upright": "⬆ AUFRECHT ⬆",
+    "reversed": "⬇ UMGEKEHRT ⬇",
+    "thanks": "✨ Ich hoffe, dir hat deine Legung gefallen! ✨",
+    "continue_exploring": "🔮 Erkunde weiter die Geheimnisse des Tarots! 🔮",
+    "new_reading": "✨ Neue Legung",
+    "new_reading_countdown": "✨ Neue Legung ({seconds}s) ✨",
+    "app_title": "Willkommen beim Wahrsage-Tarot",
+    "draw_instruction": "Berühre die Karte\nfür eine Vorhersage",
+    "mme_t_intro": "Hallo ✨ Ich bin Mme T, deine Kartenlegerin. Welche Frage beschäftigt dich heute? Womit kann ich dir helfen?",
+    "mme_t_thanks": "Danke, dass du Mme T konsultiert hast. Komm jederzeit für weitere Orientierung zurück.",
+    "crystals_ad": "💎 Kristalle & Mineralien Shop - Kostenloser Versand 💎",
+    "love_ad": "💕 Finde Liebe mit Astrology+ 💕\nKompatibilität basierend auf deinem Geburtshoroskop",
+    "tarot_course_ad": "🔮 Professioneller Tarot-Kurs 🔮\nWerde zertifizierter Kartenleger - Kostenlose Anmeldung",
+    "tap_to_return": "Tippe auf die Karte, um zurückzukehren",
+    "touch_to_enlarge": "🔍 Zum Vergrößern tippen",
+    "your_card": "Deine Karte",
+    "support_app": "App unterstützen",
+    "ad_message": "Gefällt dir diese kostenlose App?\nHilf uns, sie zu erhalten und zu verbessern!",
+    "later": "Später",
+    "support": "Unterstützen",
+    "done": "Fertig",
+    "premium_button_base": "Chat mit Mme T Premium",
+    "premium_button_price_suffix": " ({price})",
+    "premium_button_provider_suffix": " - {provider}",
+    "provider_google": "Google Play",
+    "provider_amazon": "Amazon Appstore",
+    "provider_simulation": "Demo-Modus",
+    "provider_disabled": "Nicht verfügbar",
+    "loading": "Wird geladen...",
+    "signification_error": "Fehler beim Laden der Bedeutung",
+    "loading_messages": [
+      "🔮 Ich konzentriere mich auf deine Frage...",
+      "🃏 Mische die Karten...",
+      "✨ Energien richten sich aus...",
+      "🌙 Sterne werden befragt...",
+      "💫 Deute die Arkana..."
+    ],
+    "chat_mme_t": "Chat Mme T",
+    "store_preparing": "Shop wird vorbereitet...",
+    "store_preparing_retry": "Shop wird vorbereitet, bitte gleich erneut versuchen",
+    "store_unavailable_platform": "Shop auf dieser Plattform nicht verfügbar",
+    "store_mobile_only": "Kauf nur auf Mobilgerät verfügbar",
+    "thanks_for_support": "Danke für deine Unterstützung!",
+    "thanks_for_support_via": "Danke für deine Unterstützung über {provider}!",
+    "configure_backend_hint": "Konfiguriere MME_T_BACKEND_URL, um die Mme T-Beratung zu aktivieren.",
+    "purchase_error_title": "Kauf nicht möglich",
+    "thanks_title": "Danke!"
+  },
+  "significations": {
+    "Der Narr": {
+      "upright": "Neuanfänge, Spontaneität, Freiheit, Abenteuer, Potenzial",
+      "reversed": "Leichtsinn, Orientierungslosigkeit, Nachlässigkeit, Zögern",
+      "signification upright": "Der Narr steht für den Mut, ins Unbekannte zu springen. Er symbolisiert neue Anfänge, Unbekümmertheit und das Vertrauen in das Leben. Diese Karte ermutigt zu spontanen Entscheidungen und zur Offenheit gegenüber Chancen.",
+      "signification reversed": "Umgekehrt kann der Narr auf Leichtsinn, fehlende Planung oder unüberlegte Handlungen hinweisen. Es ist eine Mahnung, Impulsivität mit Verantwortung auszugleichen."
+    },
+    "Der Magier": {
+      "upright": "Beginn, Ressourcen, Enthusiasmus, Energie, Kreativität",
+      "reversed": "Täuschung, Manipulation, Zerstreuung, mangelnde Fokussierung",
+      "signification upright": "Der Magier symbolisiert Geschicklichkeit, Willenskraft und die Fähigkeit, Ideen in die Tat umzusetzen. Er zeigt an, dass die notwendigen Mittel vorhanden sind, um ein Vorhaben zu beginnen.",
+      "signification reversed": "Umgekehrt warnt der Magier vor Manipulation, falschem Schein oder dem Missbrauch eigener Fähigkeiten. Es droht Zerstreuung statt konzentrierter Handlung."
+    },
+    "Die Hohepriesterin": {
+      "upright": "Intuition, Weisheit, Geheimnis, innere Erkenntnis",
+      "reversed": "verdrängte Geheimnisse, blockierte Intuition, Oberflächlichkeit",
+      "signification upright": "Die Hohepriesterin steht für innere Weisheit und das Lauschen auf die Intuition. Sie fordert dazu auf, in sich zu gehen und verborgene Wahrheiten zu erkunden.",
+      "signification reversed": "Umgekehrt kann diese Karte auf verschlossene Einsichten, aktives Ignorieren der Intuition oder manipulative Verwendung von Wissen hinweisen."
+    },
+    "Die Kaiserin": {
+      "upright": "Fruchtbarkeit, Fülle, Kreativität, Fürsorge, Naturverbundenheit",
+      "reversed": "Abhängigkeit, Vernachlässigung, kreative Blockade, Kontrollzwang",
+      "signification upright": "Die Kaiserin symbolisiert Schöpfungskraft, Fürsorge und materielle Fülle. Sie ermutigt zu kreativem Ausdruck und zu einem liebevollen Umgang mit sich und anderen.",
+      "signification reversed": "Umgekehrt weist die Kaiserin auf Vernachlässigung, übertriebene Kontrolle oder kreative Stagnation hin."
+    },
+    "Der Kaiser": {
+      "upright": "Autorität, Struktur, Stabilität, Verantwortung",
+      "reversed": "Tyrannei, Härte, Machtmissbrauch, fehlende Flexibilität",
+      "signification upright": "Der Kaiser steht für Ordnung, Struktur und die Fähigkeit, Verantwortung zu übernehmen. Er ermutigt zu klaren Regeln und langfristiger Planung.",
+      "signification reversed": "Umgekehrt warnt der Kaiser vor Machtmissbrauch, übertriebener Strenge oder starrem Festhalten an Kontrolle."
+    },
+    "Der Hierophant": {
+      "upright": "Tradition, Lehre, moralische Führung, Initiation",
+      "reversed": "Dogmatismus, veraltete Regeln, blinder Gehorsam",
+      "signification upright": "Der Hierophant symbolisiert traditionelle Weisheit, Lehre und die Suche nach Sinn durch etablierte Wege. Er kann auf Mentoren oder formale Rituale hinweisen.",
+      "signification reversed": "Umgekehrt kann er auf Dogmatismus, rigide Institutionen oder die Notwendigkeit hinweisen, eigene Werte zu finden."
+    },
+    "Die Liebenden": {
+      "upright": "Wahl, Verbindung, Liebe, Dualität, wichtige Entscheidung",
+      "reversed": "Fehlentscheidung, Trennung, Unentschlossenheit, Konflikt",
+      "signification upright": "Die Liebenden sprechen oft von einer bedeutenden Wahl, die Herz und Werte betrifft. Sie betonen Authentizität in Beziehungen und Übereinstimmung der Ziele."
+    },
+    "Der Wagen": {
+      "upright": "Beherrschung widerstreitender Kräfte, Zielstrebigkeit, Sieg",
+      "reversed": "Verlust der Kontrolle, zersplitterte Energie, Misserfolg durch Unklarheit",
+      "signification upright": "Der Wagen steht für Willenskraft und die Fähigkeit, gegensätzliche Kräfte zu bündeln, um Fortschritt zu erzielen. Entschlossenheit führt zum Erfolg.",
+      "signification reversed": "Umgekehrt deutet der Wagen auf Richtungsverlust, innere Konflikte oder mangelnde Steuerung der eigenen Energie hin."
+    },
+    "Die Kraft": {
+      "upright": "innere Stärke, Geduld, Mitgefühl, Mut",
+      "reversed": "Schwäche, Kontrollverlust, Aggression, Feigheit",
+      "signification upright": "Die Kraft symbolisiert innere Tapferkeit und die Fähigkeit, mit Sanftmut schwierige Herausforderungen zu meistern. Sie ermutigt zu Geduld und Selbstbeherrschung.",
+      "signification reversed": "Umgekehrt kann sie auf fehlende Selbstkontrolle, Gewalt oder inneres Schwanken hinweisen."
+    },
+    "Der Eremit": {
+      "upright": "Suche nach Wissen, Reflexion, Rückzug, innere Führung",
+      "reversed": "Isolation, Verweigerung von Rat, fehlende Einsicht",
+      "signification upright": "Der Eremit fordert zum Rückzug und zur Selbstreflexion auf. Er steht für Reife, innere Führung und den Wert innerer Arbeit.",
+      "signification reversed": "Umgekehrt kann er auf selbstschädliche Isolation oder den Widerstand gegen hilfreiche Ratschläge hinweisen."
+    },
+    "Das Rad des Schicksals": {
+      "upright": "Zyklen, Schicksal, Chance, Veränderung",
+      "reversed": "anhaltendes Pech, Widerstand gegen Wandel, karmische Folgen",
+      "signification upright": "Das Rad des Schicksals erinnert daran, dass Leben in Zyklen verläuft. Unerwartete Möglichkeiten und Wendungen gehören dazu — es ist wichtig, den richtigen Moment zu nutzen.",
+      "signification reversed": "Umgekehrt kann es auf stagnierende Zyklen, anhaltende Rückschläge oder das Festhalten an Vergangenem hinweisen."
+    },
+    "Der Gehängte": {
+      "upright": "opferbereite Haltung, Perspektivwechsel, Loslassen, Geduld",
+      "reversed": "sinnloses Opfer, Starrsinn, Widerstand gegen Veränderung",
+      "signification upright": "Der Gehängte lädt dazu ein, die Perspektive zu verändern und freiwillig innezuhalten. Oft führt das Loslassen zu neuen Einsichten.",
+      "signification reversed": "Umgekehrt warnt er vor nutzlosen Opfern, Verbohrtheit oder der Unfähigkeit, loszulassen."
+    },
+    "Der Tod": {
+      "upright": "tiefgreifende Veränderung, Ende eines Zyklus, Neubeginn",
+      "reversed": "Widerstand gegen Wandel, Stagnation, Angst vor dem Unbekannten",
+      "signification upright": "Der Tod steht für grundlegende Transformation und die Notwendigkeit, Altes hinter sich zu lassen, damit Neues entstehen kann. Es ist ein Prozess der Reinigung.",
+      "signification reversed": "Umgekehrt zeigt er oft die Angst vor Loslassen oder das Festhalten an Vergangenem, wodurch Entwicklung blockiert wird."
+    },
+    "Die Mäßigkeit": {
+      "upright": "Ausgleich, Heilung, Geduld, harmonische Verbindung",
+      "reversed": "Ungleichgewicht, Exzesse, Ungeduld, disharmonisches Mischen",
+      "signification upright": "Die Mäßigkeit lehrt die Kunst des Ausgleichs und der schrittweisen Heilung. Sie fördert Maß, Geduld und wohlausgewogene Entscheidungen."
+    },
+    "Der Teufel": {
+      "upright": "Abhängigkeiten, Illusionen, Materialismus, Versuchung",
+      "reversed": "Befreiung, Erkenntnis, Überwindung von Ketten",
+      "signification upright": "Der Teufel offenbart die Fesseln, die uns an Gewohnheiten und Abhängigkeiten binden. Er fordert zur Auseinandersetzung mit Schattenseiten auf.",
+      "signification reversed": "Umgekehrt zeigt er den Prozess der Befreiung von Abhängigkeiten und das Erwachen zur eigenen Verantwortung."
+    },
+    "Der Turm": {
+      "upright": "Erschütterung, Offenbarung, abruptes Ende, Befreiende Zerstörung",
+      "reversed": "Widerstand gegen Wandel, abgeschwächte Umwälzung, schrittweise Umstrukturierung",
+      "signification upright": "Der Turm steht für plötzliche Umbrüche, die alte Konstrukte zerstören. Obwohl schmerzhaft, ermöglichen sie oft ehrliche Neubeginne.",
+      "signification reversed": "Umgekehrt kann der Turm ein verzögertes oder abgeschwächtes Zusammenbrechen bedeuten, das dennoch zur Neuordnung führt."
+    },
+    "Der Stern": {
+      "upright": "Hoffnung, Inspiration, Spiritualität, Optimismus",
+      "reversed": "Verzweiflung, Glaubensverlust, Pessimismus",
+      "signification upright": "Der Stern schenkt Hoffnung, Zuversicht und die Verbindung zum Sinnvollen. Er erinnert daran, auf innere Führung zu vertrauen.",
+      "signification reversed": "Umgekehrt kann er auf einen Verlust von Hoffnung oder Orientierung hinweisen; eine Zeit, in der Zuversicht wiedergefunden werden muss."
+    },
+    "Der Mond": {
+      "upright": "Illusionen, Verwirrung, Ängste, Unterbewusstes, Geheimnisse",
+      "reversed": "Klarheit, aufgedeckte Wahrheiten, Ende von Illusionen",
+      "signification upright": "Der Mond zeigt verborgene Ängste, Unsicherheiten und die Macht des Unbewussten. Er fordert zur Vorsicht und Selbstreflexion auf.",
+      "signification reversed": "Umgekehrt kündigt der Mond die Auflösung von Täuschungen und die Rückkehr von Klarheit an."
+    },
+    "Die Sonne": {
+      "upright": "Freude, Erfolg, Lebenskraft, Erfolgserlebnis",
+      "reversed": "Eitelkeit, falscher Stolz, oberflächlicher Erfolg",
+      "signification upright": "Die Sonne steht für Wärme, Erfolg und positive Sichtbarkeit. Sie bringt Klarheit, Energie und lebensbejahende Kraft.",
+      "signification reversed": "Umgekehrt warnt sie vor übertriebenem Stolz oder dem Trugbild scheinbaren Erfolgs."
+    },
+    "Das Gericht": {
+      "upright": "Wiedergeburt, Berufung, Abrechnung, innere Prüfung",
+      "reversed": "Verweigerung der Entwicklung, hartes Urteil, Schuldgefühle",
+      "signification upright": "Das Gericht bedeutet Erwachen und die Möglichkeit einer inneren Neubewertung. Es kann ein Ruf zur Verantwortung oder zur Vergebung sein.",
+      "signification reversed": "Umgekehrt zeigt es oft die Weigerung, die Lektionen anzunehmen, oder das Verharren in Selbstvorwürfen."
+    },
+    "Die Welt": {
+      "upright": "Vollendung, Harmonie, Abschluss eines Zyklus, Ganzheit",
+      "reversed": "nahe am Ziel gescheitert, Perfektionismus, Unvollständigkeit",
+      "signification upright": "Die Welt symbolisiert das erfolgreiche Ende eines Weges, die Integration von Erfahrungen und das Erreichen von Ganzheit.",
+      "signification reversed": "Umgekehrt kann sie auf das Gefühl hinweisen, kurz vor dem Ziel gescheitert zu sein, oder auf Angst vor dem Abschluss."
+    }
+  }
+}

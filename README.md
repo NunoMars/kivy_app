@@ -130,7 +130,6 @@ Le pipeline GitHub Actions se charge automatiquement de :
 kivy_app/
 ├── main.py                    # Application principale Kivy
 ├── macartedetarotapp.kv       # Interface utilisateur
-├── signification.py           # Logique métier tarot
 ├── requirements.txt           # Dépendances Python
 ├── buildozer.spec             # Configuration Android
 ├── .github/workflows/         # Pipeline CI/CD

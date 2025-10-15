@@ -20,6 +20,8 @@ import requests
 import traceback
 import time
 
+os.environ["KIVY_IMAGE"] = "sdl2" # Use SDL2 image provider for better performance on Android
+os.environ["KIVY_DPI"] = "420"  # High DPI for better rendering on modern devices
 
 # ### FIX OFFLINE: connectivity helper
 def has_internet(timeout: float = 2.0) -> bool:
@@ -35,7 +37,8 @@ def has_internet(timeout: float = 2.0) -> bool:
         return False
 
 # Local modules
-from translations import MESSAGES
+import i18n
+MESSAGES = getattr(i18n, 'MESSAGES', {})
 
 # Ads manager (local) — import sécurisé car peut échouer en environnement non-Android
 try:
@@ -116,8 +119,8 @@ except Exception as e:
 
 os.environ.setdefault("KIVY_NO_CONSOLELOG", "1")
 os.environ.setdefault("KIVY_NO_FILELOG", "1")
-Config.set("graphics", "width", "300")
-Config.set("graphics", "height", "600")
+Config.set("graphics", "width", "540")
+Config.set("graphics", "height", "1080")
 Config.set("kivy", "log_level", "warning")
 Config.set("kivy", "show_cursor", "1")
 
@@ -238,24 +241,62 @@ def _normalize_mme_t_backend_url(raw_url: str) -> str:
 
 
 def get_system_language() -> str:
+    # Respecter une variable d'environnement pour forcer la langue (utile en tests)
     try:
-        lang = os.environ.get("LANG", "") or locale.getdefaultlocale()[0] or ""
-        if isinstance(lang, str):
-            lang = lang.lower()
-            if lang.startswith("pt"):
-                return "pt"
-            if lang.startswith("en"):
-                return "en"
-        return "fr"
+        forced = os.environ.get("APP_LANG") or os.environ.get("LANGUAGE")
+        if forced:
+            return forced[:2].lower()
     except Exception:
-        return "fr"
+        pass
+
+    # Tentative Android via pyjnius/autoclass si disponible
+    try:
+        if 'autoclass' in globals() and autoclass:
+            try:
+                Locale = autoclass('java.util.Locale')
+                lang = str(Locale.getDefault().getLanguage() or "").lower()
+                if lang:
+                    return lang[:2]
+            except Exception:
+                pass
+    except Exception:
+        pass
+
+    # Fallback classique via locale
+    try:
+        system_locale = locale.getdefaultlocale()[0] or ""
+        if isinstance(system_locale, str):
+            system_locale = system_locale.lower()
+            for prefix in ("fr", "pt", "en", "es", "de", "it", "nl", "ru", "ja", "zh"):
+                if system_locale.startswith(prefix):
+                    return prefix
+    except Exception:
+        pass
+
+    # Par défaut : français
+    return "fr"
 
 
 CURRENT_LANG = get_system_language()
 print(f"🌍 Langue détectée: {CURRENT_LANG}")
 
+# Communiquer la langue au module translations pour cohérence globale
+try:
+    # keep existing behaviour: inform translations of chosen lang
+    if hasattr(i18n, 'set_app_language'):
+        i18n.set_app_language(CURRENT_LANG)
+except Exception:
+    pass
+
 
 def tr(key: str, **kwargs) -> str:
+    # delegate to i18n.tr which uses the app-wide language detection
+    try:
+        if hasattr(i18n, 'tr'):
+            return i18n.tr(key, **kwargs)
+    except Exception:
+        pass
+    # fallback simple implementation
     txt = MESSAGES.get(CURRENT_LANG, MESSAGES.get("fr", {})).get(key, "")
     if kwargs and isinstance(txt, str):
         try:
@@ -270,47 +311,19 @@ MME_T_DEFAULT_MODEL = os.environ.get("MME_T_MODEL", "gemini-1.5-flash")
 
 # Note: Kivy Config a déjà été réglé plus haut; ici on évite ré-imports redondants.
 
-SIGNIFICATION_KEY_MAP = {
-    "fr": {
-        "keywords": {"upright": "a l'endroit", "reversed": "a l'envers"},
-        "detail": {
-            "upright": "signification a l'endroit",
-            "reversed": "signification a l'envers",
-        },
-    },
-    "en": {
-        "keywords": {"upright": "upright", "reversed": "reversed"},
-        "detail": {
-            "upright": "signification upright",
-            "reversed": "signification reversed",
-        },
-    },
-    "pt": {
-        "keywords": {"upright": "direita", "reversed": "invertida"},
-        "detail": {
-            "upright": "signification direita",
-            "reversed": "signification invertida",
-        },
-    },
-}
-
-# Import des significations selon la langue détectée
-# Le gestionnaire de publicités `ads_manager` a été importé en haut avec fallback sécurisé
+# Signification loader centralisé (JSON via i18n). Utiliser l'API i18n unique.
 try:
-    if CURRENT_LANG == "en":
-        from signification_en import get_cards_signification  # Maintenant correct !
-        print("✓ Significations EN importées")
-    elif CURRENT_LANG == "pt": 
-        from signification_pt import get_cards_signification
-        print("✓ Significations PT importées")
-    else:
-        from signification_fr import get_cards_signification
-        print("✓ Significations FR importées")
+    # S'appuyer uniquement sur i18n pour les signification (pas de fallback vers d'autres modules)
+    get_cards_signification = i18n.get_cards_signification
+    print("✓ Significations loader importé via i18n")
 except Exception as e:
-    print(f"✗ Erreur significations: {e}")
+    print(f"✗ Erreur: i18n.get_cards_signification introuvable: {e}")
+    def get_cards_signification():
+        # Par sécurité, retourner un dictionnaire vide si i18n ne fournit pas la fonction.
+        return {}
 
 try:
-    from card_image_mapping import get_card_image_path
+    from cards_mapping import get_card_image_path
     print("✓ Mapping images importé")
 except Exception as e:
     print(f"✗ Erreur mapping: {e}")
@@ -322,7 +335,7 @@ except Exception as e:
 
 
 try:
-    from card_name_mapping import get_card_name_for_lang
+    from cards_mapping import get_card_name_for_lang
     print("✓ Card name mapping importé")
 except Exception as e:
     print(f"✗ Erreur card name mapping: {e}")
@@ -504,13 +517,3 @@ if __name__ == "__main__":
         _write_startup_traceback(e)
         # Re-raise so the process exits with the original error (useful locally)
         raise
-
-
-
-
-
-
-
-
-
-
