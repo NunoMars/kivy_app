@@ -31,7 +31,7 @@
     "provider_simulation": "Demo mode",
     "provider_disabled": "Unavailable",
     "loading": "Loading...",
-    "signification_error": "Error loading signification",
+    "signification_error": "Error loading meaning",
     "loading_messages": [
       "🔮 Focusing on your question...",
       "🃏 Shuffling the cards...",
@@ -53,215 +53,237 @@
     "mme_t_thanks": "Thanks for consulting Mme T. Come back anytime for more guidance."
   },
   "significations": {
-    "The Magician": {
-      "upright": "beginning, resources, enthusiasm, energy, creativity",
-      "reversed": "illusion, manipulation, lack of focus, dispersion, deception",
-      "signification upright": "The Magician is the tarot card that represents beginnings, vital energy and action. It symbolizes self-confidence, creativity and the will to act. It is a card that encourages taking decisions, transforming ideas into concrete actions and seizing opportunities. The Magician invites exploration, clear communication and creative expression. It is a card that reminds us of the importance of initiative and confidence in one's own talents and resources to achieve goals.",
-      "signification reversed": "The reversed Magician reveals illusion, manipulation or use of one's talents for dishonest purposes. This position can indicate energy dispersion, lack of focus or tendency to deceive others with beautiful words. Sometimes it is the charlatan who abuses others' trust or the person who lies to themselves about their true capabilities."
-    },
-    "The High Priestess": {
-      "upright": "intuition, wisdom, knowledge, mystery, secrets",
-      "reversed": "hidden secrets, willful ignorance, blocked intuition, superficiality",
-      "signification upright": "The High Priestess is the tarot card that represents wisdom, knowledge and intuition. It symbolizes the search for truth, spirituality and self-knowledge. It is a card that invites introspection, listening to intuition and seeking truth. The High Priestess is a card that reminds us of the importance of wisdom and knowledge to achieve our goals.",
-      "signification reversed": "The reversed High Priestess reveals hidden secrets, willful ignorance or intuition blocked by prejudices. This position can indicate superficiality, refusal to access inner wisdom or use of knowledge to manipulate others. Sometimes it is false spirituality or science without conscience."
-    },
-    "The Emperor": {
-      "upright": "authority, structure, control, stability, fatherhood",
-      "reversed": "tyranny, rigidity, abuse of power, lack of discipline",
-      "signification upright": "The Emperor symbolizes authority, structure and stability. He represents the father figure, control and the ability to lead with wisdom. This card encourages establishing clear boundaries and making rational decisions to achieve your goals.",
-      "signification reversed": "The reversed Emperor can indicate abuse of power, excessive rigidity or lack of discipline. This position warns against tyranny and the need to find balance between authority and empathy."
-    },
-    "The Empress": {
-      "upright": "fertility, abundance, creativity, nature, nurturing",
-      "reversed": "dependency, neglect, creative block, excessive control",
-      "signification upright": "The Empress is the tarot card that symbolizes fertility, abundance and creativity. It represents connection with nature, care and nurturing. It is a card that encourages creative expression and appreciation of life's beautiful things.",
-      "signification reversed": "The reversed Empress can indicate excessive dependency, neglect or creative block. It can symbolize a tendency to control excessively or lack of care for emotional and physical needs. It is a reminder to find balance and harmony."
-    },
     "The Fool": {
       "upright": "new beginnings, spontaneity, freedom, adventure, potential",
-      "reversed": "recklessness, lack of direction, negligence, hesitation",
-      "signification upright": "The Fool symbolizes new beginnings and the freedom to explore the unknown. It is a card that encourages spontaneity, adventure and trust in the future. It represents unlimited potential and the courage to move forward without fear of the unknown.",
-      "signification reversed": "The reversed Fool can indicate recklessness, lack of direction or hesitation in making important decisions. It can symbolize negligence or inability to assess risks properly. It is a reminder to balance spontaneity with responsibility."
+      "reversed": "recklessness, naivety, carelessness, hesitation",
+      "signification upright": "A clean slate invites trust over over-planning. The Fool favors curiosity, play and first steps taken before certainty appears. Follow what feels alive, even if the route is unconventional. Risk exists, but so does bright potential. Travel light: release labels and let experience teach you. In love, bring honesty and openness; in work, prototype and learn in motion. You don’t need every answer to begin—only a sincere yes.",
+      "signification reversed": "Impulses may be steering without awareness. Acting to escape discomfort creates avoidable detours. Slow down enough to sense consequences and safety. Naivety or magical thinking can mask fear of commitment. Revisit your why, set simple guardrails, and step with presence. Beginning wisely is still a beginning."
+    },
+    "The Magician": {
+      "upright": "initiative, resources, willpower, energy, creativity",
+      "reversed": "deception, manipulation, scattered focus, misuse of skills",
+      "signification upright": "Attention is your wand: idea, intention and action align to shape reality. Name the outcome, gather tools, take one focused step. Communicate clearly—ask precisely, promise realistically. This favors skill-building and visible leadership: show, don’t just tell. In love, state needs plainly; in career, ship something real. Momentum compounds when will serves a purpose larger than ego.",
+      "signification reversed": "Charm without integrity backfires. Distraction, half-truths or trying to control others leak power and trust. If energy is scattered, reduce inputs and choose one lever. Audit motives: proving yourself or serving the work? Re-commit to clean methods, simple systems and accountable promises."
+    },
+    "The High Priestess": {
+      "upright": "intuition, wisdom, mystery, inner knowledge",
+      "reversed": "blocked intuition, hidden truths, superficiality",
+      "signification upright": "Silence becomes a sense organ. Answers surface when you stop pushing and start listening beneath the noise. Dream, journal, notice patterns—what repeats is speaking. Protect your mystery; not everything needs to be posted or solved today. In love, honor boundaries and timing; in work, research privately and move when inner yes and outer signs align.",
+      "signification reversed": "You may override intuition to fit expectations, or stay vague to avoid truth. Secrets heal when faced kindly. Name what you know but haven’t admitted. Simplify inputs so your inner signal strengthens. Knowledge used to control is a cage; used to understand, it frees."
+    },
+    "The Empress": {
+      "upright": "fertility, abundance, creativity, nourishment, nature",
+      "reversed": "creative block, smothering, over-control, dependence",
+      "signification upright": "Life blossoms: create, nurture and let things grow in natural rhythm. Pleasure, beauty and care replenish your field. Invest in body, home and art; receive as you give. Collaboration thrives where generosity is real. In relationships, warmth and receptivity deepen bonds; at work, supportive ecosystems multiply results.",
+      "signification reversed": "Clutching too tightly stifles growth. Over-giving to be needed depletes. Step back, breathe, reconnect to cycles of rest and ripening. Allow help, release perfectionism, and trust the soil to do its work."
+    },
+    "The Emperor": {
+      "upright": "authority, structure, stability, responsibility",
+      "reversed": "tyranny, rigidity, abuse of power, control issues",
+      "signification upright": "Build frameworks that serve people, not the other way around. Boundaries, strategy and foresight turn chaos into ground. Lead by example; make decisions transparent. Protect the vulnerable, steward resources, and think long-term. Calm order is a kindness.",
+      "signification reversed": "Grip without trust breaks what it holds. Commanding from fear becomes brittle. Replace micromanagement with clear goals and autonomy. Strength is flexible, accountable and fair."
     },
     "The Hierophant": {
-      "upright": "spiritual teaching, sacred tradition, moral guidance, initiation, transmitted wisdom",
-      "reversed": "dogmatism, religious manipulation, stagnant tradition, false prophet",
-      "signification upright": "The Hierophant represents authentic spiritual teaching and transmission of sacred wisdom. This card evokes the spiritual guide, the initiator who connects human to divine through traditional knowledge. It symbolizes enlightened morality, rites of passage and learning mysteries. It is the bridge between visible and invisible, the teacher who reveals eternal truths.",
-      "signification reversed": "The reversed Hierophant reveals blind dogmatism, manipulation by religious power or tradition that has become stagnant. This position can indicate a false prophet, use of spirituality for personal purposes or sterile rejection of any traditional guidance."
+      "upright": "tradition, teaching, moral guidance, initiation",
+      "reversed": "dogmatism, outdated rules, blind obedience",
+      "signification upright": "Meaning flows through lineage, mentors and shared rituals. Learn the form to touch the spirit; transmit wisdom with humility. Good rules protect freedom and foster belonging. Ask, “What is the living principle beneath the custom?”",
+      "signification reversed": "When form replaces spirit, systems ossify. Question edicts that shrink compassion. Keep what’s wise, release what’s dead. Make tradition alive by practicing its essence, not its shell."
     },
     "The Lovers": {
-      "upright": "difficult choice, union, love, duality, important decision",
-      "reversed": "bad choice, separation, indecision, internal conflict",
-      "signification upright": "The Lovers represent above all a crucial choice to be made, often between two opposing paths. This card evokes union, true love, but also the need to choose between different life options. It symbolizes emotional maturity, authentic commitment and harmony between opposites. It is the balance between passion and reason, between desire and responsibility.",
-      "signification reversed": "The reversed Lovers indicate a bad choice, separation or profound indecision. This position reveals internal conflicts, inability to choose or decisions made for wrong reasons. It can signal unbalanced relationships, infidelities or inability to commit authentically. Sometimes it is regret over a past choice."
+      "upright": "choice, union, love, duality, important decision",
+      "reversed": "wrong choice, separation, indecision, inner conflict",
+      "signification upright": "A values decision disguised as romance or options. Choose where desire, honesty and responsibility coexist. Speak your real yes/no and welcome the same. Alignment beats perfection: shared direction lets details be designed together. Partnership deepens when each remains whole.",
+      "signification reversed": "Mixed motives and people-pleasing breed friction. A yes to avoid loss is a no to yourself. Pause timelines, clear triangulations, and ask what truth you’re avoiding. If parting serves integrity, grieve cleanly and continue."
     },
     "The Chariot": {
-      "upright": "mastery of opposing forces, triumphant will, progress, victory through balance",
-      "reversed": "loss of control, scattered forces, failure due to lack of direction, internal conflict",
-      "signification upright": "The Chariot represents victory obtained through mastery of opposing forces. This card evokes the ability to direct contradictory energies toward the same goal, like a driver controlling his horses. It symbolizes triumphant will, dynamic balance and constant progress despite obstacles. It is the art of transforming oppositions into complementarities.",
-      "signification reversed": "The reversed Chariot reveals loss of control, inability to harmonize present forces or failure due to lack of clear direction. This position can indicate scattered energies, paralyzing internal conflicts or the illusion of controlling what really escapes us."
+      "upright": "mastery of opposing forces, determination, victory",
+      "reversed": "loss of control, scattered energy, misdirection",
+      "signification upright": "Two forces pull apart; leadership chooses a shared direction. Define the finish line, set constraints, keep promises to yourself. Small, repeatable wins pull the vehicle forward. Victory is disciplined momentum, not frantic speed.",
+      "signification reversed": "Wheels spin when goals are vague or pride resists adjustment. If you’re forcing outcomes, loosen the grip and refine the map. Realign metrics with meaning, shorten feedback loops, delegate what drains focus."
     },
     "Justice": {
-      "upright": "justice, balance, truth, law, equity",
-      "reversed": "injustice, imbalance, bias, corruption, revenge",
-      "signification upright": "Justice is the tarot card that represents justice, balance and truth. It symbolizes law, equity and truth. It is a card that invites justice, balance and truth. Justice is a card that reminds us of the importance of justice and balance to achieve our goals.",
-      "signification reversed": "Reversed Justice reveals injustice, bias or corruption of systems. This position can indicate an imbalance of forces, revenge replacing justice, or inability to see truth due to prejudice. Sometimes it is wrong judgment or abuse of the judicial system."
+      "upright": "fairness, balance, truth, law, accountability",
+      "reversed": "injustice, bias, imbalance, corruption, revenge",
+      "signification upright": "Balance is right proportion, not 50/50. Weigh facts, name bias, act transparently. Make amends where needed; credit fairly. Legal or contract matters favor clarity and documentation. Choices now set precedents later.",
+      "signification reversed": "Something is off: missing context or unequal stakes. Resist snap judgments; confirm sources. If harsh on yourself, trade punishment for accountability and repair. Advocate for fair process, not just desired outcome."
     },
     "The Hermit": {
-      "upright": "spiritual quest, wisdom, introspection, inner guide, constructive solitude",
-      "reversed": "sterile isolation, refusal of advice, spiritual pride, suffered solitude",
-      "signification upright": "The Hermit represents spiritual quest and search for inner truth. This card evokes wisdom acquired through experience, the need to withdraw from the world to better understand oneself. It symbolizes the spiritual guide, one who illuminates others' path thanks to his own illumination. It is chosen solitude for personal evolution.",
-      "signification reversed": "The reversed Hermit indicates sterile isolation, refusal to listen to wise advice or spiritual pride that prevents learning. This position can reveal suffered rather than chosen solitude, or inability to share one's wisdom with others due to selfishness or misanthropy."
+      "upright": "inner search, reflection, solitude, guidance",
+      "reversed": "isolation, rejecting advice, stubbornness",
+      "signification upright": "Step back to see truth. Reflection distills noise into knowing. Seek quiet mentors or become your own; let the inner lamp guide measured steps. Share when wisdom ripens.",
+      "signification reversed": "Hiding isn’t healing. If pride blocks counsel or loneliness hardens, re-enter connection gently. Solitude serves when it keeps you teachable."
     },
     "Wheel of Fortune": {
-      "upright": "natural cycles, karma, opportunity, change of luck, destiny in motion",
-      "reversed": "persistent bad luck, resistance to cycles, bad karma, stagnation",
-      "signification upright": "The Wheel of Fortune represents life's natural cycles and karma's action. This card evokes changes of fortune, opportunities that present themselves and the importance of seizing the right moment. It symbolizes destiny in motion, experience's lessons and understanding that everything is in constant change. It is acceptance of existence's ups and downs.",
-      "signification reversed": "The reversed Wheel of Fortune can indicate a period of persistent bad luck, resistance to natural cycles or consequences of bad karma. This position sometimes reveals voluntary stagnation, inability to seize opportunities or repetition of errors that maintain failure."
+      "upright": "cycles, fate, opportunity, change",
+      "reversed": "stagnation, resisting change, repeating patterns",
+      "signification upright": "The wheel turns: catch the updraft by staying light and responsive. Notice timing, align with what’s moving, and say yes to real openings. What returns offers a new choice this time.",
+      "signification reversed": "Clinging recreates what you fear. Break loops by changing one consistent behavior. Accept the lesson, release the script, invite a different scene."
     },
     "Strength": {
-      "upright": "inner strength, self-control, courage, gentleness, persuasion",
-      "reversed": "weakness, lack of control, violence, brutality, cowardice",
-      "signification upright": "Strength represents mastery of one's instincts through gentleness rather than violence. This card evokes inner strength, moral courage and ability to overcome obstacles through persuasion and patience. It symbolizes emotional intelligence, firm compassion and spirit's victory over matter. It is mastering one's destructive impulses through love and wisdom.",
-      "signification reversed": "Reversed Strength indicates lack of self-control, use of violence where gentleness would be more effective, or conversely, excessive weakness facing challenges. This position can reveal cowardice, inability to defend oneself or abusive use of one's power over others."
+      "upright": "inner strength, patience, compassion, courage",
+      "reversed": "weakness, loss of control, aggression, avoidance",
+      "signification upright": "Gentle power regulates the storm. Meet force with presence, not panic. Tame, don’t terrorize, what is wild. In love and work, courage plus kindness earns trust.",
+      "signification reversed": "Outbursts, collapse or appeasement signal dysregulation. Slow breath, simple boundaries, small brave acts—strength rebuilt from within."
     },
     "The Hanged Man": {
-      "upright": "voluntary sacrifice, waiting, new perspective, detachment, initiation",
-      "reversed": "useless sacrifice, stubbornness, resistance to change, impatience",
-      "signification upright": "The Hanged Man represents voluntary sacrifice to gain a new perspective. This card evokes acceptance of a suspension period, necessary waiting to see things from a different angle. It is detachment, abandoning our certainties to access superior wisdom. The Hanged Man teaches us patience and the value of contemplation over hasty action.",
-      "signification reversed": "The reversed Hanged Man indicates sacrifice that leads nowhere, sterile stubbornness or resistance to necessary change. This position can reveal impatience facing a situation that requires time. It is sometimes refusal to accept a different perspective or inability to detach from outdated situations."
+      "upright": "sacrifice, new perspective, surrender, patience",
+      "reversed": "stalled sacrifice, stubbornness, resisting change",
+      "signification upright": "Suspend action to see differently. Surrender isn’t defeat; it’s a pivot into wisdom. Yielding the old angle reveals an elegant next move.",
+      "signification reversed": "Hanging on without learning wastes time. If pride resists flexibility, choose a tiny surrender. Movement returns when meaning does."
     },
     "Death": {
-      "upright": "profound transformation, end of cycle, rebirth, radical change, purification",
-      "reversed": "resistance to change, stagnation, fear of unknown, blocked transformation",
-      "signification upright": "Death does not predict physical death, but profound and necessary transformation. This card announces the end of a life cycle and beginning of a new chapter. It symbolizes metamorphosis, purification and rebirth after abandoning what no longer serves us. It is acceptance of inevitable change to allow spiritual evolution.",
-      "signification reversed": "Reversed Death reveals resistance to necessary change, fear of letting go of the past or inability to accept that certain situations are definitively over. This position indicates voluntary stagnation or illusion that one can prevent the natural evolution of things."
+      "upright": "transformation, end of a cycle, rebirth",
+      "reversed": "fear of change, stagnation, clinging",
+      "signification upright": "An era completes. Letting go is harvest—you keep the learning, not the form. Ritualize the ending, grieve and clear space. Vitality follows the release.",
+      "signification reversed": "Avoided endings linger and leak energy. Name what’s over, ask for support, and close gently. Life refills the room you free."
+    },
+    "Temperance": {
+      "upright": "balance, healing, patience, harmonious blending",
+      "reversed": "imbalance, excess, haste, chaotic mixing",
+      "signification upright": "Mix opposites with care; healing ripens gradually. Calibrate inputs, pace and boundaries. Integrate, don’t oscillate.",
+      "signification reversed": "Too much or too little distorts the recipe. Remove one excess, add one stabilizer, and let time do its part."
+    },
+    "The Devil": {
+      "upright": "attachments, illusions, materialism, temptation",
+      "reversed": "liberation, awakening, breaking chains",
+      "signification upright": "Name the chains—habits, debts, obsessions, toxic bonds. Awareness dissolves glamour and returns consent. Desire isn’t evil; unconscious compulsion is.",
+      "signification reversed": "Keys appear once you stop pretending you’re locked in. Choose one clean break or boundary; freedom expands from there."
+    },
+    "The Tower": {
+      "upright": "shock, revelation, collapse, liberating change",
+      "reversed": "resisted change, softened upheaval, gradual restructure",
+      "signification upright": "False structures fall so truth can stand. Though abrupt, the clearing is merciful. After the break, rebuild on honest ground with simpler lines.",
+      "signification reversed": "A quieter correction: learn now or face a louder call later. Remove the loose brick before the wall must go."
     },
     "The Star": {
-      "upright": "hope, inspiration, spirituality, generosity, optimism",
-      "reversed": "despair, loss of faith, pessimism, selfishness, lost illusions",
-      "signification upright": "The Star is the tarot card that represents hope, inspiration and spirituality. It symbolizes generosity, optimism and spirituality. It is a card that invites hope, inspiration and spirituality. The Star is a card that reminds us of the importance of hope and inspiration to achieve our goals.",
-      "signification reversed": "The reversed Star reveals despair, loss of faith in the future or profound pessimism. This position can indicate lost illusions, selfishness replacing generosity, or spiritual disconnection. Sometimes it is depression following great disappointment or inability to see the world's beauty."
+      "upright": "hope, inspiration, spirituality, generosity",
+      "reversed": "despair, loss of faith, pessimism",
+      "signification upright": "Light returns after the storm. Rehydrate spirit through beauty, kindness and rest. Share freely; grace multiplies when given.",
+      "signification reversed": "Hope dimmed isn’t hope dead. Reduce noise, seek small wonders, and let trust regrow through tiny, kept promises."
     },
     "The Moon": {
-      "upright": "illusions, confusion, fears, unconscious, mysteries",
-      "reversed": "clarity, revealed truth, end of illusions, recovered intuition",
-      "signification upright": "The Moon reveals a world of illusions, confusion and hidden fears. This card evokes mysteries of the unconscious, disturbing dreams and situations where nothing is what it seems. It warns against deceptions, misunderstandings and projections of our own anxieties onto reality. The Moon invites us to navigate cautiously in uncertainty's darkness.",
-      "signification reversed": "The reversed Moon announces dissipation of illusions and return of clarity. Mysteries are revealed, misunderstandings dissipate and truth finally emerges. This position indicates reconnection with authentic intuition, free from fears and projections. It is the end of a confusion period and access to clearer understanding of the situation."
+      "upright": "illusion, confusion, fears, subconscious, mystery",
+      "reversed": "clarity, truths revealed, end of illusion",
+      "signification upright": "Mist and mirrors: move slowly, check projections, follow somatic cues. Not all threats are real, not all signals are false. Dreamwork helps.",
+      "signification reversed": "Fog lifts. Facts surface and inner sense steadies. Proceed with soft confidence and updated maps."
     },
     "The Sun": {
-      "upright": "joy, happiness, success, achievement, celebration",
-      "reversed": "excessive pride, inflated ego, temporary success, illusion of grandeur",
-      "signification upright": "The Sun represents pure joy, radiant achievement and deserved success. This card evokes total flourishing, public recognition and celebration of one's achievements. It symbolizes the liberated inner child, creativity expressing itself fully and harmony between being and aspirations. It is illumination that dispels all shadows.",
-      "signification reversed": "The reversed Sun reveals excessive pride, ego that blinds judgment or illusion of grandeur. This position can indicate temporary success hiding fragile foundations, vanity that isolates from others, or inability to share one's light with others. Sometimes it is arrogance preceding the fall."
+      "upright": "joy, success, vitality, celebration",
+      "reversed": "vanity, inflated ego, hollow success",
+      "signification upright": "Warmth, visibility, playful mastery. Share credit, savor results, and create from joy. Your light helps others shine.",
+      "signification reversed": "Polish without depth fades fast. Re-root in authenticity and service; radiance returns."
     },
     "Judgement": {
-      "upright": "spiritual rebirth, divine calling, resurrection, life assessment, final transformation",
-      "reversed": "spiritual deafness, refusal to evolve, harsh judgment, guilt",
-      "signification upright": "Judgement represents spiritual rebirth and divine calling for profound transformation. This card evokes symbolic resurrection, life assessment and awakening to higher consciousness. It symbolizes absolution, forgiveness and possibility of being reborn purified from past errors. It is the soul's call to its true mission.",
-      "signification reversed": "Reversed Judgement reveals deafness to spiritual calls, refusal to evolve or too harsh judgment of oneself or others. This position can indicate paralyzing guilt, inability to forgive or resistance to transformations necessary for soul evolution."
+      "upright": "rebirth, calling, reckoning, inner review",
+      "reversed": "denial of growth, harsh judgment, guilt",
+      "signification upright": "Awaken to your next assignment. Review honestly, forgive wisely, and answer the call. What’s learned becomes vocation.",
+      "signification reversed": "Stuck in self-blame or refusal. Practice mercy, make amends, and take the one step that proves renewal."
     },
     "The World": {
-      "upright": "total achievement, universal harmony, complete cycle, complete mastery",
-      "reversed": "failure near goal, paralyzing perfectionism, isolation, unfinished cycle",
-      "signification upright": "The World represents total achievement and universal harmony. This card evokes complete conclusion of a cycle, perfect mastery of all elements and harmonious integration of all experiences. It symbolizes lasting success, deserved recognition and state of grace where everything contributes to flourishing. It is the culmination of the Fool's initiatory journey.",
-      "signification reversed": "The reversed World can indicate frustrating failure when close to the goal, perfectionism that paralyzes or isolation despite apparent success. This position sometimes reveals an unfinished cycle, inability to savor one's achievements or fear of achievement that could mean the end of a quest."
+      "upright": "completion, harmony, mastery, wholeness",
+      "reversed": "near-miss, perfectionism, unfinished cycle",
+      "signification upright": "Integration achieved. Document, celebrate, and share the pattern you’ve mastered. A doorway opens to the next cycle.",
+      "signification reversed": "Define “done,” tie the final thread, and let it stand. Closure is a gift to future you."
     },
-    "Page of Wands": {
-      "upright": "creative messenger, new inspiration, emerging project, youthful enthusiasm",
-      "reversed": "false promise, aborted project, superficial enthusiasm, creative impatience",
-      "signification upright": "The Page of Wands brings creative messages, new inspirations or announces the beginning of an exciting project. He represents youthful enthusiasm, fresh creative approach and emergence of innovative ideas. This card evokes the apprentice artist, passionate student and spirit discovering its talents.",
-      "signification reversed": "The reversed Page of Wands warns against false creative promises, superficial enthusiasm or impatience that aborts projects. This position can reveal an immature approach to creativity, tendency to give up at first obstacles or illusions about one's own capabilities."
-    },
-    "King of Pentacles": {
-      "upright": "established prosperity, financial mastery, wise generosity, material leadership",
-      "reversed": "greed, corruption, abuse of wealth, excessive materialism",
-      "signification upright": "The King of Pentacles represents established prosperity, financial mastery and leadership in the material field. He embodies wise generosity, thoughtful investment and ability to create lasting wealth. This card evokes the accomplished entrepreneur, generous patron and one who puts success at service of common good.",
-      "signification reversed": "The reversed King of Pentacles reveals greed, corruption or abuse of wealth. This position can indicate excessive materialism that suffocates human values, tendency to corrupt with money or inability to share prosperity with those in need."
-    },
-    "Queen of Pentacles": {
-      "upright": "nurturing abundance, practical generosity, shared prosperity, domestic wisdom",
-      "reversed": "protective greed, possessive materialism, home neglect, waste",
-      "signification upright": "The Queen of Pentacles embodies nurturing abundance and practical generosity. She represents shared prosperity, domestic wisdom and ability to create a nurturing and secure environment. This card evokes the attentive mother, generous hostess and one who makes family resources prosper with love and intelligence.",
-      "signification reversed": "The reversed Queen of Pentacles reveals protective greed, possessive materialism or home neglect. This position can indicate misplaced generosity leading to waste, inability to manage family resources or obsession with material goods at expense of human relationships."
-    },
-    "Knight of Pentacles": {
-      "upright": "hard work, method, perseverance, responsibility, pragmatism",
-      "reversed": "work obsession, excessive routine, lack of ambition, laziness",
-      "signification upright": "The Knight of Pentacles represents the methodical and persevering worker. He advances slowly but surely toward his material and financial goals. This card evokes responsibility, pragmatism and ability to accomplish long-term work. It is patience and tenacity in service of concrete achievement.",
-      "signification reversed": "The reversed Knight of Pentacles can indicate excessive work obsession at expense of everything else, or conversely, laziness and lack of ambition. This position sometimes reveals paralyzing routine, inability to take calculated risks or too rigid approach to projects."
-    },
-    "Page of Pentacles": {
-      "upright": "diligent student, practical learning, new material opportunity, diligence",
-      "reversed": "scholarly laziness, opportunism, superficial learning, negligence",
-      "signification upright": "The Page of Pentacles represents the diligent student, practical learning and emergence of new material opportunities. He evokes diligence, perseverance in study and ability to transform theory into concrete applications. This card symbolizes the serious apprentice who lays foundations for future success.",
-      "signification reversed": "The reversed Page of Pentacles reveals laziness in studies, short-term opportunism or superficiality in learning. This position can indicate negligence, inability to persevere in effort or tendency to seek shortcuts that compromise work quality."
-    },
-    "Page of Cups": {
-      "upright": "emotional message, artistic inspiration, sensitive awakening, nascent creativity",
-      "reversed": "emotional immaturity, wounded sensitivity, blocked creativity, dangerous naivety",
-      "signification upright": "The Page of Cups brings emotional messages, artistic inspiration or announces a sensitive awakening. He represents nascent creativity in arts field, heart opening and receptivity to subtle influences. This card evokes the artist in formation, sincere lover and pure soul discovering emotional world's richness.",
-      "signification reversed": "The reversed Page of Cups reveals emotional immaturity, wounded sensitivity or blocked creativity. This position can indicate dangerous naivety facing emotional manipulations, inability to express feelings constructively or emotional wounds preventing artistic flourishing."
-    },
-    "King of Swords": {
-      "upright": "intelligence, just authority, mental clarity, objectivity, justice",
-      "reversed": "tyranny, power abuse, excessive coldness, mental manipulation",
-      "signification upright": "The King of Swords represents superior intelligence, authority based on knowledge and justice. He symbolizes mental clarity, objectivity and ability to resolve complex situations with wisdom. This card evokes the enlightened leader, fair judge and thinker who puts intelligence at service of common good.",
-      "signification reversed": "The reversed King of Swords reveals intellectual power abuse, cold tyranny or use of intelligence to manipulate others. This position can indicate lack of empathy, despotic authority or use of knowledge to dominate rather than serve."
-    },
-    "Queen of Swords": {
-      "upright": "independence, lucidity, frankness, pragmatic intelligence, experience of pain",
-      "reversed": "bitterness, resentment, destructive criticism, excessive coldness",
-      "signification upright": "The Queen of Swords represents independence conquered through experience, often painful. She symbolizes lucidity, frankness and pragmatic intelligence. This card evokes a woman who learned from life and can now offer valuable advice, even if sometimes seeming harsh. It is wisdom born from trial.",
-      "signification reversed": "The reversed Queen of Swords reveals corroding bitterness, persistent resentment or destructive criticism born from own wounds. This position can indicate excessive coldness, inability to forgive or use of past experiences to hurt rather than help."
-    },
-    "Knight of Swords": {
-      "upright": "impulsive action, courage, combativeness, sudden change, heroism",
-      "reversed": "recklessness, aggression, destruction, blind rage",
-      "signification upright": "The Knight of Swords represents quick and courageous action, sometimes impulsive. He symbolizes heroic intervention, defense of ideals with determination. This card evokes sudden but necessary changes, combative spirit and will to solve problems incisively.",
-      "signification reversed": "The reversed Knight of Swords reveals recklessness, destructive aggression or blind rage. This position warns against hasty actions causing more damage than solutions. Sometimes it is gratuitous violence or inability to control destructive impulses."
-    },
-    "Page of Swords": {
-      "upright": "intellectual curiosity, important messages, vigilance, mental agility",
-      "reversed": "indiscretion, malicious spying, lies, information manipulation",
-      "signification upright": "The Page of Swords represents intellectual curiosity, arrival of important news or need for vigilance. He symbolizes agile mind, observation capacity and intelligence in action. This card evokes one who collects information, monitors situations and brings crucial messages. It is intelligence serving discovery.",
-      "signification reversed": "The reversed Page of Swords reveals indiscretion, malicious spying or information manipulation. This position can indicate lies, malicious rumors or use of knowledge to harm rather than clarify. Sometimes it is destructive gossip or betrayal of trust."
-    },
-    "King of Cups": {
-      "upright": "emotional mastery, wise compassion, diplomatic leadership, emotional balance",
-      "reversed": "emotional manipulation, false compassion, mood swings, emotional instability",
-      "signification upright": "The King of Cups represents emotional mastery and wise compassion. He symbolizes diplomatic leadership, ability to guide others with empathy while maintaining emotional balance. This card evokes the wise counselor, understanding father and one who combines emotional intelligence with firm authority.",
-      "signification reversed": "The reversed King of Cups reveals emotional manipulation, false compassion or mood swings. This position can indicate emotional instability, use of feelings to control others or inability to maintain emotional balance in leadership position."
-    },
-    "Queen of Cups": {
-      "upright": "intuitive compassion, emotional nurturing, psychic sensitivity, unconditional love",
-      "reversed": "emotional overwhelm, psychic confusion, manipulative sensitivity, emotional dependency",
-      "signification upright": "The Queen of Cups embodies intuitive compassion and emotional nurturing. She represents psychic sensitivity, ability to feel others' emotions and offer unconditional love. This card evokes the caring mother, empathetic healer and one who creates emotional sanctuary for others.",
-      "signification reversed": "The reversed Queen of Cups reveals emotional overwhelm, psychic confusion or manipulative sensitivity. This position can indicate emotional dependency, inability to establish emotional boundaries or use of sensitivity to manipulate others' feelings."
-    },
-    "Knight of Cups": {
-      "upright": "romantic idealism, emotional quest, artistic inspiration, following the heart",
-      "reversed": "unrealistic romanticism, emotional instability, artistic delusion, moodiness",
-      "signification upright": "The Knight of Cups represents romantic idealism and emotional quest. He follows his heart, seeks beauty and artistic inspiration. This card evokes the romantic lover, passionate artist and one who pursues emotional and aesthetic ideals with determination.",
-      "signification reversed": "The reversed Knight of Cups reveals unrealistic romanticism, emotional instability or artistic delusion. This position can indicate moodiness, inability to ground romantic ideals in reality or tendency to be carried away by emotions without reflection."
-    },
+
     "King of Wands": {
-      "upright": "charismatic leadership, creative vision, entrepreneurial spirit, inspiring authority",
-      "reversed": "authoritarian leadership, creative ego, impulsive decisions, tyrannical authority",
-      "signification upright": "The King of Wands represents charismatic leadership and creative vision. He embodies entrepreneurial spirit, ability to inspire others and lead creative projects to success. This card evokes the visionary leader, successful entrepreneur and one who transforms ideas into concrete achievements.",
-      "signification reversed": "The reversed King of Wands reveals authoritarian leadership, inflated creative ego or impulsive decisions. This position can indicate tyrannical authority, tendency to impose one's vision without listening to others or use of charisma for selfish purposes."
+      "upright": "charismatic leadership, visionary action, creative direction",
+      "reversed": "impulsive domination, hot-headed rule, ego-driven moves",
+      "signification upright": "Lead with purpose and fire, not force. Rally allies, set bold aims, remove blockers. Courage plus clarity ignites progress.",
+      "signification reversed": "Temper the blaze. Listen, share power, and swap pride for partnership. Influence outlasts intimidation."
     },
     "Queen of Wands": {
-      "upright": "creative confidence, warm leadership, practical creativity, generous inspiration",
-      "reversed": "creative jealousy, dominating leadership, selfish creativity, manipulative charm",
-      "signification upright": "The Queen of Wands embodies creative confidence and warm leadership. She combines practical creativity with generous inspiration, ability to encourage others while achieving her own creative goals. This card evokes the inspiring teacher, creative leader and one who radiates positive energy.",
-      "signification reversed": "The reversed Queen of Wands reveals creative jealousy, dominating leadership or selfish creativity. This position can indicate manipulative charm, tendency to discourage others' creativity out of jealousy or use of creative talents for selfish purposes."
+      "upright": "radiant creativity, warm generosity, inspiring presence",
+      "reversed": "jealousy, possessiveness, creative blockage",
+      "signification upright": "Your warmth sparks rooms and projects. Champion others, play big, and keep joy central to making.",
+      "signification reversed": "Comparison drains the muse. Reclaim play, restore boundaries, and create from self-trust."
     },
     "Knight of Wands": {
-      "upright": "impulsive energy, adventurous spirit, passionate action, creative courage",
-      "reversed": "reckless impulsiveness, scattered energy, hasty decisions, creative burnout",
-      "signification upright": "The Knight of Wands represents impulsive energy and adventurous spirit. He acts with passion, takes creative risks and pursues his goals with fierce determination. This card evokes the bold adventurer, passionate creator and one who dares to follow his creative impulses.",
-      "signification reversed": "The reversed Knight of Wands reveals reckless impulsiveness, scattered energy or hasty decisions. This position can indicate creative burnout, inability to focus energy constructively or tendency to start projects without finishing them."
+      "upright": "adventure, momentum, swift initiative",
+      "reversed": "haste, fleeing, scattered effort",
+      "signification upright": "Start fast, learn faster. Pilot daring moves, accept feedback, iterate in motion.",
+      "signification reversed": "Frenzy ≠ progress. Ground the plan, then channel speed into aim."
+    },
+    "Page of Wands": {
+      "upright": "creative message, new idea, youthful excitement",
+      "reversed": "empty promises, shallow enthusiasm, impatience",
+      "signification upright": "First sparks—announce, test, and practice. Curiosity is your teacher now.",
+      "signification reversed": "Stay past the first hurdle. Depth makes the idea real."
+    },
+
+    "King of Pentacles": {
+      "upright": "established prosperity, wise stewardship, material leadership",
+      "reversed": "greed, corruption, material fixation",
+      "signification upright": "Build durable value and share it. Invest patiently, safeguard people, and model ethical success.",
+      "signification reversed": "If wealth shrank your world, widen it. Align money with meaning and fairness."
+    },
+    "Queen of Pentacles": {
+      "upright": "nurturing abundance, practical care, shared prosperity",
+      "reversed": "overprotective materialism, home neglect, waste",
+      "signification upright": "Create safety, warmth and flourishing systems. Practical kindness compounds.",
+      "signification reversed": "Re-order priorities, curb clutter and revive simple, steady care."
+    },
+    "Knight of Pentacles": {
+      "upright": "diligence, method, perseverance, responsibility",
+      "reversed": "rut, laziness, low ambition",
+      "signification upright": "Reliability wins marathons. Keep steady pace, refine process, track small gains.",
+      "signification reversed": "Stuck is a cue, not a sentence. Set one clear next task and move."
+    },
+    "Page of Pentacles": {
+      "upright": "applied study, new material chance, diligence",
+      "reversed": "shortcut mindset, superficial study, neglect",
+      "signification upright": "Lay foundations: learn by doing, ship small, improve. Tangible skills grow security.",
+      "signification reversed": "Trade hacks for habits. Mastery is repeated care."
+    },
+
+    "King of Cups": {
+      "upright": "emotional mastery, wise compassion, benevolent leadership",
+      "reversed": "emotional manipulation, calculated coldness, hidden instability",
+      "signification upright": "Hold steady seas for others. Name feelings, honor needs, mediate fairly. Soft power is strong.",
+      "signification reversed": "Tactics erode trust. Practice clean asks, boundaries and self-regulation."
+    },
+    "Queen of Cups": {
+      "upright": "deep intuition, true empathy, unconditional love",
+      "reversed": "over-emotionality, dependency, self-erasing sacrifice",
+      "signification upright": "Offer sanctuary and skilled listening. Empathy with boundaries heals.",
+      "signification reversed": "Refill your own cup. Compassion needs contours to last."
+    },
+    "Knight of Cups": {
+      "upright": "romance, invitation, charm, creative proposal",
+      "reversed": "romantic illusions, empty promises, emotional games",
+      "signification upright": "Extend heartfelt offers—art, love, reconciliation. Let sincerity be your style.",
+      "signification reversed": "Test for substance. Choose honesty over performance."
+    },
+    "Page of Cups": {
+      "upright": "emotional message, artistic spark, tender opening",
+      "reversed": "emotional immaturity, hurt feelings, blockage",
+      "signification upright": "A shy door opens—treat feelings gently and express simply.",
+      "signification reversed": "Soothe the bruise, not the story. Create in small, safe ways."
+    },
+
+    "King of Swords": {
+      "upright": "clear reason, just authority, objectivity",
+      "reversed": "coldness, abuse of power, manipulative intellect",
+      "signification upright": "Speak truth precisely, decide fairly, and think long-term. Let ethics lead strategy.",
+      "signification reversed": "Sharp mind needs warm heart. Use power to serve, not dominate."
+    },
+    "Queen of Swords": {
+      "upright": "independence, lucidity, candid truth, pragmatic insight",
+      "reversed": "bitterness, resentment, cutting criticism",
+      "signification upright": "Name realities cleanly and set respectful boundaries. Hard-won clarity helps others grow.",
+      "signification reversed": "Heal the wound before wielding the word. Kindness sharpens accuracy."
+    },
+    "Knight of Swords": {
+      "upright": "bold action, resolve, rapid change",
+      "reversed": "overzeal, aggression, blind destruction",
+      "signification upright": "Advance with courage and a clear brief. Speed plus purpose cuts cleanly.",
+      "signification reversed": "Throttle back, check collateral, and correct aim before charging."
+    },
+    "Page of Swords": {
+      "upright": "keen curiosity, important news, vigilance",
+      "reversed": "indiscretion, rumors, data manipulation",
+      "signification upright": "Observe sharply, ask better questions, and communicate responsibly.",
+      "signification reversed": "Verify before sharing. Sometimes wisdom is silence."
     }
   }
 }

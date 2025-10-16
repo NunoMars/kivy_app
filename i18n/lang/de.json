@@ -56,126 +56,234 @@
     "Der Narr": {
       "upright": "Neuanfänge, Spontaneität, Freiheit, Abenteuer, Potenzial",
       "reversed": "Leichtsinn, Orientierungslosigkeit, Nachlässigkeit, Zögern",
-      "signification upright": "Der Narr steht für den Mut, ins Unbekannte zu springen. Er symbolisiert neue Anfänge, Unbekümmertheit und das Vertrauen in das Leben. Diese Karte ermutigt zu spontanen Entscheidungen und zur Offenheit gegenüber Chancen.",
-      "signification reversed": "Umgekehrt kann der Narr auf Leichtsinn, fehlende Planung oder unüberlegte Handlungen hinweisen. Es ist eine Mahnung, Impulsivität mit Verantwortung auszugleichen."
+      "signification upright": "Der Narr steht für den Mut, ins Unbekannte zu springen. Er symbolisiert neue Anfänge, Unbekümmertheit und Vertrauen ins Leben. Offenheit und experimentierfreudige Schritte eröffnen Chancen.",
+      "signification reversed": "Umgekehrt warnt der Narr vor Leichtsinn und unbedachten Handlungen. Impulse brauchen jetzt Verantwortung, Struktur und einen realistischen Blick."
     },
     "Der Magier": {
       "upright": "Beginn, Ressourcen, Enthusiasmus, Energie, Kreativität",
       "reversed": "Täuschung, Manipulation, Zerstreuung, mangelnde Fokussierung",
-      "signification upright": "Der Magier symbolisiert Geschicklichkeit, Willenskraft und die Fähigkeit, Ideen in die Tat umzusetzen. Er zeigt an, dass die notwendigen Mittel vorhanden sind, um ein Vorhaben zu beginnen.",
-      "signification reversed": "Umgekehrt warnt der Magier vor Manipulation, falschem Schein oder dem Missbrauch eigener Fähigkeiten. Es droht Zerstreuung statt konzentrierter Handlung."
+      "signification upright": "Der Magier bündelt Wille, Verstand und Mittel, um Ideen zu verkörpern. Jetzt stehen die nötigen Ressourcen bereit, um bewusst zu handeln.",
+      "signification reversed": "Umgekehrt drohen Blendwerk, Selbstüberschätzung oder Missbrauch der eigenen Fähigkeiten. Fokus sammeln und integre Ziele klären."
     },
     "Die Hohepriesterin": {
       "upright": "Intuition, Weisheit, Geheimnis, innere Erkenntnis",
       "reversed": "verdrängte Geheimnisse, blockierte Intuition, Oberflächlichkeit",
-      "signification upright": "Die Hohepriesterin steht für innere Weisheit und das Lauschen auf die Intuition. Sie fordert dazu auf, in sich zu gehen und verborgene Wahrheiten zu erkunden.",
-      "signification reversed": "Umgekehrt kann diese Karte auf verschlossene Einsichten, aktives Ignorieren der Intuition oder manipulative Verwendung von Wissen hinweisen."
+      "signification upright": "Schweigen, Tiefe und inneres Wissen. Lausche der Intuition, suche nach verborgener Wahrheit jenseits des Lärms.",
+      "signification reversed": "Umgekehrt: Intuition ignoriert, Wissen instrumentalisiert oder nur an der Oberfläche geblieben. Innere Stimme wieder kultivieren."
     },
     "Die Kaiserin": {
       "upright": "Fruchtbarkeit, Fülle, Kreativität, Fürsorge, Naturverbundenheit",
       "reversed": "Abhängigkeit, Vernachlässigung, kreative Blockade, Kontrollzwang",
-      "signification upright": "Die Kaiserin symbolisiert Schöpfungskraft, Fürsorge und materielle Fülle. Sie ermutigt zu kreativem Ausdruck und zu einem liebevollen Umgang mit sich und anderen.",
-      "signification reversed": "Umgekehrt weist die Kaiserin auf Vernachlässigung, übertriebene Kontrolle oder kreative Stagnation hin."
+      "signification upright": "Schöpfungskraft, Wachstum und liebevolle Fülle. Kreativität nähren und das Leben gedeihen lassen.",
+      "signification reversed": "Umgekehrt: Überbehütung, Stagnation oder das Abkoppeln von natürlichen Zyklen. Loslassen und Vertrauen lernen."
     },
     "Der Kaiser": {
       "upright": "Autorität, Struktur, Stabilität, Verantwortung",
       "reversed": "Tyrannei, Härte, Machtmissbrauch, fehlende Flexibilität",
-      "signification upright": "Der Kaiser steht für Ordnung, Struktur und die Fähigkeit, Verantwortung zu übernehmen. Er ermutigt zu klaren Regeln und langfristiger Planung.",
-      "signification reversed": "Umgekehrt warnt der Kaiser vor Machtmissbrauch, übertriebener Strenge oder starrem Festhalten an Kontrolle."
+      "signification upright": "Ordnung schaffen, Verantwortung übernehmen, Grenzen setzen. Weitsichtige Führung stabilisiert.",
+      "signification reversed": "Umgekehrt: Starrheit, Kontrolle um der Kontrolle willen, autoritäre Tendenzen. Flexibilität und Fairness zurückgewinnen."
     },
     "Der Hierophant": {
       "upright": "Tradition, Lehre, moralische Führung, Initiation",
       "reversed": "Dogmatismus, veraltete Regeln, blinder Gehorsam",
-      "signification upright": "Der Hierophant symbolisiert traditionelle Weisheit, Lehre und die Suche nach Sinn durch etablierte Wege. Er kann auf Mentoren oder formale Rituale hinweisen.",
-      "signification reversed": "Umgekehrt kann er auf Dogmatismus, rigide Institutionen oder die Notwendigkeit hinweisen, eigene Werte zu finden."
+      "signification upright": "Vermittlung von Sinn durch Tradition, Rituale und Mentoren. Lernen, einordnen, Sinn stiften.",
+      "signification reversed": "Umgekehrt: Erstarrte Systeme, blinder Formalismus. Eigene Werte prüfen und lebendig erneuern."
     },
     "Die Liebenden": {
       "upright": "Wahl, Verbindung, Liebe, Dualität, wichtige Entscheidung",
       "reversed": "Fehlentscheidung, Trennung, Unentschlossenheit, Konflikt",
-      "signification upright": "Die Liebenden sprechen oft von einer bedeutenden Wahl, die Herz und Werte betrifft. Sie betonen Authentizität in Beziehungen und Übereinstimmung der Ziele."
+      "signification upright": "Eine Herzensentscheidung steht an. Authentizität, Werteharmonie und ehrliches Einverständnis führen zur richtigen Wahl.",
+      "signification reversed": "Umgekehrt: Unklare Motive, Ambivalenz oder dysbalancierte Bindungen. Entscheidung aufschieben bis Klarheit reift."
     },
     "Der Wagen": {
       "upright": "Beherrschung widerstreitender Kräfte, Zielstrebigkeit, Sieg",
       "reversed": "Verlust der Kontrolle, zersplitterte Energie, Misserfolg durch Unklarheit",
-      "signification upright": "Der Wagen steht für Willenskraft und die Fähigkeit, gegensätzliche Kräfte zu bündeln, um Fortschritt zu erzielen. Entschlossenheit führt zum Erfolg.",
-      "signification reversed": "Umgekehrt deutet der Wagen auf Richtungsverlust, innere Konflikte oder mangelnde Steuerung der eigenen Energie hin."
+      "signification upright": "Willenskraft bündelt Gegensätze zum Vorwärtskommen. Disziplin und Ausrichtung bringen Sieg.",
+      "signification reversed": "Umgekehrt: Unfokussiertheit, innere Reibung, Richtungslosigkeit. Kurs korrigieren und Zügel wieder aufnehmen."
     },
-    "Die Kraft": {
-      "upright": "innere Stärke, Geduld, Mitgefühl, Mut",
-      "reversed": "Schwäche, Kontrollverlust, Aggression, Feigheit",
-      "signification upright": "Die Kraft symbolisiert innere Tapferkeit und die Fähigkeit, mit Sanftmut schwierige Herausforderungen zu meistern. Sie ermutigt zu Geduld und Selbstbeherrschung.",
-      "signification reversed": "Umgekehrt kann sie auf fehlende Selbstkontrolle, Gewalt oder inneres Schwanken hinweisen."
+    "Die Gerechtigkeit": {
+      "upright": "Gerechtigkeit, Gleichgewicht, Wahrheit, Gesetz, Fairness",
+      "reversed": "Ungerechtigkeit, Ungleichgewicht, Parteilichkeit, Korruption, Rachsucht",
+      "signification upright": "Klar abwägen, Verantwortung tragen, Wahrheit anerkennen. Konsequente Fairness ist gefragt.",
+      "signification reversed": "Umgekehrt: Voreingenommenheit, Fehlurteil oder missbräuchliche Systeme. Nachjustieren, Transparenz herstellen."
     },
     "Der Eremit": {
       "upright": "Suche nach Wissen, Reflexion, Rückzug, innere Führung",
       "reversed": "Isolation, Verweigerung von Rat, fehlende Einsicht",
-      "signification upright": "Der Eremit fordert zum Rückzug und zur Selbstreflexion auf. Er steht für Reife, innere Führung und den Wert innerer Arbeit.",
-      "signification reversed": "Umgekehrt kann er auf selbstschädliche Isolation oder den Widerstand gegen hilfreiche Ratschläge hinweisen."
+      "signification upright": "Innehalten, reflektieren, Weisheit vertiefen. Die innere Laterne weist den Weg.",
+      "signification reversed": "Umgekehrt: Rückzug ohne Reife, Rat ausschlagen. Herz öffnen, Lehren annehmen."
     },
     "Das Rad des Schicksals": {
       "upright": "Zyklen, Schicksal, Chance, Veränderung",
       "reversed": "anhaltendes Pech, Widerstand gegen Wandel, karmische Folgen",
-      "signification upright": "Das Rad des Schicksals erinnert daran, dass Leben in Zyklen verläuft. Unerwartete Möglichkeiten und Wendungen gehören dazu — es ist wichtig, den richtigen Moment zu nutzen.",
-      "signification reversed": "Umgekehrt kann es auf stagnierende Zyklen, anhaltende Rückschläge oder das Festhalten an Vergangenem hinweisen."
+      "signification upright": "Zyklen drehen sich – günstige Wendungen erkennen und nutzen. Mitfließen statt festhalten.",
+      "signification reversed": "Umgekehrt: Festklammern an Vergangenem, Wiederholen alter Muster. Lernaufgabe annehmen."
+    },
+    "Die Kraft": {
+      "upright": "innere Stärke, Geduld, Mitgefühl, Mut",
+      "reversed": "Schwäche, Kontrollverlust, Aggression, Feigheit",
+      "signification upright": "Sanfte Stärke zähmt das Wilde. Mut, Selbstbeherrschung und Herzintelligenz siegen.",
+      "signification reversed": "Umgekehrt: Unbeherrschte Impulse oder Resignation. Milde mit Klarheit verbinden."
     },
     "Der Gehängte": {
       "upright": "opferbereite Haltung, Perspektivwechsel, Loslassen, Geduld",
       "reversed": "sinnloses Opfer, Starrsinn, Widerstand gegen Veränderung",
-      "signification upright": "Der Gehängte lädt dazu ein, die Perspektive zu verändern und freiwillig innezuhalten. Oft führt das Loslassen zu neuen Einsichten.",
-      "signification reversed": "Umgekehrt warnt er vor nutzlosen Opfern, Verbohrtheit oder der Unfähigkeit, loszulassen."
+      "signification upright": "Anhalten, anders sehen, hingeben. Durch Loslassen reifen Einsichten.",
+      "signification reversed": "Umgekehrt: Blockierte Entwicklung, festgefahrene Sicht. Beweglichkeit üben."
     },
     "Der Tod": {
       "upright": "tiefgreifende Veränderung, Ende eines Zyklus, Neubeginn",
       "reversed": "Widerstand gegen Wandel, Stagnation, Angst vor dem Unbekannten",
-      "signification upright": "Der Tod steht für grundlegende Transformation und die Notwendigkeit, Altes hinter sich zu lassen, damit Neues entstehen kann. Es ist ein Prozess der Reinigung.",
-      "signification reversed": "Umgekehrt zeigt er oft die Angst vor Loslassen oder das Festhalten an Vergangenem, wodurch Entwicklung blockiert wird."
+      "signification upright": "Transformation durch Abschied. Platz schaffen für neues Leben.",
+      "signification reversed": "Umgekehrt: Festhalten verhindert Erneuerung. Trauer und Angst würdigen, dann lösen."
     },
     "Die Mäßigkeit": {
       "upright": "Ausgleich, Heilung, Geduld, harmonische Verbindung",
       "reversed": "Ungleichgewicht, Exzesse, Ungeduld, disharmonisches Mischen",
-      "signification upright": "Die Mäßigkeit lehrt die Kunst des Ausgleichs und der schrittweisen Heilung. Sie fördert Maß, Geduld und wohlausgewogene Entscheidungen."
+      "signification upright": "Maß, Rhythmus und feines Mischen der Gegensätze. Heilung reift schrittweise.",
+      "signification reversed": "Umgekehrt: Zuviel oder Zuwenig, hastiges Erzwingen. Sanft nachjustieren."
     },
     "Der Teufel": {
       "upright": "Abhängigkeiten, Illusionen, Materialismus, Versuchung",
       "reversed": "Befreiung, Erkenntnis, Überwindung von Ketten",
-      "signification upright": "Der Teufel offenbart die Fesseln, die uns an Gewohnheiten und Abhängigkeiten binden. Er fordert zur Auseinandersetzung mit Schattenseiten auf.",
-      "signification reversed": "Umgekehrt zeigt er den Prozess der Befreiung von Abhängigkeiten und das Erwachen zur eigenen Verantwortung."
+      "signification upright": "Schattenseiten, Bindungen, Verstrickungen bewusst machen. Wahrheit ist der Schlüssel.",
+      "signification reversed": "Umgekehrt: Ketten lösen sich, Bewusstsein wächst. Verantwortung zurücknehmen."
     },
     "Der Turm": {
-      "upright": "Erschütterung, Offenbarung, abruptes Ende, Befreiende Zerstörung",
+      "upright": "Erschütterung, Offenbarung, abruptes Ende, befreiende Zerstörung",
       "reversed": "Widerstand gegen Wandel, abgeschwächte Umwälzung, schrittweise Umstrukturierung",
-      "signification upright": "Der Turm steht für plötzliche Umbrüche, die alte Konstrukte zerstören. Obwohl schmerzhaft, ermöglichen sie oft ehrliche Neubeginne.",
-      "signification reversed": "Umgekehrt kann der Turm ein verzögertes oder abgeschwächtes Zusammenbrechen bedeuten, das dennoch zur Neuordnung führt."
+      "signification upright": "Plötzliche Klarheit sprengt falsche Strukturen. Neubeginn auf ehrlicher Basis.",
+      "signification reversed": "Umgekehrt: Sanftere Korrektur oder aufgeschobener Umbruch. Lernen ist dennoch nötig."
     },
     "Der Stern": {
       "upright": "Hoffnung, Inspiration, Spiritualität, Optimismus",
       "reversed": "Verzweiflung, Glaubensverlust, Pessimismus",
-      "signification upright": "Der Stern schenkt Hoffnung, Zuversicht und die Verbindung zum Sinnvollen. Er erinnert daran, auf innere Führung zu vertrauen.",
-      "signification reversed": "Umgekehrt kann er auf einen Verlust von Hoffnung oder Orientierung hinweisen; eine Zeit, in der Zuversicht wiedergefunden werden muss."
+      "signification upright": "Vertrauen, Leichtigkeit, Ausrichtung am Sinn. Heilendes Licht nach der Nacht.",
+      "signification reversed": "Umgekehrt: Zuversicht verloren. Milde Schritte zurück ins Vertrauen gehen."
     },
     "Der Mond": {
       "upright": "Illusionen, Verwirrung, Ängste, Unterbewusstes, Geheimnisse",
       "reversed": "Klarheit, aufgedeckte Wahrheiten, Ende von Illusionen",
-      "signification upright": "Der Mond zeigt verborgene Ängste, Unsicherheiten und die Macht des Unbewussten. Er fordert zur Vorsicht und Selbstreflexion auf.",
-      "signification reversed": "Umgekehrt kündigt der Mond die Auflösung von Täuschungen und die Rückkehr von Klarheit an."
+      "signification upright": "Nebel, Projektionen, tiefe Gefühle. Vorsicht und Selbstbeobachtung sind weise.",
+      "signification reversed": "Umgekehrt: Klärung, entzauberte Täuschungen. Intuition wird wieder verlässlich."
     },
     "Die Sonne": {
       "upright": "Freude, Erfolg, Lebenskraft, Erfolgserlebnis",
       "reversed": "Eitelkeit, falscher Stolz, oberflächlicher Erfolg",
-      "signification upright": "Die Sonne steht für Wärme, Erfolg und positive Sichtbarkeit. Sie bringt Klarheit, Energie und lebensbejahende Kraft.",
-      "signification reversed": "Umgekehrt warnt sie vor übertriebenem Stolz oder dem Trugbild scheinbaren Erfolgs."
+      "signification upright": "Wärme, Sichtbarkeit, kreatives Strahlen. Ernte reift – feiern erlaubt.",
+      "signification reversed": "Umgekehrt: Glanz ohne Tiefe, Übermut. Demut bewahrt die Strahlkraft."
     },
     "Das Gericht": {
       "upright": "Wiedergeburt, Berufung, Abrechnung, innere Prüfung",
       "reversed": "Verweigerung der Entwicklung, hartes Urteil, Schuldgefühle",
-      "signification upright": "Das Gericht bedeutet Erwachen und die Möglichkeit einer inneren Neubewertung. Es kann ein Ruf zur Verantwortung oder zur Vergebung sein.",
-      "signification reversed": "Umgekehrt zeigt es oft die Weigerung, die Lektionen anzunehmen, oder das Verharren in Selbstvorwürfen."
+      "signification upright": "Erwachen, Ruf der Seele, Bilanz. Vergebung befreit für den nächsten Schritt.",
+      "signification reversed": "Umgekehrt: Am Alten kleben, Selbstverurteilung. Milde üben, Lernschritt annehmen."
     },
     "Die Welt": {
       "upright": "Vollendung, Harmonie, Abschluss eines Zyklus, Ganzheit",
       "reversed": "nahe am Ziel gescheitert, Perfektionismus, Unvollständigkeit",
-      "signification upright": "Die Welt symbolisiert das erfolgreiche Ende eines Weges, die Integration von Erfahrungen und das Erreichen von Ganzheit.",
-      "signification reversed": "Umgekehrt kann sie auf das Gefühl hinweisen, kurz vor dem Ziel gescheitert zu sein, oder auf Angst vor dem Abschluss."
+      "signification upright": "Integration, Meisterschaft, runder Abschluss. Ein Tor öffnet sich zum neuen Kreis.",
+      "signification reversed": "Umgekehrt: Fast am Ziel, doch etwas hält zurück. Vollendung erlauben."
+    },
+
+    "König der Stäbe": {
+      "upright": "charismatische Führung, visionäres Handeln, kreative Lenkung",
+      "reversed": "impulsiver Autoritarismus, Dominanz, cholerische Entscheidungen",
+      "signification upright": "Inspiration bündeln, andere mitreißen, mutig gestalten. Führungsstärke mit Sinn.",
+      "signification reversed": "Umgekehrt: Ego treibt, Wut lenkt. Zuhören und Teamgeist kultivieren."
+    },
+    "Königin der Stäbe": {
+      "upright": "strahlende Kreativität, warme Großzügigkeit, inspirierende Präsenz",
+      "reversed": "Eifersucht, Besitzergreifen, kreative Blockade",
+      "signification upright": "Leidenschaftlich fördern, wärmen, ermutigen. Kreative Funken entzünden.",
+      "signification reversed": "Umgekehrt: Vergleich, Misstrauen, Groll. Eigene Flamme nähren statt zehren."
+    },
+    "Ritter der Stäbe": {
+      "upright": "Abenteuer, Vorwärtsdrang, schnelle Initiative",
+      "reversed": "Hast, Flucht, ungeduldige Zersplitterung",
+      "signification upright": "Jetzt mutig starten, Terrain erkunden, Momentum nutzen.",
+      "signification reversed": "Umgekehrt: Aktionismus ohne Richtung. Plan schärfen, dann reiten."
+    },
+    "Bube der Stäbe": {
+      "upright": "kreative Botschaft, neue Idee, jugendliche Begeisterung",
+      "reversed": "leere Versprechen, oberflächliche Begeisterung, Ungeduld",
+      "signification upright": "Neuer Funke, Lernlust, erste Schritte im Schaffen.",
+      "signification reversed": "Umgekehrt: Frühfrust, zu schnell aufgeben. Dranbleiben lernen."
+    },
+
+    "König der Münzen": {
+      "upright": "gefestigter Wohlstand, kluge Verwaltung, materielles Verantwortungsbewusstsein",
+      "reversed": "Geiz, Korruption, materialistische Fixierung",
+      "signification upright": "Werte sichern, langfristig investieren, großzügig fördern.",
+      "signification reversed": "Umgekehrt: Besitz ohne Ethik. Großzügigkeit und Maß zurückfinden."
+    },
+    "Königin der Münzen": {
+      "upright": "nährende Fülle, praktische Fürsorge, geteilte Prosperität",
+      "reversed": "überbehütender Materialismus, Vernachlässigung des Heims",
+      "signification upright": "Geborgenheit schaffen, Ressourcen mehren, Bodenhaftung wahren.",
+      "signification reversed": "Umgekehrt: Gier, Streuung, Prioritätenverlust. Ordnung und Herz zurückholen."
+    },
+    "Ritter der Münzen": {
+      "upright": "Fleiß, Methode, Ausdauer, Verantwortlichkeit",
+      "reversed": "Routinefalle, Trägheit, Ambitionsmangel",
+      "signification upright": "Schritt für Schritt, verlässlich bauen. Beständigkeit zahlt sich aus.",
+      "signification reversed": "Umgekehrt: Erstarrung oder Bequemlichkeit. Kleine, klare Ziele setzen."
+    },
+    "Bube der Münzen": {
+      "upright": "lernender Praxisbezug, neue materielle Chance, Sorgfalt",
+      "reversed": "studierte Faulheit, Opportunismus, Nachlässigkeit",
+      "signification upright": "Grundlagen legen, üben, verbessern. Gelegenheit ergreifen.",
+      "signification reversed": "Umgekehrt: Oberflächliches Lernen, Abkürzungen. Handwerk ernst nehmen."
+    },
+
+    "König der Kelche": {
+      "upright": "emotionale Meisterschaft, weise Empathie, milde Autorität",
+      "reversed": "emotionale Manipulation, kühle Berechnung, verdeckte Instabilität",
+      "signification upright": "Herz und Verstand in Balance führen, heilsam moderieren.",
+      "signification reversed": "Umgekehrt: Gefühle instrumentalisieren. Aufrichtigkeit üben."
+    },
+    "Königin der Kelche": {
+      "upright": "tiefe Intuition, echte Empathie, bedingungslose Liebe",
+      "reversed": "Überemotionalität, Abhängigkeit, selbstschädigender Einsatz",
+      "signification upright": "Sich einfühlen, halten, seelisch nähren. Grenzen liebevoll wahren.",
+      "signification reversed": "Umgekehrt: Sich verlieren, ausbluten. Selbstschutz und Klarheit stärken."
+    },
+    "Ritter der Kelche": {
+      "upright": "Romantik, Einladung, Charme, kreative Botschaft",
+      "reversed": "romantische Illusionen, leere Versprechen, Taktik",
+      "signification upright": "Angebote des Herzens, Kunst, Versöhnung. Feinfühlig auftreten.",
+      "signification reversed": "Umgekehrt: Schein ohne Sein. Auf Integrität prüfen."
+    },
+    "Bube der Kelche": {
+      "upright": "emotionale Nachricht, künstlerischer Impuls, zarte Öffnung",
+      "reversed": "emotionale Unreife, gekränkte Sensibilität, Blockade",
+      "signification upright": "Herz öffnet sich, Inspiration keimt. Sanft ausdrücken.",
+      "signification reversed": "Umgekehrt: Launen, Kränkungen, Rückzug. Resilienz üben."
+    },
+
+    "König der Schwerter": {
+      "upright": "klare Vernunft, gerechte Autorität, Objektivität",
+      "reversed": "Kälte, Machtmissbrauch, manipulative Intelligenz",
+      "signification upright": "Sachlich entscheiden, Wahrheit benennen, fair urteilen.",
+      "signification reversed": "Umgekehrt: Schärfe ohne Herz. Empathie integrieren."
+    },
+    "Königin der Schwerter": {
+      "upright": "Unabhängigkeit, Klarblick, aufrichtige Direktheit",
+      "reversed": "Verbitterung, Groll, zerstörerische Kritik",
+      "signification upright": "Erfahrung in klare Worte fassen, Grenzen sauber ziehen.",
+      "signification reversed": "Umgekehrt: Verletzung spricht. Heilung vor Urteil."
+    },
+    "Ritter der Schwerter": {
+      "upright": "mutige Aktion, Entschlossenheit, schnelle Wende",
+      "reversed": "Übereifer, Aggression, blinde Zerstörung",
+      "signification upright": "Zeit für beherztes Handeln. Klar und tapfer vorangehen.",
+      "signification reversed": "Umgekehrt: Angriff ohne Ziel. Tempo drosseln, prüfen."
+    },
+    "Bube der Schwerter": {
+      "upright": "geistige Wachheit, wichtige Nachrichten, Wachsamkeit",
+      "reversed": "Indiskretion, Gerüchte, Informationsmanipulation",
+      "signification upright": "Beobachten, recherchieren, klug kommunizieren.",
+      "signification reversed": "Umgekehrt: Reden ohne Verantwortung. Fakten prüfen, Schweigen lernen."
     }
   }
 }

@@ -54,130 +54,236 @@
   },
   "significations": {
     "El Loco": {
-      "upright": "nuevos comienzos, espontaneidad, libertad, aventura, potencial",
-      "reversed": "imprudencia, falta de dirección, duda",
-      "signification upright": "El Loco simboliza el salto hacia lo desconocido con curiosidad y apertura.",
-      "signification reversed": "Invertida, puede señalar decisiones impulsivas o falta de preparación."
+      "upright": "nuevo comienzo, inocencia, espontaneidad, aventura, potencial infinito",
+      "reversed": "imprudencia, ingenuidad peligrosa, irresponsabilidad, despiste",
+      "signification upright": "El Loco (Le Mat) simboliza libertad, fe en lo desconocido y el inicio de un viaje con potencial ilimitado. Es energía pura y apertura a la experiencia.",
+      "signification reversed": "Invertida advierte sobre actuar sin precaución, falta de preparación o decisiones ingenuas que pueden traer problemas."
     },
     "El Mago": {
-      "upright": "recursos, iniciativa, creatividad, acción",
-      "reversed": "engaño, manipulación, dispersión de energía",
-      "signification upright": "El Mago representa la habilidad de tomar lo que hay disponible y convertir la intención en acción.",
-      "signification reversed": "Invertida, puede sugerir manipulación o falta de enfoque."
+      "upright": "comienzo, recursos, entusiasmo, energía, creatividad",
+      "reversed": "ilusión, manipulación, falta de enfoque, dispersión, engaño",
+      "signification upright": "El Mago (Le Bateleur) simboliza un nuevo comienzo, la energía vital y la capacidad de actuar. Representa la confianza en uno mismo, la creatividad y la voluntad de convertir ideas en acciones concretas. Invita a aprovechar oportunidades y a expresarse con claridad.",
+      "signification reversed": "En posición invertida puede indicar engaño, manipulación o dispersión de energías. Señala falta de enfoque, promesas vacías o el uso indebido de habilidades para beneficio propio."
     },
-    "La Sacerdotisa": {
-      "upright": "intuición, conocimiento interior, misterio, calma",
-      "reversed": "secretos, intuición bloqueada, confusión",
-      "signification upright": "La Sacerdotisa invita a confiar en la intuición y en la sabiduría interna.",
-      "signification reversed": "Invertida, advierte sobre información oculta o intuición ignorada."
+    "La Suma Sacerdotisa": {
+      "upright": "intuición, sabiduría, conocimiento, misterio, secretos",
+      "reversed": "secretos ocultos, ignorancia voluntaria, intuición bloqueada, superficialidad",
+      "signification upright": "La Suma Sacerdotisa (La Papesse) representa la intuición, el conocimiento interior y el misterio. Invita a la introspección, a escuchar la voz interior y a buscar la verdad desde la calma y la reflexión.",
+      "signification reversed": "Invertida puede señalar secretos guardados, rechazo a la sabiduría interior o intuición bloqueada por prejuicios. También advierte sobre espiritualidades superficiales o manipulación del saber."
     },
     "La Emperatriz": {
-      "upright": "fertilidad, abundancia, creatividad, cuidado",
-      "reversed": "dependencia, bloqueo creativo, exceso de control",
-      "signification upright": "La Emperatriz simboliza la creatividad y la abundancia; es una carta de nutrición y crecimiento.",
-      "signification reversed": "Invertida, puede indicar estancamiento creativo o excesiva protección."
+      "upright": "fertilidad, creatividad, abundancia, maternidad, conexión con la naturaleza",
+      "reversed": "esterilidad, creatividad bloqueada, sobreprotección, dependencia excesiva",
+      "signification upright": "La Emperatriz (L'Impératrice) simboliza la creatividad femenina, la abundancia y el cuidado nutritivo. Señala un momento de crecimiento, fertilidad y conexión con la tierra y los ciclos naturales.",
+      "signification reversed": "Invertida puede indicar bloqueos creativos, problemas relacionados con la fertilidad o una protección asfixiante que impide la autonomía."
     },
     "El Emperador": {
-      "upright": "autoridad, estructura, estabilidad, responsabilidad",
-      "reversed": "rigidez, tiranía, abuso de poder",
-      "signification upright": "El Emperador trae orden y liderazgo; fomenta la planificación y la disciplina.",
-      "signification reversed": "Invertida, sugiere control excesivo o abuso del poder."
+      "upright": "autoridad legítima, estructura, orden, responsabilidad, protección paternal",
+      "reversed": "tiranía, rigidez excesiva, abuso de autoridad, falta de estructura",
+      "signification upright": "El Emperador (L'Empereur) simboliza el orden, la estabilidad y el liderazgo responsable. Representa la capacidad de crear estructuras sólidas y proteger aquello que es valioso.",
+      "signification reversed": "Invertida puede mostrar abuso de poder, control excesivo o una rigidez que sofoca la creatividad y el crecimiento."
     },
     "El Papa": {
-      "upright": "tradición, enseñanza, guía espiritual, comunidad",
-      "reversed": "dogmatismo, manipulación, conformismo",
-      "signification upright": "El Papa representa la transmisión de sabiduría y valores dentro de una comunidad.",
-      "signification reversed": "Invertida, advierte sobre pensamiento rígido o dependencia de autoridades."
+      "upright": "enseñanza espiritual, tradición sagrada, guía moral, iniciación, sabiduría transmitida",
+      "reversed": "dogmatismo, manipulación religiosa, tradición rígida, falso profeta",
+      "signification upright": "El Papa (Le Pape) representa la tradición espiritual y la transmisión de valores. Indica guía ética, aprendizaje a través de la ceremonia y la conexión con lo trascendente.",
+      "signification reversed": "Invertida advierte sobre dogmatismo, manipulación por parte de instituciones o una tradición que se ha vuelto inflexible y dañina."
     },
     "Los Enamorados": {
-      "upright": "amor, elección, armonía, relación",
-      "reversed": "conflicto, separación, mala elección",
-      "signification upright": "Los Enamorados hablan de decisiones del corazón y la alineación de valores.",
-      "signification reversed": "Invertida, muestra conflictos de valores o decisiones incorrectas."
+      "upright": "elección difícil, unión, amor, dualidad, decisión importante",
+      "reversed": "mala elección, separación, indecisión, conflicto interior",
+      "signification upright": "Los Enamorados (L'Amoureux) hablan de decisiones cruciales, de relaciones y de la necesidad de elegir con el corazón y la razón equilibrados. Representa el compromiso auténtico y la armonía entre opuestos.",
+      "signification reversed": "Invertida puede indicar decisiones erróneas, rupturas o incapacidad para comprometerse. Señala conflictos internos y arrepentimiento por elecciones pasadas."
     },
     "El Carro": {
-      "upright": "victoria, avance, control, determinación",
-      "reversed": "pérdida de dirección, conflicto, falta de control",
-      "signification upright": "El Carro anuncia éxito mediante la disciplina y la determinación.",
-      "signification reversed": "Invertida, puede indicar pérdida de control o falta de foco."
+      "upright": "dominio de fuerzas opuestas, voluntad triunfante, avance, victoria por equilibrio",
+      "reversed": "pérdida de control, fuerzas dispersas, fracaso por falta de dirección, conflicto interior",
+      "signification upright": "El Carro (Le Chariot) simboliza control y avance gracias a la determinación. Indica triunfo cuando se equilibran fuerzas opuestas y se mantiene el rumbo con firmeza.",
+      "signification reversed": "Invertida señala caos, falta de dirección o energía dispersa que impide el progreso. Es momento de reenfocar prioridades."
     },
-    "La Fuerza": {
-      "upright": "coraje interior, compasión, autocontrol, resiliencia",
-      "reversed": "debilidad, ira, abuso de poder",
-      "signification upright": "La Fuerza representa la superación de los desafíos con calma y compasión.",
-      "signification reversed": "Invertida, puede señalar pérdida de autocontrol o agresividad."
+    "La Justicia": {
+      "upright": "justicia, equilibrio, verdad, ley, equidad",
+      "reversed": "injusticia, desequilibrio, parcialidad, corrupción, venganza",
+      "signification upright": "La Justicia (La Justice) representa la ecuanimidad, el juicio justo y la responsabilidad. Invita a evaluar con imparcialidad y asumir las consecuencias de los actos.",
+      "signification reversed": "Invertida advierte sobre decisiones sesgadas, corrupción o injusticias. Indica la necesidad de buscar la verdad más allá de las apariencias."
     },
     "El Ermitaño": {
-      "upright": "introspección, búsqueda de sabiduría, guía interior, retiro",
-      "reversed": "aislamiento, rechazo de ayuda, orgullo espiritual",
-      "signification upright": "El Ermitaño invita a la reflexión profunda para encontrar claridad y propósito.",
-      "signification reversed": "Invertida, puede indicar aislamiento perjudicial o rechazo de apoyo."
+      "upright": "búsqueda espiritual, sabiduría, introspección, guía interior, soledad constructiva",
+      "reversed": "aislamiento estéril, rechazo a consejos, orgullo espiritual, soledad impuesta",
+      "signification upright": "El Ermitaño (L'Hermite) invita a la reflexión profunda y a la búsqueda interior. Es tiempo de retirarse para encontrar claridad y sabiduría personal.",
+      "signification reversed": "Invertida puede señalar aislamiento improductivo, orgullo que impide aprender o incapacidad para compartir la sabiduría con otros."
     },
-    "La Rueda": {
-      "upright": "ciclos, destino, oportunidad, cambio",
-      "reversed": "estancamiento, mala fortuna persistente, resistencia al cambio",
-      "signification upright": "La Rueda simboliza los ciclos de la vida y la llegada de nuevas oportunidades.",
-      "signification reversed": "Invertida, advierte sobre repetir patrones o resistencia al cambio."
+    "La Rueda de la Fortuna": {
+      "upright": "ciclos naturales, karma, oportunidad, cambio de fortuna, destino en movimiento",
+      "reversed": "mala racha persistente, resistencia a los ciclos, mal karma, estancamiento",
+      "signification upright": "La Rueda de la Fortuna simboliza los ciclos de la vida y las oportunidades que llegan con el tiempo. Indica cambios inevitables y la importancia de adaptarse a las vueltas del destino.",
+      "signification reversed": "Invertida puede mostrar estancamiento, mala suerte prolongada o repetición de errores. Es momento de romper patrones."
+    },
+    "La Fuerza": {
+      "upright": "fuerza interior, dominio de sí, coraje, ternura, persuasión",
+      "reversed": "debilidad, falta de control, violencia, brutalidad, cobardía",
+      "signification upright": "La Fuerza (La Force) habla de coraje sereno y dominio de los instintos mediante la compasión. Indica valentía y paciencia para superar dificultades con dignidad.",
+      "signification reversed": "Invertida puede señalar pérdida de control, agresividad o incapacidad para enfrentar los desafíos con serenidad."
     },
     "El Colgado": {
-      "upright": "sacrificio, pausa, cambio de perspectiva, desprendimiento",
-      "reversed": "sacrificio inútil, obstinación, estancamiento",
-      "signification upright": "El Colgado pide pausar y observar desde otro ángulo; el desprendimiento puede traer sabiduría.",
-      "signification reversed": "Invertida, puede indicar sacrificios sin sentido o inmovilismo."
+      "upright": "sacrificio voluntario, espera, nueva perspectiva, soltar, iniciación",
+      "reversed": "sacrificio inútil, terquedad, resistencia al cambio, impaciencia",
+      "signification upright": "El Colgado (Le Pendu) sugiere una suspensión necesaria para ganar perspectiva. Invita a soltar viejas certezas y a ver la situación desde un ángulo distinto.",
+      "signification reversed": "Invertida puede indicar sacrificios que no conducen a nada, obstinación o resistencia al proceso de cambio."
     },
     "La Muerte": {
-      "upright": "transformación, fin de ciclo, renacimiento",
-      "reversed": "resistencia al cambio, estancamiento, apego al pasado",
-      "signification upright": "La Muerte simboliza la necesidad de dejar ir lo viejo para que lo nuevo pueda nacer.",
-      "signification reversed": "Invertida, puede indicar apego que impide la renovación."
+      "upright": "transformación profunda, fin de ciclo, renacimiento, cambio radical, purificación",
+      "reversed": "resistencia al cambio, estancamiento, miedo a lo desconocido, transformación bloqueada",
+      "signification upright": "La Muerte (La Mort) simboliza una transformación profunda y necesaria. No suele aludir a la muerte física, sino al fin de una etapa para permitir el renacer.",
+      "signification reversed": "Invertida puede mostrar miedo a soltar el pasado, resistencia al cambio o estancamiento emocional."
     },
     "La Templanza": {
-      "upright": "equilibrio, curación, moderación, armonía",
-      "reversed": "desequilibrio, exceso, impaciencia",
-      "signification upright": "La Templanza sugiere la unión armoniosa de fuerzas para promover la curación.",
-      "signification reversed": "Invertida, advierte sobre la falta de moderación o excesos."
+      "upright": "alquimia, sanación, protección divina, equilibrio de fuerzas, transformación gradual",
+      "reversed": "desequilibrio, excesos, impaciencia, mezcla caótica, desarmonía",
+      "signification upright": "La Templanza (La Temperance) invita a combinar opuestos con armonía para sanar y crecer. Representa paciencia, equilibrio y progreso gradual.",
+      "signification reversed": "Invertida advierte sobre falta de equilibrio, prisas o mezclas desordenadas que impiden la evolución."
     },
     "El Diablo": {
-      "upright": "ataduras, tentación, materialismo, adicciones",
-      "reversed": "liberación, conciencia, ruptura de cadenas",
-      "signification upright": "El Diablo pone en evidencia apegos y dependencias; invita a la toma de conciencia.",
-      "signification reversed": "Invertida, anuncia procesos de liberación y cambio de conciencia."
+      "upright": "adicciones, ilusiones, materialismo, tentaciones, cadenas",
+      "reversed": "liberación, toma de conciencia, libertad recuperada, ruptura de cadenas",
+      "signification upright": "El Diablo (Le Diable) denuncia ataduras y comportamientos autodestructivos. Señala engaños, dependencias y relaciones que limitan la libertad personal.",
+      "signification reversed": "Invertida anuncia el comienzo de la liberación, la conciencia sobre las propias dependencias y la voluntad de cortar lazos que dañan."
     },
     "La Torre": {
-      "upright": "colapso, revelación, cambio brusco, despertar",
-      "reversed": "resistencia al cambio, caída amortiguada, transformación retardada",
-      "signification upright": "La Torre indica la caída de estructuras falsas y la emergencia de la verdad.",
-      "signification reversed": "Invertida, puede señalar una transición más suave o demorada."
+      "upright": "trastorno, revelación, destrucción liberadora, despertar abrupto, cambio repentino",
+      "reversed": "resistencia al cambio, destrucción evitada, caída atenuada, transformación progresiva",
+      "signification upright": "La Torre (La Maison Dieu) anuncia cambios repentinos que derriban estructuras falsas. Aunque impactantes, estas rupturas suelen abrir paso a la verdad y a la reconstrucción necesaria.",
+      "signification reversed": "Invertida sugiere que el cambio ha sido menos drástico o que se está resistiendo el proceso; puede indicar adaptaciones graduales en lugar de colapsos."
     },
     "La Estrella": {
-      "upright": "esperanza, inspiración, sanación, optimismo",
-      "reversed": "desesperanza, pérdida de fe, desaliento",
-      "signification upright": "La Estrella trae esperanza y renovación espiritual.",
-      "signification reversed": "Invertida, exige recuperar la fe y el optimismo."
+      "upright": "esperanza, inspiración, espiritualidad, generosidad, optimismo",
+      "reversed": "desesperanza, pérdida de fe, pesimismo, egoísmo, ilusiones perdidas",
+      "signification upright": "La Estrella (L'Étoile) trae consuelo y esperanza. Indica renovación espiritual, inspiración y la llegada de momentos de claridad y guía interior.",
+      "signification reversed": "Invertida puede señalar falta de esperanza, desconexión espiritual o una decepción que apaga temporalmente el optimismo."
     },
     "La Luna": {
-      "upright": "ilusiones, intuición, inconsciente, miedos, misterio",
-      "reversed": "claridad, verdad emergente, fin de las ilusiones",
-      "signification upright": "La Luna señala miedos ocultos y la necesidad de confiar en la intuición.",
-      "signification reversed": "Invertida, indica que la verdad sale a la luz y la confusión disminuye."
+      "upright": "ilusiones, confusión, miedos, inconsciente, misterios",
+      "reversed": "aclaración, verdad revelada, fin de las ilusiones, intuición recuperada",
+      "signification upright": "La Luna (La Lune) apunta a lo oculto: miedos, engaños y confusión que provienen del inconsciente. Invita a ser cuidadoso y a escuchar la intuición.",
+      "signification reversed": "Invertida anuncia que la niebla se disipa, trayendo claridad, revelaciones y recuperación de la intuición."
     },
     "El Sol": {
-      "upright": "alegría, éxito, energía, realización",
-      "reversed": "vanidad, exceso de orgullo, triunfo efímero",
-      "signification upright": "El Sol simboliza claridad, energía positiva y celebración de logros.",
-      "signification reversed": "Invertida, advierte sobre el orgullo y la ilusión del éxito duradero."
+      "upright": "alegría, felicidad, éxito, realización, celebración",
+      "reversed": "orgullo excesivo, ego sobredimensionado, éxito temporal, ilusión de grandeza",
+      "signification upright": "El Sol (Le Soleil) anuncia alegría, claridad y éxito. Representa vitalidad, logros y un periodo de abundante energía positiva.",
+      "signification reversed": "Invertida advierte sobre orgullo o vanidad que puede nublar el juicio; recuerda la importancia de la humildad."
     },
     "El Juicio": {
-      "upright": "resurrección, llamado, evaluación, transformación final",
-      "reversed": "rechazo del crecimiento, culpa, juicio ciego",
-      "signification upright": "El Juicio indica un momento de llamada interior y la posibilidad de renacimiento.",
-      "signification reversed": "Invertida, puede indicar rechazo del cambio o dificultad para perdonar."
+      "upright": "renacimiento espiritual, llamado divino, resurrección, balance de vida, transformación final",
+      "reversed": "sordera espiritual, negativa a evolucionar, juicio severo, culpa",
+      "signification upright": "El Juicio (Le Jugement) simboliza llamada a la transformación, evaluación de la vida y posibilidad de renovación a través del perdón y la aceptación.",
+      "signification reversed": "Invertida indica resistencia al cambio espiritual, autocensura o culpa paralizante que impide avanzar."
     },
     "El Mundo": {
-      "upright": "finalización, armonía, ciclo completo, integración",
-      "reversed": "incompleto, perfeccionismo, miedo al cierre",
-      "signification upright": "El Mundo representa la realización completa, la integración de experiencias y el cierre exitoso de un ciclo. Evoca armonía, reconocimiento y la sensación de plenitud tras el esfuerzo.",
-      "signification reversed": "Invertida, puede indicar un ciclo incompleto, perfeccionismo paralizante o miedo al cierre. Invita a reconocer los logros y a soltar la necesidad de control para completar la etapa."
+      "upright": "cumplimiento total, realización, armonía universal, ciclo completado, maestría",
+      "reversed": "fracaso cerca del objetivo, perfeccionismo paralizante, aislamiento, ciclo inconcluso",
+      "signification upright": "El Mundo (Le Monde) representa la culminación de un ciclo y la integración armoniosa de las experiencias. Indica éxito pleno y sensación de completitud.",
+      "signification reversed": "Invertida puede señalar que, a pesar de los logros, algo quedó incompleto o el perfeccionismo impide disfrutar del éxito."
+    },
+
+    "Rey de Bastos": {
+      "upright": "liderazgo carismático, visión emprendedora, autoridad natural, creatividad dirigida",
+      "reversed": "tiranía creativa, autoritarismo impulsivo, dominio excesivo, ira destructiva",
+      "signification upright": "El Rey de Bastos encarna liderazgo visionario y pasión creativa. Inspira y moviliza a otros hacia proyectos ambiciosos.",
+      "signification reversed": "Invertida advierte sobre abuso de poder, decisiones impulsivas o liderazgo que aplasta a los demás."
+    },
+    "Reina de Bastos": {
+      "upright": "creatividad radiante, pasión contagiosa, generosidad cálida, inspiración fértil",
+      "reversed": "celos creativos, posesividad excesiva, ira destructiva, egoísmo artístico",
+      "signification upright": "La Reina de Bastos es creativa y estimulante; nutre proyectos con energía y entusiasmo. Representa a quien inspira con su vitalidad.",
+      "signification reversed": "Invertida puede mostrar celos, competencia malsana o egoísmo que impide compartir la inspiración."
+    },
+    "Caballero de Bastos": {
+      "upright": "acción impulsiva, aventura apasionada, partida repentina, viaje exploratorio, energía en movimiento",
+      "reversed": "impulsividad destructiva, huida irresponsable, agitación estéril, impaciencia paralizante",
+      "signification upright": "El Caballero de Bastos representa iniciativa ardiente y deseo de explorar. Trae movimiento y cambios rápidos impulsados por la pasión.",
+      "signification reversed": "Invertida advierte sobre decisiones precipitadas, falta de planificación o agotamiento tras un arranque impulsivo."
+    },
+    "Sota de Bastos": {
+      "upright": "mensajero creativo, nueva inspiración, proyecto en germen, entusiasmo juvenil",
+      "reversed": "falsa promesa, proyecto abortado, entusiasmo superficial, impaciencia creativa",
+      "signification upright": "La Sota de Bastos anuncia ideas frescas y el inicio de iniciativas creativas. Es símbolo de entusiasmo y aprendizaje.",
+      "signification reversed": "Invertida alerta sobre promesas vacías, proyectos inconclusos o falta de madurez en la ejecución."
+    },
+
+    "Rey de Oros": {
+      "upright": "prosperidad consolidada, dominio financiero, generosidad sabia, liderazgo material",
+      "reversed": "avaricia, corrupción, abuso de riqueza, materialismo excesivo",
+      "signification upright": "El Rey de Oros representa estabilidad económica, gestión prudente y éxito material alcanzado con responsabilidad.",
+      "signification reversed": "Invertida puede mostrar codicia, corrupción o uso indebido de recursos."
+    },
+    "Reina de Oros": {
+      "upright": "abundancia nutritiva, generosidad práctica, prosperidad compartida, sabiduría doméstica",
+      "reversed": "avaricia protectora, materialismo posesivo, abandono del hogar, desperdicio",
+      "signification upright": "La Reina de Oros simboliza cuidado, recursos compartidos y habilidad para gestionar la prosperidad de forma amorosa y práctica.",
+      "signification reversed": "Invertida advierte sobre exceso de apego a lo material o mala administración de los recursos familiares."
+    },
+    "Caballero de Oros": {
+      "upright": "trabajo constante, método, perseverancia, responsabilidad, pragmatismo",
+      "reversed": "obsesión por el trabajo, rutina excesiva, falta de ambición, pereza",
+      "signification upright": "El Caballero de Oros es símbolo de constancia y esfuerzo práctico. Avanza con paciencia hacia metas materiales.",
+      "signification reversed": "Invertida puede indicar trabajo obsesivo o estancamiento por falta de iniciativa."
+    },
+    "Sota de Oros": {
+      "upright": "estudiante aplicado, aprendizaje práctico, nueva oportunidad material, diligencia",
+      "reversed": "pereza pseudoestudiosa, oportunismo, superficialidad en el aprendizaje, negligencia",
+      "signification upright": "La Sota de Oros indica aprendizaje serio y oportunidades materiales emergentes gracias al esfuerzo aplicado.",
+      "signification reversed": "Invertida advierte sobre falta de constancia o enfoque en atajos que perjudican el crecimiento."
+    },
+
+    "Rey de Copas": {
+      "upright": "dominio emocional, compasión sabia, equilibrio afectivo, liderazgo benevolente",
+      "reversed": "manipulación emocional, frialdad calculada, chantaje afectivo, inestabilidad oculta",
+      "signification upright": "El Rey de Copas simboliza madurez emocional, empatía y capacidad de liderazgo desde la ternura y la comprensión.",
+      "signification reversed": "Invertida advierte sobre uso manipulatorio de las emociones o inestabilidad tras una fachada de control."
+    },
+    "Reina de Copas": {
+      "upright": "intuición profunda, empatía auténtica, amor incondicional, guía espiritual",
+      "reversed": "excesiva emotividad, dependencia afectiva, ilusiones sentimentales, sacrificio destructivo",
+      "signification upright": "La Reina de Copas representa sensibilidad, compasión y sabiduría emocional. Ofrece refugio y comprensión a quienes la rodean.",
+      "signification reversed": "Invertida puede mostrar límites faltantes, codependencia o entrega dañina que impide el autocuidado."
+    },
+    "Caballero de Copas": {
+      "upright": "romance, invitación, encanto, propuesta emocional, seducción",
+      "reversed": "ilusiones románticas, manipulación emocional, promesas vacías",
+      "signification upright": "El Caballero de Copas trae propuestas afectivas y creatividad emocional. Es un mensajero de encanto y sensibilidad.",
+      "signification reversed": "Invertida advierte sobre idealizaciones amorosas, manipulación sentimental o promesas que no se cumplirán."
+    },
+    "Sota de Copas": {
+      "upright": "mensaje emocional, inspiración artística, despertar sensible, creatividad incipiente",
+      "reversed": "inmadurez emocional, sensibilidad herida, creatividad bloqueada, ingenuidad peligrosa",
+      "signification upright": "La Sota de Copas anuncia sensibilidad, inspiración y la llegada de mensajes que tocan el corazón. Es el inicio de una expresión emocional creativa.",
+      "signification reversed": "Invertida advierte sobre inmadurez afectiva o heridas que impiden la expresión creativa."
+    },
+
+    "Rey de Espadas": {
+      "upright": "inteligencia, autoridad justa, claridad mental, objetividad, justicia",
+      "reversed": "tiranía, abuso de poder, frialdad extrema, manipulación mental",
+      "signification upright": "El Rey de Espadas simboliza la razón, la justicia y el juicio claro. Representa el uso de la inteligencia para el bien común y decisiones éticas.",
+      "signification reversed": "Invertida advierte sobre uso frío de la inteligencia para manipular o imponer autoridad sin empatía."
+    },
+    "Reina de Espadas": {
+      "upright": "independencia, lucidez, franqueza, inteligencia pragmática, experiencia del dolor",
+      "reversed": "amargura, rencor, crítica destructiva, frialdad excesiva",
+      "signification upright": "La Reina de Espadas representa claridad de pensamiento, independencia basada en la experiencia y consejos directos pero sabios.",
+      "signification reversed": "Invertida advierte sobre críticas hirientes, resentimiento o uso de la verdad para herir en lugar de ayudar."
+    },
+    "Caballero de Espadas": {
+      "upright": "acción impulsiva, coraje, combatividad, cambio abrupto, heroísmo",
+      "reversed": "imprudencia, agresión, destrucción, ira ciega",
+      "signification upright": "El Caballero de Espadas trae acción rápida y determinación. Representa valentía intelectual y disposición para intervenir.",
+      "signification reversed": "Invertida advierte sobre precipitación, agresividad sin control o daños causados por acciones impulsivas."
+    },
+    "Sota de Espadas": {
+      "upright": "curiosidad intelectual, mensajes importantes, vigilancia, agilidad mental",
+      "reversed": "indiscreción, espionaje malintencionado, mentiras, manipulación de información",
+      "signification upright": "La Sota de Espadas simboliza mente ágil, curiosidad y llegada de noticias que requieren atención y discernimiento.",
+      "signification reversed": "Invertida advierte sobre chismes, desinformación o uso de datos para perjudicar."
     }
   }
 }

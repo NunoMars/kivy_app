@@ -173,16 +173,14 @@ class CardScreen(Screen):
 
     def perform_card_draw(self, _dt):
         try:
+            # Load signification bundles for the current language and use their
+            # keys as the source of truth for available cards.
             cards_signification = get_cards_signification()
             try:
-                keys_count = len(cards_signification.keys()) if isinstance(cards_signification, dict) else 0
+                cards = list(cards_signification.keys()) if isinstance(cards_signification, dict) else []
             except Exception:
-                try:
-                    keys_count = len(list(cards_signification))
-                except Exception:
-                    keys_count = 0
-            print(f"DEBUG: signification keys count = {keys_count}")
-            cards = list(cards_signification.keys())
+                cards = []
+            print(f"DEBUG: signification keys count = {len(cards)}")
 
             # Si aucune signification n'est fournie (modules vides), fallback
             # vers les noms de fichiers présents dans tarot_img/MajorArcanaCards
@@ -556,6 +554,34 @@ class ResponseScreen(Screen):
             french_canon = card_name
 
         display_card_name = get_card_name_for_lang(french_canon, lang)
+        # If the mapping didn't produce a localized name (still french), try
+        # a few heuristics: normalize keys and consult the explicit
+        # FRENCH_TO_PORTUGUESE mapping in `cards_mapping`.
+        try:
+            l_low = (str(lang or "") ).lower()
+            if l_low.startswith('pt') and display_card_name == french_canon:
+                # Try normalized lookup via cards_mapping constants
+                try:
+                    from cards_mapping import FRENCH_TO_PORTUGUESE, _normalize_card_key
+                    target_key = _normalize_card_key(french_canon)
+                    for fk, pv in FRENCH_TO_PORTUGUESE.items():
+                        try:
+                            if _normalize_card_key(fk) == target_key:
+                                display_card_name = pv
+                                break
+                        except Exception:
+                            continue
+                except Exception:
+                    # last resort: try remove accents and remap
+                    try:
+                        from cards_mapping import remove_accents
+                        alt = get_card_name_for_lang(remove_accents(french_canon), 'pt')
+                        if alt and alt != french_canon:
+                            display_card_name = alt
+                    except Exception:
+                        pass
+        except Exception:
+            pass
         # Debug info: print resolved language and canonical French name
         try:
             print(f"DEBUG setup_card: lang={lang} | card_name_param={card_name} | french_canon={french_canon} | display_before_fix={display_card_name}")
@@ -581,30 +607,16 @@ class ResponseScreen(Screen):
         self.card_name_label.font_size = "38sp"
         self.card_name_label.height = dp(56)
 
-        # État traduit selon la langue
+        # État traduit selon la langue — afficher toujours via les messages (tr)
         state_norm = (state or "").strip().lower()
         lookup_state = "upright"
-        if lang == "fr":
-            if state_norm in ["a l'envers", "envers", "reversed"]:
-                self.card_state_label.text = tr("reversed")
-                lookup_state = "reversed"
-            else:
-                self.card_state_label.text = tr("upright")
-                lookup_state = "upright"
-        elif lang == "es":
-            if state_norm in ["invertida", "reversed", "a l'envers", "envers"]:
-                self.card_state_label.text = tr("reversed")
-                lookup_state = "reversed"
-            else:
-                self.card_state_label.text = tr("upright")
-                lookup_state = "upright"
+        # Normaliser détection d'envers (regarde quelques variants connus)
+        if state_norm in ["a l'envers", "à l'envers", "envers", "reversed", "invertida"]:
+            lookup_state = "reversed"
+            self.card_state_label.text = tr("reversed")
         else:
-            if state_norm in ["reversed", "a l'envers", "envers", "invertida"]:
-                self.card_state_label.text = tr("reversed")
-                lookup_state = "reversed"
-            else:
-                self.card_state_label.text = tr("upright")
-                lookup_state = "upright"
+            lookup_state = "upright"
+            self.card_state_label.text = tr("upright")
 
         # Agrandir la police et la taille du sous-titre
         self.card_state_label.font_size = "28sp"
@@ -641,29 +653,17 @@ class ResponseScreen(Screen):
             # When the app language is English or Portuguese the signification
             # modules use translated card names as keys, so use the translated
             # display name for lookup. Otherwise keep the original French name.
-            # Construire une liste de candidats pour la recherche afin d'éviter
-            # les mismatches entre modules (FR/EN/PT). On essaie :
-            # 1) le nom affiché (display_card_name)
-            # 2) le nom français original (card_name)
-            # 3) le nom anglais calculé
-            # 4) le nom portugais calculé
+
+            # Construire une liste de candidats en privilégiant la clé
+            # localisée (celle tirée). Ensuite essayer le nom affiché et le
+            # nom français canonique comme fallbacks.
             candidates = []
-            if display_card_name:
-                candidates.append(display_card_name)
             if card_name and card_name not in candidates:
-                candidates.append(card_name)
-            try:
-                en_name = get_card_name_for_lang(card_name, "en")
-                if en_name and en_name not in candidates:
-                    candidates.append(en_name)
-            except Exception:
-                pass
-            try:
-                pt_name = get_card_name_for_lang(card_name, "pt")
-                if pt_name and pt_name not in candidates:
-                    candidates.append(pt_name)
-            except Exception:
-                pass
+                candidates.append(card_name)  # card_name is the drawn localized key
+            if display_card_name and display_card_name not in candidates:
+                candidates.append(display_card_name)
+            if french_canon and french_canon not in candidates:
+                candidates.append(french_canon)
 
             print(f"Recherche signification, candidats = {candidates}")
 
@@ -793,11 +793,23 @@ class ResponseScreen(Screen):
     def open_mme_t_chat(self, provider="google", price_text=None):
         if self.chat_popup and self.chat_popup.parent:
             self.chat_popup.dismiss()
+        # Provide up to 3 drawn cards explicitly so Mme T backend always
+        # receives three cards as requested by the service contract.
+        try:
+            app = App.get_running_app()
+            drawn = getattr(app, 'last_drawn_cards', None) or []
+        except Exception:
+            drawn = []
+        drawn_three = list(drawn)[:3]
+        while len(drawn_three) < 3:
+            drawn_three.append((None, None))
+
         self.chat_popup = MmeTChatPopup(
             language=get_system_language(),
             provider=provider,
             price_text=price_text,
             context_text=self._build_mme_t_context(),
+            drawn_cards=drawn_three,
             on_session_complete=self._on_chat_complete,
         )
         self.chat_popup.bind(on_dismiss=lambda *_: setattr(self, "chat_popup", None))
@@ -805,17 +817,31 @@ class ResponseScreen(Screen):
 
     def _build_mme_t_context(self):
         parts = []
+        # Use localized UI strings when building the context sent to Mme T so
+        # the backend receives the same language as the user.
         card_title = (self.card_name_label.text or "").strip()
         if card_title:
-            parts.append(f"Carte principale: {card_title}")
+            parts.append(f"{tr('your_card')}: {card_title}")
         card_state = (self.card_state_label.text or "").strip()
         if card_state:
-            parts.append(f"Position: {card_state}")
+            parts.append(f"{tr('preparing_arcana') if False else tr('drawing_card')}: {card_state}")
         keywords = (self.keywords_label.text or "").strip()
         if keywords:
             clean_keywords = keywords.replace("💫", "").strip()
             if clean_keywords:
-                parts.append(f"Mots-cles: {clean_keywords}")
+                # Try to use an i18n key for the keywords label; if missing,
+                # use a small builtin per-language fallback to avoid sending
+                # French when the app language is Portuguese.
+                lang = get_system_language()
+                kw_label = tr('keywords')
+                if not kw_label or kw_label == 'keywords':
+                    if str(lang).startswith('pt'):
+                        kw_label = 'Palavras-chave'
+                    elif str(lang).startswith('fr'):
+                        kw_label = 'Mots-clés'
+                    else:
+                        kw_label = 'Keywords'
+                parts.append(f"{kw_label}: {clean_keywords}")
         # Si un tirage complet est disponible (stocké sur l'app), l'ajouter en contexte
         try:
             app = App.get_running_app()
@@ -825,12 +851,21 @@ class ResponseScreen(Screen):
                 # Use current language for card display names in the context
                 cur_lang = get_system_language()
                 def fmt(c, s):
-                    # Eviter les guillemets imbriqués en construisant l'état séparément
-                    state = "droite" if s == "droite" else "à l'envers"
-                    return f"{get_card_name_for_lang(c, cur_lang)} ({state})"
+                    # Ensure we localize the card name correctly: get the
+                    # french canonical name first (cards mappings are built
+                    # around French canonical keys), then request the
+                    # localized name for the current language.
+                    try:
+                        french = __import__('cards_mapping').get_french_card_name(c)
+                    except Exception:
+                        french = c
+                    display = get_card_name_for_lang(french, cur_lang)
+                    state_label = tr('upright') if (s in ['droite', 'right']) else tr('reversed')
+                    return f"{display} ({state_label})"
 
                 drawn_summary = " | ".join(fmt(c, s) for c, s in drawn)
-                parts.append(f"Tirage ({len(drawn)}): {drawn_summary}")
+                # 'Tirage' label: reuse a short localized label if possible
+                parts.append(f"{tr('draw_card')} ({len(drawn)}): {drawn_summary}")
         except Exception:
             pass
         return " | ".join(parts)

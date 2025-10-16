@@ -39,7 +39,7 @@
       "🃏 Barajando las cartas...",
       "✨ Las energías se alinean...",
       "🌙 Consultando los astros...",
-      "💫 Interpretando los arcanes..."
+      "💫 Interpretando los arcanos..."
     ],
     "chat_mme_t": "Chat Mme T",
     "thanks_for_support": "¡Gracias por tu apoyo!",
@@ -54,130 +54,234 @@
   },
   "significations": {
     "El Loco": {
-      "upright": "nuevos comienzos, espontaneidad, libertad, aventura, potencial",
-      "reversed": "imprudencia, falta de dirección, duda",
-      "signification upright": "El Loco simboliza el salto hacia lo desconocido con curiosidad y apertura.",
-      "signification reversed": "Invertida, puede señalar decisiones impulsivas o falta de preparación."
+      "upright": "nuevo comienzo, inocencia, espontaneidad, aventura, potencial",
+      "reversed": "imprudencia, escapismo, falta de preparación, ingenuidad",
+      "signification upright": "Un nuevo inicio pide confianza más que planes perfectos. El Loco te invita a moverte con curiosidad, jugar y aprender en marcha. La ruta puede ser poco convencional, pero el potencial es real si viajas ligero: suelta etiquetas, expectativas ajenas y el miedo a equivocarte. En amor, honestidad abierta; en trabajo, prototipa y experimenta. No necesitas todas las respuestas para empezar—solo un sí sincero y atento a las señales. La fe en tu propia experiencia es el mapa.",
+      "signification reversed": "La impulsividad o el escapismo pueden estar guiando el volante. Actuar para no sentir incomodidad crea desvíos evitables. Baja la velocidad lo suficiente para medir consecuencias y seguridad básica. La ingenuidad o el optimismo mágico pueden ocultar miedo al compromiso. Revisa tu porqué, coloca barandillas simples y da el siguiente paso con presencia. Empezar con sabiduría sigue siendo empezar."
     },
     "El Mago": {
-      "upright": "recursos, habilidad, iniciativa, creatividad",
-      "reversed": "engaño, manipulación, falta de concentración",
-      "signification upright": "El Mago indica la capacidad de transformar ideas en acción utilizando los recursos disponibles.",
-      "signification reversed": "Invertida, sugiere uso indebido de habilidades o falta de propósito."
+      "upright": "voluntad, recursos, enfoque, comunicación, creación",
+      "reversed": "manipulación, dispersión, promesas vacías, control",
+      "signification upright": "Tu atención es la varita: idea, intención y acción se alinean para generar resultados. Nombra el efecto que deseas, reúne las herramientas disponibles y ejecuta un paso enfocado. Comunica con precisión—pide lo que necesitas y promete lo que puedes cumplir. Favorece el aprendizaje visible y el liderazgo práctico: muestra, no solo cuentes. En relaciones, expresa necesidades con claridad; en carrera, entrega algo tangible. El impulso se multiplica cuando tu voluntad sirve a un propósito mayor que el ego.",
+      "signification reversed": "El encanto sin integridad se vuelve en contra. La dispersión, las medias verdades o el intento de controlar a otros drenan poder y confianza. Si la energía está fragmentada, reduce entradas y elige una palanca. Audita motivos: ¿necesitas demostrarte o servir al trabajo? Regresa a métodos limpios, sistemas simples y promesas responsables. La disciplina sostiene la magia."
     },
     "La Sacerdotisa": {
-      "upright": "intuición, sabiduría interior, misterio, calma",
-      "reversed": "secretos ocultos, intuición bloqueada, confusión",
-      "signification upright": "La Sacerdotisa invita a escuchar la voz interior y a confiar en la intuición.",
-      "signification reversed": "Invertida, indica falta de claridad o negación de la intuición."
+      "upright": "intuición, misterio, conocimiento interior, silencio, sueños",
+      "reversed": "secreto, autoengaño, intuición bloqueada, evasión",
+      "signification upright": "El silencio aquí es un órgano sensorial. Las respuestas emergen cuando dejas de forzar y escuchas bajo el ruido. Sueña, escribe, observa patrones: lo que se repite, habla. Protege tu misterio: no todo debe explicarse hoy. En amor, honra límites y tiempos sagrados; en trabajo, investiga en privado y actúa cuando tu sí interior y las señales externas se alineen. La sabiduría madura en la oscuridad antes de compartirse en la luz.",
+      "signification reversed": "Puedes estar ignorando la intuición para encajar expectativas, o manteniéndote ambigua para evitar la verdad. Los secretos sanan cuando se miran con amabilidad. Nombra lo que sabes y aún no admites. Simplifica tus entradas (opiniones, noticias, pantallas) para que la señal interna se fortalezca. El conocimiento usado para controlar encierra; usado para comprender, libera."
     },
     "La Emperatriz": {
-      "upright": "fertilidad, abundancia, creatividad, nutrición",
-      "reversed": "dependencia, bloqueo creativo, exceso de control",
-      "signification upright": "La Emperatriz simboliza crecimiento, cuidado y abundancia creativa.",
-      "signification reversed": "Invertida, puede señalar estancamiento creativo o dependencia."
+      "upright": "creatividad, fertilidad, abundancia, cuidado, belleza",
+      "reversed": "sobreprotección, estancamiento creativo, carencia, perfeccionismo",
+      "signification upright": "La vida florece: crea, nutre y deja crecer al ritmo de la naturaleza. El placer, la belleza y el cuidado regeneran tu campo creativo. Invierte en cuerpo, hogar y arte; recibe tanto como das. La colaboración prospera donde la generosidad es auténtica. En relaciones, la calidez y la receptividad profundizan vínculos; en proyectos, un ecosistema de apoyo multiplica resultados. La abundancia real es orgánica y comparte.",
+      "signification reversed": "Apretar demasiado asfixia. El sobrecuidado para sentirte necesaria agota. Toma distancia, respira y vuelve a los ciclos de descanso y maduración. Permite ayuda, suelta el perfeccionismo y confía en que el suelo hace su trabajo. Nutrirte a ti también es parte del cultivo."
     },
     "El Emperador": {
-      "upright": "autoridad, estructura, estabilidad, responsabilidad",
-      "reversed": "rigidez, tiranía, abuso de poder",
-      "signification upright": "El Emperador representa orden y liderazgo; fomenta la disciplina y la planificación.",
-      "signification reversed": "Invertida, advierte sobre control excesivo o abuso de poder."
+      "upright": "estructura, límites, estrategia, autoridad justa, protección",
+      "reversed": "rigidez, control, abuso de poder, dureza",
+      "signification upright": "Estructuras que sirven a las personas, no al revés. Límites claros, estrategia y previsión convierten el caos en base firme. Lidera con ejemplo y decisiones transparentes. Protege a los vulnerables, administra recursos con responsabilidad y piensa a largo plazo. El orden calmado es una forma de cuidado. La autoridad justa se nota en su estabilidad.",
+      "signification reversed": "Apretar por miedo rompe lo que sostienes. El control micromanager desgasta la confianza y la creatividad. Cambia rigidez por objetivos claros y autonomía. La fortaleza verdadera es flexible, rinde cuentas y es equitativa. Si el orgullo guía, escucha; si la defensa se cierra, abre diálogo."
     },
-    "El Papa": {
-      "upright": "tradición, enseñanza, guía espiritual, comunidad",
-      "reversed": "dogmatismo, manipulación, conformismo",
-      "signification upright": "El Papa habla de transmisión de sabiduría y valores compartidos.",
-      "signification reversed": "Invertida, puede indicar pensamiento rígido o dependencia de la autoridad."
+    "El Hierofante": {
+      "upright": "tradición, enseñanza, rito, comunidad, valores",
+      "reversed": "dogma, hipocresía, formalismo vacío, rebelión ciega",
+      "signification upright": "El sentido se transmite por linaje, maestros y rituales compartidos. Aprende la forma para tocar el espíritu; enseña con humildad. Las buenas reglas protegen la libertad y generan pertenencia. Pregunta: «¿Cuál es el principio vivo tras la tradición?» Integrar no es copiar—es comprender y encarnar.",
+      "signification reversed": "Cuando la forma suplanta al espíritu, el sistema se fosiliza. Cuestiona mandatos que reducen compasión. Conserva lo sabio, suelta lo muerto. Reformar no es destruir, es abrir espacio para que la esencia vuelva a respirar."
     },
     "Los Enamorados": {
-      "upright": "amor, elección, armonía, relación",
-      "reversed": "mala elección, conflicto, separación",
-      "signification upright": "Los Enamorados tratan de decisiones del corazón y del alineamiento de valores.",
-      "signification reversed": "Invertida, muestra conflicto de valores o indecisión."
+      "upright": "elección, amor, alianza, valores, autenticidad",
+      "reversed": "indecisión, triángulos, autoengaño, ruptura",
+      "signification upright": "Una decisión de valores disfrazada de romance u opciones. Elige el camino donde deseo, honestidad y responsabilidad conviven. Di tu sí/no real y permite lo mismo en el otro. La alineación supera a la perfección: si comparten dirección, el diseño de detalles es posible. La pareja se profundiza cuando cada uno permanece entero. La creatividad florece donde la relación con el proyecto es auténtica.",
+      "signification reversed": "Motivaciones mezcladas y concesiones por miedo a perder generan fricción. Decir sí para evitar vacío es decirte no. Pausa plazos, despeja triángulos y pregunta qué verdad estás evitando. Asumir elecciones repara; si separarse honra la integridad, despide con claridad y avanza."
     },
     "El Carro": {
-      "upright": "victoria de la voluntad, avance, control, éxito",
-      "reversed": "pérdida de control, conflicto, dirección incierta",
-      "signification upright": "El Carro anuncia avance y triunfo gracias al enfoque y la disciplina.",
-      "signification reversed": "Invertida, sugiere falta de coordinación o pérdida de dirección."
+      "upright": "voluntad, avance, disciplina, victoria, enfoque",
+      "reversed": "descontrol, falta de rumbo, orgullo, dispersión",
+      "signification upright": "Dos fuerzas tiran en sentidos distintos; liderar es elegir dirección común. Define la meta, establece límites y cumple contigo. La victoria es un momentum disciplinado, no velocidad histérica. En conflictos, regula, reencuadra y conduce: no aplastes la oposición, alinéalas hacia el objetivo. Pequeños logros repetibles mueven el vehículo.",
+      "signification reversed": "Las ruedas patinan cuando la meta es vaga o el orgullo no acepta ajustes. Si fuerzas resultados, afloja el agarre y corrige el mapa. Alinea métricas con sentido, acorta bucles de feedback y delega lo que drena foco. Menos prioridades, más tracción."
     },
-    "La Fuerza": {
-      "upright": "fuerza interior, coraje, bondad, autocontrol",
-      "reversed": "debilidad, ira fuera de control, abuso de poder",
-      "signification upright": "La Fuerza representa el triunfo de la compasión y la calma sobre la violencia.",
-      "signification reversed": "Invertida, puede significar pérdida de autocontrol o inseguridad."
+    "La Justicia": {
+      "upright": "equidad, verdad, ley, balance, responsabilidad",
+      "reversed": "injusticia, sesgo, venganza, proceso defectuoso",
+      "signification upright": "Equilibrio es proporción justa, no 50/50. Sopesar hechos, nombrar sesgos y actuar con transparencia. Donde haga falta, enmienda; y reconoce méritos con equidad. En asuntos legales o de límites, documenta con claridad. Las decisiones de hoy establecen precedentes para mañana. La verdad con compasión se vuelve camino.",
+      "signification reversed": "Algo cojea: contexto incompleto, partes con poder desigual o una historia contada a medias. Evita juicios exprés: confirma fuentes. Si contigo eres implacable, cambia castigo por responsabilidad y reparación. Los sistemas tienen sesgos; defiende el proceso justo, no solo el resultado que te conviene."
     },
     "El Ermitaño": {
-      "upright": "búsqueda de sabiduría, introspección, guía interior, retiro",
-      "reversed": "aislamiento dañino, rechazo del consejo, orgullo espiritual",
-      "signification upright": "El Ermitaño invita a la reflexión profunda y a la búsqueda de sentido interior.",
-      "signification reversed": "Invertida, puede indicar aislamiento perjudicial o rechazo de ayuda."
+      "upright": "introspección, sabiduría, retiro, guía interior, madurez",
+      "reversed": "aislamiento, orgullo espiritual, cerrazón, soledad",
+      "signification upright": "Retirarte un paso aclara la verdad. La introspección destila el ruido en conocimiento útil. Busca mentores discretos o sé tu propia guía; deja que la lámpara interior marque el ritmo. Comparte lo aprendido cuando haya madurado. La soledad elegida es cuna de lucidez.",
+      "signification reversed": "Esconderse no es sanar. Si el orgullo bloquea consejos o la soledad se endurece, regresa al vínculo con suavidad. La sabiduría también se prueba en compañía. El silencio sirve cuando te mantiene aprendiendo."
     },
     "La Rueda de la Fortuna": {
-      "upright": "ciclos, destino, oportunidad, cambio",
-      "reversed": "estancamiento, mala suerte persistente, resistencia al cambio",
-      "signification upright": "La Rueda señala la naturaleza cíclica de la vida y la llegada de nuevas oportunidades.",
-      "signification reversed": "Invertida, indica resistencia al cambio o consecuencias repetidas del pasado."
+      "upright": "ciclos, oportunidad, giro, destino, sincronía",
+      "reversed": "repetición, estancamiento, resistencia, mala racha",
+      "signification upright": "La rueda gira: aprovecha la corriente manteniéndote ligero y receptivo. Observa el tiempo oportuno, alinéate con lo que ya se mueve y di sí a puertas reales. Lo que regresa trae una nueva elección: esta vez puedes responder diferente. El cambio no es capricho: es ciclo.",
+      "signification reversed": "Aferrarte repite lo que temes. Rompe el bucle cambiando un comportamiento sostenido. Acepta la lección, suelta el guion y pide una escena nueva. La fortuna mejora donde hay flexibilidad y aprendizaje."
+    },
+    "La Fuerza": {
+      "upright": "coraje, autocontrol, compasión, resiliencia, templanza",
+      "reversed": "impulsividad, apatía, complacencia, estallidos",
+      "signification upright": "Poder suave que regula la tormenta. Encuentra presencia en vez de pánico, firmeza con ternura. Domar no es someter por miedo, sino canalizar lo salvaje con respeto. En amor y trabajo, coraje más amabilidad generan confianza. El autocuidado sostenido es valentía.",
+      "signification reversed": "Estallidos, colapsos o complacencia indican desregulación. Vuelve a lo básico: respiración, límites simples, actos pequeños pero valientes. Recuperar fuerza empieza dentro. Tu león responde mejor al cuidado que al látigo."
     },
     "El Colgado": {
-      "upright": "sacrificio, pausa, nueva perspectiva, desapego",
-      "reversed": "sacrificio inútil, obstinación, estancamiento",
-      "signification upright": "El Colgado invita a ver la situación desde otra perspectiva y a dejar ir lo que ya no sirve.",
-      "signification reversed": "Invertida, puede indicar sacrificios sin sentido o inmovilidad."
+      "upright": "pausa, rendición, perspectiva nueva, paciencia, visión",
+      "reversed": "estancamiento, sacrificio inútil, terquedad, evasión",
+      "signification upright": "Suspender la acción para ver de otra forma. Rendir no es perder: es girar hacia la sabiduría. Al ceder el ángulo viejo, aparece un movimiento más elegante. La paciencia aquí no es pasividad, es mirada nueva. Confía en la maduración invisible.",
+      "signification reversed": "Colgarse sin aprender es perder tiempo. Si el orgullo se niega a flexibilizar, elige una renuncia pequeña y significativa. El movimiento regresa cuando regresa el sentido. Liberarte de la prisa abre claridad."
     },
     "La Muerte": {
-      "upright": "transformación, fin de ciclo, renacimiento",
-      "reversed": "resistencia al cambio, estancamiento, miedo al cambio",
-      "signification upright": "La Muerte representa un proceso de transformación necesario para que algo nuevo nazca.",
-      "signification reversed": "Invertida, puede significar apego al pasado y bloqueo en la renovación."
+      "upright": "cierre, transformación, duelo, renacimiento, limpieza",
+      "reversed": "resistencia, apegos, miedo, transición bloqueada",
+      "signification upright": "Un ciclo concluye. Soltar no es fracaso, es cosecha: te quedas con el aprendizaje, no con la forma. Marca el final con un gesto consciente, permite el duelo y despeja espacio. La vitalidad regresa tras la despedida. Cada cierre digno abre un comienzo limpio.",
+      "signification reversed": "Los finales evitados goteran energía. Nombra lo que terminó, busca apoyo y cierra con suavidad. Incluso microcierres (un correo, un ritual, un límite) invitan aire fresco. El cambio no espera, pero puedes recibirlo con cuidado."
     },
     "La Templanza": {
-      "upright": "equilibrio, curación, mezcla armoniosa, moderación",
-      "reversed": "desbalance, excesos, impaciencia",
-      "signification upright": "La Templanza sugiere la unión equilibrada de fuerzas para promover la curación.",
-      "signification reversed": "Invertida, advierte sobre la falta de moderación o excesos."
+      "upright": "equilibrio, integración, sanación, medida, armonía",
+      "reversed": "exceso, desorden, impaciencia, mezcla caótica",
+      "signification upright": "Mezcla opuestos con arte: la sanación madura gradualmente. Ajusta entradas, ritmo y límites; integra en lugar de oscilar. Donde hay equilibrio dinámico, la vida se reordena sola. Tu ángel guarda el proceso si tú cuidas la medida.",
+      "signification reversed": "Demasiado o demasiado poco arruinan la receta. Retira un exceso, añade un estabilizador y concede tiempo de reposo. Si la mezcla es caótica, vuelve a dos ingredientes esenciales y recomienza. La prisa desordena lo que la paciencia acomoda."
     },
     "El Diablo": {
-      "upright": "ataduras, tentación, materialismo, adicciones",
-      "reversed": "liberación, conciencia, ruptura de cadenas",
-      "signification upright": "El Diablo muestra dependencias y apegos que limitan; invita a confrontarlos.",
-      "signification reversed": "Invertida, anuncia procesos de liberación y toma de conciencia."
+      "upright": "ataduras, tentación, sombra, compulsión, materialismo",
+      "reversed": "liberación, sobriedad, límites, claridad, elección",
+      "signification upright": "Nombra las cadenas: hábitos, deudas, obsesiones, vínculos tóxicos. La conciencia disuelve el glamour y te devuelve consentimiento. El deseo no es enemigo; la compulsión inconsciente sí. Mira tu sombra sin morbo y con responsabilidad. Libertad es elegir con los ojos abiertos.",
+      "signification reversed": "La llave aparece cuando dejas de fingir que no hay puerta. Elige un corte limpio o un límite concreto y mantenlo. La sobriedad (literal o emocional) amplía espacio vital. La dignidad vuelve paso a paso; tu no también es amor propio."
     },
     "La Torre": {
-      "upright": "colapso, revelación, cambio brusco, despertar",
-      "reversed": "resistencia al cambio, caída amortiguada, transformación retardada",
-      "signification upright": "La Torre indica la caída de estructuras falsas y la llegada de verdades reveladoras.",
-      "signification reversed": "Invertida, puede sugerir un cambio menos violento o retardado."
+      "upright": "derribo, verdad, despertar, crisis, ruptura",
+      "reversed": "alarma temprana, ajuste, prevención, corrección",
+      "signification upright": "Estructuras falsas caen para que la verdad se sostenga. Aunque brusco, el despeje es misericordioso: quita lo que no podía sostenerse. Tras el derrumbe, reconstruye sobre suelo honesto y líneas simples. La revelación duele, pero libera. La claridad es tu cimiento nuevo.",
+      "signification reversed": "Corrección más suave: aprende ahora o la llamada será más alta luego. Retira el ladrillo suelto antes de que el muro deba irse. Admitir fisuras evita colapsos. La humildad es arquitectura antisísmica."
     },
     "La Estrella": {
-      "upright": "esperanza, inspiración, sanación, optimismo",
-      "reversed": "desesperanza, pérdida de fe, desaliento",
-      "signification upright": "La Estrella trae esperanza y un sentido de renovación espiritual.",
-      "signification reversed": "Invertida, invita a recuperar la fe y la esperanza."
+      "upright": "esperanza, guía, inspiración, fe, belleza",
+      "reversed": "desaliento, cinismo, agotamiento, desconexión",
+      "signification upright": "Vuelve la luz tras la tormenta. Rehidrata el espíritu con belleza, descanso y gestos de bondad. Compartir sin cálculo multiplica la gracia. Tu brújula se realinea cuando confías en algo mayor. Esperanza aquí no es fantasía: es práctica diaria de cuidado.",
+      "signification reversed": "La esperanza tenue no es esperanza muerta. Reduce ruido, busca maravillas pequeñas y deja que la confianza rebrote con promesas diminutas cumplidas. Pide ayuda. Lo esencial vuelve cuando quitas lo accesorio."
     },
     "La Luna": {
-      "upright": "ilusiones, intuición, inconsciente, miedos, misterio",
-      "reversed": "claridad, verdad emergente, fin de ilusiones",
-      "signification upright": "La Luna apunta a miedos escondidos y a la necesidad de confiar en la intuición.",
-      "signification reversed": "Invertida, señala que la verdad sale a la luz y la confusión disminuye."
+      "upright": "inconsciente, ilusiones, intuición, miedo, sueños",
+      "reversed": "claridad, verdad, regulación, salida del laberinto",
+      "signification upright": "Niebla y espejos: avanza despacio, revisa proyecciones y sigue señales del cuerpo. No todo peligro es real ni toda señal es falsa. Trabaja sueños, arte y terapia para dialogar con lo inconsciente. La intuición guía si la ansiedad no toma el mando.",
+      "signification reversed": "La niebla levanta. Los hechos salen a la superficie y el sentido interno se estabiliza. Ajusta el mapa y continúa con confianza suave. Habrá restos de duda, pero ya no gobiernan. Tu claridad es suficiente para hoy."
     },
     "El Sol": {
-      "upright": "alegría, éxito, vitalidad, realización",
-      "reversed": "vanidad, exceso de orgullo, éxito efímero",
-      "signification upright": "El Sol simboliza claridad, energía positiva y celebración de logros.",
-      "signification reversed": "Invertida, advierte sobre el orgullo y la ilusión de éxito duradero."
+      "upright": "alegría, éxito, vitalidad, claridad, celebración",
+      "reversed": "ego, vanidad, burnout, apariencia",
+      "signification upright": "Alegría, visibilidad y maestría lúdica. Comparte el mérito, saborea resultados y crea desde el gozo. Tu luz anima la de otros; la abundancia crece al circular. La vida quiere verte brillar sin pedir permiso.",
+      "signification reversed": "El brillo sin raíz se apaga pronto. Reenraíza en autenticidad y servicio y la radiancia regresa. Menos performance, más verdad. El éxito que nutre no compite con nadie."
     },
     "El Juicio": {
-      "upright": "resurrección, llamado, evaluación, transformación final",
-      "reversed": "negación del crecimiento, culpa, juicio ciego",
-      "signification upright": "El Juicio indica un momento de llamada interior y la posibilidad de renacimiento.",
-      "signification reversed": "Invertida, puede indicar rechazo del cambio o dificultad para perdonarse."
+      "upright": "llamado, renovación, perdón, vocación, despertar",
+      "reversed": "culpa, negación, miedo al cambio, juicio duro",
+      "signification upright": "Despiertas a tu próxima misión. Revisa con honestidad, perdona con sabiduría y responde al llamado. Lo aprendido se convierte en vocación cuando lo pones al servicio. Cierra juicios viejos y permite una vida más ancha.",
+      "signification reversed": "Estancada entre la culpa y la negación. Cambia autoacusación por responsabilidad concreta y enmiendas visibles. Elige un paso que demuestre renovación. El perdón real incluye límites y acción."
     },
     "El Mundo": {
-      "upright": "conclusión, armonía, ciclo completo, integridad",
-      "reversed": "incompleto, perfeccionismo, miedo al cierre",
-      "signification upright": "El Mundo representa la culminación exitosa de un ciclo y la integración de experiencias.",
-      "signification reversed": "Invertida, puede señalar frustración por objetivos no alcanzados o temor al cierre."
+      "upright": "culminación, maestría, integración, logro, plenitud",
+      "reversed": "perfeccionismo, cierre pendiente, dilación, vacío post-logro",
+      "signification upright": "Integración lograda: no solo acumulaste experiencias, las hilaste en sentido. Documenta, celebra y comparte el patrón que dominas. Se cierra un ciclo y se abre un portal. Enseña lo que te hubiera ayudado al comienzo y entra más ligera en la secuela.",
+      "signification reversed": "El 95% puede sentirse como cero. El perfeccionismo frena la entrega o evita el adiós. Define “terminado”, ata el último cabo y permítele estar completo. Cerrar bien es un regalo para tu yo futuro."
+    },
+
+    "Rey de Bastos": {
+      "upright": "carisma, visión, liderazgo creativo, expansión, audacia",
+      "reversed": "autoritarismo, impulsividad, ira, grandilocuencia",
+      "signification upright": "Liderazgo que enciende: conviertes propósito en movimiento y das ejemplo con pasión serena. Inspiras autonomía, confías en el talento y abres camino hacia metas ambiciosas. Comunica visión en imágenes claras y delega con respeto. Tu fuego dirige sin quemar.",
+      "signification reversed": "Dominar por miedo apaga la llama. La prisa y el orgullo generan errores y desmovilizan. Practica escucha, límites con respeto y metas medibles. El coraje verdadero incluye rectificar."
+    },
+    "Reina de Bastos": {
+      "upright": "magnetismo, creatividad, entusiasmo, generosidad, presencia",
+      "reversed": "celos, autoexposición, agotamiento, dispersión",
+      "signification upright": "Tu calidez contagia iniciativa. Creas espacios fértiles donde otros florecen y los proyectos se vuelven más valientes. Honras tu energía vital con descanso y placer como combustible del arte. Brillas y haces brillar.",
+      "signification reversed": "Compararte te roba chispa. Cierra filtraciones de energía: menos pantallas, más cuerpo. Comparte foco, establece límites y nutre tu fuego sin quemarte en todas partes."
+    },
+    "Caballero de Bastos": {
+      "upright": "ímpetu, aventura, cambio rápido, exploración, valentía",
+      "reversed": "temeridad, inconstancia, fuga, promesas sin cumplir",
+      "signification upright": "Movimiento que rompe la inercia. Toma la primera colina con pasión y aprende en la ruta. Ideal para lanzar, explorar mercados o vivir un romance vibrante. Canaliza el impulso con hitos cortos.",
+      "signification reversed": "Arrancar sin sostener cansa. Define una regla: no prometas lo que no puedes mantener. Ancla el fuego en sistemas simples y cumplibles. Velocidad sí, pero con dirección."
+    },
+    "Sota de Bastos": {
+      "upright": "noticia creativa, idea nueva, aprendizaje, curiosidad, comienzo",
+      "reversed": "inmadurez, abandono, superficialidad, ansiedad por resultados",
+      "signification upright": "Chispa inicial: mensajes, invitaciones o hallazgos que reavivan tu entusiasmo. Prueba, juega, prototipa. El valor está en empezar ligero, con hambre de aprender.",
+      "signification reversed": "Pánico al primer obstáculo. Cambia perfección por progreso: una pequeña entrega semanal. Busca mentores, reduce alcance y termina algo pequeño hoy."
+
+    },
+    "Rey de Oros": {
+      "upright": "estabilidad, prosperidad, gestión, confiabilidad, legado",
+      "reversed": "avaricia, rigidez, materialismo, control por dinero",
+      "signification upright": "Creas valor duradero con paciencia y sentido práctico. Sistemas claros, presupuestos sanos y cuidado por tu gente. Invertir en calidad hoy ahorra costos mañana. Lideras como buen jardinero: constancia y estación adecuada.",
+      "signification reversed": "Acumular sin disfrutar empobrece. Afloja el control, revisa creencias de escasez y comparte. Diversifica, delega y recuerda: riqueza también es tiempo y salud."
+    },
+    "Reina de Oros": {
+      "upright": "cuidado, hogar próspero, practicidad, nutrición, seguridad",
+      "reversed": "descuido de sí, hiperentrega, gasto impulsivo, posesividad",
+      "signification upright": "Administras con amor: cuerpo, casa, equipo y recursos florecen bajo tu mano paciente. Pequeños rituales generan gran bienestar. Tu generosidad es sabia y sostenible.",
+      "signification reversed": "Dar sin recibir te vacía. Pon límites, simplifica gastos emocionales y financieros, y programa descanso. Tu bienestar es patrimonio del proyecto."
+    },
+    "Caballero de Oros": {
+      "upright": "constancia, método, responsabilidad, rutina eficaz, fiabilidad",
+      "reversed": "rigidez, monotonía, pereza, resistencia al cambio",
+      "signification upright": "Trabajo bien hecho, paso a paso. Documentas, cumples plazos y mejoras procesos. Lo pequeño repetido con calidad crea grandes resultados. Tu palabra es contrato.",
+      "signification reversed": "La rutina sin sentido erosiona. Actualiza métodos, introduce mejoras mínimas viables y retoma el orgullo por la obra. Si es no, di no con honestidad."
+    },
+    "Sota de Oros": {
+      "upright": "estudio, oportunidad material, práctica, enfoque, semilla",
+      "reversed": "procrastinación, atajos, desorden, visión corta",
+      "signification upright": "Aprendiz aplicado: curso, beca o proyecto semilla con potencial. Observa, toma notas, pregunta y practica. La tierra responde a la diligencia.",
+      "signification reversed": "Querer cosecha sin siembra. Ordena tu espacio, plan de estudio y presupuesto. Un hábito diario vale más que una racha culpable."
+    },
+    "Rey de Copas": {
+      "upright": "madurez emocional, empatía, equilibrio, contención, consejo",
+      "reversed": "manipulación, frialdad, volatilidad oculta, pasivo-agresividad",
+      "signification upright": "Lideras desde el centro emocional regulado: escuchas, nombras y encauzas. Tu presencia calma aguas revueltas y facilita acuerdos. Vulnerabilidad con límites: sabiduría del corazón.",
+      "signification reversed": "Controlar sentimientos no es negarlos. Evita juegos emocionales o silencios punitivos. Pide lo que necesitas sin dramatizar. Terapia o supervisión suman."
+    },
+    "Reina de Copas": {
+      "upright": "intuición, compasión, receptividad, cuidado sutil, arte",
+      "reversed": "codependencia, desborde, sacrificio dañino, idealización",
+      "signification upright": "Refugio emocional: sostienes con escucha, suavidad y arte. Tu intuición capta lo no dicho y ofrece alivio. Canaliza sensibilidad en creación amorosa.",
+      "signification reversed": "Empatía sin bordes te ahoga. Repara límites, prioriza autocuidado y distingue ayuda de rescate. El amor sano incluye decir no."
+    },
+    "Caballero de Copas": {
+      "upright": "romance, propuesta, inspiración, encanto, diplomacia",
+      "reversed": "ilusiones, promesas huecas, seducción interesada, evasión",
+      "signification upright": "Mensajero del corazón: conversaciones profundas, disculpas sinceras o propuestas creativas. Lleva belleza a la mesa y escucha de verdad. El gesto poético abre puertas.",
+      "signification reversed": "El encanto sin compromiso confunde. Alinea palabras y actos. Si no puedes sostenerlo, nómbralo. Mejor una verdad amable que un sueño prestado."
+    },
+    "Sota de Copas": {
+      "upright": "sensibilidad, mensaje emotivo, inicio creativo, juego, vulnerabilidad",
+      "reversed": "hipersensibilidad, bloqueo creativo, inmadurez, escapismo",
+      "signification upright": "Corazón aprendiendo a hablar. Escribe, canta, pinta, pide perdón. La ternura es competente: empieza pequeño y honesto. La musa acude donde hay juego.",
+      "signification reversed": "Tomar todo como ataque cierra el canal. Practica regulación y expresión sencilla: “siento… necesito…”. Crea aunque te tiemble el pulso."
+    },
+    "Rey de Espadas": {
+      "upright": "claridad, lógica, justicia, estrategia, verdad",
+      "reversed": "frialdad, tiranía, manipulación, exceso crítico",
+      "signification upright": "Corte limpio: separas hecho de opinión y decides con ética. Tu mente ordena el laberinto y comunica con precisión. Liderazgo que piensa en sistemas y personas.",
+      "signification reversed": "Intelecto sin corazón divide. Suelta la necesidad de tener razón, escucha contexto y evita usar la verdad como arma. Inteligencia es también empatía."
+    },
+    "Reina de Espadas": {
+      "upright": "lucidez, independencia, límites claros, franqueza, experiencia",
+      "reversed": "amargura, cinismo, dureza, crítica hiriente",
+      "signification upright": "Ves lo esencial y lo dices con elegancia sobria. Tu historia te enseñó a discernir; ahora tu claridad es medicina. Límites firmes, no muros.",
+      "signification reversed": "La herida habla por la boca. Suaviza el filo con compasión y pausa. La verdad que cuida transforma mejor que la que humilla."
+    },
+    "Caballero de Espadas": {
+      "upright": "acción rápida, debate, valentía mental, cambio, defensa",
+      "reversed": "imprudencia, agresión, impulsividad, conflicto inútil",
+      "signification upright": "Intervienes cuando otros dudan: cortas nudos, enfrías crisis y avanzas. Prepara datos, define objetivo y sé directo. La velocidad sirve a la claridad.",
+      "signification reversed": "Cargar sin mapa provoca daños colaterales. Respira, verifica y elige batallas. La mente aguda también sabe detenerse."
+    },
+    "Sota de Espadas": {
+      "upright": "curiosidad, alerta, información, aprendizaje rápido, vigilancia",
+      "reversed": "rumores, indiscreción, paranoia, datos sesgados",
+      "signification upright": "Ojos abiertos: preguntas correctas, lectura fina del entorno y mensajes clave. Excelente para investigar, estudiar o negociar. Observa primero, actúa después.",
+      "signification reversed": "Demasiadas pestañas abiertas. Cierra fuentes dudosas, contrasta y evita chismes. La precisión es tu protección."
     }
   }
 }

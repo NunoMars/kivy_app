@@ -1,0 +1,20 @@
+{
+  "summary": "Counts of 'significations' keys per language JSON detected on 2025-10-15",
+  "counts": {
+    "de.json": 38,
+    "en.json": 38,
+    "es.json": 38,
+    "es_latam.json": 38,
+    "fr.json": 38,
+    "it.json": 38,
+    "ja.json": 38,
+    "pt.json": 38,
+    "pt_br.json": 38,
+    "ru.json": 38,
+    "tr.json": 38,
+    "zh.json": 38
+  },
+  "expected_count": 39,
+  "files_with_expected_count": [],
+  "notes": "Toutes les langues ont été synchronisées pour contenir les 38 clés présentes dans la référence fr.json. Les fichiers originaux ont été sauvegardés en fichier .bak dans le même répertoire (ex: pt.json.bak). Les valeurs manquantes ont été ajoutées sous la forme de placeholders 'TODO_TRANSLATE: <texte_fr>' ; vous pouvez réviser ces entrées et remplacer par les traductions appropriées."
+"}

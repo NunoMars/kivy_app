@@ -564,4 +564,79 @@ def get_card_name_for_lang(french_name: str, target_lang: str) -> str:
         return _get_card_name_pt(french_name)
     if lang == 'ru':
         return FRENCH_TO_RUSSIAN.get(french_name, french_name)
+    # Spanish
+    if lang == 'es':
+        return _get_card_name_es(french_name)
+    # Italian: try to use SPECIAL_CARD_MAPPINGS inversion
+    if lang == 'it':
+        return _find_localized_from_special(french_name, 'it')
+    # German
+    if lang == 'de':
+        return _find_localized_from_special(french_name, 'de')
+    # Japanese / Chinese
+    if lang in ('ja', 'zh'):
+        return _find_localized_from_special(french_name, lang)
+    # Turkish
+    if lang == 'tr':
+        return _find_localized_from_special(french_name, 'tr')
+
     return french_name
+
+
+def _find_localized_from_special(french_name: str, target_lang: str) -> str:
+    """Try to infer a localized card name by inverting SPECIAL_CARD_MAPPINGS.
+
+    Returns the best candidate or the original french_name if none found.
+    Uses simple heuristics to prefer language-specific variants when multiple
+    candidates exist.
+    """
+    candidates = [k for k, v in SPECIAL_CARD_MAPPINGS.items() if v == french_name]
+    if not candidates:
+        return french_name
+    if len(candidates) == 1:
+        return candidates[0]
+
+    lang = (target_lang or '').lower()
+    if '_' in lang:
+        lang = lang.split('_', 1)[0]
+    if '-' in lang:
+        lang = lang.split('-', 1)[0]
+
+    # tokens to prefer per language for latin-script candidates
+    prefer_tokens = {
+        'es': ['El ', 'La ', 'Los ', 'Las ', 'Sota', 'Caballero', 'Reina', 'Rey', 'de '],
+        'it': ['Il ', "L'", 'La ', 'Gli ', 'Le '],
+        'de': ['Der ', 'Die ', 'Das ', 'Bube', 'Ritter', 'König', 'Königin', ' der '],
+        'tr': ['Deli', 'İ', 'Asılan', 'Kule'],
+        'pt': ['O ', 'A ', 'Os ', 'As ', 'Valete', 'Cavaleiro', 'Rainha', 'Rei'],
+        'en': ['The ', 'Page', 'Knight', 'Queen', 'King'],
+    }
+
+    tokens = prefer_tokens.get(lang)
+    if tokens:
+        for t in tokens:
+            for c in candidates:
+                if t in c:
+                    return c
+
+    # if target is a CJK or Cyrillic language prefer non-ascii candidates
+    if lang in ('ja', 'zh', 'ru'):
+        for c in candidates:
+            if any(ord(ch) > 127 for ch in c):
+                return c
+
+    # fallback to first candidate
+    return candidates[0]
+
+
+def _get_card_name_es(french_name: str) -> str:
+    # try explicit FRENCH->SPANISH mapping (if added later), otherwise invert SPECIAL_CARD_MAPPINGS
+    try:
+        # if a dedicated dict is added in future, prefer it
+        if 'FRENCH_TO_SPANISH' in globals():
+            return globals().get('FRENCH_TO_SPANISH', {}).get(french_name, french_name)
+    except Exception:
+        pass
+    return _find_localized_from_special(french_name, 'es')
+
+

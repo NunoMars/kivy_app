@@ -1,26 +1,26 @@
 {
   "messages": {
     "draw_card": "TIRE UMA CARTA",
-    "drawing_card": "ESTOU TIRANDO UMA CARTA...",
+    "drawing_card": "TIRANDO UMA CARTA...",
     "concentrating": "Concentrando...",
     "preparing_arcana": "Preparando os arcanos...",
-    "upright": "⬆ DIREITA ⬆",
+    "upright": "⬆ EM PÉ ⬆",
     "reversed": "⬇ INVERTIDA ⬇",
-    "thanks": "✨ Espero que você tenha gostado da sua previsão! ✨",
+    "thanks": "✨ Espero que você tenha gostado da sua leitura! ✨",
     "continue_exploring": "🔮 Continue explorando os mistérios do tarot! 🔮",
     "new_reading": "✨ Nova leitura",
     "new_reading_countdown": "✨ Nova leitura ({seconds}s) ✨",
-    "app_title": "Bem-vindo ao tarot divinatório",
-    "draw_instruction": "Toque na carta\npara uma previsão",
-    "mme_t_intro": "Olá ✨ Sou Mme T, a tua cartomante. Que questão te preocupa hoje? Em que posso ajudar-te?",
-    "mme_t_thanks": "Obrigada por consultar Mme T. Volta quando quiseres para outra orientação.",
+    "app_title": "Bem-vindo ao tarot adivinatório",
+    "draw_instruction": "Toque na carta\npara receber uma previsão",
+    "mme_t_intro": "Olá ✨ Sou a Mme T, sua cartomante. O que te preocupa hoje? Como posso ajudar?",
+    "mme_t_thanks": "Obrigada por consultar a Mme T. Volte quando quiser para mais orientação.",
     "crystals_ad": "💎 Loja de Cristais & Minerais - Frete grátis 💎",
-    "love_ad": "💕 Encontre o Amor com Astrologia+ 💕\nCompatibilidade amorosa baseada no seu mapa astral",
-    "tarot_course_ad": "🔮 Curso Profissional de Tarot 🔮\nTorne-se cartomante certificado - Inscrição gratuita",
+    "love_ad": "💕 Encontre o Amor com Astrology+ 💕\nCompatibilidade baseada no seu mapa astral",
+    "tarot_course_ad": "🔮 Curso Profissional de Tarot 🔮\nTorne-se cartomante certificado(a) - Inscrição gratuita",
     "tap_to_return": "Toque na carta para voltar",
     "touch_to_enlarge": "🔍 Toque para ampliar",
     "your_card": "Sua carta",
-    "support_app": "Apoie o App",
+    "support_app": "Apoie o app",
     "ad_message": "Gosta deste aplicativo gratuito?\nAjude-nos a mantê-lo e melhorá-lo!",
     "later": "Mais tarde",
     "support": "Apoiar",
@@ -33,7 +33,7 @@
     "provider_simulation": "Modo demo",
     "provider_disabled": "Indisponível",
     "loading": "Carregando...",
-    "signification_error": "Erro ao carregar a significação",
+    "signification_error": "Erro ao carregar o significado",
     "loading_messages": [
       "🔮 Concentrando na sua pergunta...",
       "🃏 Embaralhando as cartas...",
@@ -43,141 +43,243 @@
     ],
     "chat_mme_t": "Chat Mme T",
     "store_preparing": "Loja em preparação...",
-    "store_preparing_retry": "Loja em preparação, tente novamente em instantes",
+    "store_preparing_retry": "A loja está se preparando, tente novamente em instantes",
     "store_unavailable_platform": "Loja indisponível nesta plataforma",
-    "store_mobile_only": "Compra disponível apenas no mobile",
-    "thanks_for_support": "Obrigado pelo seu apoio!",
-    "thanks_for_support_via": "Obrigado pelo apoio via {provider}!",
+    "store_mobile_only": "Compra disponível apenas no celular",
+    "thanks_for_support": "Obrigada pelo seu apoio!",
+    "thanks_for_support_via": "Obrigada pelo apoio via {provider}!",
     "configure_backend_hint": "Configure MME_T_BACKEND_URL para ativar a consulta da Mme T.",
-    "purchase_error_title": "Compra impossível",
-    "thanks_title": "Obrigado!"
+    "purchase_error_title": "Compra não realizada",
+    "thanks_title": "Obrigada!"
   },
   "significations": {
     "O Louco": {
-      "upright": "novos começos, espontaneidade, liberdade, aventura, potencial",
-      "reversed": "imprudência, falta de direção, negligência, hesitação",
-      "signification upright": "O Louco simboliza o salto para o desconhecido com confiança. Incentiva a espontaneidade e a abertura para novas oportunidades.",
-      "signification reversed": "Invertido, O Louco pode indicar decisões impulsivas ou falta de planejamento; é um aviso para equilibrar coragem com responsabilidade."
+      "upright": "novos começos, liberdade, espontaneidade, inocência, potencial infinito",
+      "reversed": "imprudência, falta de direção, ingenuidade perigosa, descuido",
+      "signification upright": "O Louco representa o espírito livre que se lança no desconhecido com o coração aberto. Ele é o símbolo da coragem de começar algo novo, mesmo sem garantias. É o salto da fé, o impulso de seguir a intuição e confiar no fluxo da vida. Esta carta inspira desprendimento e autenticidade: o universo apoia quem ousa sonhar.",
+      "signification reversed": "Invertido, O Louco alerta contra a impulsividade e a imprudência. Pode indicar falta de planejamento ou fuga da realidade. É o aviso de que a liberdade sem consciência pode se transformar em caos. Busque o equilíbrio entre a coragem e a responsabilidade, para que o sonho não se perca na distração."
     },
     "O Mago": {
-      "upright": "início, recursos, entusiasmo, energia, criatividade",
-      "reversed": "ilusão, manipulação, dispersão, falta de foco",
-      "signification upright": "O Mago representa a habilidade de transformar ideias em ação usando os recursos à sua disposição.",
-      "signification reversed": "Invertido, pode significar manipulação ou uso enganoso das próprias habilidades."
+      "upright": "início, poder pessoal, foco, criatividade, manifestação",
+      "reversed": "manipulação, ilusões, dispersão, uso indevido de poder",
+      "signification upright": "O Mago simboliza o despertar do poder criador. Ele domina os quatro elementos — mente, emoção, corpo e espírito — e os une para transformar ideias em realidade. Esta carta fala de autoconfiança, inspiração e do momento ideal para agir. Tudo o que é necessário já está em suas mãos: basta canalizar a energia com clareza e propósito.",
+      "signification reversed": "Quando invertido, o Mago adverte sobre enganos e manipulações, tanto externas quanto internas. Pode haver uso distorcido do poder pessoal, promessas vazias ou distração. É tempo de recuperar o foco e agir com integridade, para que a magia não se torne ilusão."
     },
     "A Sacerdotisa": {
-      "upright": "intuição, sabedoria, mistério, conhecimento interior",
-      "reversed": "segredos ocultos, intuição bloqueada, superficialidade",
-      "signification upright": "A Sacerdotisa convida à introspecção e à escuta da voz interior; é símbolo de sabedoria oculta.",
-      "signification reversed": "Invertido, alerta para a rejeição da intuição ou manipulação de informações."
+      "upright": "sabedoria interior, intuição, mistério, silêncio, conhecimento oculto",
+      "reversed": "negação da intuição, segredos reprimidos, superficialidade espiritual",
+      "signification upright": "A Sacerdotisa representa o véu entre o visível e o invisível. Ela é guardiã do conhecimento secreto e da verdade que habita o silêncio. Quando aparece, convida à introspecção e à escuta da própria alma. A resposta não está fora, mas dentro de você — basta aquietar a mente para ouvi-la.",
+      "signification reversed": "Invertida, esta carta indica bloqueio intuitivo, negação dos sentimentos ou manipulação do saber espiritual. Talvez você esteja ignorando sinais importantes. Retorne ao silêncio interior e confie novamente na voz que vem do coração."
     },
     "A Imperatriz": {
-      "upright": "fertilidade, abundância, criatividade, nutrição, conexão com a natureza",
-      "reversed": "dependência, negligência, bloqueio criativo, controle excessivo",
-      "signification upright": "A Imperatriz simboliza cuidado, criatividade e prosperidade; é um convite ao florescimento.",
-      "signification reversed": "Invertido, pode apontar para negligência ou bloqueio na expressão criativa."
+      "upright": "fertilidade, abundância, beleza, amor maternal, criatividade",
+      "reversed": "bloqueio criativo, dependência emocional, controle excessivo, negligência",
+      "signification upright": "A Imperatriz é o arquétipo da Mãe Terra — fértil, generosa e acolhedora. Ela anuncia tempos de crescimento, prosperidade e inspiração criativa. Representa o florescer de projetos e o poder da nutrição amorosa. Tudo o que é cuidado com carinho se multiplica sob sua energia.",
+      "signification reversed": "Quando invertida, a Imperatriz adverte sobre sufocar aquilo que se ama. O excesso de controle ou a falta de atenção podem estancar o fluxo natural da vida. É preciso encontrar o equilíbrio entre cuidar e permitir que o outro cresça livremente."
     },
     "O Imperador": {
-      "upright": "autoridade, estrutura, controle, estabilidade, responsabilidade",
-      "reversed": "tirania, rigidez, abuso de poder, falta de flexibilidade",
-      "signification upright": "O Imperador representa ordem e liderança; incentiva planejamento e disciplina.",
-      "signification reversed": "Invertido, alerta para abuso de poder ou rigidez excessiva."
+      "upright": "autoridade, estrutura, estabilidade, disciplina, proteção",
+      "reversed": "rigidez, autoritarismo, abuso de poder, falta de direção",
+      "signification upright": "O Imperador representa a ordem e o domínio sobre o mundo material. Ele é a força que constrói e sustenta, o pilar da estabilidade. Esta carta convida à responsabilidade, à liderança sábia e ao planejamento com propósito. Quando se ergue um império interior, nada o abala.",
+      "signification reversed": "Invertido, o Imperador pode indicar inflexibilidade, tirania ou medo de perder o controle. Às vezes, o desejo de dominar tudo impede o crescimento natural das coisas. A verdadeira autoridade nasce da confiança, não da força."
     },
     "O Hierofante": {
-      "upright": "tradição, ensino, guia moral, iniciação",
-      "reversed": "dogmatismo, manipulação, tradições estagnadas",
-      "signification upright": "O Hierofante simboliza sabedoria transmitida e ensinamentos formais; pode indicar um mentor.",
-      "signification reversed": "Invertido, aponta para dogmatismo ou a necessidade de encontrar seu próprio caminho."
+      "upright": "tradição, fé, sabedoria espiritual, ensinamento, moralidade",
+      "reversed": "dogmatismo, hipocrisia, dependência de regras, rigidez espiritual",
+      "signification upright": "O Hierofante é o mestre espiritual, guardião das tradições e pontífice entre o sagrado e o humano. Ele representa aprendizado, valores e a busca por sentido através da sabedoria ancestral. Esta carta inspira respeito pelas lições do passado e confiança nas verdades universais.",
+      "signification reversed": "Invertido, o Hierofante denuncia a prisão em doutrinas rígidas ou em crenças impostas. O espiritual não é obediência cega, mas descoberta pessoal. Questione o que lhe foi ensinado e mantenha a mente aberta à revelação interior."
     },
-    "Os Amantes": {
-      "upright": "escolha difícil, união, amor, dualidade, decisão importante",
-      "reversed": "má escolha, separação, indecisão, conflito interno",
-      "signification upright": "Os Amantes falam de escolhas que afetam o coração e os valores; enfatizam autenticidade nas relações.",
-      "signification reversed": "Invertido, pode indicar uma escolha errada ou conflito de valores."
+    "Os Enamorados": {
+      "upright": "união, escolha, amor verdadeiro, harmonia, destino compartilhado",
+      "reversed": "desalinhamento, indecisão, separação, tentação",
+      "signification upright": "Os Enamorados falam da harmonia entre coração e mente. Representam o poder da escolha consciente, o amor que nasce da autenticidade e da confiança. Esta carta sugere decisões importantes — não apenas românticas, mas existenciais — em que é preciso seguir o que ressoa com a alma.",
+      "signification reversed": "Quando invertida, esta carta revela dúvida, ruptura ou conflito interno. Pode haver indecisão entre dever e desejo. A cura está em alinhar suas escolhas com seus valores mais profundos."
     },
     "O Carro": {
-      "upright": "domínio de forças opostas, vontade triunfante, progresso, vitória",
-      "reversed": "perda de controle, forças dispersas, fracasso por falta de direção",
-      "signification upright": "O Carro anuncia avanço e conquista através do foco e da determinação.",
-      "signification reversed": "Invertido, indica perda de rumo ou falta de coordenação dos esforços."
+      "upright": "vitória, determinação, superação, foco, controle",
+      "reversed": "perda de direção, energia dispersa, impulsividade, caos",
+      "signification upright": "O Carro é a força que avança com propósito. Ele anuncia conquistas e triunfos obtidos através da autodisciplina e da clareza de metas. É o momento de seguir em frente, guiado pela vontade firme e pelo domínio das emoções. A vitória é certa para quem conduz o próprio destino.",
+      "signification reversed": "Invertido, o Carro alerta para a falta de controle ou foco. A pressa pode sabotar a jornada. Antes de continuar, alinhe sua mente e coração — só assim o caminho se abrirá novamente."
     },
-    "A Força": {
-      "upright": "força interior, autocontrole, coragem, gentileza",
-      "reversed": "fraqueza, perda de controle, agressividade",
-      "signification upright": "A Força simboliza coragem calma e a capacidade de vencer desafios com compaixão.",
-      "signification reversed": "Invertido, pode indicar perda de controle emocional ou uso indevido da força."
+    "A Justiça": {
+      "upright": "verdade, equilíbrio, integridade, responsabilidade, decisão justa",
+      "reversed": "injustiça, desequilíbrio, julgamento precipitado, negação da verdade",
+      "signification upright": "A Justiça surge para restaurar a ordem e trazer clareza. Representa a colheita das consequências de seus atos e a busca pela verdade imparcial. É uma carta de responsabilidade e retidão. O equilíbrio só é alcançado quando se age com honestidade.",
+      "signification reversed": "Invertida, indica distorção da verdade ou recusa em aceitar a realidade. Pode haver manipulação, culpa ou vitimização. É tempo de encarar os fatos com maturidade e corrigir o que está fora do eixo."
     },
     "O Eremita": {
-      "upright": "busca de sabedoria, introspecção, retiro, guia interior",
-      "reversed": "isolamento estéril, recusa de conselhos, orgulho espiritual",
-      "signification upright": "O Eremita convida ao silêncio e à reflexão para encontrar clareza e propósito.",
-      "signification reversed": "Invertido, pode significar isolamento prejudicial ou recusa à ajuda."
+      "upright": "sabedoria, introspecção, solidão construtiva, busca interior",
+      "reversed": "isolamento, afastamento, resistência ao conselho, fuga espiritual",
+      "signification upright": "O Eremita é o sábio que caminha com sua lanterna acesa. Ele busca a verdade não nas multidões, mas no silêncio do próprio ser. Esta carta simboliza aprendizado profundo, paciência e a luz que vem da experiência. Retirar-se pode ser necessário para ouvir o chamado da alma.",
+      "signification reversed": "Invertido, o Eremita avisa sobre isolamento estéril ou fuga do mundo. Buscar sabedoria não é negar a vida, mas compreendê-la melhor. Compartilhe o que aprendeu e permita que sua luz ilumine outros caminhos."
     },
     "A Roda da Fortuna": {
-      "upright": "ciclos, carma, oportunidade, mudança de sorte",
-      "reversed": "azar persistente, resistência às mudanças, estagnação",
-      "signification upright": "A Roda da Fortuna lembra que a vida é cíclica; momentos favoráveis chegam e partem.",
-      "signification reversed": "Invertido, indica resistência à mudança ou consequências de ações passadas."
+      "upright": "destino, ciclos, mudança, sorte, oportunidade",
+      "reversed": "resistência ao fluxo, estagnação, repetição de padrões, azar passageiro",
+      "signification upright": "A Roda da Fortuna lembra que tudo está em movimento. A vida é feita de altos e baixos, e cada giro traz uma nova oportunidade. Aceitar a impermanência é o segredo para prosperar em meio ao caos. O destino favorece os que se adaptam com sabedoria.",
+      "signification reversed": "Quando invertida, esta carta revela apego a situações antigas ou medo da mudança. O ciclo precisa girar novamente — confie no tempo da vida, e o fluxo retornará a seu favor."
+    },
+    "A Força": {
+      "upright": "coragem, domínio de si, compaixão, perseverança, equilíbrio emocional",
+      "reversed": "fraqueza, agressividade, medo, perda de controle",
+      "signification upright": "A Força simboliza o poder gentil que vence o instinto bruto. É a coragem que vem do coração, a paciência que transforma feras em aliados. Esta carta ensina que a verdadeira fortaleza nasce do amor, não da imposição.",
+      "signification reversed": "Invertida, a Força mostra desequilíbrio entre emoção e razão. Pode haver raiva reprimida ou medo de agir. Retome o centro — o domínio de si é o maior triunfo."
     },
     "O Enforcado": {
-      "upright": "sacrifício voluntário, espera, nova perspectiva, desprendimento",
-      "reversed": "sacrifício inútil, teimosia, resistência à mudança",
-      "signification upright": "O Enforcado pede uma pausa consciente para ver as coisas de outro ângulo; é um convite ao desprendimento.",
-      "signification reversed": "Invertido, sinaliza sacrifícios sem propósito ou resistência que impede o progresso."
+      "upright": "rendição, nova visão, pausa necessária, sacrifício consciente",
+      "reversed": "teimosia, estagnação, resistência à mudança, negação do desapego",
+      "signification upright": "O Enforcado convida à pausa e à reflexão profunda. Às vezes, é preciso soltar o controle e ver o mundo de outro ângulo. Essa suspensão traz revelações e amadurecimento espiritual. O sacrifício presente abre caminho para a libertação futura.",
+      "signification reversed": "Quando invertido, esta carta fala de resistência em mudar ou de se apegar ao sofrimento. O progresso exige desapego. Liberte-se da necessidade de controlar o inevitável."
     },
     "A Morte": {
-      "upright": "transformação profunda, fim de ciclo, renascimento",
-      "reversed": "resistência à mudança, estagnação, medo do desconhecido",
-      "signification upright": "A Morte anuncia transformação e renovação; é o fim necessário para que algo novo possa nascer.",
-      "signification reversed": "Invertido, revela apego ao passado e bloqueio no processo de renovação."
+      "upright": "transformação, renascimento, encerramento, libertação, transição",
+      "reversed": "estagnação, medo do novo, apego ao passado, bloqueio evolutivo",
+      "signification upright": "A Morte marca o fim de um ciclo e o início de outro. Ela não fala de perda, mas de renascimento. É o processo de deixar morrer o que não serve mais para que algo mais puro floresça. Aceitar a mudança é aceitar a vida em seu fluxo sagrado.",
+      "signification reversed": "Invertida, A Morte indica resistência ao inevitável. O medo de mudar gera estagnação e dor. Confie: o fim é apenas o disfarce de um novo começo."
     },
     "A Temperança": {
-      "upright": "alquimia, cura, equilíbrio, transformação gradual",
-      "reversed": "desequilíbrio, excessos, impaciência",
-      "signification upright": "A Temperança incentiva equilíbrio e combinação harmoniosa das forças para promover cura.",
-      "signification reversed": "Invertido, alerta para excesso ou falta de moderação."
+      "upright": "equilíbrio, harmonia, paciência, cura, integração",
+      "reversed": "desequilíbrio, excessos, impaciência, mistura caótica",
+      "signification upright": "A Temperança é o alquimista do espírito. Mistura opostos com sabedoria e transforma o conflito em harmonia. Representa o momento de cura e reconciliação. Tudo tem seu tempo certo — o segredo está em fluir com serenidade.",
+      "signification reversed": "Invertida, mostra impaciência e desarmonia. Forçar resultados agora só trará frustração. Busque restaurar a calma e confie na maturação natural das coisas."
     },
     "O Diabo": {
-      "upright": "dependências, ilusões, materialismo, tentações",
-      "reversed": "libertação, conscientização, quebra de correntes",
-      "signification upright": "O Diabo revela as amarras que prendem, chamando atenção para vícios e apegos.",
-      "signification reversed": "Invertido, indica processo de libertação e tomada de consciência."
+      "upright": "desejos, tentações, dependência, ilusão, materialismo",
+      "reversed": "libertação, clareza, desapego, consciência, cura interior",
+      "signification upright": "O Diabo revela os laços que prendem a alma: vícios, paixões e ilusões que limitam o crescimento. Ele convida a reconhecer as sombras e assumir responsabilidade por elas. A verdadeira liberdade nasce do autoconhecimento.",
+      "signification reversed": "Quando invertido, o Diabo anuncia libertação das correntes interiores. É o momento de romper padrões e recuperar o poder pessoal. A consciência é a chave que quebra todas as amarras."
     },
     "A Torre": {
-      "upright": "abalo, revelação, destruição libertadora, despertar brusco",
-      "reversed": "resistência à mudança, queda suavizada, transformação gradual",
-      "signification upright": "A Torre anuncia rupturas que derrubam estruturas falsas, abrindo espaço para reconstrução verdadeira.",
-      "signification reversed": "Invertido, pode indicar uma mudança menos violenta ou retardada, ainda assim necessária."
+      "upright": "queda, revelação, ruptura, despertar, mudança súbita",
+      "reversed": "resistência, colapso evitado, transformação gradual",
+      "signification upright": "A Torre simboliza o raio que destrói as ilusões. O colapso pode ser doloroso, mas revela a verdade oculta. Esta carta é o despertar violento que purifica e reconstrói. O caos é o prelúdio da renovação.",
+      "signification reversed": "Invertida, indica mudanças mais suaves ou a recusa em encarar a verdade. Mesmo o que é evitado, um dia precisa ruir. Encare a transição com fé e lucidez."
     },
     "A Estrela": {
-      "upright": "esperança, inspiração, espiritualidade, otimismo",
-      "reversed": "desespero, perda de fé, pessimismo",
-      "signification upright": "A Estrela traz esperança e renovação; é símbolo de cura e inspiração.",
-      "signification reversed": "Invertido, chama à restauração da fé e do otimismo."
+      "upright": "esperança, inspiração, fé, cura, orientação divina",
+      "reversed": "desânimo, descrença, pessimismo, perda de direção",
+      "signification upright": "A Estrela é a luz que guia no meio da noite. Ela traz esperança, serenidade e renovação espiritual. Depois das tempestades, sua presença anuncia cura e recomeço. É um lembrete de que o universo conspira a favor da fé.",
+      "signification reversed": "Invertida, a Estrela indica desalento ou perda de conexão espiritual. Mesmo assim, a luz ainda brilha — apenas coberta pelas nuvens da dúvida. Retorne à confiança e ela voltará a iluminar seu caminho."
     },
     "A Lua": {
-      "upright": "ilusões, confusão, medos, inconsciente, mistérios",
-      "reversed": "clareza, verdade revelada, fim das ilusões",
-      "signification upright": "A Lua aponta para medos ocultos e a necessidade de confiar na intuição.",
-      "signification reversed": "Invertido, indica que a verdade vem à tona e a confusão diminui."
+      "upright": "intuição, sonhos, mistério, medo, ilusões",
+      "reversed": "clareza, revelação, fim das ilusões, percepção",
+      "signification upright": "A Lua é o espelho da alma inconsciente. Ela revela segredos, medos e fantasias escondidas sob o véu da imaginação. É um convite à introspecção profunda — nem tudo é o que parece sob sua luz prateada.",
+      "signification reversed": "Invertida, a Lua dissipa as névoas da dúvida. As verdades vêm à tona, e a mente encontra clareza. Confie no que é revelado, mesmo que surpreenda."
     },
     "O Sol": {
-      "upright": "alegria, sucesso, vitalidade, realização",
-      "reversed": "vaidade, orgulho excessivo, sucesso temporário",
-      "signification upright": "O Sol simboliza clareza, energia e celebração dos resultados alcançados.",
-      "signification reversed": "Invertido, alerta para o risco de orgulho ou sucesso ilusório."
+      "upright": "felicidade, sucesso, vitalidade, clareza, alegria",
+      "reversed": "ego, orgulho, vaidade, alegria superficial",
+      "signification upright": "O Sol irradia luz, abundância e plenitude. É o símbolo da alegria genuína, da vitória e da comunhão com a vida. Tudo floresce sob sua energia luminosa. Ele promete clareza e realizações merecidas — é a bênção após a longa noite.",
+      "signification reversed": "Invertido, o Sol pode apontar vaidade, ilusões de grandeza ou alegria forçada. O brilho verdadeiro vem da simplicidade e da gratidão. Brilhe, mas sem cegar a si mesmo."
     },
     "O Julgamento": {
-      "upright": "renascimento, chamado, avaliação, transformação final",
-      "reversed": "cegueira espiritual, recusa em evoluir, culpa",
-      "signification upright": "O Julgamento indica um momento de chamada e avaliação interior, com potencial de renascimento.",
-      "signification reversed": "Invertido, pode mostrar resistência à mudança ou dificuldade em perdoar a si mesmo."
+      "upright": "renascimento, perdão, chamado interior, redenção, despertar espiritual",
+      "reversed": "culpa, negação, autojulgamento, resistência à mudança",
+      "signification upright": "O Julgamento anuncia um despertar profundo. É o momento de ouvir o chamado da alma e libertar-se do peso do passado. Esta carta fala de perdão, reconciliação e propósito renovado. Uma nova vida nasce quando a consciência se ergue.",
+      "signification reversed": "Invertido, indica dificuldade em perdoar a si mesmo ou medo de recomeçar. O arrependimento só tem valor quando abre caminho para a transformação."
     },
     "O Mundo": {
-      "upright": "conclusão, harmonia, ciclo completo, integridade",
-      "reversed": "falha perto do objetivo, perfeccionismo, incompletude",
-      "signification upright": "O Mundo representa a conclusão bem-sucedida de um ciclo e a integração das experiências.",
-      "signification reversed": "Invertido, indica frustração por não completar algo ou medo do fechamento."
+      "upright": "realização, plenitude, conquista, harmonia, encerramento de ciclo",
+      "reversed": "incompletude, perfeccionismo, medo do sucesso, estagnação",
+      "signification upright": "O Mundo representa o clímax da jornada — a união entre o céu e a terra, o eu e o todo. É o símbolo da realização e da maturidade espiritual. Tudo encontra seu lugar, e a alma dança em equilíbrio com o universo.",
+      "signification reversed": "Invertido, indica sensação de incompletude ou medo de concluir um ciclo. A plenitude está próxima — basta aceitar o próprio mérito e seguir adiante com confiança."
+    },
+    "Rei de Paus": {
+      "upright": "liderança, carisma, visão, autoridade criativa, determinação",
+      "reversed": "arrogância, impulsividade, autoritarismo, perda de foco",
+      "signification upright": "O Rei de Paus é o mestre do fogo interior. Ele lidera com paixão e confiança, transformando ideias em ação concreta. Representa o empreendedor visionário, que inspira pelo exemplo e acende a chama dos outros. Sua presença anuncia energia criadora e coragem para comandar o próprio destino.",
+      "signification reversed": "Invertido, o Rei de Paus revela orgulho, impaciência ou tendência ao controle excessivo. O fogo criativo pode queimar em vez de iluminar se não for guiado pela sabedoria. A humildade é a chave para restaurar o equilíbrio."
+    },
+    "Rainha de Paus": {
+      "upright": "inspiração, entusiasmo, magnetismo, generosidade, confiança",
+      "reversed": "ciúmes, vaidade, possessividade, energia dispersa",
+      "signification upright": "A Rainha de Paus é o coração ardente da criação. Ela exala luz e magnetismo, contagiando o ambiente com entusiasmo e confiança. Representa a mulher criadora, independente e segura de seu brilho. Tudo o que toca floresce sob sua chama inspiradora.",
+      "signification reversed": "Invertida, esta carta adverte contra a vaidade e a comparação. Quando a energia é mal canalizada, o brilho se torna sombra. Reencontre sua força na autenticidade, não na aprovação dos outros."
+    },
+    "Cavaleiro de Paus": {
+      "upright": "ação, aventura, movimento, impulso criativo, coragem",
+      "reversed": "precipitação, impaciência, frustração, energia descontrolada",
+      "signification upright": "O Cavaleiro de Paus chega como um vento ardente, trazendo mudança e entusiasmo. Ele simboliza a coragem de seguir a paixão e explorar novos caminhos. Seu fogo alimenta a aventura e o desejo de expansão. O movimento é vida.",
+      "signification reversed": "Invertido, alerta para agir sem pensar. A pressa e a impetuosidade podem consumir energia vital. É hora de canalizar o ímpeto com direção e propósito."
+    },
+    "Valete de Paus": {
+      "upright": "curiosidade, novas ideias, entusiasmo juvenil, mensageiro criativo",
+      "reversed": "imaturidade, promessas vazias, dispersão, ansiedade criativa",
+      "signification upright": "O Valete de Paus é o portador das boas notícias criativas. Ele anuncia inícios, oportunidades e projetos que despertam paixão. É símbolo do espírito jovem que experimenta e aprende com o fogo da vida.",
+      "signification reversed": "Invertido, indica pressa para resultados ou medo de errar. A criatividade precisa de tempo e paciência para amadurecer. Cultive sua chama com calma."
+    },
+    "Rei de Ouros": {
+      "upright": "prosperidade, estabilidade, segurança, sabedoria material, generosidade",
+      "reversed": "ganância, rigidez, avareza, materialismo excessivo",
+      "signification upright": "O Rei de Ouros representa o domínio do mundo físico. Ele constrói com paciência, sabedoria e responsabilidade. É o arquétipo do provedor, que usa seus recursos para criar estabilidade e bem-estar duradouro.",
+      "signification reversed": "Invertido, adverte sobre o apego ao poder e à posse. A verdadeira riqueza não está em acumular, mas em compartilhar. Reavalie o que realmente o faz sentir-se seguro."
+    },
+    "Rainha de Ouros": {
+      "upright": "nutrição, generosidade, abundância, praticidade, cuidado",
+      "reversed": "negligência, egoísmo, materialismo, desequilíbrio doméstico",
+      "signification upright": "A Rainha de Ouros é a encarnação da prosperidade generosa. Ela sabe nutrir, cuidar e administrar com sabedoria e amor. Representa o conforto conquistado com dedicação e equilíbrio entre o trabalho e o coração.",
+      "signification reversed": "Invertida, alerta para o excesso de controle ou a falta de tempo para si mesma. A abundância nasce quando o dar e o receber estão em harmonia."
+    },
+    "Cavaleiro de Ouros": {
+      "upright": "disciplina, trabalho constante, responsabilidade, foco, paciência",
+      "reversed": "rotina vazia, teimosia, procrastinação, falta de progresso",
+      "signification upright": "O Cavaleiro de Ouros é o trabalhador incansável do zodíaco do tarot. Ele ensina que o sucesso vem do esforço contínuo e da constância. Sua mensagem é simples: o caminho sólido é trilhado passo a passo.",
+      "signification reversed": "Invertido, mostra estagnação ou desmotivação. Trabalhar sem propósito esgota. Redescubra o porquê de suas ações antes de continuar."
+    },
+    "Valete de Ouros": {
+      "upright": "aprendizado, oportunidade, estudo, foco, perseverança",
+      "reversed": "preguiça, superficialidade, desperdício, falta de aplicação",
+      "signification upright": "O Valete de Ouros é o aprendiz que semeia o futuro. Ele traz oportunidades concretas e desejo de aprender. É o início de um ciclo próspero que exige esforço e curiosidade disciplinada.",
+      "signification reversed": "Invertido, sugere descuido com responsabilidades ou dispersão dos talentos. A colheita depende da dedicação constante — retome a disciplina."
+    },
+    "Rei de Copas": {
+      "upright": "equilíbrio emocional, empatia, sabedoria do coração, serenidade",
+      "reversed": "manipulação emocional, frieza, instabilidade, dissimulação",
+      "signification upright": "O Rei de Copas é o guia emocional que domina suas marés interiores. Ele oferece consolo e compreensão sem se perder nos dramas. Representa o equilíbrio entre razão e sentimento, liderança compassiva e sabedoria afetiva.",
+      "signification reversed": "Invertido, revela emoções reprimidas ou jogos de manipulação. Controle não é repressão: permita-se sentir sem mascarar o coração."
+    },
+    "Rainha de Copas": {
+      "upright": "amor, intuição, empatia, sensibilidade, espiritualidade",
+      "reversed": "dependência emocional, excesso de sensibilidade, ilusão romântica",
+      "signification upright": "A Rainha de Copas é a curadora do tarot. Sua presença é um bálsamo de compaixão e ternura. Ela acolhe, escuta e compreende o invisível. É o símbolo da empatia e da beleza da vulnerabilidade.",
+      "signification reversed": "Invertida, mostra exagero emocional ou fuga na fantasia. O amor verdadeiro exige equilíbrio: cuidar dos outros sem esquecer-se de si."
+    },
+    "Cavaleiro de Copas": {
+      "upright": "romance, inspiração, sonho, mensagem amorosa, idealismo",
+      "reversed": "ilusões, promessas vazias, sentimentalismo excessivo",
+      "signification upright": "O Cavaleiro de Copas é o mensageiro do amor e da arte. Ele convida a seguir o coração e a expressar sentimentos de forma criativa e honesta. Sua energia é suave, sonhadora e inspiradora.",
+      "signification reversed": "Invertido, revela idealizações ou enganos emocionais. Pode haver promessas que não se cumprem ou corações que se perdem no devaneio. Busque a verdade no sentir, não na ilusão."
+    },
+    "Valete de Copas": {
+      "upright": "sensibilidade, imaginação, novos sentimentos, abertura emocional",
+      "reversed": "ingenuidade, frustração emocional, bloqueio criativo, imaturidade",
+      "signification upright": "O Valete de Copas é a pureza da emoção recém-nascida. Ele representa o primeiro despertar do amor, da empatia e da expressão artística. Sua presença convida a abraçar a ternura e a alegria simples de sentir.",
+      "signification reversed": "Invertido, mostra insegurança emocional ou dificuldade em lidar com rejeições. É tempo de amadurecer sem perder a doçura."
+    },
+    "Rei de Espadas": {
+      "upright": "claridade mental, justiça, disciplina, lógica, autoridade ética",
+      "reversed": "crueldade, manipulação, frieza, autoritarismo intelectual",
+      "signification upright": "O Rei de Espadas é o soberano da mente racional. Ele governa com justiça e clareza, guiando decisões com sabedoria. Sua presença traz ordem, discernimento e verdade objetiva.",
+      "signification reversed": "Invertido, alerta para o uso da razão como arma. A inteligência sem compaixão se torna tirania. Reencontre o equilíbrio entre mente e coração."
+    },
+    "Rainha de Espadas": {
+      "upright": "independência, lucidez, sabedoria, clareza, honestidade",
+      "reversed": "amargura, crítica, isolamento, dureza emocional",
+      "signification upright": "A Rainha de Espadas é a mente clara que corta as ilusões. Ela fala a verdade, mesmo quando dói, e orienta com discernimento e coragem. Sua força está na sinceridade e na justiça interior.",
+      "signification reversed": "Invertida, indica rigidez ou frieza. A dor antiga pode ter se tornado armadura. Permita que a compaixão volte a temperar sua verdade."
+    },
+    "Cavaleiro de Espadas": {
+      "upright": "ação rápida, decisão, coragem intelectual, mudança repentina",
+      "reversed": "impulsividade, conflito, agressão, erro por pressa",
+      "signification upright": "O Cavaleiro de Espadas é o impulso da mente que avança sem medo. Ele corta os obstáculos com determinação e clareza. Representa inteligência em movimento, coragem estratégica e decisão firme.",
+      "signification reversed": "Invertido, avisa sobre precipitação e palavras afiadas. A pressa mental pode ferir. Fale com sabedoria, não com fúria."
+    },
+    "Valete de Espadas": {
+      "upright": "curiosidade, vigilância, mensagem importante, observação, análise",
+      "reversed": "mal-entendidos, fofocas, espionagem, falta de clareza",
+      "signification upright": "O Valete de Espadas é o aprendiz da verdade. Ele observa, investiga e busca compreender o mundo com olhos atentos. Sua energia é de alerta e aprendizado constante. A mente desperta começa com perguntas.",
+      "signification reversed": "Invertido, alerta para confusões e julgamentos apressados. A palavra é uma arma: use-a com consciência."
     }
   }
 }

@@ -75,9 +75,7 @@
       "upright": "fertilità, creatività, abbondanza, cura, bellezza",
       "reversed": "ipercontrollo, blocco creativo, dipendenza, perfezionismo",
       "signification upright": "Cresci creando: corpo, casa e relazioni prosperano con piacere e cura. Ricevere è parte del nutrimento tanto quanto dare.",
-      "signification reversed": "Stringere troppo soffoca. Concedi riposo e delega; l’abbondanza segue i ritmi naturali, non la tensione continua.",
-      "image": "tarot_img/MajorArcanaCards/L'Imperatrice.jpg",
-      "image_reversed": "tarot_img/MajorArcanaCards/L'Imperatrice a l'envers.jpg"
+      "signification reversed": "Stringere troppo soffoca. Concedi riposo e delega; l’abbondanza segue i ritmi naturali, non la tensione continua."
     },
     "L'Imperatore": {
       "upright": "struttura, limiti, strategia, autorità giusta, protezione",
@@ -187,6 +185,7 @@
       "signification upright": "Ciclo concluso e senso integrato: celebra, documenta e apri il nuovo capitolo più leggera.",
       "signification reversed": "Definisci “finito”, lega l’ultimo capo e permetti al progetto di esistere completo."
     },
+
     "Re di Bastoni": {
       "upright": "carisma, visione, leadership creativa, espansione, audacia",
       "reversed": "autoritarismo, impulsività, collera, grandiosità",
@@ -211,6 +210,7 @@
       "signification upright": "Scintilla iniziale: prototipi, inviti, esperimenti. Il valore è nel partire leggero.",
       "signification reversed": "Il primo ostacolo non è un verdetto: consegna qualcosa di piccolo oggi."
     },
+
     "Re di Denari": {
       "upright": "stabilità, prosperità, gestione, affidabilità, eredità",
       "reversed": "avarizia, rigidità, materialismo, controllo col denaro",
@@ -235,6 +235,7 @@
       "signification upright": "Apprendista diligente: osserva, chiedi, esercita. La terra risponde alla costanza.",
       "signification reversed": "Ordina spazio, piano e budget. Un’abitudine al giorno batte gli strappi."
     },
+
     "Re di Coppe": {
       "upright": "maturità emotiva, empatia, equilibrio, contenimento, consiglio",
       "reversed": "manipolazione, freddezza, volatilità nascosta",
@@ -259,6 +260,7 @@
       "signification upright": "Cuore che impara a parlare: scrivi, dipingi, chiedi perdono. La musa ama il gioco.",
       "signification reversed": "Non tutto è contro di te: regola, esprimi semplice e ricomincia."
     },
+
     "Re di Spade": {
       "upright": "chiarezza, logica, giustizia, strategia, verità",
       "reversed": "freddezza, tirannia, manipolazione, eccesso critico",

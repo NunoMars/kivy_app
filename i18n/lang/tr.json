@@ -178,6 +178,112 @@
       "reversed": "hedefe yakın başarısızlık, mükemmeliyetçilik, tamamlanmamışlık",
       "signification upright": "Dünya, tamamlama, bütünlük ve başarı hissini temsil eder; emeklerinizin karşılığını alacağınız, döngünün tamamlandığı ve yeni bir seviyeye geçtiğiniz bir dönemdir.",
       "signification reversed": "Ters pozisyon, eksiklik hissi, mükemmeliyetçilik ya da tamamlanmadan kaynaklanan kaygılar olabilir. Başarıyı kabul edip bir sonraki adımı planlamak önemlidir."
+    },
+    "Adalet": {
+      "upright": "adalet, denge, gerçek, yasa, sorumluluk",
+      "reversed": "adaletsizlik, önyargı, gerçeklerin çarpıtılması, çıkarcılık, intikam",
+      "signification upright": "Adalet, olaylara tarafsız bakmayı, gerçekleri olduğu gibi görmeyi ve sonuçların sorumluluğunu üstlenmeyi vurgular. Ölçülü karar, kanıt ve dürüstlük bu kartın kalbidir.",
+      "signification reversed": "Ters Adalet; yanlı kararlar, bilgi saklama ya da sonuçlardan kaçma eğilimini gösterir. Dengeyi yeniden kurmak ve vicdanla yüzleşmek gerekir."
+    },
+
+    "Değnek Kralı": {
+      "upright": "karizmatik liderlik, vizyon, kararlılık, odaklanmış enerji, girişim",
+      "reversed": "despotluk, öfke, aşırı hükmetme, düşünmeden karar",
+      "signification upright": "Değnek Kralı, etrafı ateşleyen vizyoner bir lideri simgeler. Kaynakları seferber eder, net hedefe odaklanır ve cesaretle ilerler.",
+      "signification reversed": "Ters konum, gücün kötüye kullanılması, farklı fikirlere tahammülsüzlük ve ekibi yoran ani çıkışlara işaret eder."
+    },
+    "Değnek Kraliçesi": {
+      "upright": "ışıldayan yaratıcılık, tutku, sıcak cömertlik, özgüven, ilham",
+      "reversed": "kıskançlık, sahiplenme, gizli öfke, benmerkezcilik",
+      "signification upright": "Değnek Kraliçesi, insanları cesaretlendiren, yaratıcılığı besleyen ve topluluğa sıcaklık yayan bir güçtür.",
+      "signification reversed": "Ters konumda rekabetçilik, her şeyi kontrol etme ihtiyacı ve onay bağımlılığı iş birliğini zedeler."
+    },
+    "Değnek Şövalyesi": {
+      "upright": "hamle, macera, cesur başlangıç, hareket, hızlı değişim",
+      "reversed": "düşüncesizlik, sorumluluktan kaçış, kaotik faaliyet, tükenmişlik",
+      "signification upright": "Değnek Şövalyesi fırsata atılma cesaretini getirir. Hızlı karar ve girişimcilik kapıları aralar.",
+      "signification reversed": "Ters duruş; plansızlık, dağınık enerji ve yarım kalan işlere karşı uyarıdır."
+    },
+    "Değnek Uşağı": {
+      "upright": "fikir habercisi, yaratıcı kıvılcım, öğrenme, heves, proje başlangıcı",
+      "reversed": "boş vaat, yarım kalma, yüzeysel ilgi, sabırsızlık",
+      "signification upright": "Değnek Uşağı taze ilham ve deneme cesaretidir; küçük adımlar kalıcı ivme yaratır.",
+      "signification reversed": "Ters konum, disiplin eksikliği ve ilgiyi çabuk kaybetmeyi, bu yüzden sonucun gecikmesini gösterir."
+    },
+
+    "Tılsım Kralı": {
+      "upright": "kalıcı bolluk, pragmatizm, güvenilirlik, kaynak yönetimi, sorumluluk",
+      "reversed": "açgözlülük, çıkarcılık, yolsuzluk, maddecilik",
+      "signification upright": "Tılsım Kralı; akılcı planlama ve uzun vadeli istikrarla değeri büyüten olgun bir yöneticidir.",
+      "signification reversed": "Ters konum, her şeyi kâr ölçüsüyle değerlendiren, güveni aşındıran bir yaklaşımı işaret eder."
+    },
+    "Tılsım Kraliçesi": {
+      "upright": "şefkatli bolluk, pratik cömertlik, yuva bilinci, destek, üretkenlik",
+      "reversed": "sahiplenme, savurganlık, aşırı kontrol, özbakımı ihmal",
+      "signification upright": "Tılsım Kraliçesi güvenli ve bereketli bir alan yaratır; kaynakları topluluk yararına dönüştürür.",
+      "signification reversed": "Ters duruş; bakım ile kontrolün karışması, sınırların ve bütçenin şaşması anlamına gelir."
+    },
+    "Tılsım Şövalyesi": {
+      "upright": "sebat, yöntem, güvenilirlik, sorumluluk, istikrarlı ilerleme",
+      "reversed": "rutine saplanma, işkoliklik, durgunluk, değişim korkusu",
+      "signification upright": "Tılsım Şövalyesi düzenli, küçük adımlarla sağlam sonuç almayı öğretir.",
+      "signification reversed": "Ters konum; alışkanlıkların esiri olup gelişimi erteleme ve esnekliğin azalmasıdır."
+    },
+    "Tılsım Uşağı": {
+      "upright": "öğrenim, uygulamalı beceri, yeni maddi fırsat, disiplin",
+      "reversed": "tembellik, yüzeysel öğrenme, fırsatçılık, kısa vadecilik",
+      "signification upright": "Tılsım Uşağı, temel atma zamanıdır: bilgi ve beceri yatırımı gelecekte karşılık verir.",
+      "signification reversed": "Ters duruş; emek vermeden hızla sonuç isteme ve zayıf altyapının risklerini vurgular."
+    },
+
+    "Kupa Kralı": {
+      "upright": "duygusal olgunluk, şefkat, diplomasi, koruyuculuk, denge",
+      "reversed": "duygusal manipülasyon, gizli dengesizlik, soğuk hesap",
+      "signification upright": "Kupa Kralı, zor konuşmalarda bile sükûnetle empati kuran, kalp zekâsıyla yöneten figürdür.",
+      "signification reversed": "Ters konum, duygular üzerinden kontrol, pasif agresif tutum ve kırılganlığın maskelenmesini gösterir."
+    },
+    "Kupa Kraliçesi": {
+      "upright": "derin sezgi, empati, şifa, koşulsuz destek, duygusal derinlik",
+      "reversed": "duygulara kapılma, birlikte bağımlılık, kendini feda, sınır erimesi",
+      "signification upright": "Kupa Kraliçesi kabul ve şefkat alanı açar; sezgisiyle güven verir ve iyileştirir.",
+      "signification reversed": "Ters duruş; başkalarının duygularında eriyip kendi ihtiyaçlarını unutma riskidir."
+    },
+    "Kupa Şövalyesi": {
+      "upright": "romantizm, davet, yaratıcı teklif, cazibe, diplomasi",
+      "reversed": "hayalperestlik, boş söz, duygusal oyunlar, olgunlaşmamışlık",
+      "signification upright": "Kupa Şövalyesi barışçıl mesajlar ve ilham verici teklifler getirir; estetik ve nezaket öndedir.",
+      "signification reversed": "Ters konum, söz ile eylem arasındaki kopukluk ve ilişkileri idealleştirme uyarısıdır."
+    },
+    "Kupa Uşağı": {
+      "upright": "duygusal mesaj, yaratıcı esin, hassasiyetin uyanışı, hayal gücü",
+      "reversed": "duygusal olgunlaşmama, alınganlık, yaratıcı tıkanma, safdillik",
+      "signification upright": "Kupa Uşağı, duyguları ifade etmeyi ve kırılganlığa nazikçe alan açmayı öğretir.",
+      "signification reversed": "Ters duruş; küskünlük ve kendini saklama eğiliminin yaratımı kilitlemesini gösterir."
+    },
+
+    "Kılıç Kralı": {
+      "upright": "zihinsel berraklık, adalet, mantık, strateji, ilkeli duruş",
+      "reversed": "zalimlik, güç istismarı, soğukluk, zihinsel manipülasyon",
+      "signification upright": "Kılıç Kralı, veriyi duygudan ayırıp etik karar veren tarafsız bir hakemdir.",
+      "signification reversed": "Ters konum, zekâyı baskı aracına çeviren, küçümseyici ve kontrolcü bir tavra işaret eder."
+    },
+    "Kılıç Kraliçesi": {
+      "upright": "bağımsızlık, keskin sezgi, açık sözlülük, rasyonellik, olgunluk",
+      "reversed": "katılaşma, iğneleyicilik, intikamcılık, aşırı soğukluk",
+      "signification upright": "Kılıç Kraliçesi; deneyimden gelen netlik ve dürüst danışmanlıkla özdürüstlüğü çağırır.",
+      "signification reversed": "Ters duruş; geçmiş kırgınlıklara tutunup sözcüklerle yaralama riskini vurgular."
+    },
+    "Kılıç Şövalyesi": {
+      "upright": "hızlı karar, cesaret, tartışma, atılım, zihnin eylemi",
+      "reversed": "fevrilik, saldırganlık, yıkıcılık, öfke",
+      "signification upright": "Kılıç Şövalyesi, fikirleri eyleme çeviren hız ve kararlılıktır; engelleri kesip atar.",
+      "signification reversed": "Ters konum, risk analizi yapmadan sert hamlelerin kayba yol açabileceğini hatırlatır."
+    },
+    "Kılıç Uşağı": {
+      "upright": "merak, tetikte olma, önemli haber, gözlem, esnek düşünce",
+      "reversed": "boş konuşma, dedikodu, bilgi çarpıtma, gizli izleme",
+      "signification upright": "Kılıç Uşağı, kritik düşünmeyi, soru sormayı ve kaynakları doğrulamayı öğütler.",
+      "signification reversed": "Ters duruş; veri sızıntısı, yanlış anlama ve sınır ihlali riskine karşı uyarıdır."
     }
   }
 }

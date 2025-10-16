@@ -492,6 +492,7 @@ class MmeTChatPopup(Popup):
         provider="google",
         price_text=None,
         context_text="",
+        drawn_cards=None,
         on_session_complete=None,
         **kwargs,
     ):
@@ -500,7 +501,14 @@ class MmeTChatPopup(Popup):
         kwargs.setdefault("separator_height", 0)
         super().__init__(**kwargs)
 
-        self.language = (language or "fr").lower()
+        # Prefer explicit language param; fallback to detected system language.
+        try:
+            if language:
+                self.language = str(language).lower()
+            else:
+                self.language = get_system_language() or "fr"
+        except Exception:
+            self.language = "fr"
         self.provider = provider or "google"
         self.price_text = price_text
         self.session_id = str(uuid.uuid4())
@@ -571,13 +579,16 @@ class MmeTChatPopup(Popup):
         main_layout.add_widget(header)
 
         # Miniatures simples sous le header, centrées
+        # Prefer drawn_cards passed explicitly to the popup (ensures the
+        # backend receives exactly the intended set of cards). Fallback to
+        # app.last_drawn_cards if none provided.
         try:
             app = App.get_running_app()
         except Exception:
             app = None
 
-        drawn = None
-        if app:
+        drawn = drawn_cards if drawn_cards else None
+        if not drawn and app:
             drawn = getattr(app, "last_drawn_cards", None)
 
         slots = []
@@ -720,9 +731,10 @@ class MmeTChatPopup(Popup):
             self.send_btn.disabled = True
             self.status_label.text = self._label("no_backend")
         else:
-            # Use translated introduction text via translations.tr()
+            # Use translated introduction text via translations.tr() with the
+            # popup language to ensure Mme T receives the preferred language.
             try:
-                intro = tr('mme_t_intro')
+                intro = tr('mme_t_intro', self.language)
             except Exception:
                 # Fallback to English literal if translations not available
                 intro = "Hello ✨ I'm Mme T, your card reader. What question is on your mind today? How can I help you?"
@@ -995,12 +1007,7 @@ class MmeTChatPopup(Popup):
         self._typewriter_on_complete = on_complete
         self._active_bubble = self._create_message_bubble("", sender)
         self._update_bubble_widths()
-        # Scroll initial pour s'assurer que la bulle est visible, puis throttling
-        try:
-            self._scroll_to_widget(self._active_bubble)
-        except Exception:
-            pass
-        # Nombre de caractères entre deux scrolls (évite les sauts fréquents)
+        # Do not scroll immediately; we'll scroll once when typing finishes.
         self._typewriter_scroll_throttle = 6
         if not self._typewriter_source:
             self._finalize_typewriter()
@@ -1011,6 +1018,7 @@ class MmeTChatPopup(Popup):
         bubble = self._create_message_bubble(text, sender)
         bubble.set_text(text)
         self._update_bubble_widths()
+        # Scroll to completed message
         self._scroll_to_widget(bubble)
 
     def _advance_typewriter(self):
@@ -1020,13 +1028,7 @@ class MmeTChatPopup(Popup):
         self._typewriter_index += 1
         if self._active_bubble:
             self._active_bubble.set_text(self._typewriter_source[: self._typewriter_index])
-            # Ne pas scroller à chaque caractère — seulement tous les N caractères
-            try:
-                if self._typewriter_scroll_throttle <= 1 or (self._typewriter_index % getattr(self, '_typewriter_scroll_throttle', 6) == 0):
-                    self._scroll_to_widget(self._active_bubble)
-            except Exception:
-                # En cas d'erreur, éviter de casser la frappe
-                pass
+            # Avoid scrolling while typing; final scroll happens in _finalize_typewriter
         return True
 
     def _finalize_typewriter(self):
@@ -1035,7 +1037,10 @@ class MmeTChatPopup(Popup):
             self.typewriter_event = None
         if self._active_bubble:
             self._active_bubble.set_text(self._typewriter_source)
-            self._scroll_to_widget(self._active_bubble)
+            try:
+                self._scroll_to_widget(self._active_bubble)
+            except Exception:
+                pass
             self._active_bubble = None
         if self._typewriter_on_complete:
             callback = self._typewriter_on_complete
@@ -1056,15 +1061,29 @@ class MmeTChatPopup(Popup):
         anchor.add_widget(bubble)
         anchor.height = bubble.height + dp(4)
         bubble.bind(size=lambda _inst, val: setattr(anchor, "height", val[1] + dp(4)))
+        # Add widget but do not force a scroll here; callers decide when to scroll
         self.chat_container.add_widget(anchor)
         self.chat_bubbles.append(bubble)
-        self._scroll_to_widget(bubble)
         return bubble
 
     def _scroll_to_widget(self, widget):
+        # Debounced scroll: cancel any pending scroll and schedule a single
+        # scroll shortly after. This helps avoid the chat area jumping up and
+        # down when many updates occur rapidly (typewriter, loading messages, etc.).
         if not self.response_scroll:
             return
-        Clock.schedule_once(lambda _dt: self.response_scroll.scroll_to(widget), 0.05)
+        try:
+            if hasattr(self, '_pending_scroll_event') and self._pending_scroll_event:
+                try:
+                    self._pending_scroll_event.cancel()
+                except Exception:
+                    pass
+            self._pending_scroll_event = Clock.schedule_once(lambda _dt: self.response_scroll.scroll_to(widget), 0.12)
+        except Exception:
+            try:
+                Clock.schedule_once(lambda _dt: self.response_scroll.scroll_to(widget), 0.12)
+            except Exception:
+                pass
 
     def _start_loading_animation(self):
         """Démarre l'animation de chargement avec messages rotatifs"""

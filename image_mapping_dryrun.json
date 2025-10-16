@@ -1,0 +1,154 @@
+{
+  "Le Bateleur": {
+    "image": "tarot_img/MajorArcanaCards/Le Bateleur.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/Le Bateleur a l'envers.jpg"
+  },
+  "La Papesse": {
+    "image": "tarot_img/MajorArcanaCards/La Papesse.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/La Papesse a l'envers.jpg"
+  },
+  "L'Imperatrice": {
+    "image": "tarot_img/MajorArcanaCards/L'Imperatrice.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/L'Imperatrice a l'envers.jpg"
+  },
+  "L'Empereur": {
+    "image": "tarot_img/MajorArcanaCards/L'Empereur.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/L'Empereur a l'envers.jpg"
+  },
+  "Le Pape": {
+    "image": "tarot_img/MajorArcanaCards/Le Pape.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/Le Pape a l'envers.jpg"
+  },
+  "L'Amoureux": {
+    "image": "tarot_img/MajorArcanaCards/L'Amoureux.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/L'Amoureux a l'envers.jpg"
+  },
+  "Le Chariot": {
+    "image": "tarot_img/MajorArcanaCards/Le Chariot.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/Le Chariot a l'envers.jpg"
+  },
+  "La Justice": {
+    "image": "tarot_img/MajorArcanaCards/La Justice.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/La Justice a l'envers.jpg"
+  },
+  "L'Hermite": {
+    "image": "tarot_img/MajorArcanaCards/L'Hermite.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/L'Hermite a l'envers.jpg"
+  },
+  "La Roue de La Fortune": {
+    "image": "tarot_img/MajorArcanaCards/La Roue de La Fortune.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/La Roue de La Fortune a l'envers.jpg"
+  },
+  "La Force": {
+    "image": "tarot_img/MajorArcanaCards/La Force.gif",
+    "image_reversed": "tarot_img/MajorArcanaCards/La Force a l'envers.jpg"
+  },
+  "Le Pendu": {
+    "image": "tarot_img/MajorArcanaCards/Le Pendu.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/Le Pendu a l'envers.jpg"
+  },
+  "La Mort": {
+    "image": "tarot_img/MajorArcanaCards/La Mort.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/La Mort a l'envers.jpg"
+  },
+  "La Temperance": {
+    "image": "tarot_img/MajorArcanaCards/La Temperance.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/La Temperance a l'envers.jpg"
+  },
+  "Le Diable": {
+    "image": "tarot_img/MajorArcanaCards/Le Diable.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/Le Diable a l'envers.jpg"
+  },
+  "La Maison Dieu": {
+    "image": "tarot_img/MajorArcanaCards/La Maison Dieu.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/La Maison Dieu a l'envers.jpg"
+  },
+  "L'Etoile": {
+    "image": "tarot_img/MajorArcanaCards/L'Etoile.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/L'Etoile a l'envers.jpg"
+  },
+  "La Lune": {
+    "image": "tarot_img/MajorArcanaCards/La Lune.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/La Lune a l'envers.jpg"
+  },
+  "Le Soleil": {
+    "image": "tarot_img/MajorArcanaCards/Le Soleil.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/Le Soleil a l'envers.jpg"
+  },
+  "Le Jugement": {
+    "image": "tarot_img/MajorArcanaCards/Le Jugement.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/Le Jugement a l'envers.jpg"
+  },
+  "Le Monde": {
+    "image": "tarot_img/MajorArcanaCards/Le Monde.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/Le Monde a l'envers.jpg"
+  },
+  "Le Mat": {
+    "image": "tarot_img/MajorArcanaCards/Le Mat.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/Le Mat a l'envers.jpg"
+  },
+  "Le Roi De Bâton": {
+    "image": "tarot_img/MajorArcanaCards/Le Roi De Baton.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/Le Roi De Baton a l'envers.jpg"
+  },
+  "La Reine de Bâton": {
+    "image": "tarot_img/MajorArcanaCards/La Reine de Baton.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/La Reine de Baton a l'envers.jpg"
+  },
+  "Le Cavalier de Bâton": {
+    "image": "tarot_img/MajorArcanaCards/Le Cavalier de Baton.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier de Baton a l'envers.jpg"
+  },
+  "Le Valet de Bâton": {
+    "image": "tarot_img/MajorArcanaCards/Le Valet de Baton.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/Le Valet de Baton a l'envers.jpg"
+  },
+  "Le Roi De Deniers": {
+    "image": "tarot_img/MajorArcanaCards/Le Roi De Deniers.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/Le Roi De Deniers a l'envers.jpg"
+  },
+  "La Reine De Deniers": {
+    "image": "tarot_img/MajorArcanaCards/La Reine De Deniers.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/La Reine De Deniers a l'envers.jpg"
+  },
+  "Le Cavalier de Deniers": {
+    "image": "tarot_img/MajorArcanaCards/Le Cavalier de Deniers.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier de Deniers a l'envers.jpg"
+  },
+  "Le Valet De Deniers": {
+    "image": "tarot_img/MajorArcanaCards/Le Valet De Deniers.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/Le Valet De Deniers a l'envers.jpg"
+  },
+  "Le Roi de Coupe": {
+    "image": "tarot_img/MajorArcanaCards/Le Roi de Coupe.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/Le Roi de Coupe a l'envers.jpg"
+  },
+  "La Reine De Coupe": {
+    "image": "tarot_img/MajorArcanaCards/La Reine De Coupe.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/La Reine De Coupe a l'envers.jpg"
+  },
+  "Le Cavalier De Coupe": {
+    "image": "tarot_img/MajorArcanaCards/Le Cavalier De Coupe.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier De Coupe a l'envers.jpg"
+  },
+  "Le Valet De Coupe": {
+    "image": "tarot_img/MajorArcanaCards/Le Valet De Coupe.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/Le Valet De Coupe a l'envers.jpg"
+  },
+  "Le Roi D'Épée": {
+    "image": "tarot_img/MajorArcanaCards/Le Roi D'Epee.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/Le Roi D'Epee a l'envers.jpg"
+  },
+  "La Reine D'Épée": {
+    "image": "tarot_img/MajorArcanaCards/La Reine D'Epee.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/La Reine D'Epee a l'envers.jpg"
+  },
+  "Le Cavalier D'Épée": {
+    "image": "tarot_img/MajorArcanaCards/Le Cavalier D'Epee.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier D'Epee a l'envers.jpg"
+  },
+  "Le Valet D'Épée": {
+    "image": "tarot_img/MajorArcanaCards/Le Valet D'Epee.jpg",
+    "image_reversed": "tarot_img/MajorArcanaCards/Le Valet D'Epee a l'envers.jpg"
+  }
+}
