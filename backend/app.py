@@ -226,7 +226,28 @@ def consulter_madame_t(message: str, contexte: str = "") -> str:
                 model_name = fallback_name
         
         # Détection de la langue
-        user_lang = detect_language(message)
+        # Utiliser la langue reçue si disponible dans le contexte ou la requête
+        received_lang = None
+        # Exemple: extraire la langue du contexte si elle est passée
+        if contexte:
+            import re
+            m = re.search(r"language=([a-zA-Z_\-]+)", contexte)
+            if m:
+                received_lang = m.group(1).lower()
+        # Si tu passes la langue en paramètre séparé, adapte ici
+        # Priorité au paramètre language si transmis
+        import inspect
+        frame = inspect.currentframe()
+        language = None
+        if frame:
+            args = frame.f_locals
+            language = args.get('language', None)
+        if language:
+            user_lang = language.lower()
+        elif received_lang:
+            user_lang = received_lang
+        else:
+            user_lang = detect_language(message)
         lang_clause = language_directive(user_lang)
         
         # REFORMULATION: Transformer les questions sensibles pour éviter les blocages

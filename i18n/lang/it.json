@@ -1,39 +1,18 @@
 {
   "messages": {
-    "draw_card": "ESTRAI UNA CARTA",
-    "drawing_card": "STO ESTRAENDO UNA CARTA...",
-    "concentrating": "Mi sto concentrando...",
-    "preparing_arcana": "Preparo gli arcani...",
-    "upright": "⬆ DRITTA ⬆",
-    "reversed": "⬇ ROVESCIATA ⬇",
-    "thanks": "✨ Spero che la tua lettura ti sia piaciuta! ✨",
-    "continue_exploring": "🔮 Continua a esplorare i misteri dei tarocchi! 🔮",
-    "new_reading": "✨ Nuova lettura",
-    "new_reading_countdown": "✨ Nuova lettura ({seconds}s) ✨",
-    "app_title": "Benvenuto nei tarocchi divinatori",
-    "draw_instruction": "Tocca la carta\nper una previsione",
-    "mme_t_intro": "Ciao ✨ Sono Mme T, la tua cartomante. Quale domanda ti preoccupa oggi? Come posso aiutarti?",
-    "mme_t_thanks": "Grazie per aver consultato Mme T. Torna quando vuoi per una nuova guida.",
-    "crystals_ad": "💎 Negozio Cristalli & Minerali - Spedizione gratuita 💎",
-    "love_ad": "💕 Trova l’Amore con Astrology+ 💕\nCompatibilità basata sul tuo tema natale",
-    "tarot_course_ad": "🔮 Corso Professionale di Tarocchi 🔮\nDiventa cartomante certificato - Iscrizione gratuita",
-    "tap_to_return": "Tocca la carta per tornare",
-    "touch_to_enlarge": "🔍 Tocca per ingrandire",
-    "your_card": "La tua carta",
-    "support_app": "Sostieni l’app",
     "ad_message": "Ti piace questa app gratuita?\nAiutaci a mantenerla e migliorarla!",
-    "later": "Più tardi",
-    "support": "Sostieni",
+    "app_title": "Benvenuto nei tarocchi divinatori",
+    "chat_mme_t": "Chat Mme T",
+    "concentrating": "Mi sto concentrando...",
+    "configure_backend_hint": "Configura MME_T_BACKEND_URL per attivare la consulenza di Mme T.",
+    "continue_exploring": "🔮 Continua a esplorare i misteri dei tarocchi! 🔮",
+    "crystals_ad": "💎 Negozio Cristalli & Minerali - Spedizione gratuita 💎",
     "done": "Fine",
-    "premium_button_base": "Chat con Mme T Premium",
-    "premium_button_price_suffix": " ({price})",
-    "premium_button_provider_suffix": " - {provider}",
-    "provider_google": "Google Play",
-    "provider_amazon": "Amazon Appstore",
-    "provider_simulation": "Modalità demo",
-    "provider_disabled": "Non disponibile",
+    "draw_card": "ESTRAI UNA CARTA",
+    "draw_instruction": "Tocca la carta\nper una previsione",
+    "drawing_card": "STO ESTRAENDO UNA CARTA...",
+    "later": "Più tardi",
     "loading": "Caricamento...",
-    "signification_error": "Errore nel caricamento del significato",
     "loading_messages": [
       "🔮 Mi concentro sulla tua domanda...",
       "🃏 Sto mescolando le carte...",
@@ -41,247 +20,342 @@
       "🌙 Consulto gli astri...",
       "💫 Interpreto gli arcani..."
     ],
-    "chat_mme_t": "Chat Mme T",
+    "love_ad": "💕 Trova l’Amore con Astrology+ 💕\nCompatibilità basata sul tuo tema natale",
+    "mme_t_intro": "Ciao ✨ Sono Mme T, la tua cartomante. Quale domanda ti preoccupa oggi? Come posso aiutarti?",
+    "mme_t_thanks": "Grazie per aver consultato Mme T. Torna quando vuoi per una nuova guida.",
+    "new_reading": "✨ Nuova lettura",
+    "new_reading_countdown": "✨ Nuova lettura ({seconds}s) ✨",
+    "premium_button_base": "Chat con Mme T Premium",
+    "premium_button_price_suffix": " ({price})",
+    "premium_button_provider_suffix": " - {provider}",
+    "preparing_arcana": "Preparo gli arcani...",
+    "provider_amazon": "Amazon Appstore",
+    "provider_disabled": "Non disponibile",
+    "provider_google": "Google Play",
+    "provider_simulation": "Modalità demo",
+    "purchase_error_title": "Acquisto non riuscito",
+    "reversed": "⬇ ROVESCIATA ⬇",
+    "signification_error": "Errore nel caricamento del significato",
+    "store_mobile_only": "Acquisto disponibile su mobile",
     "store_preparing": "Negozio in preparazione...",
     "store_preparing_retry": "Negozio in preparazione, riprova tra un momento",
     "store_unavailable_platform": "Negozio non disponibile su questa piattaforma",
-    "store_mobile_only": "Acquisto disponibile su mobile",
+    "support": "Sostieni",
+    "support_app": "Sostieni l’app",
+    "tap_to_return": "Tocca la carta per tornare",
+    "tarot_course_ad": "🔮 Corso Professionale di Tarocchi 🔮\nDiventa cartomante certificato - Iscrizione gratuita",
+    "thanks": "✨ Spero che la tua lettura ti sia piaciuta! ✨",
     "thanks_for_support": "Grazie per il tuo sostegno!",
     "thanks_for_support_via": "Grazie per il sostegno tramite {provider}!",
-    "configure_backend_hint": "Configura MME_T_BACKEND_URL per attivare la consulenza di Mme T.",
-    "purchase_error_title": "Acquisto non riuscito",
-    "thanks_title": "Grazie!"
+    "thanks_title": "Grazie!",
+    "touch_to_enlarge": "🔍 Tocca per ingrandire",
+    "upright": "⬆ DRITTA ⬆",
+    "your_card": "La tua carta"
   },
   "significations": {
-    "Il Matto": {
-      "upright": "nuovo inizio, libertà, fiducia, spontaneità, avventura",
-      "reversed": "imprudenza, fuga, ingenuità, mancanza di preparazione",
-      "signification upright": "Un passo nel nuovo con cuore leggero: ascolta la curiosità e parti anche senza avere tutto sotto controllo. La fede nell’esperienza diretta apre strade inaspettate.",
-      "signification reversed": "Agire per evitare il disagio crea errori evitabili. Rallenta, metti confini semplici e verifica le conseguenze: iniziare con saggezza è comunque iniziare."
-    },
-    "Il Mago": {
-      "upright": "volontà, risorse, concentrazione, comunicazione, manifestazione",
-      "reversed": "manipolazione, dispersione, vanagloria, controllo",
-      "signification upright": "Intenzione, parola e azione si allineano: chiedi con chiarezza, prometti il sostenibile e consegna il concreto. La disciplina rende stabile la tua “magia”.",
-      "signification reversed": "Fascino senza integrità svuota la fiducia. Riduci input, scegli una leva e torna a metodi puliti e obiettivi misurabili."
-    },
-    "La Papessa": {
-      "upright": "intuizione, silenzio, mistero, sogni, sapere interiore",
-      "reversed": "segreti, autoinganno, intuizione bloccata, ambiguità",
-      "signification upright": "Sotto il rumore c’è la risposta. Ascolta, annota i segnali, proteggi il tuo tempo sacro. La saggezza matura nell’ombra prima di uscire alla luce.",
-      "signification reversed": "Ignorare la voce interna per compiacere stanca l’anima. Nomina ciò che sai e non ammetti, riduci il rumore e lascia che la verità emerga."
-    },
-    "L'Imperatrice": {
-      "upright": "fertilità, creatività, abbondanza, cura, bellezza",
-      "reversed": "ipercontrollo, blocco creativo, dipendenza, perfezionismo",
-      "signification upright": "Cresci creando: corpo, casa e relazioni prosperano con piacere e cura. Ricevere è parte del nutrimento tanto quanto dare.",
-      "signification reversed": "Stringere troppo soffoca. Concedi riposo e delega; l’abbondanza segue i ritmi naturali, non la tensione continua.",
-      "image": "tarot_img/MajorArcanaCards/L'Imperatrice.jpg",
-      "image_reversed": "tarot_img/MajorArcanaCards/L'Imperatrice a l'envers.jpg"
-    },
-    "L'Imperatore": {
-      "upright": "struttura, limiti, strategia, autorità giusta, protezione",
-      "reversed": "rigidità, controllo, abuso di potere, durezza",
-      "signification upright": "Ordine che serve le persone: regole chiare, responsabilità e visione di lungo periodo. Guida con esempio e trasparenza.",
-      "signification reversed": "Il micromanagement erode fiducia e creatività. Sostituisci il controllo con obiettivi chiari e autonomia responsabile."
-    },
-    "Il Papa": {
-      "upright": "tradizione, insegnamento, rito, comunità, valori",
-      "reversed": "dogma, ipocrisia, formalismo vuoto, ribellione cieca",
-      "signification upright": "Apprendi la forma per incontrare lo spirito. Le buone regole proteggono la libertà e creano appartenenza.",
-      "signification reversed": "Quando la forma soffoca l’essenza, riformare è un atto d’amore: conserva il vivo, lascia il resto."
-    },
-    "Gli Amanti": {
-      "upright": "scelta, amore, alleanza, valori, autenticità",
-      "reversed": "indecisione, triangoli, compromesso sterile, rottura",
-      "signification upright": "Scegli dove desiderio, verità e responsabilità convivono. L’allineamento dei valori conta più della perfezione.",
-      "signification reversed": "Dire sì per paura di perdere è dire no a te stesso. Metti in pausa, chiarisci motivazioni e prendi una decisione pulita."
-    },
-    "Il Carro": {
-      "upright": "volontà, avanzamento, disciplina, vittoria, messa a fuoco",
-      "reversed": "disordine, orgoglio, mancanza di rotta, dispersione",
-      "signification upright": "Dirigi forze opposte verso un obiettivo chiaro. Traguardi piccoli e ripetibili creano trazione reale.",
-      "signification reversed": "Se le ruote slittano, riallinea metriche e percorso. Meno priorità, più trazione."
-    },
-    "La Giustizia": {
-      "upright": "equità, verità, legge, responsabilità, equilibrio",
-      "reversed": "ingiustizia, parzialità, vendetta, processo viziato",
-      "signification upright": "Pesa i fatti, dichiara i bias, ripara dove serve. La trasparenza costruisce fiducia duratura.",
-      "signification reversed": "Evita giudizi affrettati: mancano dati o poteri sono sbilanciati. Sostituisci il castigo con la riparazione."
-    },
-    "L'Eremita": {
-      "upright": "introspezione, saggezza, ritiro, guida interiore, maturità",
-      "reversed": "isolamento, superbia spirituale, chiusura, solitudine",
-      "signification upright": "Un passo indietro chiarisce. La lampada interiore illumina il prossimo passo; condividi quando la lezione è matura.",
-      "signification reversed": "Nascondersi non cura. Riapri il contatto e ascolta consigli con umiltà."
-    },
-    "La Ruota della Fortuna": {
-      "upright": "cicli, opportunità, destino, svolta, sincronìa",
-      "reversed": "ripetizione, stallo, resistenza, sfortuna",
-      "signification upright": "Cavalca il cambiamento: alleggerisci il carico e dì sì alle porte reali che si aprono.",
-      "signification reversed": "Spezzare il loop richiede un comportamento nuovo sostenuto. Accetta la lezione e cambia rotta."
-    },
-    "La Forza": {
-      "upright": "coraggio, autocontrollo, compassione, resilienza",
-      "reversed": "impulsività, apatia, scatti d’ira, compiacenza",
-      "signification upright": "Potere morbido che regola la tempesta. Fermezza e gentilezza generano fiducia.",
-      "signification reversed": "Ritorna ai fondamentali: respiro, confini, piccoli atti coraggiosi. La forza riparte dall’interno."
-    },
-    "L'Appeso": {
-      "upright": "pausa, resa, nuova prospettiva, pazienza",
-      "reversed": "stallo, sacrificio vano, testardaggine, evasione",
-      "signification upright": "Sospendere l’azione apre uno sguardo più saggio. La resa qui è lucidità, non sconfitta.",
-      "signification reversed": "Se non impari, stai solo aspettando. Scegli una rinuncia significativa e il senso tornerà a muoverti."
-    },
-    "La Morte": {
-      "upright": "fine di ciclo, trasformazione, rinascita, pulizia",
-      "reversed": "resistenza, attaccamento, paura, transizione bloccata",
-      "signification upright": "Lascia andare la forma, conserva l’apprendimento. Ogni chiusura dignitosa apre spazio vitale.",
-      "signification reversed": "I finali evitati perdono energia. Nomina la fine e chiudi con gentilezza."
-    },
-    "La Temperanza": {
-      "upright": "equilibrio, integrazione, guarigione, misura, armonia",
-      "reversed": "eccesso, disordine, impazienza, miscela caotica",
-      "signification upright": "Mescola gli opposti con arte: la guarigione è graduale. Riduci l’eccesso, rispetta i tempi.",
-      "signification reversed": "Troppo o troppo poco rovinano la ricetta. Torna a due ingredienti essenziali e ricomincia."
-    },
-    "Il Diavolo": {
-      "upright": "catene, tentazione, ombra, compulsione, materialismo",
-      "reversed": "liberazione, sobrietà, confini, scelta consapevole",
-      "signification upright": "Nomina legami e dipendenze: vederli toglie potere all’illusione. Il desiderio è neutro; l’automatismo no.",
-      "signification reversed": "Una decisione pulita alla volta: un taglio, un limite, una scelta sobria. La dignità torna passo dopo passo."
-    },
-    "La Torre": {
-      "upright": "crollo, verità, risveglio, crisi, rottura",
-      "reversed": "allarme precoce, correzione, prevenzione, aggiustamento",
-      "signification upright": "Ciò che non regge cade perché la verità resti in piedi. Ricostruisci su fondamenta oneste e semplici.",
-      "signification reversed": "Ammettere le crepe oggi evita il crollo domani. L’umiltà è antisismica."
-    },
-    "La Stella": {
-      "upright": "speranza, guida, ispirazione, fede, bellezza",
-      "reversed": "scoraggiamento, cinismo, stanchezza, disconnessione",
-      "signification upright": "Dopo la tempesta, la luce. Idrata l’anima con riposo, bellezza e gentilezza: la bussola si riallinea.",
-      "signification reversed": "Riduci il rumore e coltiva piccole promesse mantenute: la fiducia ricresce."
-    },
-    "La Luna": {
-      "upright": "inconscio, illusioni, intuizione, paure, sogni",
-      "reversed": "chiarezza, verità, regolazione, uscita dal labirinto",
-      "signification upright": "Nebbia e specchi: procedi piano, verifica proiezioni e ascolta il corpo. L’intuizione guida se l’ansia non comanda.",
-      "signification reversed": "La nebbia si alza: fatti e senso interno si chiariscono. Aggiorna la mappa e riparti con fiducia dolce."
-    },
-    "Il Sole": {
-      "upright": "gioia, successo, vitalità, chiarezza, celebrazione",
-      "reversed": "ego, vanità, burnout, apparenza",
-      "signification upright": "Condividi il merito e crea dal gioco: la tua luce accende quella degli altri.",
-      "signification reversed": "Radica il tuo brillare nella verità e nel servizio: meno performance, più autenticità."
-    },
-    "Il Giudizio": {
-      "upright": "chiamata, rinnovamento, perdono, vocazione, risveglio",
-      "reversed": "colpa, negazione, paura del cambiamento, giudizio duro",
-      "signification upright": "Rivedi con onestà, perdona con saggezza e rispondi alla chiamata. La lezione diventa vocazione quando la metti al servizio.",
-      "signification reversed": "Trasforma autoaccusa in responsabilità concreta e azioni visibili. Un passo che dimostri rinascita."
-    },
-    "Il Mondo": {
-      "upright": "compimento, maestria, integrazione, pienezza",
-      "reversed": "perfezionismo, chiusura rimandata, dilazione, vuoto post-traguardo",
-      "signification upright": "Ciclo concluso e senso integrato: celebra, documenta e apri il nuovo capitolo più leggera.",
-      "signification reversed": "Definisci “finito”, lega l’ultimo capo e permetti al progetto di esistere completo."
-    },
-    "Re di Bastoni": {
-      "upright": "carisma, visione, leadership creativa, espansione, audacia",
-      "reversed": "autoritarismo, impulsività, collera, grandiosità",
-      "signification upright": "Guida che accende: scopo chiaro, delega fiduciosa e passione stabile. Il tuo fuoco dirige senza bruciare.",
-      "signification reversed": "Il dominio per paura spegne il team. Ascolta, metti limiti rispettosi e misura i risultati."
-    },
-    "Regina di Bastoni": {
-      "upright": "magnetismo, creatività, entusiasmo, generosità, presenza",
-      "reversed": "gelosia, sovraesposizione, esaurimento, dispersione",
-      "signification upright": "La tua calore fa fiorire progetti e persone. Il piacere è carburante dell’arte: onoralo.",
-      "signification reversed": "Il confronto continuo ruba scintilla. Proteggi energia e condividi il palco con misura."
-    },
     "Cavaliere di Bastoni": {
-      "upright": "slancio, avventura, cambiamento rapido, esplorazione, coraggio",
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier de Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier de Baton a l'envers.jpg",
       "reversed": "temerarietà, incostanza, fuga, promesse non mantenute",
+      "signification reversed": "Partire senza sostenere stanca. Ancorati a sistemi semplici e sostenibili.",
       "signification upright": "Movimento che rompe l’inerzia: lancia, prova, impara in corsa con tappe brevi.",
-      "signification reversed": "Partire senza sostenere stanca. Ancorati a sistemi semplici e sostenibili."
-    },
-    "Fante di Bastoni": {
-      "upright": "notizia creativa, idea nuova, apprendimento, curiosità",
-      "reversed": "immaturità, abbandono, superficialità, ansia da risultato",
-      "signification upright": "Scintilla iniziale: prototipi, inviti, esperimenti. Il valore è nel partire leggero.",
-      "signification reversed": "Il primo ostacolo non è un verdetto: consegna qualcosa di piccolo oggi."
-    },
-    "Re di Denari": {
-      "upright": "stabilità, prosperità, gestione, affidabilità, eredità",
-      "reversed": "avarizia, rigidità, materialismo, controllo col denaro",
-      "signification upright": "Valore duraturo con pazienza e pratica. Budget sani, qualità e cura delle persone.",
-      "signification reversed": "Accumulo senza gioia impoverisce. Delegare e condividere libera."
-    },
-    "Regina di Denari": {
-      "upright": "cura, casa prospera, praticità, nutrimento, sicurezza",
-      "reversed": "trascurarsi, iper-donare, spesa impulsiva, possessività",
-      "signification upright": "Amministra con amore: piccoli rituali, grande benessere. Generosità saggia e sostenibile.",
-      "signification reversed": "Dare senza ricevere svuota. Confini e riposo sono patrimonio del progetto."
-    },
-    "Cavaliere di Denari": {
-      "upright": "costanza, metodo, responsabilità, routine efficace",
-      "reversed": "rigidità, monotonia, pigrizia, resistenza al cambiamento",
-      "signification upright": "Lavoro ben fatto, passo dopo passo: documenti, consegni, migliori.",
-      "signification reversed": "Aggiorna i metodi e ritrova il senso della tua opera."
-    },
-    "Fante di Denari": {
-      "upright": "studio, opportunità materiale, pratica, focus, seme",
-      "reversed": "procrastinazione, scorciatoie, disordine, miopia",
-      "signification upright": "Apprendista diligente: osserva, chiedi, esercita. La terra risponde alla costanza.",
-      "signification reversed": "Ordina spazio, piano e budget. Un’abitudine al giorno batte gli strappi."
-    },
-    "Re di Coppe": {
-      "upright": "maturità emotiva, empatia, equilibrio, contenimento, consiglio",
-      "reversed": "manipolazione, freddezza, volatilità nascosta",
-      "signification upright": "Guida dal centro regolato: ascolto, nominare e incanalare. Presenza che calma e compone.",
-      "signification reversed": "Controllare non è negare. Chiedi senza giochi e, se serve, cerca supervisione."
-    },
-    "Regina di Coppe": {
-      "upright": "intuizione, compassione, ricettività, cura sottile, arte",
-      "reversed": "codependenza, travaso emotivo, sacrificio dannoso, idealizzazione",
-      "signification upright": "Rifugio emotivo: ascolto gentile e creatività che guarisce.",
-      "signification reversed": "Empatia senza confini affoga. Il no amorevole è cura."
+      "upright": "slancio, avventura, cambiamento rapido, esplorazione, coraggio"
     },
     "Cavaliere di Coppe": {
-      "upright": "romanza, proposta, ispirazione, fascino, diplomazia",
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier De Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier De Coupe a l'envers.jpg",
       "reversed": "illusioni, promesse vuote, seduzione interessata, evasione",
+      "signification reversed": "Allinea parole e gesti o dillo chiaro: meglio una verità gentile.",
       "signification upright": "Messaggero del cuore: scuse sincere, inviti, proposte creative. Bellezza che apre.",
-      "signification reversed": "Allinea parole e gesti o dillo chiaro: meglio una verità gentile."
+      "upright": "romanza, proposta, ispirazione, fascino, diplomazia"
     },
-    "Fante di Coppe": {
-      "upright": "sensibilità, messaggio emotivo, inizio creativo, gioco",
-      "reversed": "ipersensibilità, blocco creativo, immaturità, fuga",
-      "signification upright": "Cuore che impara a parlare: scrivi, dipingi, chiedi perdono. La musa ama il gioco.",
-      "signification reversed": "Non tutto è contro di te: regola, esprimi semplice e ricomincia."
-    },
-    "Re di Spade": {
-      "upright": "chiarezza, logica, giustizia, strategia, verità",
-      "reversed": "freddezza, tirannia, manipolazione, eccesso critico",
-      "signification upright": "Taglio netto: separi il fatto dall’opinione e decidi con etica. Comunichi con precisione.",
-      "signification reversed": "Intelletto senza cuore divide. Ascolta contesto e ammorbidisci il filo."
-    },
-    "Regina di Spade": {
-      "upright": "lucidità, indipendenza, confini chiari, franchezza, esperienza",
-      "reversed": "amarezza, cinismo, durezza, critica tagliente",
-      "signification upright": "Vedi l’essenziale e lo dici con eleganza sobria. Confini fermi, non muri.",
-      "signification reversed": "La ferita parla: unisci verità e compassione perché trasformi."
+    "Cavaliere di Denari": {
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier de Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier de Deniers a l'envers.jpg",
+      "reversed": "rigidità, monotonia, pigrizia, resistenza al cambiamento",
+      "signification reversed": "Aggiorna i metodi e ritrova il senso della tua opera.",
+      "signification upright": "Lavoro ben fatto, passo dopo passo: documenti, consegni, migliori.",
+      "upright": "costanza, metodo, responsabilità, routine efficace"
     },
     "Cavaliere di Spade": {
-      "upright": "azione rapida, dibattito, coraggio mentale, cambiamento, difesa",
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier D'Epee a l'envers.jpg",
       "reversed": "imprudenza, aggressività, impulsività, conflitto sterile",
+      "signification reversed": "Caricare senza mappa crea danni collaterali. Respira e verifica.",
       "signification upright": "Intervieni quando serve: dati pronti, obiettivo definito, parola diretta.",
-      "signification reversed": "Caricare senza mappa crea danni collaterali. Respira e verifica."
+      "upright": "azione rapida, dibattito, coraggio mentale, cambiamento, difesa"
+    },
+    "Fante di Bastoni": {
+      "image": "tarot_img/MajorArcanaCards/Le Valet de Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet de Baton a l'envers.jpg",
+      "reversed": "immaturità, abbandono, superficialità, ansia da risultato",
+      "signification reversed": "Il primo ostacolo non è un verdetto: consegna qualcosa di piccolo oggi.",
+      "signification upright": "Scintilla iniziale: prototipi, inviti, esperimenti. Il valore è nel partire leggero.",
+      "upright": "notizia creativa, idea nuova, apprendimento, curiosità"
+    },
+    "Fante di Coppe": {
+      "image": "tarot_img/MajorArcanaCards/Le Valet De Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet De Coupe a l'envers.jpg",
+      "reversed": "ipersensibilità, blocco creativo, immaturità, fuga",
+      "signification reversed": "Non tutto è contro di te: regola, esprimi semplice e ricomincia.",
+      "signification upright": "Cuore che impara a parlare: scrivi, dipingi, chiedi perdono. La musa ama il gioco.",
+      "upright": "sensibilità, messaggio emotivo, inizio creativo, gioco"
+    },
+    "Fante di Denari": {
+      "image": "tarot_img/MajorArcanaCards/Le Valet De Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet De Deniers a l'envers.jpg",
+      "reversed": "procrastinazione, scorciatoie, disordine, miopia",
+      "signification reversed": "Ordina spazio, piano e budget. Un’abitudine al giorno batte gli strappi.",
+      "signification upright": "Apprendista diligente: osserva, chiedi, esercita. La terra risponde alla costanza.",
+      "upright": "studio, opportunità materiale, pratica, focus, seme"
     },
     "Fante di Spade": {
-      "upright": "curiosità, allerta, informazione, apprendimento veloce, vigilanza",
+      "image": "tarot_img/MajorArcanaCards/Le Valet D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet D'Epee a l'envers.jpg",
       "reversed": "pettegolezzi, indiscrezione, paranoia, dati distorti",
+      "signification reversed": "Chiudi fonti dubbie e verifica: la precisione ti protegge.",
       "signification upright": "Occhi aperti e domande giuste: ottimo per indagare, studiare o negoziare.",
-      "signification reversed": "Chiudi fonti dubbie e verifica: la precisione ti protegge."
+      "upright": "curiosità, allerta, informazione, apprendimento veloce, vigilanza"
+    },
+    "Gli Amanti": {
+      "image": "tarot_img/MajorArcanaCards/L'Amoureux.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Amoureux a l'envers.jpg",
+      "reversed": "indecisione, triangoli, compromesso sterile, rottura",
+      "signification reversed": "Dire sì per paura di perdere è dire no a te stesso. Metti in pausa, chiarisci motivazioni e prendi una decisione pulita.",
+      "signification upright": "Scegli dove desiderio, verità e responsabilità convivono. L’allineamento dei valori conta più della perfezione.",
+      "upright": "scelta, amore, alleanza, valori, autenticità"
+    },
+    "Il Carro": {
+      "image": "tarot_img/MajorArcanaCards/Le Chariot.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Chariot a l'envers.jpg",
+      "reversed": "disordine, orgoglio, mancanza di rotta, dispersione",
+      "signification reversed": "Se le ruote slittano, riallinea metriche e percorso. Meno priorità, più trazione.",
+      "signification upright": "Dirigi forze opposte verso un obiettivo chiaro. Traguardi piccoli e ripetibili creano trazione reale.",
+      "upright": "volontà, avanzamento, disciplina, vittoria, messa a fuoco"
+    },
+    "Il Diavolo": {
+      "image": "tarot_img/MajorArcanaCards/Le Diable.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Diable a l'envers.jpg",
+      "reversed": "liberazione, sobrietà, confini, scelta consapevole",
+      "signification reversed": "Una decisione pulita alla volta: un taglio, un limite, una scelta sobria. La dignità torna passo dopo passo.",
+      "signification upright": "Nomina legami e dipendenze: vederli toglie potere all’illusione. Il desiderio è neutro; l’automatismo no.",
+      "upright": "catene, tentazione, ombra, compulsione, materialismo"
+    },
+    "Il Giudizio": {
+      "image": "tarot_img/MajorArcanaCards/Le Jugement.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Jugement a l'envers.jpg",
+      "reversed": "colpa, negazione, paura del cambiamento, giudizio duro",
+      "signification reversed": "Trasforma autoaccusa in responsabilità concreta e azioni visibili. Un passo che dimostri rinascita.",
+      "signification upright": "Rivedi con onestà, perdona con saggezza e rispondi alla chiamata. La lezione diventa vocazione quando la metti al servizio.",
+      "upright": "chiamata, rinnovamento, perdono, vocazione, risveglio"
+    },
+    "Il Mago": {
+      "image": "tarot_img/MajorArcanaCards/Le Bateleur.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Bateleur a l'envers.jpg",
+      "reversed": "manipolazione, dispersione, vanagloria, controllo",
+      "signification reversed": "Fascino senza integrità svuota la fiducia. Riduci input, scegli una leva e torna a metodi puliti e obiettivi misurabili.",
+      "signification upright": "Intenzione, parola e azione si allineano: chiedi con chiarezza, prometti il sostenibile e consegna il concreto. La disciplina rende stabile la tua “magia”.",
+      "upright": "volontà, risorse, concentrazione, comunicazione, manifestazione"
+    },
+    "Il Matto": {
+      "image": "tarot_img/MajorArcanaCards/Le Mat.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Mat a l'envers.jpg",
+      "reversed": "imprudenza, fuga, ingenuità, mancanza di preparazione",
+      "signification reversed": "Agire per evitare il disagio crea errori evitabili. Rallenta, metti confini semplici e verifica le conseguenze: iniziare con saggezza è comunque iniziare.",
+      "signification upright": "Un passo nel nuovo con cuore leggero: ascolta la curiosità e parti anche senza avere tutto sotto controllo. La fede nell’esperienza diretta apre strade inaspettate.",
+      "upright": "nuovo inizio, libertà, fiducia, spontaneità, avventura"
+    },
+    "Il Mondo": {
+      "image": "tarot_img/MajorArcanaCards/Le Monde.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Monde a l'envers.jpg",
+      "reversed": "perfezionismo, chiusura rimandata, dilazione, vuoto post-traguardo",
+      "signification reversed": "Definisci “finito”, lega l’ultimo capo e permetti al progetto di esistere completo.",
+      "signification upright": "Ciclo concluso e senso integrato: celebra, documenta e apri il nuovo capitolo più leggera.",
+      "upright": "compimento, maestria, integrazione, pienezza"
+    },
+    "Il Papa": {
+      "image": "tarot_img/MajorArcanaCards/Le Pape.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Pape a l'envers.jpg",
+      "reversed": "dogma, ipocrisia, formalismo vuoto, ribellione cieca",
+      "signification reversed": "Quando la forma soffoca l’essenza, riformare è un atto d’amore: conserva il vivo, lascia il resto.",
+      "signification upright": "Apprendi la forma per incontrare lo spirito. Le buone regole proteggono la libertà e creano appartenenza.",
+      "upright": "tradizione, insegnamento, rito, comunità, valori"
+    },
+    "Il Sole": {
+      "image": "tarot_img/MajorArcanaCards/Le Soleil.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Soleil a l'envers.jpg",
+      "reversed": "ego, vanità, burnout, apparenza",
+      "signification reversed": "Radica il tuo brillare nella verità e nel servizio: meno performance, più autenticità.",
+      "signification upright": "Condividi il merito e crea dal gioco: la tua luce accende quella degli altri.",
+      "upright": "gioia, successo, vitalità, chiarezza, celebrazione"
+    },
+    "L'Appeso": {
+      "image": "tarot_img/MajorArcanaCards/Le Pendu.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Pendu a l'envers.jpg",
+      "reversed": "stallo, sacrificio vano, testardaggine, evasione",
+      "signification reversed": "Se non impari, stai solo aspettando. Scegli una rinuncia significativa e il senso tornerà a muoverti.",
+      "signification upright": "Sospendere l’azione apre uno sguardo più saggio. La resa qui è lucidità, non sconfitta.",
+      "upright": "pausa, resa, nuova prospettiva, pazienza"
+    },
+    "L'Eremita": {
+      "image": "tarot_img/MajorArcanaCards/L'Hermite.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Hermite a l'envers.jpg",
+      "reversed": "isolamento, superbia spirituale, chiusura, solitudine",
+      "signification reversed": "Nascondersi non cura. Riapri il contatto e ascolta consigli con umiltà.",
+      "signification upright": "Un passo indietro chiarisce. La lampada interiore illumina il prossimo passo; condividi quando la lezione è matura.",
+      "upright": "introspezione, saggezza, ritiro, guida interiore, maturità"
+    },
+    "L'Imperatore": {
+      "image": "tarot_img/MajorArcanaCards/L'Empereur.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Empereur a l'envers.jpg",
+      "reversed": "rigidità, controllo, abuso di potere, durezza",
+      "signification reversed": "Il micromanagement erode fiducia e creatività. Sostituisci il controllo con obiettivi chiari e autonomia responsabile.",
+      "signification upright": "Ordine che serve le persone: regole chiare, responsabilità e visione di lungo periodo. Guida con esempio e trasparenza.",
+      "upright": "struttura, limiti, strategia, autorità giusta, protezione"
+    },
+    "L'Imperatrice": {
+      "image": "tarot_img/MajorArcanaCards/L'Imperatrice.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Imperatrice a l'envers.jpg",
+      "reversed": "ipercontrollo, blocco creativo, dipendenza, perfezionismo",
+      "signification reversed": "Stringere troppo soffoca. Concedi riposo e delega; l’abbondanza segue i ritmi naturali, non la tensione continua.",
+      "signification upright": "Cresci creando: corpo, casa e relazioni prosperano con piacere e cura. Ricevere è parte del nutrimento tanto quanto dare.",
+      "upright": "fertilità, creatività, abbondanza, cura, bellezza"
+    },
+    "La Forza": {
+      "image": "tarot_img/MajorArcanaCards/La Force.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Force a l'envers.jpg",
+      "reversed": "impulsività, apatia, scatti d’ira, compiacenza",
+      "signification reversed": "Ritorna ai fondamentali: respiro, confini, piccoli atti coraggiosi. La forza riparte dall’interno.",
+      "signification upright": "Potere morbido che regola la tempesta. Fermezza e gentilezza generano fiducia.",
+      "upright": "coraggio, autocontrollo, compassione, resilienza"
+    },
+    "La Giustizia": {
+      "image": "tarot_img/MajorArcanaCards/La Justice.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Justice a l'envers.jpg",
+      "reversed": "ingiustizia, parzialità, vendetta, processo viziato",
+      "signification reversed": "Evita giudizi affrettati: mancano dati o poteri sono sbilanciati. Sostituisci il castigo con la riparazione.",
+      "signification upright": "Pesa i fatti, dichiara i bias, ripara dove serve. La trasparenza costruisce fiducia duratura.",
+      "upright": "equità, verità, legge, responsabilità, equilibrio"
+    },
+    "La Luna": {
+      "image": "tarot_img/MajorArcanaCards/La Lune.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Lune a l'envers.jpg",
+      "reversed": "chiarezza, verità, regolazione, uscita dal labirinto",
+      "signification reversed": "La nebbia si alza: fatti e senso interno si chiariscono. Aggiorna la mappa e riparti con fiducia dolce.",
+      "signification upright": "Nebbia e specchi: procedi piano, verifica proiezioni e ascolta il corpo. L’intuizione guida se l’ansia non comanda.",
+      "upright": "inconscio, illusioni, intuizione, paure, sogni"
+    },
+    "La Morte": {
+      "image": "tarot_img/MajorArcanaCards/La Mort.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Mort a l'envers.jpg",
+      "reversed": "resistenza, attaccamento, paura, transizione bloccata",
+      "signification reversed": "I finali evitati perdono energia. Nomina la fine e chiudi con gentilezza.",
+      "signification upright": "Lascia andare la forma, conserva l’apprendimento. Ogni chiusura dignitosa apre spazio vitale.",
+      "upright": "fine di ciclo, trasformazione, rinascita, pulizia"
+    },
+    "La Papessa": {
+      "image": "tarot_img/MajorArcanaCards/La Papesse.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Papesse a l'envers.jpg",
+      "reversed": "segreti, autoinganno, intuizione bloccata, ambiguità",
+      "signification reversed": "Ignorare la voce interna per compiacere stanca l’anima. Nomina ciò che sai e non ammetti, riduci il rumore e lascia che la verità emerga.",
+      "signification upright": "Sotto il rumore c’è la risposta. Ascolta, annota i segnali, proteggi il tuo tempo sacro. La saggezza matura nell’ombra prima di uscire alla luce.",
+      "upright": "intuizione, silenzio, mistero, sogni, sapere interiore"
+    },
+    "La Ruota della Fortuna": {
+      "image": "tarot_img/MajorArcanaCards/La Roue de La Fortune.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Roue de La Fortune a l'envers.jpg",
+      "reversed": "ripetizione, stallo, resistenza, sfortuna",
+      "signification reversed": "Spezzare il loop richiede un comportamento nuovo sostenuto. Accetta la lezione e cambia rotta.",
+      "signification upright": "Cavalca il cambiamento: alleggerisci il carico e dì sì alle porte reali che si aprono.",
+      "upright": "cicli, opportunità, destino, svolta, sincronìa"
+    },
+    "La Stella": {
+      "image": "tarot_img/MajorArcanaCards/L'Etoile.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Etoile a l'envers.jpg",
+      "reversed": "scoraggiamento, cinismo, stanchezza, disconnessione",
+      "signification reversed": "Riduci il rumore e coltiva piccole promesse mantenute: la fiducia ricresce.",
+      "signification upright": "Dopo la tempesta, la luce. Idrata l’anima con riposo, bellezza e gentilezza: la bussola si riallinea.",
+      "upright": "speranza, guida, ispirazione, fede, bellezza"
+    },
+    "La Temperanza": {
+      "image": "tarot_img/MajorArcanaCards/La Temperance.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Temperance a l'envers.jpg",
+      "reversed": "eccesso, disordine, impazienza, miscela caotica",
+      "signification reversed": "Troppo o troppo poco rovinano la ricetta. Torna a due ingredienti essenziali e ricomincia.",
+      "signification upright": "Mescola gli opposti con arte: la guarigione è graduale. Riduci l’eccesso, rispetta i tempi.",
+      "upright": "equilibrio, integrazione, guarigione, misura, armonia"
+    },
+    "La Torre": {
+      "image": "tarot_img/MajorArcanaCards/La Maison Dieu.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Maison Dieu a l'envers.jpg",
+      "reversed": "allarme precoce, correzione, prevenzione, aggiustamento",
+      "signification reversed": "Ammettere le crepe oggi evita il crollo domani. L’umiltà è antisismica.",
+      "signification upright": "Ciò che non regge cade perché la verità resti in piedi. Ricostruisci su fondamenta oneste e semplici.",
+      "upright": "crollo, verità, risveglio, crisi, rottura"
+    },
+    "Re di Bastoni": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi De Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi De Baton a l'envers.jpg",
+      "reversed": "autoritarismo, impulsività, collera, grandiosità",
+      "signification reversed": "Il dominio per paura spegne il team. Ascolta, metti limiti rispettosi e misura i risultati.",
+      "signification upright": "Guida che accende: scopo chiaro, delega fiduciosa e passione stabile. Il tuo fuoco dirige senza bruciare.",
+      "upright": "carisma, visione, leadership creativa, espansione, audacia"
+    },
+    "Re di Coppe": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi de Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi de Coupe a l'envers.jpg",
+      "reversed": "manipolazione, freddezza, volatilità nascosta",
+      "signification reversed": "Controllare non è negare. Chiedi senza giochi e, se serve, cerca supervisione.",
+      "signification upright": "Guida dal centro regolato: ascolto, nominare e incanalare. Presenza che calma e compone.",
+      "upright": "maturità emotiva, empatia, equilibrio, contenimento, consiglio"
+    },
+    "Re di Denari": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi De Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi De Deniers a l'envers.jpg",
+      "reversed": "avarizia, rigidità, materialismo, controllo col denaro",
+      "signification reversed": "Accumulo senza gioia impoverisce. Delegare e condividere libera.",
+      "signification upright": "Valore duraturo con pazienza e pratica. Budget sani, qualità e cura delle persone.",
+      "upright": "stabilità, prosperità, gestione, affidabilità, eredità"
+    },
+    "Re di Spade": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi D'Epee a l'envers.jpg",
+      "reversed": "freddezza, tirannia, manipolazione, eccesso critico",
+      "signification reversed": "Intelletto senza cuore divide. Ascolta contesto e ammorbidisci il filo.",
+      "signification upright": "Taglio netto: separi il fatto dall’opinione e decidi con etica. Comunichi con precisione.",
+      "upright": "chiarezza, logica, giustizia, strategia, verità"
+    },
+    "Regina di Bastoni": {
+      "image": "tarot_img/MajorArcanaCards/La Reine de Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine de Baton a l'envers.jpg",
+      "reversed": "gelosia, sovraesposizione, esaurimento, dispersione",
+      "signification reversed": "Il confronto continuo ruba scintilla. Proteggi energia e condividi il palco con misura.",
+      "signification upright": "La tua calore fa fiorire progetti e persone. Il piacere è carburante dell’arte: onoralo.",
+      "upright": "magnetismo, creatività, entusiasmo, generosità, presenza"
+    },
+    "Regina di Coppe": {
+      "image": "tarot_img/MajorArcanaCards/La Reine De Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine De Coupe a l'envers.jpg",
+      "reversed": "codependenza, travaso emotivo, sacrificio dannoso, idealizzazione",
+      "signification reversed": "Empatia senza confini affoga. Il no amorevole è cura.",
+      "signification upright": "Rifugio emotivo: ascolto gentile e creatività che guarisce.",
+      "upright": "intuizione, compassione, ricettività, cura sottile, arte"
+    },
+    "Regina di Denari": {
+      "image": "tarot_img/MajorArcanaCards/La Reine De Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine De Deniers a l'envers.jpg",
+      "reversed": "trascurarsi, iper-donare, spesa impulsiva, possessività",
+      "signification reversed": "Dare senza ricevere svuota. Confini e riposo sono patrimonio del progetto.",
+      "signification upright": "Amministra con amore: piccoli rituali, grande benessere. Generosità saggia e sostenibile.",
+      "upright": "cura, casa prospera, praticità, nutrimento, sicurezza"
+    },
+    "Regina di Spade": {
+      "image": "tarot_img/MajorArcanaCards/La Reine D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine D'Epee a l'envers.jpg",
+      "reversed": "amarezza, cinismo, durezza, critica tagliente",
+      "signification reversed": "La ferita parla: unisci verità e compassione perché trasformi.",
+      "signification upright": "Vedi l’essenziale e lo dici con eleganza sobria. Confini fermi, non muri.",
+      "upright": "lucidità, indipendenza, confini chiari, franchezza, esperienza"
     }
   }
 }

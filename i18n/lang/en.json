@@ -1,37 +1,18 @@
 {
   "messages": {
-    "draw_card": "DRAW A CARD",
-    "drawing_card": "I'M DRAWING A CARD...",
-    "concentrating": "Concentrating...",
-    "preparing_arcana": "Preparing the arcana...",
-    "upright": "⬆ UPRIGHT ⬆",
-    "reversed": "⬇ REVERSED ⬇",
-    "thanks": "✨ I hope you enjoyed your reading! ✨",
-    "continue_exploring": "🔮 Continue exploring the mysteries of tarot! 🔮",
-    "new_reading": "✨ New reading",
-    "new_reading_countdown": "✨ New reading ({seconds}s) ✨",
-    "app_title": "Welcome to divination tarot",
-    "draw_instruction": "Touch the card\nfor a prediction",
-    "crystals_ad": "💎 Crystals & Minerals Shop - Free shipping 💎",
-    "love_ad": "💕 Find Love with Astrology+ 💕\nLove compatibility based on your birth chart",
-    "tarot_course_ad": "🔮 Professional Tarot Course 🔮\nBecome a certified cartomancer - Free registration",
-    "tap_to_return": "Tap the card to return",
-    "touch_to_enlarge": "🔍 Touch to enlarge",
-    "your_card": "Your card",
-    "support_app": "Support the App",
     "ad_message": "Do you like this free application?\nHelp us maintain and improve it!",
-    "later": "Later",
-    "support": "Support",
+    "app_title": "Welcome to divination tarot",
+    "chat_mme_t": "Chat Mme T",
+    "concentrating": "Concentrating...",
+    "configure_backend_hint": "Configure MME_T_BACKEND_URL to enable Mme T consultation.",
+    "continue_exploring": "🔮 Continue exploring the mysteries of tarot! 🔮",
+    "crystals_ad": "💎 Crystals & Minerals Shop - Free shipping 💎",
     "done": "Done",
-    "premium_button_base": "Chat with Mme T Premium",
-    "premium_button_price_suffix": " ({price})",
-    "premium_button_provider_suffix": " - {provider}",
-    "provider_google": "Google Play",
-    "provider_amazon": "Amazon Appstore",
-    "provider_simulation": "Demo mode",
-    "provider_disabled": "Unavailable",
+    "draw_card": "DRAW A CARD",
+    "draw_instruction": "Touch the card\nfor a prediction",
+    "drawing_card": "I'M DRAWING A CARD...",
+    "later": "Later",
     "loading": "Loading...",
-    "signification_error": "Error loading meaning",
     "loading_messages": [
       "🔮 Focusing on your question...",
       "🃏 Shuffling the cards...",
@@ -39,251 +20,342 @@
       "🌙 Consulting the stars...",
       "💫 Interpreting the arcana..."
     ],
-    "chat_mme_t": "Chat Mme T",
+    "love_ad": "💕 Find Love with Astrology+ 💕\nLove compatibility based on your birth chart",
+    "mme_t_intro": "Hello ✨ I'm Mme T, your card reader. What question is on your mind today? How can I help you?",
+    "mme_t_thanks": "Thanks for consulting Mme T. Come back anytime for more guidance.",
+    "new_reading": "✨ New reading",
+    "new_reading_countdown": "✨ New reading ({seconds}s) ✨",
+    "premium_button_base": "Chat with Mme T Premium",
+    "premium_button_price_suffix": " ({price})",
+    "premium_button_provider_suffix": " - {provider}",
+    "preparing_arcana": "Preparing the arcana...",
+    "provider_amazon": "Amazon Appstore",
+    "provider_disabled": "Unavailable",
+    "provider_google": "Google Play",
+    "provider_simulation": "Demo mode",
+    "purchase_error_title": "Purchase failed",
+    "reversed": "⬇ REVERSED ⬇",
+    "signification_error": "Error loading meaning",
+    "store_mobile_only": "Purchase available on mobile",
     "store_preparing": "Store is preparing...",
     "store_preparing_retry": "Store is preparing, please try again in a moment",
     "store_unavailable_platform": "Store unavailable on this platform",
-    "store_mobile_only": "Purchase available on mobile",
+    "support": "Support",
+    "support_app": "Support the App",
+    "tap_to_return": "Tap the card to return",
+    "tarot_course_ad": "🔮 Professional Tarot Course 🔮\nBecome a certified cartomancer - Free registration",
+    "thanks": "✨ I hope you enjoyed your reading! ✨",
     "thanks_for_support": "Thank you for your support!",
     "thanks_for_support_via": "Thank you for your support via {provider}!",
-    "configure_backend_hint": "Configure MME_T_BACKEND_URL to enable Mme T consultation.",
-    "purchase_error_title": "Purchase failed",
     "thanks_title": "Thanks!",
-    "mme_t_intro": "Hello ✨ I'm Mme T, your card reader. What question is on your mind today? How can I help you?",
-    "mme_t_thanks": "Thanks for consulting Mme T. Come back anytime for more guidance."
+    "touch_to_enlarge": "🔍 Touch to enlarge",
+    "upright": "⬆ UPRIGHT ⬆",
+    "your_card": "Your card"
   },
   "significations": {
-    "The Fool": {
-      "upright": "new beginnings, spontaneity, freedom, adventure, potential",
-      "reversed": "recklessness, naivety, carelessness, hesitation",
-      "signification upright": "A clean slate invites trust over over-planning. The Fool favors curiosity, play and first steps taken before certainty appears. Follow what feels alive, even if the route is unconventional. Risk exists, but so does bright potential. Travel light: release labels and let experience teach you. In love, bring honesty and openness; in work, prototype and learn in motion. You don’t need every answer to begin—only a sincere yes.",
-      "signification reversed": "Impulses may be steering without awareness. Acting to escape discomfort creates avoidable detours. Slow down enough to sense consequences and safety. Naivety or magical thinking can mask fear of commitment. Revisit your why, set simple guardrails, and step with presence. Beginning wisely is still a beginning."
-    },
-    "The Magician": {
-      "upright": "initiative, resources, willpower, energy, creativity",
-      "reversed": "deception, manipulation, scattered focus, misuse of skills",
-      "signification upright": "Attention is your wand: idea, intention and action align to shape reality. Name the outcome, gather tools, take one focused step. Communicate clearly—ask precisely, promise realistically. This favors skill-building and visible leadership: show, don’t just tell. In love, state needs plainly; in career, ship something real. Momentum compounds when will serves a purpose larger than ego.",
-      "signification reversed": "Charm without integrity backfires. Distraction, half-truths or trying to control others leak power and trust. If energy is scattered, reduce inputs and choose one lever. Audit motives: proving yourself or serving the work? Re-commit to clean methods, simple systems and accountable promises."
-    },
-    "The High Priestess": {
-      "upright": "intuition, wisdom, mystery, inner knowledge",
-      "reversed": "blocked intuition, hidden truths, superficiality",
-      "signification upright": "Silence becomes a sense organ. Answers surface when you stop pushing and start listening beneath the noise. Dream, journal, notice patterns—what repeats is speaking. Protect your mystery; not everything needs to be posted or solved today. In love, honor boundaries and timing; in work, research privately and move when inner yes and outer signs align.",
-      "signification reversed": "You may override intuition to fit expectations, or stay vague to avoid truth. Secrets heal when faced kindly. Name what you know but haven’t admitted. Simplify inputs so your inner signal strengthens. Knowledge used to control is a cage; used to understand, it frees."
-    },
-    "The Empress": {
-      "upright": "fertility, abundance, creativity, nourishment, nature",
-      "reversed": "creative block, smothering, over-control, dependence",
-      "signification upright": "Life blossoms: create, nurture and let things grow in natural rhythm. Pleasure, beauty and care replenish your field. Invest in body, home and art; receive as you give. Collaboration thrives where generosity is real. In relationships, warmth and receptivity deepen bonds; at work, supportive ecosystems multiply results.",
-      "signification reversed": "Clutching too tightly stifles growth. Over-giving to be needed depletes. Step back, breathe, reconnect to cycles of rest and ripening. Allow help, release perfectionism, and trust the soil to do its work."
-    },
-    "The Emperor": {
-      "upright": "authority, structure, stability, responsibility",
-      "reversed": "tyranny, rigidity, abuse of power, control issues",
-      "signification upright": "Build frameworks that serve people, not the other way around. Boundaries, strategy and foresight turn chaos into ground. Lead by example; make decisions transparent. Protect the vulnerable, steward resources, and think long-term. Calm order is a kindness.",
-      "signification reversed": "Grip without trust breaks what it holds. Commanding from fear becomes brittle. Replace micromanagement with clear goals and autonomy. Strength is flexible, accountable and fair."
-    },
-    "The Hierophant": {
-      "upright": "tradition, teaching, moral guidance, initiation",
-      "reversed": "dogmatism, outdated rules, blind obedience",
-      "signification upright": "Meaning flows through lineage, mentors and shared rituals. Learn the form to touch the spirit; transmit wisdom with humility. Good rules protect freedom and foster belonging. Ask, “What is the living principle beneath the custom?”",
-      "signification reversed": "When form replaces spirit, systems ossify. Question edicts that shrink compassion. Keep what’s wise, release what’s dead. Make tradition alive by practicing its essence, not its shell."
-    },
-    "The Lovers": {
-      "upright": "choice, union, love, duality, important decision",
-      "reversed": "wrong choice, separation, indecision, inner conflict",
-      "signification upright": "A values decision disguised as romance or options. Choose where desire, honesty and responsibility coexist. Speak your real yes/no and welcome the same. Alignment beats perfection: shared direction lets details be designed together. Partnership deepens when each remains whole.",
-      "signification reversed": "Mixed motives and people-pleasing breed friction. A yes to avoid loss is a no to yourself. Pause timelines, clear triangulations, and ask what truth you’re avoiding. If parting serves integrity, grieve cleanly and continue."
-    },
-    "The Chariot": {
-      "upright": "mastery of opposing forces, determination, victory",
-      "reversed": "loss of control, scattered energy, misdirection",
-      "signification upright": "Two forces pull apart; leadership chooses a shared direction. Define the finish line, set constraints, keep promises to yourself. Small, repeatable wins pull the vehicle forward. Victory is disciplined momentum, not frantic speed.",
-      "signification reversed": "Wheels spin when goals are vague or pride resists adjustment. If you’re forcing outcomes, loosen the grip and refine the map. Realign metrics with meaning, shorten feedback loops, delegate what drains focus."
-    },
-    "Justice": {
-      "upright": "fairness, balance, truth, law, accountability",
-      "reversed": "injustice, bias, imbalance, corruption, revenge",
-      "signification upright": "Balance is right proportion, not 50/50. Weigh facts, name bias, act transparently. Make amends where needed; credit fairly. Legal or contract matters favor clarity and documentation. Choices now set precedents later.",
-      "signification reversed": "Something is off: missing context or unequal stakes. Resist snap judgments; confirm sources. If harsh on yourself, trade punishment for accountability and repair. Advocate for fair process, not just desired outcome."
-    },
-    "The Hermit": {
-      "upright": "inner search, reflection, solitude, guidance",
-      "reversed": "isolation, rejecting advice, stubbornness",
-      "signification upright": "Step back to see truth. Reflection distills noise into knowing. Seek quiet mentors or become your own; let the inner lamp guide measured steps. Share when wisdom ripens.",
-      "signification reversed": "Hiding isn’t healing. If pride blocks counsel or loneliness hardens, re-enter connection gently. Solitude serves when it keeps you teachable."
-    },
-    "Wheel of Fortune": {
-      "upright": "cycles, fate, opportunity, change",
-      "reversed": "stagnation, resisting change, repeating patterns",
-      "signification upright": "The wheel turns: catch the updraft by staying light and responsive. Notice timing, align with what’s moving, and say yes to real openings. What returns offers a new choice this time.",
-      "signification reversed": "Clinging recreates what you fear. Break loops by changing one consistent behavior. Accept the lesson, release the script, invite a different scene."
-    },
-    "Strength": {
-      "upright": "inner strength, patience, compassion, courage",
-      "reversed": "weakness, loss of control, aggression, avoidance",
-      "signification upright": "Gentle power regulates the storm. Meet force with presence, not panic. Tame, don’t terrorize, what is wild. In love and work, courage plus kindness earns trust.",
-      "signification reversed": "Outbursts, collapse or appeasement signal dysregulation. Slow breath, simple boundaries, small brave acts—strength rebuilt from within."
-    },
-    "The Hanged Man": {
-      "upright": "sacrifice, new perspective, surrender, patience",
-      "reversed": "stalled sacrifice, stubbornness, resisting change",
-      "signification upright": "Suspend action to see differently. Surrender isn’t defeat; it’s a pivot into wisdom. Yielding the old angle reveals an elegant next move.",
-      "signification reversed": "Hanging on without learning wastes time. If pride resists flexibility, choose a tiny surrender. Movement returns when meaning does."
-    },
     "Death": {
-      "upright": "transformation, end of a cycle, rebirth",
+      "image": "tarot_img/MajorArcanaCards/La Mort.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Mort a l'envers.jpg",
       "reversed": "fear of change, stagnation, clinging",
+      "signification reversed": "Avoided endings linger and leak energy. Name what’s over, ask for support, and close gently. Life refills the room you free.",
       "signification upright": "An era completes. Letting go is harvest—you keep the learning, not the form. Ritualize the ending, grieve and clear space. Vitality follows the release.",
-      "signification reversed": "Avoided endings linger and leak energy. Name what’s over, ask for support, and close gently. Life refills the room you free."
-    },
-    "Temperance": {
-      "upright": "balance, healing, patience, harmonious blending",
-      "reversed": "imbalance, excess, haste, chaotic mixing",
-      "signification upright": "Mix opposites with care; healing ripens gradually. Calibrate inputs, pace and boundaries. Integrate, don’t oscillate.",
-      "signification reversed": "Too much or too little distorts the recipe. Remove one excess, add one stabilizer, and let time do its part."
-    },
-    "The Devil": {
-      "upright": "attachments, illusions, materialism, temptation",
-      "reversed": "liberation, awakening, breaking chains",
-      "signification upright": "Name the chains—habits, debts, obsessions, toxic bonds. Awareness dissolves glamour and returns consent. Desire isn’t evil; unconscious compulsion is.",
-      "signification reversed": "Keys appear once you stop pretending you’re locked in. Choose one clean break or boundary; freedom expands from there."
-    },
-    "The Tower": {
-      "upright": "shock, revelation, collapse, liberating change",
-      "reversed": "resisted change, softened upheaval, gradual restructure",
-      "signification upright": "False structures fall so truth can stand. Though abrupt, the clearing is merciful. After the break, rebuild on honest ground with simpler lines.",
-      "signification reversed": "A quieter correction: learn now or face a louder call later. Remove the loose brick before the wall must go."
-    },
-    "The Star": {
-      "upright": "hope, inspiration, spirituality, generosity",
-      "reversed": "despair, loss of faith, pessimism",
-      "signification upright": "Light returns after the storm. Rehydrate spirit through beauty, kindness and rest. Share freely; grace multiplies when given.",
-      "signification reversed": "Hope dimmed isn’t hope dead. Reduce noise, seek small wonders, and let trust regrow through tiny, kept promises."
-    },
-    "The Moon": {
-      "upright": "illusion, confusion, fears, subconscious, mystery",
-      "reversed": "clarity, truths revealed, end of illusion",
-      "signification upright": "Mist and mirrors: move slowly, check projections, follow somatic cues. Not all threats are real, not all signals are false. Dreamwork helps.",
-      "signification reversed": "Fog lifts. Facts surface and inner sense steadies. Proceed with soft confidence and updated maps."
-    },
-    "The Sun": {
-      "upright": "joy, success, vitality, celebration",
-      "reversed": "vanity, inflated ego, hollow success",
-      "signification upright": "Warmth, visibility, playful mastery. Share credit, savor results, and create from joy. Your light helps others shine.",
-      "signification reversed": "Polish without depth fades fast. Re-root in authenticity and service; radiance returns."
+      "upright": "transformation, end of a cycle, rebirth"
     },
     "Judgement": {
-      "upright": "rebirth, calling, reckoning, inner review",
+      "image": "tarot_img/MajorArcanaCards/Le Jugement.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Jugement a l'envers.jpg",
       "reversed": "denial of growth, harsh judgment, guilt",
+      "signification reversed": "Stuck in self-blame or refusal. Practice mercy, make amends, and take the one step that proves renewal.",
       "signification upright": "Awaken to your next assignment. Review honestly, forgive wisely, and answer the call. What’s learned becomes vocation.",
-      "signification reversed": "Stuck in self-blame or refusal. Practice mercy, make amends, and take the one step that proves renewal."
+      "upright": "rebirth, calling, reckoning, inner review"
     },
-    "The World": {
-      "upright": "completion, harmony, mastery, wholeness",
-      "reversed": "near-miss, perfectionism, unfinished cycle",
-      "signification upright": "Integration achieved. Document, celebrate, and share the pattern you’ve mastered. A doorway opens to the next cycle.",
-      "signification reversed": "Define “done,” tie the final thread, and let it stand. Closure is a gift to future you."
+    "Justice": {
+      "image": "tarot_img/MajorArcanaCards/La Justice.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Justice a l'envers.jpg",
+      "reversed": "injustice, bias, imbalance, corruption, revenge",
+      "signification reversed": "Something is off: missing context or unequal stakes. Resist snap judgments; confirm sources. If harsh on yourself, trade punishment for accountability and repair. Advocate for fair process, not just desired outcome.",
+      "signification upright": "Balance is right proportion, not 50/50. Weigh facts, name bias, act transparently. Make amends where needed; credit fairly. Legal or contract matters favor clarity and documentation. Choices now set precedents later.",
+      "upright": "fairness, balance, truth, law, accountability"
     },
-
-    "King of Wands": {
-      "upright": "charismatic leadership, visionary action, creative direction",
-      "reversed": "impulsive domination, hot-headed rule, ego-driven moves",
-      "signification upright": "Lead with purpose and fire, not force. Rally allies, set bold aims, remove blockers. Courage plus clarity ignites progress.",
-      "signification reversed": "Temper the blaze. Listen, share power, and swap pride for partnership. Influence outlasts intimidation."
-    },
-    "Queen of Wands": {
-      "upright": "radiant creativity, warm generosity, inspiring presence",
-      "reversed": "jealousy, possessiveness, creative blockage",
-      "signification upright": "Your warmth sparks rooms and projects. Champion others, play big, and keep joy central to making.",
-      "signification reversed": "Comparison drains the muse. Reclaim play, restore boundaries, and create from self-trust."
-    },
-    "Knight of Wands": {
-      "upright": "adventure, momentum, swift initiative",
-      "reversed": "haste, fleeing, scattered effort",
-      "signification upright": "Start fast, learn faster. Pilot daring moves, accept feedback, iterate in motion.",
-      "signification reversed": "Frenzy ≠ progress. Ground the plan, then channel speed into aim."
-    },
-    "Page of Wands": {
-      "upright": "creative message, new idea, youthful excitement",
-      "reversed": "empty promises, shallow enthusiasm, impatience",
-      "signification upright": "First sparks—announce, test, and practice. Curiosity is your teacher now.",
-      "signification reversed": "Stay past the first hurdle. Depth makes the idea real."
-    },
-
-    "King of Pentacles": {
-      "upright": "established prosperity, wise stewardship, material leadership",
-      "reversed": "greed, corruption, material fixation",
-      "signification upright": "Build durable value and share it. Invest patiently, safeguard people, and model ethical success.",
-      "signification reversed": "If wealth shrank your world, widen it. Align money with meaning and fairness."
-    },
-    "Queen of Pentacles": {
-      "upright": "nurturing abundance, practical care, shared prosperity",
-      "reversed": "overprotective materialism, home neglect, waste",
-      "signification upright": "Create safety, warmth and flourishing systems. Practical kindness compounds.",
-      "signification reversed": "Re-order priorities, curb clutter and revive simple, steady care."
-    },
-    "Knight of Pentacles": {
-      "upright": "diligence, method, perseverance, responsibility",
-      "reversed": "rut, laziness, low ambition",
-      "signification upright": "Reliability wins marathons. Keep steady pace, refine process, track small gains.",
-      "signification reversed": "Stuck is a cue, not a sentence. Set one clear next task and move."
-    },
-    "Page of Pentacles": {
-      "upright": "applied study, new material chance, diligence",
-      "reversed": "shortcut mindset, superficial study, neglect",
-      "signification upright": "Lay foundations: learn by doing, ship small, improve. Tangible skills grow security.",
-      "signification reversed": "Trade hacks for habits. Mastery is repeated care."
-    },
-
     "King of Cups": {
-      "upright": "emotional mastery, wise compassion, benevolent leadership",
+      "image": "tarot_img/MajorArcanaCards/Le Roi de Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi de Coupe a l'envers.jpg",
       "reversed": "emotional manipulation, calculated coldness, hidden instability",
+      "signification reversed": "Tactics erode trust. Practice clean asks, boundaries and self-regulation.",
       "signification upright": "Hold steady seas for others. Name feelings, honor needs, mediate fairly. Soft power is strong.",
-      "signification reversed": "Tactics erode trust. Practice clean asks, boundaries and self-regulation."
+      "upright": "emotional mastery, wise compassion, benevolent leadership"
     },
-    "Queen of Cups": {
-      "upright": "deep intuition, true empathy, unconditional love",
-      "reversed": "over-emotionality, dependency, self-erasing sacrifice",
-      "signification upright": "Offer sanctuary and skilled listening. Empathy with boundaries heals.",
-      "signification reversed": "Refill your own cup. Compassion needs contours to last."
+    "King of Pentacles": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi De Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi De Deniers a l'envers.jpg",
+      "reversed": "greed, corruption, material fixation",
+      "signification reversed": "If wealth shrank your world, widen it. Align money with meaning and fairness.",
+      "signification upright": "Build durable value and share it. Invest patiently, safeguard people, and model ethical success.",
+      "upright": "established prosperity, wise stewardship, material leadership"
+    },
+    "King of Swords": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi D'Epee a l'envers.jpg",
+      "reversed": "coldness, abuse of power, manipulative intellect",
+      "signification reversed": "Sharp mind needs warm heart. Use power to serve, not dominate.",
+      "signification upright": "Speak truth precisely, decide fairly, and think long-term. Let ethics lead strategy.",
+      "upright": "clear reason, just authority, objectivity"
+    },
+    "King of Wands": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi De Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi De Baton a l'envers.jpg",
+      "reversed": "impulsive domination, hot-headed rule, ego-driven moves",
+      "signification reversed": "Temper the blaze. Listen, share power, and swap pride for partnership. Influence outlasts intimidation.",
+      "signification upright": "Lead with purpose and fire, not force. Rally allies, set bold aims, remove blockers. Courage plus clarity ignites progress.",
+      "upright": "charismatic leadership, visionary action, creative direction"
     },
     "Knight of Cups": {
-      "upright": "romance, invitation, charm, creative proposal",
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier De Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier De Coupe a l'envers.jpg",
       "reversed": "romantic illusions, empty promises, emotional games",
+      "signification reversed": "Test for substance. Choose honesty over performance.",
       "signification upright": "Extend heartfelt offers—art, love, reconciliation. Let sincerity be your style.",
-      "signification reversed": "Test for substance. Choose honesty over performance."
+      "upright": "romance, invitation, charm, creative proposal"
     },
-    "Page of Cups": {
-      "upright": "emotional message, artistic spark, tender opening",
-      "reversed": "emotional immaturity, hurt feelings, blockage",
-      "signification upright": "A shy door opens—treat feelings gently and express simply.",
-      "signification reversed": "Soothe the bruise, not the story. Create in small, safe ways."
-    },
-
-    "King of Swords": {
-      "upright": "clear reason, just authority, objectivity",
-      "reversed": "coldness, abuse of power, manipulative intellect",
-      "signification upright": "Speak truth precisely, decide fairly, and think long-term. Let ethics lead strategy.",
-      "signification reversed": "Sharp mind needs warm heart. Use power to serve, not dominate."
-    },
-    "Queen of Swords": {
-      "upright": "independence, lucidity, candid truth, pragmatic insight",
-      "reversed": "bitterness, resentment, cutting criticism",
-      "signification upright": "Name realities cleanly and set respectful boundaries. Hard-won clarity helps others grow.",
-      "signification reversed": "Heal the wound before wielding the word. Kindness sharpens accuracy."
+    "Knight of Pentacles": {
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier de Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier de Deniers a l'envers.jpg",
+      "reversed": "rut, laziness, low ambition",
+      "signification reversed": "Stuck is a cue, not a sentence. Set one clear next task and move.",
+      "signification upright": "Reliability wins marathons. Keep steady pace, refine process, track small gains.",
+      "upright": "diligence, method, perseverance, responsibility"
     },
     "Knight of Swords": {
-      "upright": "bold action, resolve, rapid change",
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier D'Epee a l'envers.jpg",
       "reversed": "overzeal, aggression, blind destruction",
+      "signification reversed": "Throttle back, check collateral, and correct aim before charging.",
       "signification upright": "Advance with courage and a clear brief. Speed plus purpose cuts cleanly.",
-      "signification reversed": "Throttle back, check collateral, and correct aim before charging."
+      "upright": "bold action, resolve, rapid change"
+    },
+    "Knight of Wands": {
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier de Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier de Baton a l'envers.jpg",
+      "reversed": "haste, fleeing, scattered effort",
+      "signification reversed": "Frenzy ≠ progress. Ground the plan, then channel speed into aim.",
+      "signification upright": "Start fast, learn faster. Pilot daring moves, accept feedback, iterate in motion.",
+      "upright": "adventure, momentum, swift initiative"
+    },
+    "Page of Cups": {
+      "image": "tarot_img/MajorArcanaCards/Le Valet De Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet De Coupe a l'envers.jpg",
+      "reversed": "emotional immaturity, hurt feelings, blockage",
+      "signification reversed": "Soothe the bruise, not the story. Create in small, safe ways.",
+      "signification upright": "A shy door opens—treat feelings gently and express simply.",
+      "upright": "emotional message, artistic spark, tender opening"
+    },
+    "Page of Pentacles": {
+      "image": "tarot_img/MajorArcanaCards/Le Valet De Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet De Deniers a l'envers.jpg",
+      "reversed": "shortcut mindset, superficial study, neglect",
+      "signification reversed": "Trade hacks for habits. Mastery is repeated care.",
+      "signification upright": "Lay foundations: learn by doing, ship small, improve. Tangible skills grow security.",
+      "upright": "applied study, new material chance, diligence"
     },
     "Page of Swords": {
-      "upright": "keen curiosity, important news, vigilance",
+      "image": "tarot_img/MajorArcanaCards/Le Valet D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet D'Epee a l'envers.jpg",
       "reversed": "indiscretion, rumors, data manipulation",
+      "signification reversed": "Verify before sharing. Sometimes wisdom is silence.",
       "signification upright": "Observe sharply, ask better questions, and communicate responsibly.",
-      "signification reversed": "Verify before sharing. Sometimes wisdom is silence."
+      "upright": "keen curiosity, important news, vigilance"
+    },
+    "Page of Wands": {
+      "image": "tarot_img/MajorArcanaCards/Le Valet de Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet de Baton a l'envers.jpg",
+      "reversed": "empty promises, shallow enthusiasm, impatience",
+      "signification reversed": "Stay past the first hurdle. Depth makes the idea real.",
+      "signification upright": "First sparks—announce, test, and practice. Curiosity is your teacher now.",
+      "upright": "creative message, new idea, youthful excitement"
+    },
+    "Queen of Cups": {
+      "image": "tarot_img/MajorArcanaCards/La Reine De Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine De Coupe a l'envers.jpg",
+      "reversed": "over-emotionality, dependency, self-erasing sacrifice",
+      "signification reversed": "Refill your own cup. Compassion needs contours to last.",
+      "signification upright": "Offer sanctuary and skilled listening. Empathy with boundaries heals.",
+      "upright": "deep intuition, true empathy, unconditional love"
+    },
+    "Queen of Pentacles": {
+      "image": "tarot_img/MajorArcanaCards/La Reine De Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine De Deniers a l'envers.jpg",
+      "reversed": "overprotective materialism, home neglect, waste",
+      "signification reversed": "Re-order priorities, curb clutter and revive simple, steady care.",
+      "signification upright": "Create safety, warmth and flourishing systems. Practical kindness compounds.",
+      "upright": "nurturing abundance, practical care, shared prosperity"
+    },
+    "Queen of Swords": {
+      "image": "tarot_img/MajorArcanaCards/La Reine D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine D'Epee a l'envers.jpg",
+      "reversed": "bitterness, resentment, cutting criticism",
+      "signification reversed": "Heal the wound before wielding the word. Kindness sharpens accuracy.",
+      "signification upright": "Name realities cleanly and set respectful boundaries. Hard-won clarity helps others grow.",
+      "upright": "independence, lucidity, candid truth, pragmatic insight"
+    },
+    "Queen of Wands": {
+      "image": "tarot_img/MajorArcanaCards/La Reine de Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine de Baton a l'envers.jpg",
+      "reversed": "jealousy, possessiveness, creative blockage",
+      "signification reversed": "Comparison drains the muse. Reclaim play, restore boundaries, and create from self-trust.",
+      "signification upright": "Your warmth sparks rooms and projects. Champion others, play big, and keep joy central to making.",
+      "upright": "radiant creativity, warm generosity, inspiring presence"
+    },
+    "Strength": {
+      "image": "tarot_img/MajorArcanaCards/La Force.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Force a l'envers.jpg",
+      "reversed": "weakness, loss of control, aggression, avoidance",
+      "signification reversed": "Outbursts, collapse or appeasement signal dysregulation. Slow breath, simple boundaries, small brave acts—strength rebuilt from within.",
+      "signification upright": "Gentle power regulates the storm. Meet force with presence, not panic. Tame, don’t terrorize, what is wild. In love and work, courage plus kindness earns trust.",
+      "upright": "inner strength, patience, compassion, courage"
+    },
+    "Temperance": {
+      "image": "tarot_img/MajorArcanaCards/La Temperance.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Temperance a l'envers.jpg",
+      "reversed": "imbalance, excess, haste, chaotic mixing",
+      "signification reversed": "Too much or too little distorts the recipe. Remove one excess, add one stabilizer, and let time do its part.",
+      "signification upright": "Mix opposites with care; healing ripens gradually. Calibrate inputs, pace and boundaries. Integrate, don’t oscillate.",
+      "upright": "balance, healing, patience, harmonious blending"
+    },
+    "The Chariot": {
+      "image": "tarot_img/MajorArcanaCards/Le Chariot.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Chariot a l'envers.jpg",
+      "reversed": "loss of control, scattered energy, misdirection",
+      "signification reversed": "Wheels spin when goals are vague or pride resists adjustment. If you’re forcing outcomes, loosen the grip and refine the map. Realign metrics with meaning, shorten feedback loops, delegate what drains focus.",
+      "signification upright": "Two forces pull apart; leadership chooses a shared direction. Define the finish line, set constraints, keep promises to yourself. Small, repeatable wins pull the vehicle forward. Victory is disciplined momentum, not frantic speed.",
+      "upright": "mastery of opposing forces, determination, victory"
+    },
+    "The Devil": {
+      "image": "tarot_img/MajorArcanaCards/Le Diable.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Diable a l'envers.jpg",
+      "reversed": "liberation, awakening, breaking chains",
+      "signification reversed": "Keys appear once you stop pretending you’re locked in. Choose one clean break or boundary; freedom expands from there.",
+      "signification upright": "Name the chains—habits, debts, obsessions, toxic bonds. Awareness dissolves glamour and returns consent. Desire isn’t evil; unconscious compulsion is.",
+      "upright": "attachments, illusions, materialism, temptation"
+    },
+    "The Emperor": {
+      "image": "tarot_img/MajorArcanaCards/L'Empereur.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Empereur a l'envers.jpg",
+      "reversed": "tyranny, rigidity, abuse of power, control issues",
+      "signification reversed": "Grip without trust breaks what it holds. Commanding from fear becomes brittle. Replace micromanagement with clear goals and autonomy. Strength is flexible, accountable and fair.",
+      "signification upright": "Build frameworks that serve people, not the other way around. Boundaries, strategy and foresight turn chaos into ground. Lead by example; make decisions transparent. Protect the vulnerable, steward resources, and think long-term. Calm order is a kindness.",
+      "upright": "authority, structure, stability, responsibility"
+    },
+    "The Empress": {
+      "image": "tarot_img/MajorArcanaCards/L'Imperatrice.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Imperatrice a l'envers.jpg",
+      "reversed": "creative block, smothering, over-control, dependence",
+      "signification reversed": "Clutching too tightly stifles growth. Over-giving to be needed depletes. Step back, breathe, reconnect to cycles of rest and ripening. Allow help, release perfectionism, and trust the soil to do its work.",
+      "signification upright": "Life blossoms: create, nurture and let things grow in natural rhythm. Pleasure, beauty and care replenish your field. Invest in body, home and art; receive as you give. Collaboration thrives where generosity is real. In relationships, warmth and receptivity deepen bonds; at work, supportive ecosystems multiply results.",
+      "upright": "fertility, abundance, creativity, nourishment, nature"
+    },
+    "The Fool": {
+      "image": "tarot_img/MajorArcanaCards/Le Mat.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Mat a l'envers.jpg",
+      "reversed": "recklessness, naivety, carelessness, hesitation",
+      "signification reversed": "Impulses may be steering without awareness. Acting to escape discomfort creates avoidable detours. Slow down enough to sense consequences and safety. Naivety or magical thinking can mask fear of commitment. Revisit your why, set simple guardrails, and step with presence. Beginning wisely is still a beginning.",
+      "signification upright": "A clean slate invites trust over over-planning. The Fool favors curiosity, play and first steps taken before certainty appears. Follow what feels alive, even if the route is unconventional. Risk exists, but so does bright potential. Travel light: release labels and let experience teach you. In love, bring honesty and openness; in work, prototype and learn in motion. You don’t need every answer to begin—only a sincere yes.",
+      "upright": "new beginnings, spontaneity, freedom, adventure, potential"
+    },
+    "The Hanged Man": {
+      "image": "tarot_img/MajorArcanaCards/Le Pendu.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Pendu a l'envers.jpg",
+      "reversed": "stalled sacrifice, stubbornness, resisting change",
+      "signification reversed": "Hanging on without learning wastes time. If pride resists flexibility, choose a tiny surrender. Movement returns when meaning does.",
+      "signification upright": "Suspend action to see differently. Surrender isn’t defeat; it’s a pivot into wisdom. Yielding the old angle reveals an elegant next move.",
+      "upright": "sacrifice, new perspective, surrender, patience"
+    },
+    "The Hermit": {
+      "image": "tarot_img/MajorArcanaCards/L'Hermite.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Hermite a l'envers.jpg",
+      "reversed": "isolation, rejecting advice, stubbornness",
+      "signification reversed": "Hiding isn’t healing. If pride blocks counsel or loneliness hardens, re-enter connection gently. Solitude serves when it keeps you teachable.",
+      "signification upright": "Step back to see truth. Reflection distills noise into knowing. Seek quiet mentors or become your own; let the inner lamp guide measured steps. Share when wisdom ripens.",
+      "upright": "inner search, reflection, solitude, guidance"
+    },
+    "The Hierophant": {
+      "image": "tarot_img/MajorArcanaCards/Le Pape.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Pape a l'envers.jpg",
+      "reversed": "dogmatism, outdated rules, blind obedience",
+      "signification reversed": "When form replaces spirit, systems ossify. Question edicts that shrink compassion. Keep what’s wise, release what’s dead. Make tradition alive by practicing its essence, not its shell.",
+      "signification upright": "Meaning flows through lineage, mentors and shared rituals. Learn the form to touch the spirit; transmit wisdom with humility. Good rules protect freedom and foster belonging. Ask, “What is the living principle beneath the custom?”",
+      "upright": "tradition, teaching, moral guidance, initiation"
+    },
+    "The High Priestess": {
+      "image": "tarot_img/MajorArcanaCards/La Papesse.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Papesse a l'envers.jpg",
+      "reversed": "blocked intuition, hidden truths, superficiality",
+      "signification reversed": "You may override intuition to fit expectations, or stay vague to avoid truth. Secrets heal when faced kindly. Name what you know but haven’t admitted. Simplify inputs so your inner signal strengthens. Knowledge used to control is a cage; used to understand, it frees.",
+      "signification upright": "Silence becomes a sense organ. Answers surface when you stop pushing and start listening beneath the noise. Dream, journal, notice patterns—what repeats is speaking. Protect your mystery; not everything needs to be posted or solved today. In love, honor boundaries and timing; in work, research privately and move when inner yes and outer signs align.",
+      "upright": "intuition, wisdom, mystery, inner knowledge"
+    },
+    "The Lovers": {
+      "image": "tarot_img/MajorArcanaCards/L'Amoureux.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Amoureux a l'envers.jpg",
+      "reversed": "wrong choice, separation, indecision, inner conflict",
+      "signification reversed": "Mixed motives and people-pleasing breed friction. A yes to avoid loss is a no to yourself. Pause timelines, clear triangulations, and ask what truth you’re avoiding. If parting serves integrity, grieve cleanly and continue.",
+      "signification upright": "A values decision disguised as romance or options. Choose where desire, honesty and responsibility coexist. Speak your real yes/no and welcome the same. Alignment beats perfection: shared direction lets details be designed together. Partnership deepens when each remains whole.",
+      "upright": "choice, union, love, duality, important decision"
+    },
+    "The Magician": {
+      "image": "tarot_img/MajorArcanaCards/Le Bateleur.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Bateleur a l'envers.jpg",
+      "reversed": "deception, manipulation, scattered focus, misuse of skills",
+      "signification reversed": "Charm without integrity backfires. Distraction, half-truths or trying to control others leak power and trust. If energy is scattered, reduce inputs and choose one lever. Audit motives: proving yourself or serving the work? Re-commit to clean methods, simple systems and accountable promises.",
+      "signification upright": "Attention is your wand: idea, intention and action align to shape reality. Name the outcome, gather tools, take one focused step. Communicate clearly—ask precisely, promise realistically. This favors skill-building and visible leadership: show, don’t just tell. In love, state needs plainly; in career, ship something real. Momentum compounds when will serves a purpose larger than ego.",
+      "upright": "initiative, resources, willpower, energy, creativity"
+    },
+    "The Moon": {
+      "image": "tarot_img/MajorArcanaCards/La Lune.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Lune a l'envers.jpg",
+      "reversed": "clarity, truths revealed, end of illusion",
+      "signification reversed": "Fog lifts. Facts surface and inner sense steadies. Proceed with soft confidence and updated maps.",
+      "signification upright": "Mist and mirrors: move slowly, check projections, follow somatic cues. Not all threats are real, not all signals are false. Dreamwork helps.",
+      "upright": "illusion, confusion, fears, subconscious, mystery"
+    },
+    "The Star": {
+      "image": "tarot_img/MajorArcanaCards/L'Etoile.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Etoile a l'envers.jpg",
+      "reversed": "despair, loss of faith, pessimism",
+      "signification reversed": "Hope dimmed isn’t hope dead. Reduce noise, seek small wonders, and let trust regrow through tiny, kept promises.",
+      "signification upright": "Light returns after the storm. Rehydrate spirit through beauty, kindness and rest. Share freely; grace multiplies when given.",
+      "upright": "hope, inspiration, spirituality, generosity"
+    },
+    "The Sun": {
+      "image": "tarot_img/MajorArcanaCards/Le Soleil.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Soleil a l'envers.jpg",
+      "reversed": "vanity, inflated ego, hollow success",
+      "signification reversed": "Polish without depth fades fast. Re-root in authenticity and service; radiance returns.",
+      "signification upright": "Warmth, visibility, playful mastery. Share credit, savor results, and create from joy. Your light helps others shine.",
+      "upright": "joy, success, vitality, celebration"
+    },
+    "The Tower": {
+      "image": "tarot_img/MajorArcanaCards/La Maison Dieu.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Maison Dieu a l'envers.jpg",
+      "reversed": "resisted change, softened upheaval, gradual restructure",
+      "signification reversed": "A quieter correction: learn now or face a louder call later. Remove the loose brick before the wall must go.",
+      "signification upright": "False structures fall so truth can stand. Though abrupt, the clearing is merciful. After the break, rebuild on honest ground with simpler lines.",
+      "upright": "shock, revelation, collapse, liberating change"
+    },
+    "The World": {
+      "image": "tarot_img/MajorArcanaCards/Le Monde.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Monde a l'envers.jpg",
+      "reversed": "near-miss, perfectionism, unfinished cycle",
+      "signification reversed": "Define “done,” tie the final thread, and let it stand. Closure is a gift to future you.",
+      "signification upright": "Integration achieved. Document, celebrate, and share the pattern you’ve mastered. A doorway opens to the next cycle.",
+      "upright": "completion, harmony, mastery, wholeness"
+    },
+    "Wheel of Fortune": {
+      "image": "tarot_img/MajorArcanaCards/La Roue de La Fortune.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Roue de La Fortune a l'envers.jpg",
+      "reversed": "stagnation, resisting change, repeating patterns",
+      "signification reversed": "Clinging recreates what you fear. Break loops by changing one consistent behavior. Accept the lesson, release the script, invite a different scene.",
+      "signification upright": "The wheel turns: catch the updraft by staying light and responsive. Notice timing, align with what’s moving, and say yes to real openings. What returns offers a new choice this time.",
+      "upright": "cycles, fate, opportunity, change"
     }
   }
 }

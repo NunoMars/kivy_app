@@ -1,37 +1,18 @@
 {
   "messages": {
-    "draw_card": "BİR KART ÇEK",
-    "drawing_card": "KART ÇEKİLİYOR...",
-    "concentrating": "Odaklanıyor...",
-    "preparing_arcana": "Arkana hazırlanıyor...",
-    "upright": "⬆ DÜZ ⬆",
-    "reversed": "⬇ TERS ⬇",
-    "thanks": "✨ Umarım falınız hoşunuza gitmiştir! ✨",
-    "continue_exploring": "🔮 Tarotun gizemlerini keşfetmeye devam edin! 🔮",
-    "new_reading": "✨ Yeni açılım",
-    "new_reading_countdown": "✨ Yeni açılım ({seconds}s) ✨",
-    "app_title": "Kehanet tarotuna hoş geldiniz",
-    "draw_instruction": "Kartı dokun\ntahmin için",
-    "crystals_ad": "💎 Kristal & Mineral Mağazası - Ücretsiz kargo 💎",
-    "love_ad": "💕 Astrology+ ile Aşkı Bulun 💕\nDoğum haritanıza göre uyumluluk",
-    "tarot_course_ad": "🔮 Profesyonel Tarot Kursu 🔮\nSertifikalı kartomant olun - Ücretsiz kayıt",
-    "tap_to_return": "Geri dönmek için karta dokunun",
-    "touch_to_enlarge": "🔍 Büyütmek için dokunun",
-    "your_card": "Kartınız",
-    "support_app": "Uygulamayı Destekle",
     "ad_message": "Bu ücretsiz uygulamayı beğendiniz mi?\nSürdürmemize ve geliştirmemize yardımcı olun!",
-    "later": "Daha sonra",
-    "support": "Destekle",
+    "app_title": "Kehanet tarotuna hoş geldiniz",
+    "chat_mme_t": "Mme T Sohbet",
+    "concentrating": "Odaklanıyor...",
+    "configure_backend_hint": "Mme T danışmanlığını etkinleştirmek için MME_T_BACKEND_URL yapılandırın.",
+    "continue_exploring": "🔮 Tarotun gizemlerini keşfetmeye devam edin! 🔮",
+    "crystals_ad": "💎 Kristal & Mineral Mağazası - Ücretsiz kargo 💎",
     "done": "Bitti",
-    "premium_button_base": "Mme T Premium ile Sohbet",
-    "premium_button_price_suffix": " ({price})",
-    "premium_button_provider_suffix": " - {provider}",
-    "provider_google": "Google Play",
-    "provider_amazon": "Amazon Appstore",
-    "provider_simulation": "Demo modu",
-    "provider_disabled": "Kullanılamaz",
+    "draw_card": "BİR KART ÇEK",
+    "draw_instruction": "Kartı dokun\ntahmin için",
+    "drawing_card": "KART ÇEKİLİYOR...",
+    "later": "Daha sonra",
     "loading": "Yükleniyor...",
-    "signification_error": "Anlam yüklenemedi",
     "loading_messages": [
       "🔮 Sorunuza odaklanıyorum...",
       "🃏 Kartları karıştırıyorum...",
@@ -39,251 +20,342 @@
       "🌙 Yıldızlara danışıyorum...",
       "💫 Arkanaları yorumluyorum..."
     ],
-    "chat_mme_t": "Mme T Sohbet",
+    "love_ad": "💕 Astrology+ ile Aşkı Bulun 💕\nDoğum haritanıza göre uyumluluk",
     "mme_t_intro": "Merhaba ✨ Ben Mme T, fal baktıranınız. Bugün hangi sorunuz var? Size nasıl yardımcı olabilirim?",
     "mme_t_thanks": "Mme T'ye danıştığınız için teşekkürler. Yeni bir rehberlik için her zaman geri gelebilirsiniz.",
+    "new_reading": "✨ Yeni açılım",
+    "new_reading_countdown": "✨ Yeni açılım ({seconds}s) ✨",
+    "premium_button_base": "Mme T Premium ile Sohbet",
+    "premium_button_price_suffix": " ({price})",
+    "premium_button_provider_suffix": " - {provider}",
+    "preparing_arcana": "Arkana hazırlanıyor...",
+    "provider_amazon": "Amazon Appstore",
+    "provider_disabled": "Kullanılamaz",
+    "provider_google": "Google Play",
+    "provider_simulation": "Demo modu",
+    "purchase_error_title": "Satın alma başarısız",
+    "reversed": "⬇ TERS ⬇",
+    "signification_error": "Anlam yüklenemedi",
+    "store_mobile_only": "Satın alma sadece mobilde mevcut",
     "store_preparing": "Mağaza hazırlanıyor...",
     "store_preparing_retry": "Mağaza hazırlanıyor, lütfen birazdan tekrar deneyin",
     "store_unavailable_platform": "Mağaza bu platformda kullanılamaz",
-    "store_mobile_only": "Satın alma sadece mobilde mevcut",
+    "support": "Destekle",
+    "support_app": "Uygulamayı Destekle",
+    "tap_to_return": "Geri dönmek için karta dokunun",
+    "tarot_course_ad": "🔮 Profesyonel Tarot Kursu 🔮\nSertifikalı kartomant olun - Ücretsiz kayıt",
+    "thanks": "✨ Umarım falınız hoşunuza gitmiştir! ✨",
     "thanks_for_support": "Desteğiniz için teşekkürler!",
     "thanks_for_support_via": "{provider} üzerinden desteğiniz için teşekkürler!",
-    "configure_backend_hint": "Mme T danışmanlığını etkinleştirmek için MME_T_BACKEND_URL yapılandırın.",
-    "purchase_error_title": "Satın alma başarısız",
-    "thanks_title": "Teşekkürler!"
+    "thanks_title": "Teşekkürler!",
+    "touch_to_enlarge": "🔍 Büyütmek için dokunun",
+    "upright": "⬆ DÜZ ⬆",
+    "your_card": "Kartınız"
   },
   "significations": {
-    "Deli": {
-      "upright": "yeni başlangıçlar, doğaçlama, özgürlük, macera, potansiyel",
-      "reversed": "düşüncesizlik, yön kaybı, ihmal, tereddüt",
-      "signification upright": "Deli, bilinmeyene adım atma cesaretini, masumiyeti ve yeni başlangıçların getirdiği taze potansiyeli simgeler. Bu pozisyon, risk almanın ve kalpten ilerlemenin zamanıdır; önünüze çıkan fırsatları merak ve açıklıkla karşılamanız önerilir.",
-      "signification reversed": "Ters durduğunda, Deli aşırı dikkatsizlik, hazırlıksız adımlar veya sorumsuz davranışlara işaret edebilir. Bu uyarı, hevesin kontrolsüzce hareket etmeye neden olmaması gerektiğini ve biraz daha özen gerektiğini gösterir."
-    },
-    "Büyücü": {
-      "upright": "başlangıç, kaynaklar, coşku, enerji, yaratıcılık",
-      "reversed": "yanılsama, manipülasyon, odak eksikliği, aldatma",
-      "signification upright": "Büyücü, niyetinizi gerçeğe dönüştürme kapasitenizi, elinizdeki araçları akıllıca kullanma yeteneğinizi ve inisiyatif alma çağrısını simgeler. Gücünüzü odaklayarak fırsatları somut sonuçlara çevirebileceğiniz bir dönemdesiniz.",
-      "signification reversed": "Ters pozisyon, manipülasyon, sahte gösteriler veya dikkat dağınıklığına işaret edebilir. Yeteneklerinizi doğru amaçlarla kullanıp kullanmadığınızı gözden geçirmeniz ve dürüst niyetlerle hareket etmeniz önemlidir."
-    },
-    "Başrahip": {
-      "upright": "sezgi, bilgelik, sırlar, içsel bilgi",
-      "reversed": "gizli sırlar, bilinçli görmezden gelme, kapalı sezgi",
-      "signification upright": "Başrahip, geleneksel bilgeliğe, ruhsal öğretilere ve içsel rehberliğe vurgu yapar. Öğrenme, ritüel ve rehberlik yoluyla büyüme mümkündür; içsel disiplin ve saygıyla ilerlemek fayda sağlar.",
-      "signification reversed": "Ters pozisyon, dogmatizm, kör bağlılık veya bilginin kötüye kullanımı riskini gösterir. Kendi doğrularınızı sorgulamak ve fanatik yaklaşımlardan kaçınmak gerektiğini işaret eder."
-    },
-    "İmparatoriçe": {
-      "upright": "bereket, bolluk, yaratıcılık, bakım, doğa ile bağlantı",
-      "reversed": "bağımlılık, ihmal, yaratıcı blokaj, aşırı kontrol",
-      "signification upright": "İmparatoriçe, yaratma ve besleme enerjisini temsil eder; yaşamın bolluğunu kucaklamayı öğütler.",
-      "signification reversed": "Ters pozisyon, özbakım eksikliği veya yaratıcılığın bloke olması anlamına gelebilir."
-    },
-    "İmparator": {
-      "upright": "otorite, yapı, kontrol, istikrar, sorumluluk",
-      "reversed": "zorlama, katılık, güç kötü kullanımı, esneklik eksikliği",
-      "signification upright": "İmparator, düzen ve liderlik enerjisini temsil eder; net kurallar ve planlama önemlidir.",
-      "signification reversed": "Ters pozisyon, otoritenin suistimali veya aşırı kontrol eğilimini gösterir."
-    },
-    "Hiyerofant": {
-      "upright": "gelenek, öğretim, ahlaki rehberlik, tören",
-      "reversed": "dogmatizm, verimsiz gelenekler, kör itaat",
-      "signification upright": "Hiyerofant, köklü bilgeliği ve geleneksel öğretileri temsil eder; bazen bir akıl hocasını işaret eder.",
-      "signification reversed": "Ters pozisyon, sorgulanmamış inançlara veya kurumsal baskıya karşı uyarır."
-    },
-    "Aşıklar": {
-      "upright": "seçim, birlik, aşk, ikilik, önemli karar",
-      "reversed": "kötü seçim, kopuş, kararsızlık, iç çatışma",
-      "signification upright": "Aşıklar, kalpten yapılan seçimleri, değerlerin uyumunu ve bağlantıların derin anlamını sembolize eder. Hem duygusal birliktelikleri hem de yaşam yolunda yapılan etik tercihleri temsil eder; içsel uyum rehberiniz olsun.",
-      "signification reversed": "Ters pozisyon, uyumsuz tercihleri, kararsızlığı veya ilişkilerde yanlış yönlendirmeleri gösterir. Seçimlerinizin ardındaki motivasyonları dikkatle değerlendirmek ve kişisel bütünlüğe öncelik vermek gerekir."
-    },
-    "Savaş Arabası": {
-      "upright": "zıt güçlerin kontrolü, irade gücü, zafer, ilerleme",
-      "reversed": "kontrol kaybı, enerji bölünmesi, hedef kaybı",
-      "signification upright": "Savaş Arabası, irade gücünüzle zıt yönleri birleştirip hedefe doğru ilerleyebileceğinizi simgeler. Disiplin, kararlılık ve kontrollü enerji, başarıyı beraberinde getirir.",
-      "signification reversed": "Ters pozisyon, kontrol kaybı, aceleci davranış veya amaçsız enerji kullanımı nedeniyle başarısızlığa işaret edebilir. Rotayı yeniden gözden geçirip stratejinizi netleştirmeniz önerilir."
-    },
-    "Güç": {
-      "upright": "iç güç, sabır, şefkat, cesaret",
-      "reversed": "zayıflık, kontrol kaybı, şiddet, korkaklık",
-      "signification upright": "Güç, cesaretinizi ve şefkatinizi birleştirerek içsel engelleri aşma yeteneğini simgeler. Zorluklara nazik ama kararlı bir duruşla yaklaşmak, gerçek gücün kaynağıdır.",
-      "signification reversed": "Ters pozisyon, sabırsızlık, öfke veya güç gösterisinin zararlarını işaret edebilir. Kendinizi sakinleştirip empatiyle hareket etmeniz önem taşır."
-    },
-    "Keşiş": {
-      "upright": "bilgelik arayışı, içe dönme, rehberlik, yalnızlık",
-      "reversed": "izolasyon, öğüt reddi, görmezden gelme",
-      "signification upright": "Keşiş, geri çekilerek öz bilince yönelme, derin içsel sorgulama ve olgunlaşma dönemini temsil eder. İçsel ışığı aramak ve öğrendiklerinizi bilgelikle paylaşmak için uygun bir zamandır.",
-      "signification reversed": "Ters pozisyon, sağlıksız yalnızlık, akıl verene kapalı olma veya gereksiz gurur nedeniyle büyümenin engellenmesi anlamına gelebilir. Dengeyi bulmak için topluluk ve rehberlikle ilişki kurun."
-    },
-    "Kader Çarkı": {
-      "upright": "döngüler, kader, fırsat, değişim",
-      "reversed": "süregelen şanssızlık, değişime direnç, durgunluk",
-      "signification upright": "Kader Çarkı, yaşamın sürekli akışı, fırsatların gel-gitleri ve değişimin kaçınılmaz doğasını hatırlatır. Dönemsel şans ve derslerle karşılaşırsınız; akışı ciddiyetle okuyup zamanlamayı kullanın.",
-      "signification reversed": "Ters pozisyon, kırılgan şans, tekrarlayan olumsuz döngüler veya değişime direnç göstergesidir. Kalıpları tanıyıp bilinçli değişiklikler yapmanız gereklidir."
+    "Adalet": {
+      "image": "tarot_img/MajorArcanaCards/La Justice.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Justice a l'envers.jpg",
+      "reversed": "adaletsizlik, önyargı, gerçeklerin çarpıtılması, çıkarcılık, intikam",
+      "signification reversed": "Ters Adalet; yanlı kararlar, bilgi saklama ya da sonuçlardan kaçma eğilimini gösterir. Dengeyi yeniden kurmak ve vicdanla yüzleşmek gerekir.",
+      "signification upright": "Adalet, olaylara tarafsız bakmayı, gerçekleri olduğu gibi görmeyi ve sonuçların sorumluluğunu üstlenmeyi vurgular. Ölçülü karar, kanıt ve dürüstlük bu kartın kalbidir.",
+      "upright": "adalet, denge, gerçek, yasa, sorumluluk"
     },
     "Asılan Adam": {
-      "upright": "fedakârlık, bekleme, perspektif değişimi, bırakma",
+      "image": "tarot_img/MajorArcanaCards/Le Pendu.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Pendu a l'envers.jpg",
       "reversed": "anlamsız fedakârlık, inat, değişime direnç",
+      "signification reversed": "Ters pozisyon, anlamsız fedakârlıklar, inat veya değişimi reddetme sonucu durgunluğa işaret edebilir. Fedakarlığın hedefini ve değerini yeniden değerlendirin.",
       "signification upright": "Asılan Adam, bilinçli bir duruş, fedakârlık ve iç gözlemle yeni bir bakış açısı kazanmayı simgeler. Beklemek ve teslim olmak, başlangıçta pasif görünse de uzun vadede netlik sağlar.",
-      "signification reversed": "Ters pozisyon, anlamsız fedakârlıklar, inat veya değişimi reddetme sonucu durgunluğa işaret edebilir. Fedakarlığın hedefini ve değerini yeniden değerlendirin."
-    },
-    "Ölüm": {
-      "upright": "derin dönüşüm, döngünün sonu, yeniden doğuş",
-      "reversed": "değişime direnç, durgunluk, bilinmeze korku",
-      "signification upright": "Ölüm, radikal dönüşümü, bir döngünün sonunu ve ardından gelen yeniden doğuşu simgeler. Eski alışkanlıkları bırakmak, hayatınızda yeni bir alan açar; bu süreç iyileştirici ve arındırıcıdır.",
-      "signification reversed": "Ters pozisyon, değişime direnç, kayıptan kaçınma veya sürecin ertelenmesiyle ilişkili tıkanıklıkları gösterir. Geçmişi bırakmak için yas ve kabullenme gerekebilir."
-    },
-    "Ölçülülük": {
-      "upright": "denge, şifa, uyum, kademeli dönüşüm",
-      "reversed": "dengesizlik, aşırılık, sabırsızlık, kaos",
-      "signification upright": "Ölçülülük, zıtları uyum içinde dengeleyerek iyileşme ve uyum sağlama sanatını temsil eder. Sabır, ölçülü davranış ve orta yolun seçimiyle ilerlemek faydalıdır.",
-      "signification reversed": "Ters pozisyon, aşırılık, sabırsızlık veya yanlış harmanlamaların yol açtığı dengesizlikleri işaret eder. Dengeli adımlar atılması gerektiğini belirtir."
-    },
-    "Şeytan": {
-      "upright": "bağımlılıklar, yanılsamalar, maddecilik, ayartma",
-      "reversed": "kurtuluş, farkındalık, zincirlerin kırılması",
-      "signification upright": "Şeytan, bağımlılıklar, korkular ve maddi ya da psikolojik bağlarla sınırlanmayı aydınlatır. Görünmeyen zincirleri tanımak, özgürleşme yolunun ilk adımıdır.",
-      "signification reversed": "Ters pozisyon, bağımlılıklar ve sınırlamalardan kurtulma, farkındalık kazanma ve güçlenme sürecinin başladığını gösterir."
-    },
-    "Kule": {
-      "upright": "sarsıntı, açığa çıkma, yıkıcı özgürleşme, ani değişim",
-      "reversed": "değişime direnç, yumuşatılmış çöküş, kademeli yeniden yapılanma",
-      "signification upright": "Kule, yanılsamaların ve kırılgan yapıların aniden çöktüğünü, zorlayıcı ama arındırıcı bir uyanışı sembolize eder. Kriz ne kadar sarsıcı olursa olsun, gerçeklik ortaya çıkar ve daha sağlam temeller inşa edilebilir.",
-      "signification reversed": "Ters pozisyon, krizin ertelenmesi, hafifletilmesi veya yüzleşilmemiş sorunların ertelemeyle sürdüğünü gösterebilir. Yine de ders alınması gereklidir."
-    },
-    "Yıldız": {
-      "upright": "umut, ilham, ruhsal yenilenme, iyimserlik",
-      "reversed": "umutsuzluk, inanç kaybı, karamsarlık",
-      "signification upright": "Yıldız, umut, ilham ve ruhsal yenilenmeyi müjdeler. İyileşme ve ilham dolu bir döneme giriyorsunuz; inancınızı tazeleyin ve vizyonunuzu besleyin.",
-      "signification reversed": "Ters pozisyon, umutsuzluk veya ilham kaybı yaşandığını; yeniden güven ve ilham kaynakları bulma ihtiyacını işaret eder."
+      "upright": "fedakârlık, bekleme, perspektif değişimi, bırakma"
     },
     "Ay": {
-      "upright": "şaşırtma, kafa karışıklığı, korkular, bilinçaltı, sırlar",
+      "image": "tarot_img/MajorArcanaCards/La Lune.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Lune a l'envers.jpg",
       "reversed": "açığa çıkma, gerçeklerin ortaya çıkışı, illüzyonun sona ermesi",
+      "signification reversed": "Ters pozisyon, belirsizliklerin çözülmesi, gerçeklerin gün yüzüne çıkması ve sezgilerin netleşmeye başlaması anlamına gelir.",
       "signification upright": "Ay, bilinçaltının, rüyaların ve gizemlerin dünyasını yansıtır; belirsizlik ve yanılsamalarla karşılaşabilirsiniz. İç sesinize güvenmek ve acele kararlar vermemek önemlidir.",
-      "signification reversed": "Ters pozisyon, belirsizliklerin çözülmesi, gerçeklerin gün yüzüne çıkması ve sezgilerin netleşmeye başlaması anlamına gelir."
+      "upright": "şaşırtma, kafa karışıklığı, korkular, bilinçaltı, sırlar"
     },
-    "Güneş": {
-      "upright": "sevinç, başarı, canlılık, kutlama",
-      "reversed": "kibir, gösteriş, geçici başarı",
-      "signification upright": "Güneş, neşe, canlılık ve başarının simgesidir; başarı ve berraklıkla dolu bir dönem sizi bekliyor. Başarılar kutlanmalı ve enerjinizi paylaşmalısınız.",
-      "signification reversed": "Ters pozisyon, kibir veya yüzeysel başarıların uyarısıdır; alçakgönüllülük ve gerçek değerleri hatırlamak önemlidir."
+    "Aşıklar": {
+      "image": "tarot_img/MajorArcanaCards/L'Amoureux.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Amoureux a l'envers.jpg",
+      "reversed": "kötü seçim, kopuş, kararsızlık, iç çatışma",
+      "signification reversed": "Ters pozisyon, uyumsuz tercihleri, kararsızlığı veya ilişkilerde yanlış yönlendirmeleri gösterir. Seçimlerinizin ardındaki motivasyonları dikkatle değerlendirmek ve kişisel bütünlüğe öncelik vermek gerekir.",
+      "signification upright": "Aşıklar, kalpten yapılan seçimleri, değerlerin uyumunu ve bağlantıların derin anlamını sembolize eder. Hem duygusal birliktelikleri hem de yaşam yolunda yapılan etik tercihleri temsil eder; içsel uyum rehberiniz olsun.",
+      "upright": "seçim, birlik, aşk, ikilik, önemli karar"
     },
-    "Mahkeme": {
-      "upright": "yeniden doğuş, çağrı, hesaplaşma, içsel değerlendirme",
-      "reversed": "gelişimi reddetme, sert yargı, suçluluk duygusu",
-      "signification upright": "Mahkeme, içsel bir çağrı, muhasebe ve yeniden doğuşu simgeler. Geçmişin derslerini görüp sorumluluk almak, ruhsal bir arınma ve yeni bir başlangıç sağlar.",
-      "signification reversed": "Ters pozisyon, değişimi reddetme, kendini affetmeme veya ağır suçluluk duygularıyla tıkanma riskini gösterir. Affetme ve sorumluluk arasında denge kurmak gerekir."
+    "Başrahip": {
+      "image": "tarot_img/MajorArcanaCards/La Papesse.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Papesse a l'envers.jpg",
+      "reversed": "gizli sırlar, bilinçli görmezden gelme, kapalı sezgi",
+      "signification reversed": "Ters pozisyon, dogmatizm, kör bağlılık veya bilginin kötüye kullanımı riskini gösterir. Kendi doğrularınızı sorgulamak ve fanatik yaklaşımlardan kaçınmak gerektiğini işaret eder.",
+      "signification upright": "Başrahip, geleneksel bilgeliğe, ruhsal öğretilere ve içsel rehberliğe vurgu yapar. Öğrenme, ritüel ve rehberlik yoluyla büyüme mümkündür; içsel disiplin ve saygıyla ilerlemek fayda sağlar.",
+      "upright": "sezgi, bilgelik, sırlar, içsel bilgi"
     },
-    "Dünya": {
-      "upright": "tamamlama, uyum, döngünün sonu, bütünlük",
-      "reversed": "hedefe yakın başarısızlık, mükemmeliyetçilik, tamamlanmamışlık",
-      "signification upright": "Dünya, tamamlama, bütünlük ve başarı hissini temsil eder; emeklerinizin karşılığını alacağınız, döngünün tamamlandığı ve yeni bir seviyeye geçtiğiniz bir dönemdir.",
-      "signification reversed": "Ters pozisyon, eksiklik hissi, mükemmeliyetçilik ya da tamamlanmadan kaynaklanan kaygılar olabilir. Başarıyı kabul edip bir sonraki adımı planlamak önemlidir."
+    "Büyücü": {
+      "image": "tarot_img/MajorArcanaCards/Le Bateleur.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Bateleur a l'envers.jpg",
+      "reversed": "yanılsama, manipülasyon, odak eksikliği, aldatma",
+      "signification reversed": "Ters pozisyon, manipülasyon, sahte gösteriler veya dikkat dağınıklığına işaret edebilir. Yeteneklerinizi doğru amaçlarla kullanıp kullanmadığınızı gözden geçirmeniz ve dürüst niyetlerle hareket etmeniz önemlidir.",
+      "signification upright": "Büyücü, niyetinizi gerçeğe dönüştürme kapasitenizi, elinizdeki araçları akıllıca kullanma yeteneğinizi ve inisiyatif alma çağrısını simgeler. Gücünüzü odaklayarak fırsatları somut sonuçlara çevirebileceğiniz bir dönemdesiniz.",
+      "upright": "başlangıç, kaynaklar, coşku, enerji, yaratıcılık"
     },
-    "Adalet": {
-      "upright": "adalet, denge, gerçek, yasa, sorumluluk",
-      "reversed": "adaletsizlik, önyargı, gerçeklerin çarpıtılması, çıkarcılık, intikam",
-      "signification upright": "Adalet, olaylara tarafsız bakmayı, gerçekleri olduğu gibi görmeyi ve sonuçların sorumluluğunu üstlenmeyi vurgular. Ölçülü karar, kanıt ve dürüstlük bu kartın kalbidir.",
-      "signification reversed": "Ters Adalet; yanlı kararlar, bilgi saklama ya da sonuçlardan kaçma eğilimini gösterir. Dengeyi yeniden kurmak ve vicdanla yüzleşmek gerekir."
-    },
-
-    "Değnek Kralı": {
-      "upright": "karizmatik liderlik, vizyon, kararlılık, odaklanmış enerji, girişim",
-      "reversed": "despotluk, öfke, aşırı hükmetme, düşünmeden karar",
-      "signification upright": "Değnek Kralı, etrafı ateşleyen vizyoner bir lideri simgeler. Kaynakları seferber eder, net hedefe odaklanır ve cesaretle ilerler.",
-      "signification reversed": "Ters konum, gücün kötüye kullanılması, farklı fikirlere tahammülsüzlük ve ekibi yoran ani çıkışlara işaret eder."
+    "Deli": {
+      "image": "tarot_img/MajorArcanaCards/Le Mat.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Mat a l'envers.jpg",
+      "reversed": "düşüncesizlik, yön kaybı, ihmal, tereddüt",
+      "signification reversed": "Ters durduğunda, Deli aşırı dikkatsizlik, hazırlıksız adımlar veya sorumsuz davranışlara işaret edebilir. Bu uyarı, hevesin kontrolsüzce hareket etmeye neden olmaması gerektiğini ve biraz daha özen gerektiğini gösterir.",
+      "signification upright": "Deli, bilinmeyene adım atma cesaretini, masumiyeti ve yeni başlangıçların getirdiği taze potansiyeli simgeler. Bu pozisyon, risk almanın ve kalpten ilerlemenin zamanıdır; önünüze çıkan fırsatları merak ve açıklıkla karşılamanız önerilir.",
+      "upright": "yeni başlangıçlar, doğaçlama, özgürlük, macera, potansiyel"
     },
     "Değnek Kraliçesi": {
-      "upright": "ışıldayan yaratıcılık, tutku, sıcak cömertlik, özgüven, ilham",
+      "image": "tarot_img/MajorArcanaCards/La Reine de Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine de Baton a l'envers.jpg",
       "reversed": "kıskançlık, sahiplenme, gizli öfke, benmerkezcilik",
+      "signification reversed": "Ters konumda rekabetçilik, her şeyi kontrol etme ihtiyacı ve onay bağımlılığı iş birliğini zedeler.",
       "signification upright": "Değnek Kraliçesi, insanları cesaretlendiren, yaratıcılığı besleyen ve topluluğa sıcaklık yayan bir güçtür.",
-      "signification reversed": "Ters konumda rekabetçilik, her şeyi kontrol etme ihtiyacı ve onay bağımlılığı iş birliğini zedeler."
+      "upright": "ışıldayan yaratıcılık, tutku, sıcak cömertlik, özgüven, ilham"
     },
-    "Değnek Şövalyesi": {
-      "upright": "hamle, macera, cesur başlangıç, hareket, hızlı değişim",
-      "reversed": "düşüncesizlik, sorumluluktan kaçış, kaotik faaliyet, tükenmişlik",
-      "signification upright": "Değnek Şövalyesi fırsata atılma cesaretini getirir. Hızlı karar ve girişimcilik kapıları aralar.",
-      "signification reversed": "Ters duruş; plansızlık, dağınık enerji ve yarım kalan işlere karşı uyarıdır."
+    "Değnek Kralı": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi De Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi De Baton a l'envers.jpg",
+      "reversed": "despotluk, öfke, aşırı hükmetme, düşünmeden karar",
+      "signification reversed": "Ters konum, gücün kötüye kullanılması, farklı fikirlere tahammülsüzlük ve ekibi yoran ani çıkışlara işaret eder.",
+      "signification upright": "Değnek Kralı, etrafı ateşleyen vizyoner bir lideri simgeler. Kaynakları seferber eder, net hedefe odaklanır ve cesaretle ilerler.",
+      "upright": "karizmatik liderlik, vizyon, kararlılık, odaklanmış enerji, girişim"
     },
     "Değnek Uşağı": {
-      "upright": "fikir habercisi, yaratıcı kıvılcım, öğrenme, heves, proje başlangıcı",
+      "image": "tarot_img/MajorArcanaCards/Le Valet de Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet de Baton a l'envers.jpg",
       "reversed": "boş vaat, yarım kalma, yüzeysel ilgi, sabırsızlık",
+      "signification reversed": "Ters konum, disiplin eksikliği ve ilgiyi çabuk kaybetmeyi, bu yüzden sonucun gecikmesini gösterir.",
       "signification upright": "Değnek Uşağı taze ilham ve deneme cesaretidir; küçük adımlar kalıcı ivme yaratır.",
-      "signification reversed": "Ters konum, disiplin eksikliği ve ilgiyi çabuk kaybetmeyi, bu yüzden sonucun gecikmesini gösterir."
+      "upright": "fikir habercisi, yaratıcı kıvılcım, öğrenme, heves, proje başlangıcı"
     },
-
-    "Tılsım Kralı": {
-      "upright": "kalıcı bolluk, pragmatizm, güvenilirlik, kaynak yönetimi, sorumluluk",
-      "reversed": "açgözlülük, çıkarcılık, yolsuzluk, maddecilik",
-      "signification upright": "Tılsım Kralı; akılcı planlama ve uzun vadeli istikrarla değeri büyüten olgun bir yöneticidir.",
-      "signification reversed": "Ters konum, her şeyi kâr ölçüsüyle değerlendiren, güveni aşındıran bir yaklaşımı işaret eder."
+    "Değnek Şövalyesi": {
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier de Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier de Baton a l'envers.jpg",
+      "reversed": "düşüncesizlik, sorumluluktan kaçış, kaotik faaliyet, tükenmişlik",
+      "signification reversed": "Ters duruş; plansızlık, dağınık enerji ve yarım kalan işlere karşı uyarıdır.",
+      "signification upright": "Değnek Şövalyesi fırsata atılma cesaretini getirir. Hızlı karar ve girişimcilik kapıları aralar.",
+      "upright": "hamle, macera, cesur başlangıç, hareket, hızlı değişim"
     },
-    "Tılsım Kraliçesi": {
-      "upright": "şefkatli bolluk, pratik cömertlik, yuva bilinci, destek, üretkenlik",
-      "reversed": "sahiplenme, savurganlık, aşırı kontrol, özbakımı ihmal",
-      "signification upright": "Tılsım Kraliçesi güvenli ve bereketli bir alan yaratır; kaynakları topluluk yararına dönüştürür.",
-      "signification reversed": "Ters duruş; bakım ile kontrolün karışması, sınırların ve bütçenin şaşması anlamına gelir."
+    "Dünya": {
+      "image": "tarot_img/MajorArcanaCards/Le Monde.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Monde a l'envers.jpg",
+      "reversed": "hedefe yakın başarısızlık, mükemmeliyetçilik, tamamlanmamışlık",
+      "signification reversed": "Ters pozisyon, eksiklik hissi, mükemmeliyetçilik ya da tamamlanmadan kaynaklanan kaygılar olabilir. Başarıyı kabul edip bir sonraki adımı planlamak önemlidir.",
+      "signification upright": "Dünya, tamamlama, bütünlük ve başarı hissini temsil eder; emeklerinizin karşılığını alacağınız, döngünün tamamlandığı ve yeni bir seviyeye geçtiğiniz bir dönemdir.",
+      "upright": "tamamlama, uyum, döngünün sonu, bütünlük"
     },
-    "Tılsım Şövalyesi": {
-      "upright": "sebat, yöntem, güvenilirlik, sorumluluk, istikrarlı ilerleme",
-      "reversed": "rutine saplanma, işkoliklik, durgunluk, değişim korkusu",
-      "signification upright": "Tılsım Şövalyesi düzenli, küçük adımlarla sağlam sonuç almayı öğretir.",
-      "signification reversed": "Ters konum; alışkanlıkların esiri olup gelişimi erteleme ve esnekliğin azalmasıdır."
+    "Güneş": {
+      "image": "tarot_img/MajorArcanaCards/Le Soleil.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Soleil a l'envers.jpg",
+      "reversed": "kibir, gösteriş, geçici başarı",
+      "signification reversed": "Ters pozisyon, kibir veya yüzeysel başarıların uyarısıdır; alçakgönüllülük ve gerçek değerleri hatırlamak önemlidir.",
+      "signification upright": "Güneş, neşe, canlılık ve başarının simgesidir; başarı ve berraklıkla dolu bir dönem sizi bekliyor. Başarılar kutlanmalı ve enerjinizi paylaşmalısınız.",
+      "upright": "sevinç, başarı, canlılık, kutlama"
     },
-    "Tılsım Uşağı": {
-      "upright": "öğrenim, uygulamalı beceri, yeni maddi fırsat, disiplin",
-      "reversed": "tembellik, yüzeysel öğrenme, fırsatçılık, kısa vadecilik",
-      "signification upright": "Tılsım Uşağı, temel atma zamanıdır: bilgi ve beceri yatırımı gelecekte karşılık verir.",
-      "signification reversed": "Ters duruş; emek vermeden hızla sonuç isteme ve zayıf altyapının risklerini vurgular."
+    "Güç": {
+      "image": "tarot_img/MajorArcanaCards/La Force.gif",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Force a l'envers.jpg",
+      "reversed": "zayıflık, kontrol kaybı, şiddet, korkaklık",
+      "signification reversed": "Ters pozisyon, sabırsızlık, öfke veya güç gösterisinin zararlarını işaret edebilir. Kendinizi sakinleştirip empatiyle hareket etmeniz önem taşır.",
+      "signification upright": "Güç, cesaretinizi ve şefkatinizi birleştirerek içsel engelleri aşma yeteneğini simgeler. Zorluklara nazik ama kararlı bir duruşla yaklaşmak, gerçek gücün kaynağıdır.",
+      "upright": "iç güç, sabır, şefkat, cesaret"
     },
-
-    "Kupa Kralı": {
-      "upright": "duygusal olgunluk, şefkat, diplomasi, koruyuculuk, denge",
-      "reversed": "duygusal manipülasyon, gizli dengesizlik, soğuk hesap",
-      "signification upright": "Kupa Kralı, zor konuşmalarda bile sükûnetle empati kuran, kalp zekâsıyla yöneten figürdür.",
-      "signification reversed": "Ters konum, duygular üzerinden kontrol, pasif agresif tutum ve kırılganlığın maskelenmesini gösterir."
+    "Hiyerofant": {
+      "image": "tarot_img/MajorArcanaCards/Le Pape.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Pape a l'envers.jpg",
+      "reversed": "dogmatizm, verimsiz gelenekler, kör itaat",
+      "signification reversed": "Ters pozisyon, sorgulanmamış inançlara veya kurumsal baskıya karşı uyarır.",
+      "signification upright": "Hiyerofant, köklü bilgeliği ve geleneksel öğretileri temsil eder; bazen bir akıl hocasını işaret eder.",
+      "upright": "gelenek, öğretim, ahlaki rehberlik, tören"
+    },
+    "Kader Çarkı": {
+      "image": "tarot_img/MajorArcanaCards/La Roue de La Fortune.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Roue de La Fortune a l'envers.jpg",
+      "reversed": "süregelen şanssızlık, değişime direnç, durgunluk",
+      "signification reversed": "Ters pozisyon, kırılgan şans, tekrarlayan olumsuz döngüler veya değişime direnç göstergesidir. Kalıpları tanıyıp bilinçli değişiklikler yapmanız gereklidir.",
+      "signification upright": "Kader Çarkı, yaşamın sürekli akışı, fırsatların gel-gitleri ve değişimin kaçınılmaz doğasını hatırlatır. Dönemsel şans ve derslerle karşılaşırsınız; akışı ciddiyetle okuyup zamanlamayı kullanın.",
+      "upright": "döngüler, kader, fırsat, değişim"
+    },
+    "Keşiş": {
+      "image": "tarot_img/MajorArcanaCards/L'Hermite.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Hermite a l'envers.jpg",
+      "reversed": "izolasyon, öğüt reddi, görmezden gelme",
+      "signification reversed": "Ters pozisyon, sağlıksız yalnızlık, akıl verene kapalı olma veya gereksiz gurur nedeniyle büyümenin engellenmesi anlamına gelebilir. Dengeyi bulmak için topluluk ve rehberlikle ilişki kurun.",
+      "signification upright": "Keşiş, geri çekilerek öz bilince yönelme, derin içsel sorgulama ve olgunlaşma dönemini temsil eder. İçsel ışığı aramak ve öğrendiklerinizi bilgelikle paylaşmak için uygun bir zamandır.",
+      "upright": "bilgelik arayışı, içe dönme, rehberlik, yalnızlık"
+    },
+    "Kule": {
+      "image": "tarot_img/MajorArcanaCards/La Maison Dieu.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Maison Dieu a l'envers.jpg",
+      "reversed": "değişime direnç, yumuşatılmış çöküş, kademeli yeniden yapılanma",
+      "signification reversed": "Ters pozisyon, krizin ertelenmesi, hafifletilmesi veya yüzleşilmemiş sorunların ertelemeyle sürdüğünü gösterebilir. Yine de ders alınması gereklidir.",
+      "signification upright": "Kule, yanılsamaların ve kırılgan yapıların aniden çöktüğünü, zorlayıcı ama arındırıcı bir uyanışı sembolize eder. Kriz ne kadar sarsıcı olursa olsun, gerçeklik ortaya çıkar ve daha sağlam temeller inşa edilebilir.",
+      "upright": "sarsıntı, açığa çıkma, yıkıcı özgürleşme, ani değişim"
     },
     "Kupa Kraliçesi": {
-      "upright": "derin sezgi, empati, şifa, koşulsuz destek, duygusal derinlik",
+      "image": "tarot_img/MajorArcanaCards/La Reine De Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine De Coupe a l'envers.jpg",
       "reversed": "duygulara kapılma, birlikte bağımlılık, kendini feda, sınır erimesi",
+      "signification reversed": "Ters duruş; başkalarının duygularında eriyip kendi ihtiyaçlarını unutma riskidir.",
       "signification upright": "Kupa Kraliçesi kabul ve şefkat alanı açar; sezgisiyle güven verir ve iyileştirir.",
-      "signification reversed": "Ters duruş; başkalarının duygularında eriyip kendi ihtiyaçlarını unutma riskidir."
+      "upright": "derin sezgi, empati, şifa, koşulsuz destek, duygusal derinlik"
     },
-    "Kupa Şövalyesi": {
-      "upright": "romantizm, davet, yaratıcı teklif, cazibe, diplomasi",
-      "reversed": "hayalperestlik, boş söz, duygusal oyunlar, olgunlaşmamışlık",
-      "signification upright": "Kupa Şövalyesi barışçıl mesajlar ve ilham verici teklifler getirir; estetik ve nezaket öndedir.",
-      "signification reversed": "Ters konum, söz ile eylem arasındaki kopukluk ve ilişkileri idealleştirme uyarısıdır."
+    "Kupa Kralı": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi de Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi de Coupe a l'envers.jpg",
+      "reversed": "duygusal manipülasyon, gizli dengesizlik, soğuk hesap",
+      "signification reversed": "Ters konum, duygular üzerinden kontrol, pasif agresif tutum ve kırılganlığın maskelenmesini gösterir.",
+      "signification upright": "Kupa Kralı, zor konuşmalarda bile sükûnetle empati kuran, kalp zekâsıyla yöneten figürdür.",
+      "upright": "duygusal olgunluk, şefkat, diplomasi, koruyuculuk, denge"
     },
     "Kupa Uşağı": {
-      "upright": "duygusal mesaj, yaratıcı esin, hassasiyetin uyanışı, hayal gücü",
+      "image": "tarot_img/MajorArcanaCards/Le Valet De Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet De Coupe a l'envers.jpg",
       "reversed": "duygusal olgunlaşmama, alınganlık, yaratıcı tıkanma, safdillik",
+      "signification reversed": "Ters duruş; küskünlük ve kendini saklama eğiliminin yaratımı kilitlemesini gösterir.",
       "signification upright": "Kupa Uşağı, duyguları ifade etmeyi ve kırılganlığa nazikçe alan açmayı öğretir.",
-      "signification reversed": "Ters duruş; küskünlük ve kendini saklama eğiliminin yaratımı kilitlemesini gösterir."
+      "upright": "duygusal mesaj, yaratıcı esin, hassasiyetin uyanışı, hayal gücü"
     },
-
-    "Kılıç Kralı": {
-      "upright": "zihinsel berraklık, adalet, mantık, strateji, ilkeli duruş",
-      "reversed": "zalimlik, güç istismarı, soğukluk, zihinsel manipülasyon",
-      "signification upright": "Kılıç Kralı, veriyi duygudan ayırıp etik karar veren tarafsız bir hakemdir.",
-      "signification reversed": "Ters konum, zekâyı baskı aracına çeviren, küçümseyici ve kontrolcü bir tavra işaret eder."
+    "Kupa Şövalyesi": {
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier De Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier De Coupe a l'envers.jpg",
+      "reversed": "hayalperestlik, boş söz, duygusal oyunlar, olgunlaşmamışlık",
+      "signification reversed": "Ters konum, söz ile eylem arasındaki kopukluk ve ilişkileri idealleştirme uyarısıdır.",
+      "signification upright": "Kupa Şövalyesi barışçıl mesajlar ve ilham verici teklifler getirir; estetik ve nezaket öndedir.",
+      "upright": "romantizm, davet, yaratıcı teklif, cazibe, diplomasi"
     },
     "Kılıç Kraliçesi": {
-      "upright": "bağımsızlık, keskin sezgi, açık sözlülük, rasyonellik, olgunluk",
+      "image": "tarot_img/MajorArcanaCards/La Reine D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine D'Epee a l'envers.jpg",
       "reversed": "katılaşma, iğneleyicilik, intikamcılık, aşırı soğukluk",
+      "signification reversed": "Ters duruş; geçmiş kırgınlıklara tutunup sözcüklerle yaralama riskini vurgular.",
       "signification upright": "Kılıç Kraliçesi; deneyimden gelen netlik ve dürüst danışmanlıkla özdürüstlüğü çağırır.",
-      "signification reversed": "Ters duruş; geçmiş kırgınlıklara tutunup sözcüklerle yaralama riskini vurgular."
+      "upright": "bağımsızlık, keskin sezgi, açık sözlülük, rasyonellik, olgunluk"
     },
-    "Kılıç Şövalyesi": {
-      "upright": "hızlı karar, cesaret, tartışma, atılım, zihnin eylemi",
-      "reversed": "fevrilik, saldırganlık, yıkıcılık, öfke",
-      "signification upright": "Kılıç Şövalyesi, fikirleri eyleme çeviren hız ve kararlılıktır; engelleri kesip atar.",
-      "signification reversed": "Ters konum, risk analizi yapmadan sert hamlelerin kayba yol açabileceğini hatırlatır."
+    "Kılıç Kralı": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi D'Epee a l'envers.jpg",
+      "reversed": "zalimlik, güç istismarı, soğukluk, zihinsel manipülasyon",
+      "signification reversed": "Ters konum, zekâyı baskı aracına çeviren, küçümseyici ve kontrolcü bir tavra işaret eder.",
+      "signification upright": "Kılıç Kralı, veriyi duygudan ayırıp etik karar veren tarafsız bir hakemdir.",
+      "upright": "zihinsel berraklık, adalet, mantık, strateji, ilkeli duruş"
     },
     "Kılıç Uşağı": {
-      "upright": "merak, tetikte olma, önemli haber, gözlem, esnek düşünce",
+      "image": "tarot_img/MajorArcanaCards/Le Valet D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet D'Epee a l'envers.jpg",
       "reversed": "boş konuşma, dedikodu, bilgi çarpıtma, gizli izleme",
+      "signification reversed": "Ters duruş; veri sızıntısı, yanlış anlama ve sınır ihlali riskine karşı uyarıdır.",
       "signification upright": "Kılıç Uşağı, kritik düşünmeyi, soru sormayı ve kaynakları doğrulamayı öğütler.",
-      "signification reversed": "Ters duruş; veri sızıntısı, yanlış anlama ve sınır ihlali riskine karşı uyarıdır."
+      "upright": "merak, tetikte olma, önemli haber, gözlem, esnek düşünce"
+    },
+    "Kılıç Şövalyesi": {
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier D'Epee a l'envers.jpg",
+      "reversed": "fevrilik, saldırganlık, yıkıcılık, öfke",
+      "signification reversed": "Ters konum, risk analizi yapmadan sert hamlelerin kayba yol açabileceğini hatırlatır.",
+      "signification upright": "Kılıç Şövalyesi, fikirleri eyleme çeviren hız ve kararlılıktır; engelleri kesip atar.",
+      "upright": "hızlı karar, cesaret, tartışma, atılım, zihnin eylemi"
+    },
+    "Mahkeme": {
+      "image": "tarot_img/MajorArcanaCards/Le Jugement.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Jugement a l'envers.jpg",
+      "reversed": "gelişimi reddetme, sert yargı, suçluluk duygusu",
+      "signification reversed": "Ters pozisyon, değişimi reddetme, kendini affetmeme veya ağır suçluluk duygularıyla tıkanma riskini gösterir. Affetme ve sorumluluk arasında denge kurmak gerekir.",
+      "signification upright": "Mahkeme, içsel bir çağrı, muhasebe ve yeniden doğuşu simgeler. Geçmişin derslerini görüp sorumluluk almak, ruhsal bir arınma ve yeni bir başlangıç sağlar.",
+      "upright": "yeniden doğuş, çağrı, hesaplaşma, içsel değerlendirme"
+    },
+    "Savaş Arabası": {
+      "image": "tarot_img/MajorArcanaCards/Le Chariot.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Chariot a l'envers.jpg",
+      "reversed": "kontrol kaybı, enerji bölünmesi, hedef kaybı",
+      "signification reversed": "Ters pozisyon, kontrol kaybı, aceleci davranış veya amaçsız enerji kullanımı nedeniyle başarısızlığa işaret edebilir. Rotayı yeniden gözden geçirip stratejinizi netleştirmeniz önerilir.",
+      "signification upright": "Savaş Arabası, irade gücünüzle zıt yönleri birleştirip hedefe doğru ilerleyebileceğinizi simgeler. Disiplin, kararlılık ve kontrollü enerji, başarıyı beraberinde getirir.",
+      "upright": "zıt güçlerin kontrolü, irade gücü, zafer, ilerleme"
+    },
+    "Tılsım Kraliçesi": {
+      "image": "tarot_img/MajorArcanaCards/La Reine De Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine De Deniers a l'envers.jpg",
+      "reversed": "sahiplenme, savurganlık, aşırı kontrol, özbakımı ihmal",
+      "signification reversed": "Ters duruş; bakım ile kontrolün karışması, sınırların ve bütçenin şaşması anlamına gelir.",
+      "signification upright": "Tılsım Kraliçesi güvenli ve bereketli bir alan yaratır; kaynakları topluluk yararına dönüştürür.",
+      "upright": "şefkatli bolluk, pratik cömertlik, yuva bilinci, destek, üretkenlik"
+    },
+    "Tılsım Kralı": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi De Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi De Deniers a l'envers.jpg",
+      "reversed": "açgözlülük, çıkarcılık, yolsuzluk, maddecilik",
+      "signification reversed": "Ters konum, her şeyi kâr ölçüsüyle değerlendiren, güveni aşındıran bir yaklaşımı işaret eder.",
+      "signification upright": "Tılsım Kralı; akılcı planlama ve uzun vadeli istikrarla değeri büyüten olgun bir yöneticidir.",
+      "upright": "kalıcı bolluk, pragmatizm, güvenilirlik, kaynak yönetimi, sorumluluk"
+    },
+    "Tılsım Uşağı": {
+      "image": "tarot_img/MajorArcanaCards/Le Valet De Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet De Deniers a l'envers.jpg",
+      "reversed": "tembellik, yüzeysel öğrenme, fırsatçılık, kısa vadecilik",
+      "signification reversed": "Ters duruş; emek vermeden hızla sonuç isteme ve zayıf altyapının risklerini vurgular.",
+      "signification upright": "Tılsım Uşağı, temel atma zamanıdır: bilgi ve beceri yatırımı gelecekte karşılık verir.",
+      "upright": "öğrenim, uygulamalı beceri, yeni maddi fırsat, disiplin"
+    },
+    "Tılsım Şövalyesi": {
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier de Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier de Deniers a l'envers.jpg",
+      "reversed": "rutine saplanma, işkoliklik, durgunluk, değişim korkusu",
+      "signification reversed": "Ters konum; alışkanlıkların esiri olup gelişimi erteleme ve esnekliğin azalmasıdır.",
+      "signification upright": "Tılsım Şövalyesi düzenli, küçük adımlarla sağlam sonuç almayı öğretir.",
+      "upright": "sebat, yöntem, güvenilirlik, sorumluluk, istikrarlı ilerleme"
+    },
+    "Yıldız": {
+      "image": "tarot_img/MajorArcanaCards/L'Etoile.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Etoile a l'envers.jpg",
+      "reversed": "umutsuzluk, inanç kaybı, karamsarlık",
+      "signification reversed": "Ters pozisyon, umutsuzluk veya ilham kaybı yaşandığını; yeniden güven ve ilham kaynakları bulma ihtiyacını işaret eder.",
+      "signification upright": "Yıldız, umut, ilham ve ruhsal yenilenmeyi müjdeler. İyileşme ve ilham dolu bir döneme giriyorsunuz; inancınızı tazeleyin ve vizyonunuzu besleyin.",
+      "upright": "umut, ilham, ruhsal yenilenme, iyimserlik"
+    },
+    "Ölçülülük": {
+      "image": "tarot_img/MajorArcanaCards/La Temperance.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Temperance a l'envers.jpg",
+      "reversed": "dengesizlik, aşırılık, sabırsızlık, kaos",
+      "signification reversed": "Ters pozisyon, aşırılık, sabırsızlık veya yanlış harmanlamaların yol açtığı dengesizlikleri işaret eder. Dengeli adımlar atılması gerektiğini belirtir.",
+      "signification upright": "Ölçülülük, zıtları uyum içinde dengeleyerek iyileşme ve uyum sağlama sanatını temsil eder. Sabır, ölçülü davranış ve orta yolun seçimiyle ilerlemek faydalıdır.",
+      "upright": "denge, şifa, uyum, kademeli dönüşüm"
+    },
+    "Ölüm": {
+      "image": "tarot_img/MajorArcanaCards/La Mort.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Mort a l'envers.jpg",
+      "reversed": "değişime direnç, durgunluk, bilinmeze korku",
+      "signification reversed": "Ters pozisyon, değişime direnç, kayıptan kaçınma veya sürecin ertelenmesiyle ilişkili tıkanıklıkları gösterir. Geçmişi bırakmak için yas ve kabullenme gerekebilir.",
+      "signification upright": "Ölüm, radikal dönüşümü, bir döngünün sonunu ve ardından gelen yeniden doğuşu simgeler. Eski alışkanlıkları bırakmak, hayatınızda yeni bir alan açar; bu süreç iyileştirici ve arındırıcıdır.",
+      "upright": "derin dönüşüm, döngünün sonu, yeniden doğuş"
+    },
+    "İmparator": {
+      "image": "tarot_img/MajorArcanaCards/L'Empereur.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Empereur a l'envers.jpg",
+      "reversed": "zorlama, katılık, güç kötü kullanımı, esneklik eksikliği",
+      "signification reversed": "Ters pozisyon, otoritenin suistimali veya aşırı kontrol eğilimini gösterir.",
+      "signification upright": "İmparator, düzen ve liderlik enerjisini temsil eder; net kurallar ve planlama önemlidir.",
+      "upright": "otorite, yapı, kontrol, istikrar, sorumluluk"
+    },
+    "İmparatoriçe": {
+      "image": "tarot_img/MajorArcanaCards/L'Imperatrice.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Imperatrice a l'envers.jpg",
+      "reversed": "bağımlılık, ihmal, yaratıcı blokaj, aşırı kontrol",
+      "signification reversed": "Ters pozisyon, özbakım eksikliği veya yaratıcılığın bloke olması anlamına gelebilir.",
+      "signification upright": "İmparatoriçe, yaratma ve besleme enerjisini temsil eder; yaşamın bolluğunu kucaklamayı öğütler.",
+      "upright": "bereket, bolluk, yaratıcılık, bakım, doğa ile bağlantı"
+    },
+    "Şeytan": {
+      "image": "tarot_img/MajorArcanaCards/Le Diable.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Diable a l'envers.jpg",
+      "reversed": "kurtuluş, farkındalık, zincirlerin kırılması",
+      "signification reversed": "Ters pozisyon, bağımlılıklar ve sınırlamalardan kurtulma, farkındalık kazanma ve güçlenme sürecinin başladığını gösterir.",
+      "signification upright": "Şeytan, bağımlılıklar, korkular ve maddi ya da psikolojik bağlarla sınırlanmayı aydınlatır. Görünmeyen zincirleri tanımak, özgürleşme yolunun ilk adımıdır.",
+      "upright": "bağımlılıklar, yanılsamalar, maddecilik, ayartma"
     }
   }
 }

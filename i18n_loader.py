@@ -103,103 +103,17 @@ def tr(key: str, lang: Optional[str] = None, **kwargs) -> str:
 
 
 # Re-use cards_mapping if available for name/image mapping
-try:
-    from cards_mapping import (
-        get_card_image_path,
-        get_french_card_name,
-        get_card_name_for_lang,
-    )
-except Exception:
-    def get_card_image_path(card_name, state='droite'):
-        return 'tarot_img/Back.jpg'
-
-    def get_french_card_name(name):
-        return name
-
-    def get_card_name_for_lang(french_name, target_lang):
-        return french_name
 
 
-def get_cards_signification() -> dict:
-    try:
-        lang = get_system_language()
-    except Exception:
-        lang = None
 
-    # Strategy: return a dictionary whose keys are the localized card names
-    # for the requested language when possible. We do this without modifying
-    # the JSON files on disk: we build a transient mapping from the canonical
-    # French keys to a localized display key using cards_mapping.get_card_name_for_lang.
-    # The function attempts to use the language-specific signification entry
-    # (either under the French key or under the localized key) and falls back
-    # to the French source if missing.
-    try:
-        fr_sig = load_lang_significations('fr') or {}
-    except Exception:
-        fr_sig = {}
-
-    try:
-        if lang:
-            sig = load_lang_significations(lang) or {}
-        else:
-            sig = {}
-    except Exception:
-        sig = {}
-
-    result = {}
-    # If we have a canonical French list, iterate to preserve order/coverage
-    if isinstance(fr_sig, dict) and fr_sig:
-        for french_key in fr_sig.keys():
-            try:
-                localized_key = get_card_name_for_lang(french_key, lang) if lang else french_key
-            except Exception:
-                localized_key = french_key
-
-            # Prefer the language-specific value if present (either under French
-            # key or under the localized key). Otherwise fall back to the French
-            # canonical entry.
-            card_data = None
-            if french_key in sig:
-                card_data = sig[french_key]
-            else:
-                try:
-                    if localized_key in sig:
-                        card_data = sig[localized_key]
-                except Exception:
-                    card_data = None
-
-            if card_data is None:
-                card_data = fr_sig.get(french_key)
-
-            # Use localized key (may equal french_key when no translation exists)
-            result[localized_key] = card_data
-
-        return result
-
-    # No French canonical data; just return whatever the language bundle provides
-    return sig or {}
-
-
-# Mapping used by UI to find the correct keys inside signification bundles.
-# This small mapping is structural (field names), not user-facing UI text.
-SIGNIFICATION_KEY_MAP = {
-    # Use English internal field names for all languages. The UI displays
-    # position via `messages` (tr('upright')/tr('reversed')), while the
-    # signification bundles use english keys like 'upright'/'reversed' and
-    # 'signification upright'/'signification reversed'.
-    "fr": {
-        "keywords": {"upright": "upright", "reversed": "reversed"},
-        "detail": {"upright": "signification upright", "reversed": "signification reversed"},
-    },
-    "en": {
-        "keywords": {"upright": "upright", "reversed": "reversed"},
-        "detail": {"upright": "signification upright", "reversed": "signification reversed"},
-    },
-    "pt": {
-        "keywords": {"upright": "upright", "reversed": "reversed"},
-        "detail": {"upright": "signification upright", "reversed": "signification reversed"},
-    },
-}
+def get_cards_signification(lang: str) -> dict:
+    """
+    Retourne le dictionnaire des significations pour la langue passée en paramètre.
+    """
+    with open(f"i18n/lang/{lang}.json", encoding="utf-8") as f:
+        data = json.load(f)
+    signification_dict = data.get("significations", {})
+    return signification_dict
 
 
 # Expose an empty MESSAGES dict (source of truth remains the JSON files)

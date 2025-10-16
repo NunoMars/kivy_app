@@ -1,37 +1,18 @@
 {
   "messages": {
-    "draw_card": "抽一张牌",
-    "drawing_card": "正在抽牌...",
-    "concentrating": "专注中...",
-    "preparing_arcana": "正在准备奥秘...",
-    "upright": "⬆ 正位 ⬆",
-    "reversed": "⬇ 逆位 ⬇",
-    "thanks": "✨ 希望你喜欢你的解读！ ✨",
-    "continue_exploring": "🔮 继续探索塔罗的奥秘！ 🔮",
-    "new_reading": "✨ 新的解读",
-    "new_reading_countdown": "✨ 新的解读 ({seconds}s) ✨",
-    "app_title": "欢迎来到占卜塔罗",
-    "draw_instruction": "点击牌\n获取预测",
-    "crystals_ad": "💎 水晶与矿物商店 - 免费送货 💎",
-    "love_ad": "💕 用Astrology+寻找爱情 💕\n基于你的出生星盘的匹配",
-    "tarot_course_ad": "🔮 专业塔罗课程 🔮\n成为认证的塔罗师 - 免费注册",
-    "tap_to_return": "点击牌返回",
-    "touch_to_enlarge": "🔍 点击放大",
-    "your_card": "你的牌",
-    "support_app": "支持应用",
     "ad_message": "你喜欢这个免费应用吗？\n帮助我们维护和改进它！",
-    "later": "稍后",
-    "support": "支持",
+    "app_title": "欢迎来到占卜塔罗",
+    "chat_mme_t": "Mme T 聊天",
+    "concentrating": "专注中...",
+    "configure_backend_hint": "配置MME_T_BACKEND_URL以启用Mme T咨询。",
+    "continue_exploring": "🔮 继续探索塔罗的奥秘！ 🔮",
+    "crystals_ad": "💎 水晶与矿物商店 - 免费送货 💎",
     "done": "完成",
-    "premium_button_base": "Mme T 高级聊天",
-    "premium_button_price_suffix": " ({price})",
-    "premium_button_provider_suffix": " - {provider}",
-    "provider_google": "Google Play",
-    "provider_amazon": "Amazon Appstore",
-    "provider_simulation": "演示模式",
-    "provider_disabled": "不可用",
+    "draw_card": "抽一张牌",
+    "draw_instruction": "点击牌\n获取预测",
+    "drawing_card": "正在抽牌...",
+    "later": "稍后",
     "loading": "加载中...",
-    "signification_error": "解读加载错误",
     "loading_messages": [
       "🔮 正在专注你的问题...",
       "🃏 正在洗牌...",
@@ -39,249 +20,342 @@
       "🌙 正在咨询星辰...",
       "💫 正在解读奥秘..."
     ],
-    "chat_mme_t": "Mme T 聊天",
+    "love_ad": "💕 用Astrology+寻找爱情 💕\n基于你的出生星盘的匹配",
     "mme_t_intro": "你好 ✨ 我是Mme T，你的占卜师。今天有什么问题困扰你？我能为你做些什么？",
     "mme_t_thanks": "感谢咨询Mme T。随时欢迎再次来访获取新的指引。",
+    "new_reading": "✨ 新的解读",
+    "new_reading_countdown": "✨ 新的解读 ({seconds}s) ✨",
+    "premium_button_base": "Mme T 高级聊天",
+    "premium_button_price_suffix": " ({price})",
+    "premium_button_provider_suffix": " - {provider}",
+    "preparing_arcana": "正在准备奥秘...",
+    "provider_amazon": "Amazon Appstore",
+    "provider_disabled": "不可用",
+    "provider_google": "Google Play",
+    "provider_simulation": "演示模式",
+    "purchase_error_title": "购买失败",
+    "reversed": "⬇ 逆位 ⬇",
+    "signification_error": "解读加载错误",
+    "store_mobile_only": "仅可在移动端购买",
     "store_preparing": "商店准备中...",
     "store_preparing_retry": "商店准备中，请稍后重试",
     "store_unavailable_platform": "该平台无法使用商店",
-    "store_mobile_only": "仅可在移动端购买",
+    "support": "支持",
+    "support_app": "支持应用",
+    "tap_to_return": "点击牌返回",
+    "tarot_course_ad": "🔮 专业塔罗课程 🔮\n成为认证的塔罗师 - 免费注册",
+    "thanks": "✨ 希望你喜欢你的解读！ ✨",
     "thanks_for_support": "感谢您的支持！",
     "thanks_for_support_via": "感谢通过{provider}的支持！",
-    "configure_backend_hint": "配置MME_T_BACKEND_URL以启用Mme T咨询。",
-    "purchase_error_title": "购买失败",
-    "thanks_title": "谢谢！"
+    "thanks_title": "谢谢！",
+    "touch_to_enlarge": "🔍 点击放大",
+    "upright": "⬆ 正位 ⬆",
+    "your_card": "你的牌"
   },
   "significations": {
-    "愚者": {
-      "upright": "新的开始、天真、自由、冒险、潜力",
-      "reversed": "鲁莽、迷失方向、疏忽、犹豫",
-      "signification upright": "愚者代表着全新的旅程和无限的可能性。他象征着纯真、自由和对未来的信任。愚者鼓励你勇敢迈出第一步，去探索未知的世界，不要被恐惧束缚。现在是冒险和自我发现的时刻，保持开放的心态，迎接生活带来的每一个机会。",
-      "signification reversed": "逆位的愚者提醒你要警惕鲁莽和缺乏准备。此时可能存在冲动、疏忽或对后果的不重视。你需要在追求自由和承担责任之间找到平衡，避免因轻率而错失重要的成长机会。"
-    },
-    "魔术师": {
-      "upright": "开始、资源、热情、行动力、创造力",
-      "reversed": "幻象、操控、分心、欺骗",
-      "signification upright": "魔术师象征着将想法和愿望转化为现实的能力。他提醒你拥有实现目标所需的资源和智慧。现在是采取主动、展现创造力和自信心的最佳时机。专注于你的目标，善用手中的工具，你将能够把梦想变为现实。",
-      "signification reversed": "逆位的魔术师可能暗示能量分散、缺乏专注或滥用才能。要警惕操控、欺骗或自我怀疑。此时需要重新审视自己的动机，确保你的行动是出于真诚和正直。"
-    },
-    "女祭司": {
-      "upright": "直觉、智慧、潜意识、秘密",
-      "reversed": "隐藏的秘密、故意忽视、直觉受阻",
-      "signification upright": "女祭司代表深层的智慧、直觉和神秘的知识。她鼓励你静下心来，倾听内在的声音，信任自己的直觉。此时适合冥想、学习和探索未知的领域。女祭司提醒你，真正的答案往往藏在表象之下。",
-      "signification reversed": "逆位的女祭司可能表示直觉受阻、信息被隐藏或对内心声音的忽视。你可能陷入表面现象，忽略了更深层的真相。需要更多的自省和对内在世界的关注。"
-    },
-    "女皇": {
-      "upright": "丰饶、养育、创造力、自然、关怀",
-      "reversed": "依赖、被忽视、创造阻滞、过度控制",
-      "signification upright": "女皇象征着丰饶、创造力和母性的关怀。她鼓励你与自然和谐相处，关注身心健康，享受生活的美好。女皇也代表着孕育新计划和关系的最佳时机。",
-      "signification reversed": "逆位的女皇可能表示过度依赖、缺乏自我照顾或创造力受阻。你需要重新关注自己的需求，避免被外界影响所左右。"
-    },
-    "皇帝": {
-      "upright": "权威、秩序、稳定、责任",
-      "reversed": "专制、僵化、滥权、缺乏弹性",
-      "signification upright": "皇帝代表权威、秩序和责任。他鼓励你建立清晰的目标和规则，采取果断的行动。皇帝也象征着父性力量和保护，是实现稳定和安全的关键。",
-      "signification reversed": "逆位的皇帝可能暗示专制、僵化或滥用权力。你需要反思自己的控制欲，学会灵活应对变化，避免过度压抑他人或自己。"
-    },
-    "教皇": {
-      "upright": "传统、教导、精神导师、仪式",
-      "reversed": "教条主义、刻板、盲从",
-      "signification upright": "教皇象征着传统、精神导师和制度化的学习。他鼓励你寻求指导、遵循规则，并从集体智慧中获益。教皇也提醒你尊重传统和道德规范。",
-      "signification reversed": "逆位的教皇可能表示教条主义、盲从或对传统的质疑。你需要发展个人信念，勇于突破旧有的限制。"
-    },
-    "恋人": {
-      "upright": "选择、连接、爱、重要决策",
-      "reversed": "错误选择、分离、犹豫、冲突",
-      "signification upright": "恋人牌代表爱情、深刻的联结和重要的选择。它提醒你在关系和价值观之间做出抉择，追求内心的和谐与真诚。恋人牌也象征着信任和相互支持。",
-      "signification reversed": "逆位的恋人可能表示错误的选择、关系中的分歧或内心的冲突。你需要正视自己的感受，避免逃避重要的决定。"
-    },
-    "战车": {
-      "upright": "意志力、驾驭对立力量、胜利、进展",
-      "reversed": "失控、分散力量、因方向不明而失败",
-      "signification upright": "战车代表意志力、决心和胜利。它鼓励你坚定目标，克服障碍，驾驭内外的对立力量。战车也象征着自律和自信，是取得成功的关键。",
-      "signification reversed": "逆位的战车可能表示失控、方向不明或动力不足。你需要重新聚焦目标，调整策略，避免分心。"
-    },
-    "力量": {
-      "upright": "内在力量、勇气、温柔的影响、耐心",
-      "reversed": "软弱、控制力丧失、暴力或懦弱",
-      "signification upright": "力量象征着内在的勇气、耐心和同情心。它鼓励你用温柔和坚定面对挑战，展现真正的自信和自控力。力量牌也提醒你相信自己的能力，善待自己和他人。",
-      "signification reversed": "逆位的力量可能表示自信心不足、情绪失控或软弱。你需要重新建立内在的平衡，避免被恐惧或愤怒左右。"
-    },
-    "隐士": {
-      "upright": "寻求真理、内省、退隐、引导",
-      "reversed": "孤立、拒绝建议、闭塞",
-      "signification upright": "隐士代表内省、智慧和独立思考。他鼓励你暂时远离喧嚣，深入探索内心世界。隐士牌也是寻找真理和精神成长的象征。",
-      "signification reversed": "逆位的隐士可能表示孤立、拒绝建议或过度退缩。你需要平衡独处与与他人的联系，避免陷入消极的孤独。"
-    },
-    "命运之轮": {
-      "upright": "循环、因果、机会、命运的转变",
-      "reversed": "不顺、抗拒变化、停滞",
-      "signification upright": "命运之轮象征着变化、周期和命运的转折。它提醒你顺应时势，抓住机遇，接受生活的起伏。命运之轮也代表着因果和成长，是新阶段的开始。",
-      "signification reversed": "逆位的命运之轮可能表示停滞、抗拒变化或运势不佳。你需要打破旧有的模式，主动迎接新的挑战。"
+    "世界": {
+      "image": "tarot_img/MajorArcanaCards/Le Monde.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Monde a l'envers.jpg",
+      "reversed": "临近目标失败、完美主义、未完成",
+      "signification reversed": "逆位的世界可能表示未完成、完美主义或对成功的恐惧。你需要接受自己的成就，勇敢迈向新目标。",
+      "signification upright": "世界牌代表圆满、成就和整体的和谐。它象征着一个阶段的完成和新旅程的开始。世界也是自我实现和庆祝成功的最佳时刻。",
+      "upright": "完成、和谐、周期的终结、整体性"
     },
     "倒吊人": {
-      "upright": "自愿的牺牲、暂停、换个角度、放下",
+      "image": "tarot_img/MajorArcanaCards/Le Pendu.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Pendu a l'envers.jpg",
       "reversed": "徒劳的牺牲、固执、抗拒改变",
+      "signification reversed": "逆位的倒吊人可能表示无谓的牺牲、固执或抗拒改变。你需要反思自己的坚持是否真正有意义。",
       "signification upright": "倒吊人代表自愿的牺牲、暂停和换位思考。它鼓励你放下固有观念，从不同角度看待问题。倒吊人也是转化和灵性成长的重要阶段。",
-      "signification reversed": "逆位的倒吊人可能表示无谓的牺牲、固执或抗拒改变。你需要反思自己的坚持是否真正有意义。"
+      "upright": "自愿的牺牲、暂停、换个角度、放下"
     },
-    "死亡": {
-      "upright": "重大转变、结束与重生、清理旧秩序",
-      "reversed": "抗拒改变、停滞、害怕未知",
-      "signification upright": "死亡牌象征着深刻的转变、结束和新生。它提醒你放下过去，迎接新的开始。死亡并非终结，而是成长和重生的契机。",
-      "signification reversed": "逆位的死亡可能表示抗拒改变、停滞或害怕未知。你需要勇敢面对转化，才能获得真正的自由。"
+    "力量": {
+      "image": "tarot_img/MajorArcanaCards/La Force.gif",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Force a l'envers.jpg",
+      "reversed": "软弱、控制力丧失、暴力或懦弱",
+      "signification reversed": "逆位的力量可能表示自信心不足、情绪失控或软弱。你需要重新建立内在的平衡，避免被恐惧或愤怒左右。",
+      "signification upright": "力量象征着内在的勇气、耐心和同情心。它鼓励你用温柔和坚定面对挑战，展现真正的自信和自控力。力量牌也提醒你相信自己的能力，善待自己和他人。",
+      "upright": "内在力量、勇气、温柔的影响、耐心"
     },
-    "节制": {
-      "upright": "平衡、治愈、节制、渐进的转化",
-      "reversed": "失衡、过度、急躁、混乱",
-      "signification upright": "节制象征着平衡、治愈和渐进的成长。它鼓励你耐心、温和地整合不同的力量，追求内外的和谐。节制牌也是自我调节和灵性提升的标志。",
-      "signification reversed": "逆位的节制可能表示失衡、急躁或混乱。你需要放慢脚步，重新寻找内心的平静。"
-    },
-    "魔鬼": {
-      "upright": "束缚、欲望、幻象、依赖",
-      "reversed": "觉醒、解脱、挣脱束缚",
-      "signification upright": "魔鬼牌揭示了束缚、欲望和依赖。它提醒你正视自己的阴影面，警惕被物质或情感所控制。魔鬼也是自我觉察和突破限制的契机。",
-      "signification reversed": "逆位的魔鬼表示你正在觉醒，逐步摆脱不良的依赖和束缚。现在是释放自我、追求自由的时刻。"
-    },
-    "塔": {
-      "upright": "剧变、觉醒、破坏性的解放、突发之变",
-      "reversed": "抗拒变革、缓和的崩解、渐进的重建",
-      "signification upright": "塔牌象征着突如其来的剧变和觉醒。虽然过程可能痛苦，但它清除虚假的结构，为重建和成长创造空间。塔也是真相显现和自我革新的象征。",
-      "signification reversed": "逆位的塔可能表示变革被延缓、冲击减弱或调整变得渐进。你仍需面对现实，主动适应变化。"
-    },
-    "星": {
-      "upright": "希望、灵感、恢复、乐观",
-      "reversed": "绝望、失去信心、悲观",
-      "signification upright": "星牌带来希望、灵感和疗愈。它鼓励你相信未来，保持乐观，敞开心扉接受宇宙的祝福。星牌也是灵性成长和梦想成真的象征。",
-      "signification reversed": "逆位的星可能表示失去信心、悲观或灵感枯竭。你需要重新点燃内心的希望。"
-    },
-    "月亮": {
-      "upright": "幻象、迷惑、恐惧、潜意识、隐秘",
-      "reversed": "清晰、真相显现、幻象终结",
-      "signification upright": "月亮牌象征着幻象、潜意识和隐藏的情感。它提醒你警惕误导和自我欺骗，信任直觉，勇敢面对内心的恐惧。月亮也是灵性探索和梦境的象征。",
-      "signification reversed": "逆位的月亮表示真相浮现、迷雾消散。你将获得更清晰的视角，理解隐藏的情感。"
-    },
-    "太阳": {
-      "upright": "喜悦、成功、活力、成就",
-      "reversed": "虚荣、浮夸的自豪、暂时的成功",
-      "signification upright": "太阳牌代表喜悦、成功和活力。它带来光明、温暖和积极的能量，是成就和庆祝的最佳象征。太阳也鼓励你展现自信，享受生活。",
-      "signification reversed": "逆位的太阳可能表示虚荣、表面成功或能量不足。你需要关注内在的满足，而非外在的认可。"
-    },
-    "审判": {
-      "upright": "重生、觉醒、审视、召唤",
-      "reversed": "拒绝成长、苛责、内疚",
-      "signification upright": "审判牌象征着觉醒、重生和自我评估。它鼓励你反思过去，做出新的决定，迎接人生的新阶段。审判也是宽恕和释放的象征。",
-      "signification reversed": "逆位的审判可能表示逃避改变、内疚或自我批评。你需要学会宽恕自己，勇敢面对未来。"
-    },
-    "世界": {
-      "upright": "完成、和谐、周期的终结、整体性",
-      "reversed": "临近目标失败、完美主义、未完成",
-      "signification upright": "世界牌代表圆满、成就和整体的和谐。它象征着一个阶段的完成和新旅程的开始。世界也是自我实现和庆祝成功的最佳时刻。",
-      "signification reversed": "逆位的世界可能表示未完成、完美主义或对成功的恐惧。你需要接受自己的成就，勇敢迈向新目标。"
-    },
-    "正义": {
-    "upright": "公正、平衡、真相、法律、责任",
-    "reversed": "不公、偏见、误导、逃避责任、报复",
-    "signification upright": "正义牌强调事实与证据、理性与秩序。它提醒你以公平无私的态度评估现状，做出负责任的选择，并对结果承担应有的后果。此牌也象征合约、制度与规则的约束与保护，倡导诚实、透明与自我检视。",
-    "signification reversed": "逆位的正义暗示偏见、错误信息或程序不正当，也可能是推诿与逃避后果。需要回到事实与原则，修正失衡，承认并纠正失误，避免以情绪或报复心行事。"
-    },
-    "权杖国王": {
-      "upright": "领袖魅力、远见、果断、聚焦的能量、创业精神",
-      "reversed": "专断、怒火、控制欲、鲁莽决策",
-      "signification upright": "权杖国王象征点燃人心的远见型领导。他善于整合资源、明确方向并鼓舞团队行动。此牌鼓励你自信且主动，以勇气与热情推进大胆构想，同时保持战略眼光与责任感。",
-      "signification reversed": "逆位可能表示权力被用来压制与否定不同意见，或因急躁与自负而决策失当。需要放下控制欲，倾听回馈，以自律取代情绪化的驱动。"
-    },
-    "权杖王后": {
-      "upright": "光彩与创造力、热情、温暖慷慨、自信、鼓舞人心",
-      "reversed": "嫉妒、占有、隐性怒气、以自我为中心",
-      "signification upright": "权杖王后带来热情与灵感，营造支持与鼓励的氛围，使创意得以茁壮。她象征自信、魅力与社群影响力，适合公开展示与号召行动。",
-      "signification reversed": "逆位提示过度竞争、渴望掌控或渴求关注，易损害合作关系。请回到共好与共享，化竞争为协作。"
-    },
-    "权杖骑士": {
-      "upright": "行动、冒险、突破、快速变化、开路先锋",
-      "reversed": "轻率、逃避责任、杂乱无章、半途而废",
-      "signification upright": "权杖骑士鼓励你把握时机、迅速出击，以勇气与机动性打开局面。果断尝试能为计划注入强劲动能。",
-      "signification reversed": "逆位提醒你警惕计划不足与目标分散，容易冲动上阵又迅速退却。务必先厘清方向与步骤，稳住节奏。"
-    },
-    "权杖侍从": {
-      "upright": "灵感信使、创意火花、学习、热忱、项目萌芽",
-      "reversed": "空头承诺、三分钟热度、浅尝辄止、急躁",
-      "signification upright": "权杖侍从象征勇于尝试的新点子与初学者心态。小小行动能汇聚成前进的动力，适合启动试验与迭代。",
-      "signification reversed": "逆位显示缺乏持续力与纪律，易因分心而延误成果。请设定微目标并建立稳定习惯。"
-    },
-    "星币国王": {
-      "upright": "稳固富足、务实、可靠、资源管理、责任",
-      "reversed": "贪婪、逐利、腐败、物质至上",
-      "signification upright": "星币国王代表以长期视角扎实经营的成熟管理者。擅长规划、控管风险与稳步增值，强调信誉与可持续。",
-      "signification reversed": "逆位可能表示唯利是图、忽视伦理或滥用资源。请回归价值与治理，建立透明与信任。"
-    },
-    "星币王后": {
-      "upright": "被滋养的丰盛、实用的慷慨、家庭/团队支持、生产力",
-      "reversed": "占有、浪费、过度控制、忽视自我照顾",
-      "signification upright": "星币王后营造安全且丰饶的环境，把资源转化为具体照护与稳健增长。强调接地气的温柔与可靠。",
-      "signification reversed": "逆位提醒边界与预算失衡，护理变控制、付出失节制。请先照顾好自己，再谈照顾他人。"
-    },
-    "星币骑士": {
-      "upright": "毅力、方法、可靠、责任、稳步推进",
-      "reversed": "陷于惯性、工作成瘾、停滞、抗拒改变",
-      "signification upright": "星币骑士主张以纪律与日常小步快跑，累积成可验证的成果。慢即是快，稳中求进。",
-      "signification reversed": "逆位显示过度僵化与缺乏弹性，因而错失改进时机。需要适度调整流程与节奏。"
-    },
-    "星币侍从": {
-      "upright": "学习与练习、技能打底、新的物质机会、勤勉",
-      "reversed": "懒散、浅层学习、机会主义、短视",
-      "signification upright": "星币侍从象征扎根基础：踏实学习、反复练习与小规模验证，终将形成可持续的能力与价值。",
-      "signification reversed": "逆位提示不愿投入必要努力，只求速成。请回到基本功，拉长时间轴。"
-    },
-
-    "圣杯国王": {
-      "upright": "情感成熟、慈悲、调解与外交、安定、平衡",
-      "reversed": "情感操控、隐藏不稳、算计的冷漠",
-      "signification upright": "圣杯国王能在复杂情势下保持柔和而坚定的存在，用共情与智慧化解张力，是值得信赖的情绪容器与引导者。",
-      "signification reversed": "逆位警示以情绪博弈、被动攻击或表面平静下的动荡。需真诚表达、设立界限。"
-    },
-    "圣杯王后": {
-      "upright": "深度直觉、共感、疗愈、无条件支持、情感深度",
-      "reversed": "情绪失衡、关系纠缠、过度牺牲、边界模糊",
-      "signification upright": "圣杯王后为他人与自己开辟被理解与被接纳的空间，鼓励温柔连结与细腻表达，促进修复与整合。",
-      "signification reversed": "逆位显示在他人情绪中迷失自我或以自我否定换取关系。请练习界限与自我关怀。"
-    },
-    "圣杯骑士": {
-      "upright": "浪漫、邀请、创意提案、魅力、柔性沟通",
-      "reversed": "幻想化、空承诺、情感游戏、不够成熟",
-      "signification upright": "圣杯骑士带来和解与灵感的信息，鼓励以艺术性与优雅传达想法，使关系与合作更具温度。",
-      "signification reversed": "逆位提醒言行脱节、过度理想化或逃避承诺。需要以真实行动支撑美好愿景。"
+    "命运之轮": {
+      "image": "tarot_img/MajorArcanaCards/La Roue de La Fortune.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Roue de La Fortune a l'envers.jpg",
+      "reversed": "不顺、抗拒变化、停滞",
+      "signification reversed": "逆位的命运之轮可能表示停滞、抗拒变化或运势不佳。你需要打破旧有的模式，主动迎接新的挑战。",
+      "signification upright": "命运之轮象征着变化、周期和命运的转折。它提醒你顺应时势，抓住机遇，接受生活的起伏。命运之轮也代表着因果和成长，是新阶段的开始。",
+      "upright": "循环、因果、机会、命运的转变"
     },
     "圣杯侍从": {
-      "upright": "情感讯息、灵感涌现、敏感的苏醒、想象力",
+      "image": "tarot_img/MajorArcanaCards/Le Valet De Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet De Coupe a l'envers.jpg",
       "reversed": "情绪稚嫩、玻璃心、创意停滞、天真",
+      "signification reversed": "逆位提示过度敏感与逃避表达，让情感与创意被卡住。学习稳住情绪并循序释放。",
       "signification upright": "圣杯侍从鼓励你温柔表露心意，允许脆弱被看见，从而激活创造力与更真诚的连结。",
-      "signification reversed": "逆位提示过度敏感与逃避表达，让情感与创意被卡住。学习稳住情绪并循序释放。"
+      "upright": "情感讯息、灵感涌现、敏感的苏醒、想象力"
     },
-
-    "宝剑国王": {
-      "upright": "理性清明、公正、逻辑、策略、原则立场",
-      "reversed": "冷酷、权力滥用、言语压制、精神操控",
-      "signification upright": "宝剑国王以数据与原则为依据，分辨真伪、作出清晰判断，是专业与诚信的化身。",
-      "signification reversed": "逆位可能以聪明为武器，贬抑他人并夺取话语权。请回归尊重与伦理，避免伤人于无形。"
+    "圣杯国王": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi de Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi de Coupe a l'envers.jpg",
+      "reversed": "情感操控、隐藏不稳、算计的冷漠",
+      "signification reversed": "逆位警示以情绪博弈、被动攻击或表面平静下的动荡。需真诚表达、设立界限。",
+      "signification upright": "圣杯国王能在复杂情势下保持柔和而坚定的存在，用共情与智慧化解张力，是值得信赖的情绪容器与引导者。",
+      "upright": "情感成熟、慈悲、调解与外交、安定、平衡"
     },
-    "宝剑王后": {
-      "upright": "独立、敏锐洞察、直言不讳、务实智慧、由痛化力",
-      "reversed": "苛刻、讽刺、怨怼、情感过度抽离",
-      "signification upright": "宝剑王后以经验炼就的清明与诚恳指出要点，帮助厘清复杂局面，倡导自我诚实与边界感。",
-      "signification reversed": "逆位显示执着旧伤、以尖锐语言防卫，导致关系疏离。需要在坦率与温度间求平衡。"
+    "圣杯王后": {
+      "image": "tarot_img/MajorArcanaCards/La Reine De Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine De Coupe a l'envers.jpg",
+      "reversed": "情绪失衡、关系纠缠、过度牺牲、边界模糊",
+      "signification reversed": "逆位显示在他人情绪中迷失自我或以自我否定换取关系。请练习界限与自我关怀。",
+      "signification upright": "圣杯王后为他人与自己开辟被理解与被接纳的空间，鼓励温柔连结与细腻表达，促进修复与整合。",
+      "upright": "深度直觉、共感、疗愈、无条件支持、情感深度"
     },
-    "宝剑骑士": {
-      "upright": "快速决断、勇气、辩锋、突进、思想付诸行动",
-      "reversed": "轻率、攻击性、破坏、愤怒驱动",
-      "signification upright": "宝剑骑士把清晰思路化为果断行动，直面阻碍，迅速开道；强调专注与执行力。",
-      "signification reversed": "逆位提醒风险评估不足、言行过猛易误伤。请先收集信息、校准力度。"
+    "圣杯骑士": {
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier De Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier De Coupe a l'envers.jpg",
+      "reversed": "幻想化、空承诺、情感游戏、不够成熟",
+      "signification reversed": "逆位提醒言行脱节、过度理想化或逃避承诺。需要以真实行动支撑美好愿景。",
+      "signification upright": "圣杯骑士带来和解与灵感的信息，鼓励以艺术性与优雅传达想法，使关系与合作更具温度。",
+      "upright": "浪漫、邀请、创意提案、魅力、柔性沟通"
+    },
+    "塔": {
+      "image": "tarot_img/MajorArcanaCards/La Maison Dieu.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Maison Dieu a l'envers.jpg",
+      "reversed": "抗拒变革、缓和的崩解、渐进的重建",
+      "signification reversed": "逆位的塔可能表示变革被延缓、冲击减弱或调整变得渐进。你仍需面对现实，主动适应变化。",
+      "signification upright": "塔牌象征着突如其来的剧变和觉醒。虽然过程可能痛苦，但它清除虚假的结构，为重建和成长创造空间。塔也是真相显现和自我革新的象征。",
+      "upright": "剧变、觉醒、破坏性的解放、突发之变"
+    },
+    "太阳": {
+      "image": "tarot_img/MajorArcanaCards/Le Soleil.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Soleil a l'envers.jpg",
+      "reversed": "虚荣、浮夸的自豪、暂时的成功",
+      "signification reversed": "逆位的太阳可能表示虚荣、表面成功或能量不足。你需要关注内在的满足，而非外在的认可。",
+      "signification upright": "太阳牌代表喜悦、成功和活力。它带来光明、温暖和积极的能量，是成就和庆祝的最佳象征。太阳也鼓励你展现自信，享受生活。",
+      "upright": "喜悦、成功、活力、成就"
+    },
+    "女皇": {
+      "image": "tarot_img/MajorArcanaCards/L'Imperatrice.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Imperatrice a l'envers.jpg",
+      "reversed": "依赖、被忽视、创造阻滞、过度控制",
+      "signification reversed": "逆位的女皇可能表示过度依赖、缺乏自我照顾或创造力受阻。你需要重新关注自己的需求，避免被外界影响所左右。",
+      "signification upright": "女皇象征着丰饶、创造力和母性的关怀。她鼓励你与自然和谐相处，关注身心健康，享受生活的美好。女皇也代表着孕育新计划和关系的最佳时机。",
+      "upright": "丰饶、养育、创造力、自然、关怀"
+    },
+    "女祭司": {
+      "image": "tarot_img/MajorArcanaCards/La Papesse.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Papesse a l'envers.jpg",
+      "reversed": "隐藏的秘密、故意忽视、直觉受阻",
+      "signification reversed": "逆位的女祭司可能表示直觉受阻、信息被隐藏或对内心声音的忽视。你可能陷入表面现象，忽略了更深层的真相。需要更多的自省和对内在世界的关注。",
+      "signification upright": "女祭司代表深层的智慧、直觉和神秘的知识。她鼓励你静下心来，倾听内在的声音，信任自己的直觉。此时适合冥想、学习和探索未知的领域。女祭司提醒你，真正的答案往往藏在表象之下。",
+      "upright": "直觉、智慧、潜意识、秘密"
     },
     "宝剑侍从": {
-      "upright": "好奇心、观察、重要讯息、警觉、灵活思考",
+      "image": "tarot_img/MajorArcanaCards/Le Valet D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet D'Epee a l'envers.jpg",
       "reversed": "流言、断章取义、信息操弄、窥探",
+      "signification reversed": "逆位表示闲言或错误解读制造误会，也可能越界打探。请守信守密并核实来源。",
       "signification upright": "宝剑侍从鼓励批判式思考与求证精神，保持开放而谨慎，善用问题深化理解。",
-      "signification reversed": "逆位表示闲言或错误解读制造误会，也可能越界打探。请守信守密并核实来源。"
+      "upright": "好奇心、观察、重要讯息、警觉、灵活思考"
+    },
+    "宝剑国王": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi D'Epee a l'envers.jpg",
+      "reversed": "冷酷、权力滥用、言语压制、精神操控",
+      "signification reversed": "逆位可能以聪明为武器，贬抑他人并夺取话语权。请回归尊重与伦理，避免伤人于无形。",
+      "signification upright": "宝剑国王以数据与原则为依据，分辨真伪、作出清晰判断，是专业与诚信的化身。",
+      "upright": "理性清明、公正、逻辑、策略、原则立场"
+    },
+    "宝剑王后": {
+      "image": "tarot_img/MajorArcanaCards/La Reine D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine D'Epee a l'envers.jpg",
+      "reversed": "苛刻、讽刺、怨怼、情感过度抽离",
+      "signification reversed": "逆位显示执着旧伤、以尖锐语言防卫，导致关系疏离。需要在坦率与温度间求平衡。",
+      "signification upright": "宝剑王后以经验炼就的清明与诚恳指出要点，帮助厘清复杂局面，倡导自我诚实与边界感。",
+      "upright": "独立、敏锐洞察、直言不讳、务实智慧、由痛化力"
+    },
+    "宝剑骑士": {
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier D'Epee a l'envers.jpg",
+      "reversed": "轻率、攻击性、破坏、愤怒驱动",
+      "signification reversed": "逆位提醒风险评估不足、言行过猛易误伤。请先收集信息、校准力度。",
+      "signification upright": "宝剑骑士把清晰思路化为果断行动，直面阻碍，迅速开道；强调专注与执行力。",
+      "upright": "快速决断、勇气、辩锋、突进、思想付诸行动"
+    },
+    "审判": {
+      "image": "tarot_img/MajorArcanaCards/Le Jugement.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Jugement a l'envers.jpg",
+      "reversed": "拒绝成长、苛责、内疚",
+      "signification reversed": "逆位的审判可能表示逃避改变、内疚或自我批评。你需要学会宽恕自己，勇敢面对未来。",
+      "signification upright": "审判牌象征着觉醒、重生和自我评估。它鼓励你反思过去，做出新的决定，迎接人生的新阶段。审判也是宽恕和释放的象征。",
+      "upright": "重生、觉醒、审视、召唤"
+    },
+    "恋人": {
+      "image": "tarot_img/MajorArcanaCards/L'Amoureux.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Amoureux a l'envers.jpg",
+      "reversed": "错误选择、分离、犹豫、冲突",
+      "signification reversed": "逆位的恋人可能表示错误的选择、关系中的分歧或内心的冲突。你需要正视自己的感受，避免逃避重要的决定。",
+      "signification upright": "恋人牌代表爱情、深刻的联结和重要的选择。它提醒你在关系和价值观之间做出抉择，追求内心的和谐与真诚。恋人牌也象征着信任和相互支持。",
+      "upright": "选择、连接、爱、重要决策"
+    },
+    "愚者": {
+      "image": "tarot_img/MajorArcanaCards/Le Mat.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Mat a l'envers.jpg",
+      "reversed": "鲁莽、迷失方向、疏忽、犹豫",
+      "signification reversed": "逆位的愚者提醒你要警惕鲁莽和缺乏准备。此时可能存在冲动、疏忽或对后果的不重视。你需要在追求自由和承担责任之间找到平衡，避免因轻率而错失重要的成长机会。",
+      "signification upright": "愚者代表着全新的旅程和无限的可能性。他象征着纯真、自由和对未来的信任。愚者鼓励你勇敢迈出第一步，去探索未知的世界，不要被恐惧束缚。现在是冒险和自我发现的时刻，保持开放的心态，迎接生活带来的每一个机会。",
+      "upright": "新的开始、天真、自由、冒险、潜力"
+    },
+    "战车": {
+      "image": "tarot_img/MajorArcanaCards/Le Chariot.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Chariot a l'envers.jpg",
+      "reversed": "失控、分散力量、因方向不明而失败",
+      "signification reversed": "逆位的战车可能表示失控、方向不明或动力不足。你需要重新聚焦目标，调整策略，避免分心。",
+      "signification upright": "战车代表意志力、决心和胜利。它鼓励你坚定目标，克服障碍，驾驭内外的对立力量。战车也象征着自律和自信，是取得成功的关键。",
+      "upright": "意志力、驾驭对立力量、胜利、进展"
+    },
+    "教皇": {
+      "image": "tarot_img/MajorArcanaCards/Le Pape.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Pape a l'envers.jpg",
+      "reversed": "教条主义、刻板、盲从",
+      "signification reversed": "逆位的教皇可能表示教条主义、盲从或对传统的质疑。你需要发展个人信念，勇于突破旧有的限制。",
+      "signification upright": "教皇象征着传统、精神导师和制度化的学习。他鼓励你寻求指导、遵循规则，并从集体智慧中获益。教皇也提醒你尊重传统和道德规范。",
+      "upright": "传统、教导、精神导师、仪式"
+    },
+    "星": {
+      "image": "tarot_img/MajorArcanaCards/L'Etoile.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Etoile a l'envers.jpg",
+      "reversed": "绝望、失去信心、悲观",
+      "signification reversed": "逆位的星可能表示失去信心、悲观或灵感枯竭。你需要重新点燃内心的希望。",
+      "signification upright": "星牌带来希望、灵感和疗愈。它鼓励你相信未来，保持乐观，敞开心扉接受宇宙的祝福。星牌也是灵性成长和梦想成真的象征。",
+      "upright": "希望、灵感、恢复、乐观"
+    },
+    "星币侍从": {
+      "image": "tarot_img/MajorArcanaCards/Le Valet De Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet De Deniers a l'envers.jpg",
+      "reversed": "懒散、浅层学习、机会主义、短视",
+      "signification reversed": "逆位提示不愿投入必要努力，只求速成。请回到基本功，拉长时间轴。",
+      "signification upright": "星币侍从象征扎根基础：踏实学习、反复练习与小规模验证，终将形成可持续的能力与价值。",
+      "upright": "学习与练习、技能打底、新的物质机会、勤勉"
+    },
+    "星币国王": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi De Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi De Deniers a l'envers.jpg",
+      "reversed": "贪婪、逐利、腐败、物质至上",
+      "signification reversed": "逆位可能表示唯利是图、忽视伦理或滥用资源。请回归价值与治理，建立透明与信任。",
+      "signification upright": "星币国王代表以长期视角扎实经营的成熟管理者。擅长规划、控管风险与稳步增值，强调信誉与可持续。",
+      "upright": "稳固富足、务实、可靠、资源管理、责任"
+    },
+    "星币王后": {
+      "image": "tarot_img/MajorArcanaCards/La Reine De Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine De Deniers a l'envers.jpg",
+      "reversed": "占有、浪费、过度控制、忽视自我照顾",
+      "signification reversed": "逆位提醒边界与预算失衡，护理变控制、付出失节制。请先照顾好自己，再谈照顾他人。",
+      "signification upright": "星币王后营造安全且丰饶的环境，把资源转化为具体照护与稳健增长。强调接地气的温柔与可靠。",
+      "upright": "被滋养的丰盛、实用的慷慨、家庭/团队支持、生产力"
+    },
+    "星币骑士": {
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier de Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier de Deniers a l'envers.jpg",
+      "reversed": "陷于惯性、工作成瘾、停滞、抗拒改变",
+      "signification reversed": "逆位显示过度僵化与缺乏弹性，因而错失改进时机。需要适度调整流程与节奏。",
+      "signification upright": "星币骑士主张以纪律与日常小步快跑，累积成可验证的成果。慢即是快，稳中求进。",
+      "upright": "毅力、方法、可靠、责任、稳步推进"
+    },
+    "月亮": {
+      "image": "tarot_img/MajorArcanaCards/La Lune.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Lune a l'envers.jpg",
+      "reversed": "清晰、真相显现、幻象终结",
+      "signification reversed": "逆位的月亮表示真相浮现、迷雾消散。你将获得更清晰的视角，理解隐藏的情感。",
+      "signification upright": "月亮牌象征着幻象、潜意识和隐藏的情感。它提醒你警惕误导和自我欺骗，信任直觉，勇敢面对内心的恐惧。月亮也是灵性探索和梦境的象征。",
+      "upright": "幻象、迷惑、恐惧、潜意识、隐秘"
+    },
+    "权杖侍从": {
+      "image": "tarot_img/MajorArcanaCards/Le Valet de Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet de Baton a l'envers.jpg",
+      "reversed": "空头承诺、三分钟热度、浅尝辄止、急躁",
+      "signification reversed": "逆位显示缺乏持续力与纪律，易因分心而延误成果。请设定微目标并建立稳定习惯。",
+      "signification upright": "权杖侍从象征勇于尝试的新点子与初学者心态。小小行动能汇聚成前进的动力，适合启动试验与迭代。",
+      "upright": "灵感信使、创意火花、学习、热忱、项目萌芽"
+    },
+    "权杖国王": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi De Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi De Baton a l'envers.jpg",
+      "reversed": "专断、怒火、控制欲、鲁莽决策",
+      "signification reversed": "逆位可能表示权力被用来压制与否定不同意见，或因急躁与自负而决策失当。需要放下控制欲，倾听回馈，以自律取代情绪化的驱动。",
+      "signification upright": "权杖国王象征点燃人心的远见型领导。他善于整合资源、明确方向并鼓舞团队行动。此牌鼓励你自信且主动，以勇气与热情推进大胆构想，同时保持战略眼光与责任感。",
+      "upright": "领袖魅力、远见、果断、聚焦的能量、创业精神"
+    },
+    "权杖王后": {
+      "image": "tarot_img/MajorArcanaCards/La Reine de Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine de Baton a l'envers.jpg",
+      "reversed": "嫉妒、占有、隐性怒气、以自我为中心",
+      "signification reversed": "逆位提示过度竞争、渴望掌控或渴求关注，易损害合作关系。请回到共好与共享，化竞争为协作。",
+      "signification upright": "权杖王后带来热情与灵感，营造支持与鼓励的氛围，使创意得以茁壮。她象征自信、魅力与社群影响力，适合公开展示与号召行动。",
+      "upright": "光彩与创造力、热情、温暖慷慨、自信、鼓舞人心"
+    },
+    "权杖骑士": {
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier de Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier de Baton a l'envers.jpg",
+      "reversed": "轻率、逃避责任、杂乱无章、半途而废",
+      "signification reversed": "逆位提醒你警惕计划不足与目标分散，容易冲动上阵又迅速退却。务必先厘清方向与步骤，稳住节奏。",
+      "signification upright": "权杖骑士鼓励你把握时机、迅速出击，以勇气与机动性打开局面。果断尝试能为计划注入强劲动能。",
+      "upright": "行动、冒险、突破、快速变化、开路先锋"
+    },
+    "正义": {
+      "image": "tarot_img/MajorArcanaCards/La Justice.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Justice a l'envers.jpg",
+      "reversed": "不公、偏见、误导、逃避责任、报复",
+      "signification reversed": "逆位的正义暗示偏见、错误信息或程序不正当，也可能是推诿与逃避后果。需要回到事实与原则，修正失衡，承认并纠正失误，避免以情绪或报复心行事。",
+      "signification upright": "正义牌强调事实与证据、理性与秩序。它提醒你以公平无私的态度评估现状，做出负责任的选择，并对结果承担应有的后果。此牌也象征合约、制度与规则的约束与保护，倡导诚实、透明与自我检视。",
+      "upright": "公正、平衡、真相、法律、责任"
+    },
+    "死亡": {
+      "image": "tarot_img/MajorArcanaCards/La Mort.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Mort a l'envers.jpg",
+      "reversed": "抗拒改变、停滞、害怕未知",
+      "signification reversed": "逆位的死亡可能表示抗拒改变、停滞或害怕未知。你需要勇敢面对转化，才能获得真正的自由。",
+      "signification upright": "死亡牌象征着深刻的转变、结束和新生。它提醒你放下过去，迎接新的开始。死亡并非终结，而是成长和重生的契机。",
+      "upright": "重大转变、结束与重生、清理旧秩序"
+    },
+    "皇帝": {
+      "image": "tarot_img/MajorArcanaCards/L'Empereur.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Empereur a l'envers.jpg",
+      "reversed": "专制、僵化、滥权、缺乏弹性",
+      "signification reversed": "逆位的皇帝可能暗示专制、僵化或滥用权力。你需要反思自己的控制欲，学会灵活应对变化，避免过度压抑他人或自己。",
+      "signification upright": "皇帝代表权威、秩序和责任。他鼓励你建立清晰的目标和规则，采取果断的行动。皇帝也象征着父性力量和保护，是实现稳定和安全的关键。",
+      "upright": "权威、秩序、稳定、责任"
+    },
+    "节制": {
+      "image": "tarot_img/MajorArcanaCards/La Temperance.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Temperance a l'envers.jpg",
+      "reversed": "失衡、过度、急躁、混乱",
+      "signification reversed": "逆位的节制可能表示失衡、急躁或混乱。你需要放慢脚步，重新寻找内心的平静。",
+      "signification upright": "节制象征着平衡、治愈和渐进的成长。它鼓励你耐心、温和地整合不同的力量，追求内外的和谐。节制牌也是自我调节和灵性提升的标志。",
+      "upright": "平衡、治愈、节制、渐进的转化"
+    },
+    "隐士": {
+      "image": "tarot_img/MajorArcanaCards/L'Hermite.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Hermite a l'envers.jpg",
+      "reversed": "孤立、拒绝建议、闭塞",
+      "signification reversed": "逆位的隐士可能表示孤立、拒绝建议或过度退缩。你需要平衡独处与与他人的联系，避免陷入消极的孤独。",
+      "signification upright": "隐士代表内省、智慧和独立思考。他鼓励你暂时远离喧嚣，深入探索内心世界。隐士牌也是寻找真理和精神成长的象征。",
+      "upright": "寻求真理、内省、退隐、引导"
+    },
+    "魔术师": {
+      "image": "tarot_img/MajorArcanaCards/Le Bateleur.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Bateleur a l'envers.jpg",
+      "reversed": "幻象、操控、分心、欺骗",
+      "signification reversed": "逆位的魔术师可能暗示能量分散、缺乏专注或滥用才能。要警惕操控、欺骗或自我怀疑。此时需要重新审视自己的动机，确保你的行动是出于真诚和正直。",
+      "signification upright": "魔术师象征着将想法和愿望转化为现实的能力。他提醒你拥有实现目标所需的资源和智慧。现在是采取主动、展现创造力和自信心的最佳时机。专注于你的目标，善用手中的工具，你将能够把梦想变为现实。",
+      "upright": "开始、资源、热情、行动力、创造力"
+    },
+    "魔鬼": {
+      "image": "tarot_img/MajorArcanaCards/Le Diable.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Diable a l'envers.jpg",
+      "reversed": "觉醒、解脱、挣脱束缚",
+      "signification reversed": "逆位的魔鬼表示你正在觉醒，逐步摆脱不良的依赖和束缚。现在是释放自我、追求自由的时刻。",
+      "signification upright": "魔鬼牌揭示了束缚、欲望和依赖。它提醒你正视自己的阴影面，警惕被物质或情感所控制。魔鬼也是自我觉察和突破限制的契机。",
+      "upright": "束缚、欲望、幻象、依赖"
     }
   }
 }

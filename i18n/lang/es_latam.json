@@ -1,37 +1,18 @@
 {
   "messages": {
-    "draw_card": "SACA UNA CARTA",
-    "drawing_card": "SACANDO UNA CARTA...",
-    "concentrating": "Concentrando...",
-    "preparing_arcana": "Preparando los arcanos...",
-    "upright": "⬆ AL DERECHO ⬆",
-    "reversed": "⬇ INVERTIDA ⬇",
-    "thanks": "✨ ¡Espero que te haya gustado tu lectura! ✨",
-    "continue_exploring": "🔮 ¡Sigue explorando los misterios del tarot! 🔮",
-    "new_reading": "✨ Nueva tirada",
-    "new_reading_countdown": "✨ Nueva tirada ({seconds}s) ✨",
-    "app_title": "Bienvenido/a al tarot adivinatorio",
-    "draw_instruction": "Toca la carta\npara una predicción",
-    "crystals_ad": "💎 Tienda de Cristales y Minerales - Envío gratis 💎",
-    "love_ad": "💕 Encuentra el Amor con Astrología+ 💕\nCompatibilidad basada en tu carta natal",
-    "tarot_course_ad": "🔮 Curso Profesional de Tarot 🔮\nConviértete en cartomante certificado - Inscripción gratis",
-    "tap_to_return": "Toca la carta para volver",
-    "touch_to_enlarge": "🔍 Toca para ampliar",
-    "your_card": "Tu carta",
-    "support_app": "Apoya la app",
     "ad_message": "¿Te gusta esta app gratuita?\n¡Ayúdanos a mantenerla y mejorarla!",
-    "later": "Más tarde",
-    "support": "Apoyar",
+    "app_title": "Bienvenido/a al tarot adivinatorio",
+    "chat_mme_t": "Chat Mme T",
+    "concentrating": "Concentrando...",
+    "configure_backend_hint": "Configura MME_T_BACKEND_URL para activar la consulta de Mme T.",
+    "continue_exploring": "🔮 ¡Sigue explorando los misterios del tarot! 🔮",
+    "crystals_ad": "💎 Tienda de Cristales y Minerales - Envío gratis 💎",
     "done": "Terminar",
-    "premium_button_base": "Chat con Mme T Premium",
-    "premium_button_price_suffix": " ({price})",
-    "premium_button_provider_suffix": " - {provider}",
-    "provider_google": "Google Play",
-    "provider_amazon": "Amazon Appstore",
-    "provider_simulation": "Modo demo",
-    "provider_disabled": "No disponible",
+    "draw_card": "SACA UNA CARTA",
+    "draw_instruction": "Toca la carta\npara una predicción",
+    "drawing_card": "SACANDO UNA CARTA...",
+    "later": "Más tarde",
     "loading": "Cargando...",
-    "signification_error": "Error al cargar la significación",
     "loading_messages": [
       "🔮 Me concentro en tu pregunta...",
       "🃏 Barajando las cartas...",
@@ -39,251 +20,342 @@
       "🌙 Consultando los astros...",
       "💫 Interpretando los arcanos..."
     ],
-    "chat_mme_t": "Chat Mme T",
+    "love_ad": "💕 Encuentra el Amor con Astrología+ 💕\nCompatibilidad basada en tu carta natal",
+    "mme_t_intro": "Hola ✨ Soy Mme T, tu cartomante. ¿Qué pregunta te preocupa hoy? ¿En qué puedo ayudarte?",
+    "mme_t_thanks": "Gracias por consultar a Mme T. Vuelve cuando quieras para otra guía.",
+    "new_reading": "✨ Nueva tirada",
+    "new_reading_countdown": "✨ Nueva tirada ({seconds}s) ✨",
+    "premium_button_base": "Chat con Mme T Premium",
+    "premium_button_price_suffix": " ({price})",
+    "premium_button_provider_suffix": " - {provider}",
+    "preparing_arcana": "Preparando los arcanos...",
+    "provider_amazon": "Amazon Appstore",
+    "provider_disabled": "No disponible",
+    "provider_google": "Google Play",
+    "provider_simulation": "Modo demo",
+    "purchase_error_title": "Compra imposible",
+    "reversed": "⬇ INVERTIDA ⬇",
+    "signification_error": "Error al cargar la significación",
+    "store_mobile_only": "Compra disponible en móvil",
     "store_preparing": "Tienda en preparación...",
     "store_preparing_retry": "La tienda se está preparando, inténtalo de nuevo en un momento",
     "store_unavailable_platform": "Tienda no disponible en esta plataforma",
-    "store_mobile_only": "Compra disponible en móvil",
+    "support": "Apoyar",
+    "support_app": "Apoya la app",
+    "tap_to_return": "Toca la carta para volver",
+    "tarot_course_ad": "🔮 Curso Profesional de Tarot 🔮\nConviértete en cartomante certificado - Inscripción gratis",
+    "thanks": "✨ ¡Espero que te haya gustado tu lectura! ✨",
     "thanks_for_support": "¡Gracias por tu apoyo!",
     "thanks_for_support_via": "¡Gracias por tu apoyo vía {provider}!",
-    "configure_backend_hint": "Configura MME_T_BACKEND_URL para activar la consulta de Mme T.",
-    "purchase_error_title": "Compra imposible",
     "thanks_title": "¡Gracias!",
-    "mme_t_intro": "Hola ✨ Soy Mme T, tu cartomante. ¿Qué pregunta te preocupa hoy? ¿En qué puedo ayudarte?",
-    "mme_t_thanks": "Gracias por consultar a Mme T. Vuelve cuando quieras para otra guía."
+    "touch_to_enlarge": "🔍 Toca para ampliar",
+    "upright": "⬆ AL DERECHO ⬆",
+    "your_card": "Tu carta"
   },
   "significations": {
-    "El Loco": {
-      "upright": "nuevo comienzo, inocencia, espontaneidad, aventura, potencial infinito",
-      "reversed": "imprudencia, ingenuidad peligrosa, irresponsabilidad, despiste",
-      "signification upright": "El Loco (Le Mat) simboliza libertad, fe en lo desconocido y el inicio de un viaje con potencial ilimitado. Es energía pura y apertura a la experiencia.",
-      "signification reversed": "Invertida advierte sobre actuar sin precaución, falta de preparación o decisiones ingenuas que pueden traer problemas."
-    },
-    "El Mago": {
-      "upright": "comienzo, recursos, entusiasmo, energía, creatividad",
-      "reversed": "ilusión, manipulación, falta de enfoque, dispersión, engaño",
-      "signification upright": "El Mago (Le Bateleur) simboliza un nuevo comienzo, la energía vital y la capacidad de actuar. Representa la confianza en uno mismo, la creatividad y la voluntad de convertir ideas en acciones concretas. Invita a aprovechar oportunidades y a expresarse con claridad.",
-      "signification reversed": "En posición invertida puede indicar engaño, manipulación o dispersión de energías. Señala falta de enfoque, promesas vacías o el uso indebido de habilidades para beneficio propio."
-    },
-    "La Suma Sacerdotisa": {
-      "upright": "intuición, sabiduría, conocimiento, misterio, secretos",
-      "reversed": "secretos ocultos, ignorancia voluntaria, intuición bloqueada, superficialidad",
-      "signification upright": "La Suma Sacerdotisa (La Papesse) representa la intuición, el conocimiento interior y el misterio. Invita a la introspección, a escuchar la voz interior y a buscar la verdad desde la calma y la reflexión.",
-      "signification reversed": "Invertida puede señalar secretos guardados, rechazo a la sabiduría interior o intuición bloqueada por prejuicios. También advierte sobre espiritualidades superficiales o manipulación del saber."
-    },
-    "La Emperatriz": {
-      "upright": "fertilidad, creatividad, abundancia, maternidad, conexión con la naturaleza",
-      "reversed": "esterilidad, creatividad bloqueada, sobreprotección, dependencia excesiva",
-      "signification upright": "La Emperatriz (L'Impératrice) simboliza la creatividad femenina, la abundancia y el cuidado nutritivo. Señala un momento de crecimiento, fertilidad y conexión con la tierra y los ciclos naturales.",
-      "signification reversed": "Invertida puede indicar bloqueos creativos, problemas relacionados con la fertilidad o una protección asfixiante que impide la autonomía."
-    },
-    "El Emperador": {
-      "upright": "autoridad legítima, estructura, orden, responsabilidad, protección paternal",
-      "reversed": "tiranía, rigidez excesiva, abuso de autoridad, falta de estructura",
-      "signification upright": "El Emperador (L'Empereur) simboliza el orden, la estabilidad y el liderazgo responsable. Representa la capacidad de crear estructuras sólidas y proteger aquello que es valioso.",
-      "signification reversed": "Invertida puede mostrar abuso de poder, control excesivo o una rigidez que sofoca la creatividad y el crecimiento."
-    },
-    "El Papa": {
-      "upright": "enseñanza espiritual, tradición sagrada, guía moral, iniciación, sabiduría transmitida",
-      "reversed": "dogmatismo, manipulación religiosa, tradición rígida, falso profeta",
-      "signification upright": "El Papa (Le Pape) representa la tradición espiritual y la transmisión de valores. Indica guía ética, aprendizaje a través de la ceremonia y la conexión con lo trascendente.",
-      "signification reversed": "Invertida advierte sobre dogmatismo, manipulación por parte de instituciones o una tradición que se ha vuelto inflexible y dañina."
-    },
-    "Los Enamorados": {
-      "upright": "elección difícil, unión, amor, dualidad, decisión importante",
-      "reversed": "mala elección, separación, indecisión, conflicto interior",
-      "signification upright": "Los Enamorados (L'Amoureux) hablan de decisiones cruciales, de relaciones y de la necesidad de elegir con el corazón y la razón equilibrados. Representa el compromiso auténtico y la armonía entre opuestos.",
-      "signification reversed": "Invertida puede indicar decisiones erróneas, rupturas o incapacidad para comprometerse. Señala conflictos internos y arrepentimiento por elecciones pasadas."
-    },
-    "El Carro": {
-      "upright": "dominio de fuerzas opuestas, voluntad triunfante, avance, victoria por equilibrio",
-      "reversed": "pérdida de control, fuerzas dispersas, fracaso por falta de dirección, conflicto interior",
-      "signification upright": "El Carro (Le Chariot) simboliza control y avance gracias a la determinación. Indica triunfo cuando se equilibran fuerzas opuestas y se mantiene el rumbo con firmeza.",
-      "signification reversed": "Invertida señala caos, falta de dirección o energía dispersa que impide el progreso. Es momento de reenfocar prioridades."
-    },
-    "La Justicia": {
-      "upright": "justicia, equilibrio, verdad, ley, equidad",
-      "reversed": "injusticia, desequilibrio, parcialidad, corrupción, venganza",
-      "signification upright": "La Justicia (La Justice) representa la ecuanimidad, el juicio justo y la responsabilidad. Invita a evaluar con imparcialidad y asumir las consecuencias de los actos.",
-      "signification reversed": "Invertida advierte sobre decisiones sesgadas, corrupción o injusticias. Indica la necesidad de buscar la verdad más allá de las apariencias."
-    },
-    "El Ermitaño": {
-      "upright": "búsqueda espiritual, sabiduría, introspección, guía interior, soledad constructiva",
-      "reversed": "aislamiento estéril, rechazo a consejos, orgullo espiritual, soledad impuesta",
-      "signification upright": "El Ermitaño (L'Hermite) invita a la reflexión profunda y a la búsqueda interior. Es tiempo de retirarse para encontrar claridad y sabiduría personal.",
-      "signification reversed": "Invertida puede señalar aislamiento improductivo, orgullo que impide aprender o incapacidad para compartir la sabiduría con otros."
-    },
-    "La Rueda de la Fortuna": {
-      "upright": "ciclos naturales, karma, oportunidad, cambio de fortuna, destino en movimiento",
-      "reversed": "mala racha persistente, resistencia a los ciclos, mal karma, estancamiento",
-      "signification upright": "La Rueda de la Fortuna simboliza los ciclos de la vida y las oportunidades que llegan con el tiempo. Indica cambios inevitables y la importancia de adaptarse a las vueltas del destino.",
-      "signification reversed": "Invertida puede mostrar estancamiento, mala suerte prolongada o repetición de errores. Es momento de romper patrones."
-    },
-    "La Fuerza": {
-      "upright": "fuerza interior, dominio de sí, coraje, ternura, persuasión",
-      "reversed": "debilidad, falta de control, violencia, brutalidad, cobardía",
-      "signification upright": "La Fuerza (La Force) habla de coraje sereno y dominio de los instintos mediante la compasión. Indica valentía y paciencia para superar dificultades con dignidad.",
-      "signification reversed": "Invertida puede señalar pérdida de control, agresividad o incapacidad para enfrentar los desafíos con serenidad."
-    },
-    "El Colgado": {
-      "upright": "sacrificio voluntario, espera, nueva perspectiva, soltar, iniciación",
-      "reversed": "sacrificio inútil, terquedad, resistencia al cambio, impaciencia",
-      "signification upright": "El Colgado (Le Pendu) sugiere una suspensión necesaria para ganar perspectiva. Invita a soltar viejas certezas y a ver la situación desde un ángulo distinto.",
-      "signification reversed": "Invertida puede indicar sacrificios que no conducen a nada, obstinación o resistencia al proceso de cambio."
-    },
-    "La Muerte": {
-      "upright": "transformación profunda, fin de ciclo, renacimiento, cambio radical, purificación",
-      "reversed": "resistencia al cambio, estancamiento, miedo a lo desconocido, transformación bloqueada",
-      "signification upright": "La Muerte (La Mort) simboliza una transformación profunda y necesaria. No suele aludir a la muerte física, sino al fin de una etapa para permitir el renacer.",
-      "signification reversed": "Invertida puede mostrar miedo a soltar el pasado, resistencia al cambio o estancamiento emocional."
-    },
-    "La Templanza": {
-      "upright": "alquimia, sanación, protección divina, equilibrio de fuerzas, transformación gradual",
-      "reversed": "desequilibrio, excesos, impaciencia, mezcla caótica, desarmonía",
-      "signification upright": "La Templanza (La Temperance) invita a combinar opuestos con armonía para sanar y crecer. Representa paciencia, equilibrio y progreso gradual.",
-      "signification reversed": "Invertida advierte sobre falta de equilibrio, prisas o mezclas desordenadas que impiden la evolución."
-    },
-    "El Diablo": {
-      "upright": "adicciones, ilusiones, materialismo, tentaciones, cadenas",
-      "reversed": "liberación, toma de conciencia, libertad recuperada, ruptura de cadenas",
-      "signification upright": "El Diablo (Le Diable) denuncia ataduras y comportamientos autodestructivos. Señala engaños, dependencias y relaciones que limitan la libertad personal.",
-      "signification reversed": "Invertida anuncia el comienzo de la liberación, la conciencia sobre las propias dependencias y la voluntad de cortar lazos que dañan."
-    },
-    "La Torre": {
-      "upright": "trastorno, revelación, destrucción liberadora, despertar abrupto, cambio repentino",
-      "reversed": "resistencia al cambio, destrucción evitada, caída atenuada, transformación progresiva",
-      "signification upright": "La Torre (La Maison Dieu) anuncia cambios repentinos que derriban estructuras falsas. Aunque impactantes, estas rupturas suelen abrir paso a la verdad y a la reconstrucción necesaria.",
-      "signification reversed": "Invertida sugiere que el cambio ha sido menos drástico o que se está resistiendo el proceso; puede indicar adaptaciones graduales en lugar de colapsos."
-    },
-    "La Estrella": {
-      "upright": "esperanza, inspiración, espiritualidad, generosidad, optimismo",
-      "reversed": "desesperanza, pérdida de fe, pesimismo, egoísmo, ilusiones perdidas",
-      "signification upright": "La Estrella (L'Étoile) trae consuelo y esperanza. Indica renovación espiritual, inspiración y la llegada de momentos de claridad y guía interior.",
-      "signification reversed": "Invertida puede señalar falta de esperanza, desconexión espiritual o una decepción que apaga temporalmente el optimismo."
-    },
-    "La Luna": {
-      "upright": "ilusiones, confusión, miedos, inconsciente, misterios",
-      "reversed": "aclaración, verdad revelada, fin de las ilusiones, intuición recuperada",
-      "signification upright": "La Luna (La Lune) apunta a lo oculto: miedos, engaños y confusión que provienen del inconsciente. Invita a ser cuidadoso y a escuchar la intuición.",
-      "signification reversed": "Invertida anuncia que la niebla se disipa, trayendo claridad, revelaciones y recuperación de la intuición."
-    },
-    "El Sol": {
-      "upright": "alegría, felicidad, éxito, realización, celebración",
-      "reversed": "orgullo excesivo, ego sobredimensionado, éxito temporal, ilusión de grandeza",
-      "signification upright": "El Sol (Le Soleil) anuncia alegría, claridad y éxito. Representa vitalidad, logros y un periodo de abundante energía positiva.",
-      "signification reversed": "Invertida advierte sobre orgullo o vanidad que puede nublar el juicio; recuerda la importancia de la humildad."
-    },
-    "El Juicio": {
-      "upright": "renacimiento espiritual, llamado divino, resurrección, balance de vida, transformación final",
-      "reversed": "sordera espiritual, negativa a evolucionar, juicio severo, culpa",
-      "signification upright": "El Juicio (Le Jugement) simboliza llamada a la transformación, evaluación de la vida y posibilidad de renovación a través del perdón y la aceptación.",
-      "signification reversed": "Invertida indica resistencia al cambio espiritual, autocensura o culpa paralizante que impide avanzar."
-    },
-    "El Mundo": {
-      "upright": "cumplimiento total, realización, armonía universal, ciclo completado, maestría",
-      "reversed": "fracaso cerca del objetivo, perfeccionismo paralizante, aislamiento, ciclo inconcluso",
-      "signification upright": "El Mundo (Le Monde) representa la culminación de un ciclo y la integración armoniosa de las experiencias. Indica éxito pleno y sensación de completitud.",
-      "signification reversed": "Invertida puede señalar que, a pesar de los logros, algo quedó incompleto o el perfeccionismo impide disfrutar del éxito."
-    },
-
-    "Rey de Bastos": {
-      "upright": "liderazgo carismático, visión emprendedora, autoridad natural, creatividad dirigida",
-      "reversed": "tiranía creativa, autoritarismo impulsivo, dominio excesivo, ira destructiva",
-      "signification upright": "El Rey de Bastos encarna liderazgo visionario y pasión creativa. Inspira y moviliza a otros hacia proyectos ambiciosos.",
-      "signification reversed": "Invertida advierte sobre abuso de poder, decisiones impulsivas o liderazgo que aplasta a los demás."
-    },
-    "Reina de Bastos": {
-      "upright": "creatividad radiante, pasión contagiosa, generosidad cálida, inspiración fértil",
-      "reversed": "celos creativos, posesividad excesiva, ira destructiva, egoísmo artístico",
-      "signification upright": "La Reina de Bastos es creativa y estimulante; nutre proyectos con energía y entusiasmo. Representa a quien inspira con su vitalidad.",
-      "signification reversed": "Invertida puede mostrar celos, competencia malsana o egoísmo que impide compartir la inspiración."
-    },
     "Caballero de Bastos": {
-      "upright": "acción impulsiva, aventura apasionada, partida repentina, viaje exploratorio, energía en movimiento",
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier de Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier de Baton a l'envers.jpg",
       "reversed": "impulsividad destructiva, huida irresponsable, agitación estéril, impaciencia paralizante",
+      "signification reversed": "Invertida advierte sobre decisiones precipitadas, falta de planificación o agotamiento tras un arranque impulsivo.",
       "signification upright": "El Caballero de Bastos representa iniciativa ardiente y deseo de explorar. Trae movimiento y cambios rápidos impulsados por la pasión.",
-      "signification reversed": "Invertida advierte sobre decisiones precipitadas, falta de planificación o agotamiento tras un arranque impulsivo."
-    },
-    "Sota de Bastos": {
-      "upright": "mensajero creativo, nueva inspiración, proyecto en germen, entusiasmo juvenil",
-      "reversed": "falsa promesa, proyecto abortado, entusiasmo superficial, impaciencia creativa",
-      "signification upright": "La Sota de Bastos anuncia ideas frescas y el inicio de iniciativas creativas. Es símbolo de entusiasmo y aprendizaje.",
-      "signification reversed": "Invertida alerta sobre promesas vacías, proyectos inconclusos o falta de madurez en la ejecución."
-    },
-
-    "Rey de Oros": {
-      "upright": "prosperidad consolidada, dominio financiero, generosidad sabia, liderazgo material",
-      "reversed": "avaricia, corrupción, abuso de riqueza, materialismo excesivo",
-      "signification upright": "El Rey de Oros representa estabilidad económica, gestión prudente y éxito material alcanzado con responsabilidad.",
-      "signification reversed": "Invertida puede mostrar codicia, corrupción o uso indebido de recursos."
-    },
-    "Reina de Oros": {
-      "upright": "abundancia nutritiva, generosidad práctica, prosperidad compartida, sabiduría doméstica",
-      "reversed": "avaricia protectora, materialismo posesivo, abandono del hogar, desperdicio",
-      "signification upright": "La Reina de Oros simboliza cuidado, recursos compartidos y habilidad para gestionar la prosperidad de forma amorosa y práctica.",
-      "signification reversed": "Invertida advierte sobre exceso de apego a lo material o mala administración de los recursos familiares."
-    },
-    "Caballero de Oros": {
-      "upright": "trabajo constante, método, perseverancia, responsabilidad, pragmatismo",
-      "reversed": "obsesión por el trabajo, rutina excesiva, falta de ambición, pereza",
-      "signification upright": "El Caballero de Oros es símbolo de constancia y esfuerzo práctico. Avanza con paciencia hacia metas materiales.",
-      "signification reversed": "Invertida puede indicar trabajo obsesivo o estancamiento por falta de iniciativa."
-    },
-    "Sota de Oros": {
-      "upright": "estudiante aplicado, aprendizaje práctico, nueva oportunidad material, diligencia",
-      "reversed": "pereza pseudoestudiosa, oportunismo, superficialidad en el aprendizaje, negligencia",
-      "signification upright": "La Sota de Oros indica aprendizaje serio y oportunidades materiales emergentes gracias al esfuerzo aplicado.",
-      "signification reversed": "Invertida advierte sobre falta de constancia o enfoque en atajos que perjudican el crecimiento."
-    },
-
-    "Rey de Copas": {
-      "upright": "dominio emocional, compasión sabia, equilibrio afectivo, liderazgo benevolente",
-      "reversed": "manipulación emocional, frialdad calculada, chantaje afectivo, inestabilidad oculta",
-      "signification upright": "El Rey de Copas simboliza madurez emocional, empatía y capacidad de liderazgo desde la ternura y la comprensión.",
-      "signification reversed": "Invertida advierte sobre uso manipulatorio de las emociones o inestabilidad tras una fachada de control."
-    },
-    "Reina de Copas": {
-      "upright": "intuición profunda, empatía auténtica, amor incondicional, guía espiritual",
-      "reversed": "excesiva emotividad, dependencia afectiva, ilusiones sentimentales, sacrificio destructivo",
-      "signification upright": "La Reina de Copas representa sensibilidad, compasión y sabiduría emocional. Ofrece refugio y comprensión a quienes la rodean.",
-      "signification reversed": "Invertida puede mostrar límites faltantes, codependencia o entrega dañina que impide el autocuidado."
+      "upright": "acción impulsiva, aventura apasionada, partida repentina, viaje exploratorio, energía en movimiento"
     },
     "Caballero de Copas": {
-      "upright": "romance, invitación, encanto, propuesta emocional, seducción",
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier De Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier De Coupe a l'envers.jpg",
       "reversed": "ilusiones románticas, manipulación emocional, promesas vacías",
+      "signification reversed": "Invertida advierte sobre idealizaciones amorosas, manipulación sentimental o promesas que no se cumplirán.",
       "signification upright": "El Caballero de Copas trae propuestas afectivas y creatividad emocional. Es un mensajero de encanto y sensibilidad.",
-      "signification reversed": "Invertida advierte sobre idealizaciones amorosas, manipulación sentimental o promesas que no se cumplirán."
-    },
-    "Sota de Copas": {
-      "upright": "mensaje emocional, inspiración artística, despertar sensible, creatividad incipiente",
-      "reversed": "inmadurez emocional, sensibilidad herida, creatividad bloqueada, ingenuidad peligrosa",
-      "signification upright": "La Sota de Copas anuncia sensibilidad, inspiración y la llegada de mensajes que tocan el corazón. Es el inicio de una expresión emocional creativa.",
-      "signification reversed": "Invertida advierte sobre inmadurez afectiva o heridas que impiden la expresión creativa."
-    },
-
-    "Rey de Espadas": {
-      "upright": "inteligencia, autoridad justa, claridad mental, objetividad, justicia",
-      "reversed": "tiranía, abuso de poder, frialdad extrema, manipulación mental",
-      "signification upright": "El Rey de Espadas simboliza la razón, la justicia y el juicio claro. Representa el uso de la inteligencia para el bien común y decisiones éticas.",
-      "signification reversed": "Invertida advierte sobre uso frío de la inteligencia para manipular o imponer autoridad sin empatía."
-    },
-    "Reina de Espadas": {
-      "upright": "independencia, lucidez, franqueza, inteligencia pragmática, experiencia del dolor",
-      "reversed": "amargura, rencor, crítica destructiva, frialdad excesiva",
-      "signification upright": "La Reina de Espadas representa claridad de pensamiento, independencia basada en la experiencia y consejos directos pero sabios.",
-      "signification reversed": "Invertida advierte sobre críticas hirientes, resentimiento o uso de la verdad para herir en lugar de ayudar."
+      "upright": "romance, invitación, encanto, propuesta emocional, seducción"
     },
     "Caballero de Espadas": {
-      "upright": "acción impulsiva, coraje, combatividad, cambio abrupto, heroísmo",
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier D'Epee a l'envers.jpg",
       "reversed": "imprudencia, agresión, destrucción, ira ciega",
+      "signification reversed": "Invertida advierte sobre precipitación, agresividad sin control o daños causados por acciones impulsivas.",
       "signification upright": "El Caballero de Espadas trae acción rápida y determinación. Representa valentía intelectual y disposición para intervenir.",
-      "signification reversed": "Invertida advierte sobre precipitación, agresividad sin control o daños causados por acciones impulsivas."
+      "upright": "acción impulsiva, coraje, combatividad, cambio abrupto, heroísmo"
+    },
+    "Caballero de Oros": {
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier de Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier de Deniers a l'envers.jpg",
+      "reversed": "obsesión por el trabajo, rutina excesiva, falta de ambición, pereza",
+      "signification reversed": "Invertida puede indicar trabajo obsesivo o estancamiento por falta de iniciativa.",
+      "signification upright": "El Caballero de Oros es símbolo de constancia y esfuerzo práctico. Avanza con paciencia hacia metas materiales.",
+      "upright": "trabajo constante, método, perseverancia, responsabilidad, pragmatismo"
+    },
+    "El Carro": {
+      "image": "tarot_img/MajorArcanaCards/Le Chariot.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Chariot a l'envers.jpg",
+      "reversed": "pérdida de control, fuerzas dispersas, fracaso por falta de dirección, conflicto interior",
+      "signification reversed": "Invertida señala caos, falta de dirección o energía dispersa que impide el progreso. Es momento de reenfocar prioridades.",
+      "signification upright": "El Carro (Le Chariot) simboliza control y avance gracias a la determinación. Indica triunfo cuando se equilibran fuerzas opuestas y se mantiene el rumbo con firmeza.",
+      "upright": "dominio de fuerzas opuestas, voluntad triunfante, avance, victoria por equilibrio"
+    },
+    "El Colgado": {
+      "image": "tarot_img/MajorArcanaCards/Le Pendu.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Pendu a l'envers.jpg",
+      "reversed": "sacrificio inútil, terquedad, resistencia al cambio, impaciencia",
+      "signification reversed": "Invertida puede indicar sacrificios que no conducen a nada, obstinación o resistencia al proceso de cambio.",
+      "signification upright": "El Colgado (Le Pendu) sugiere una suspensión necesaria para ganar perspectiva. Invita a soltar viejas certezas y a ver la situación desde un ángulo distinto.",
+      "upright": "sacrificio voluntario, espera, nueva perspectiva, soltar, iniciación"
+    },
+    "El Diablo": {
+      "image": "tarot_img/MajorArcanaCards/Le Diable.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Diable a l'envers.jpg",
+      "reversed": "liberación, toma de conciencia, libertad recuperada, ruptura de cadenas",
+      "signification reversed": "Invertida anuncia el comienzo de la liberación, la conciencia sobre las propias dependencias y la voluntad de cortar lazos que dañan.",
+      "signification upright": "El Diablo (Le Diable) denuncia ataduras y comportamientos autodestructivos. Señala engaños, dependencias y relaciones que limitan la libertad personal.",
+      "upright": "adicciones, ilusiones, materialismo, tentaciones, cadenas"
+    },
+    "El Emperador": {
+      "image": "tarot_img/MajorArcanaCards/L'Empereur.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Empereur a l'envers.jpg",
+      "reversed": "tiranía, rigidez excesiva, abuso de autoridad, falta de estructura",
+      "signification reversed": "Invertida puede mostrar abuso de poder, control excesivo o una rigidez que sofoca la creatividad y el crecimiento.",
+      "signification upright": "El Emperador (L'Empereur) simboliza el orden, la estabilidad y el liderazgo responsable. Representa la capacidad de crear estructuras sólidas y proteger aquello que es valioso.",
+      "upright": "autoridad legítima, estructura, orden, responsabilidad, protección paternal"
+    },
+    "El Ermitaño": {
+      "image": "tarot_img/MajorArcanaCards/L'Hermite.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Hermite a l'envers.jpg",
+      "reversed": "aislamiento estéril, rechazo a consejos, orgullo espiritual, soledad impuesta",
+      "signification reversed": "Invertida puede señalar aislamiento improductivo, orgullo que impide aprender o incapacidad para compartir la sabiduría con otros.",
+      "signification upright": "El Ermitaño (L'Hermite) invita a la reflexión profunda y a la búsqueda interior. Es tiempo de retirarse para encontrar claridad y sabiduría personal.",
+      "upright": "búsqueda espiritual, sabiduría, introspección, guía interior, soledad constructiva"
+    },
+    "El Juicio": {
+      "image": "tarot_img/MajorArcanaCards/Le Jugement.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Jugement a l'envers.jpg",
+      "reversed": "sordera espiritual, negativa a evolucionar, juicio severo, culpa",
+      "signification reversed": "Invertida indica resistencia al cambio espiritual, autocensura o culpa paralizante que impide avanzar.",
+      "signification upright": "El Juicio (Le Jugement) simboliza llamada a la transformación, evaluación de la vida y posibilidad de renovación a través del perdón y la aceptación.",
+      "upright": "renacimiento espiritual, llamado divino, resurrección, balance de vida, transformación final"
+    },
+    "El Loco": {
+      "image": "tarot_img/MajorArcanaCards/Le Mat.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Mat a l'envers.jpg",
+      "reversed": "imprudencia, ingenuidad peligrosa, irresponsabilidad, despiste",
+      "signification reversed": "Invertida advierte sobre actuar sin precaución, falta de preparación o decisiones ingenuas que pueden traer problemas.",
+      "signification upright": "El Loco (Le Mat) simboliza libertad, fe en lo desconocido y el inicio de un viaje con potencial ilimitado. Es energía pura y apertura a la experiencia.",
+      "upright": "nuevo comienzo, inocencia, espontaneidad, aventura, potencial infinito"
+    },
+    "El Mago": {
+      "image": "tarot_img/MajorArcanaCards/Le Bateleur.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Bateleur a l'envers.jpg",
+      "reversed": "ilusión, manipulación, falta de enfoque, dispersión, engaño",
+      "signification reversed": "En posición invertida puede indicar engaño, manipulación o dispersión de energías. Señala falta de enfoque, promesas vacías o el uso indebido de habilidades para beneficio propio.",
+      "signification upright": "El Mago (Le Bateleur) simboliza un nuevo comienzo, la energía vital y la capacidad de actuar. Representa la confianza en uno mismo, la creatividad y la voluntad de convertir ideas en acciones concretas. Invita a aprovechar oportunidades y a expresarse con claridad.",
+      "upright": "comienzo, recursos, entusiasmo, energía, creatividad"
+    },
+    "El Mundo": {
+      "image": "tarot_img/MajorArcanaCards/Le Monde.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Monde a l'envers.jpg",
+      "reversed": "fracaso cerca del objetivo, perfeccionismo paralizante, aislamiento, ciclo inconcluso",
+      "signification reversed": "Invertida puede señalar que, a pesar de los logros, algo quedó incompleto o el perfeccionismo impide disfrutar del éxito.",
+      "signification upright": "El Mundo (Le Monde) representa la culminación de un ciclo y la integración armoniosa de las experiencias. Indica éxito pleno y sensación de completitud.",
+      "upright": "cumplimiento total, realización, armonía universal, ciclo completado, maestría"
+    },
+    "El Papa": {
+      "image": "tarot_img/MajorArcanaCards/Le Pape.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Pape a l'envers.jpg",
+      "reversed": "dogmatismo, manipulación religiosa, tradición rígida, falso profeta",
+      "signification reversed": "Invertida advierte sobre dogmatismo, manipulación por parte de instituciones o una tradición que se ha vuelto inflexible y dañina.",
+      "signification upright": "El Papa (Le Pape) representa la tradición espiritual y la transmisión de valores. Indica guía ética, aprendizaje a través de la ceremonia y la conexión con lo trascendente.",
+      "upright": "enseñanza espiritual, tradición sagrada, guía moral, iniciación, sabiduría transmitida"
+    },
+    "El Sol": {
+      "image": "tarot_img/MajorArcanaCards/Le Soleil.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Soleil a l'envers.jpg",
+      "reversed": "orgullo excesivo, ego sobredimensionado, éxito temporal, ilusión de grandeza",
+      "signification reversed": "Invertida advierte sobre orgullo o vanidad que puede nublar el juicio; recuerda la importancia de la humildad.",
+      "signification upright": "El Sol (Le Soleil) anuncia alegría, claridad y éxito. Representa vitalidad, logros y un periodo de abundante energía positiva.",
+      "upright": "alegría, felicidad, éxito, realización, celebración"
+    },
+    "La Emperatriz": {
+      "image": "tarot_img/MajorArcanaCards/L'Imperatrice.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Imperatrice a l'envers.jpg",
+      "reversed": "esterilidad, creatividad bloqueada, sobreprotección, dependencia excesiva",
+      "signification reversed": "Invertida puede indicar bloqueos creativos, problemas relacionados con la fertilidad o una protección asfixiante que impide la autonomía.",
+      "signification upright": "La Emperatriz (L'Impératrice) simboliza la creatividad femenina, la abundancia y el cuidado nutritivo. Señala un momento de crecimiento, fertilidad y conexión con la tierra y los ciclos naturales.",
+      "upright": "fertilidad, creatividad, abundancia, maternidad, conexión con la naturaleza"
+    },
+    "La Estrella": {
+      "image": "tarot_img/MajorArcanaCards/L'Etoile.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Etoile a l'envers.jpg",
+      "reversed": "desesperanza, pérdida de fe, pesimismo, egoísmo, ilusiones perdidas",
+      "signification reversed": "Invertida puede señalar falta de esperanza, desconexión espiritual o una decepción que apaga temporalmente el optimismo.",
+      "signification upright": "La Estrella (L'Étoile) trae consuelo y esperanza. Indica renovación espiritual, inspiración y la llegada de momentos de claridad y guía interior.",
+      "upright": "esperanza, inspiración, espiritualidad, generosidad, optimismo"
+    },
+    "La Fuerza": {
+      "image": "tarot_img/MajorArcanaCards/La Force.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Force a l'envers.jpg",
+      "reversed": "debilidad, falta de control, violencia, brutalidad, cobardía",
+      "signification reversed": "Invertida puede señalar pérdida de control, agresividad o incapacidad para enfrentar los desafíos con serenidad.",
+      "signification upright": "La Fuerza (La Force) habla de coraje sereno y dominio de los instintos mediante la compasión. Indica valentía y paciencia para superar dificultades con dignidad.",
+      "upright": "fuerza interior, dominio de sí, coraje, ternura, persuasión"
+    },
+    "La Justicia": {
+      "image": "tarot_img/MajorArcanaCards/La Justice.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Justice a l'envers.jpg",
+      "reversed": "injusticia, desequilibrio, parcialidad, corrupción, venganza",
+      "signification reversed": "Invertida advierte sobre decisiones sesgadas, corrupción o injusticias. Indica la necesidad de buscar la verdad más allá de las apariencias.",
+      "signification upright": "La Justicia (La Justice) representa la ecuanimidad, el juicio justo y la responsabilidad. Invita a evaluar con imparcialidad y asumir las consecuencias de los actos.",
+      "upright": "justicia, equilibrio, verdad, ley, equidad"
+    },
+    "La Luna": {
+      "image": "tarot_img/MajorArcanaCards/La Lune.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Lune a l'envers.jpg",
+      "reversed": "aclaración, verdad revelada, fin de las ilusiones, intuición recuperada",
+      "signification reversed": "Invertida anuncia que la niebla se disipa, trayendo claridad, revelaciones y recuperación de la intuición.",
+      "signification upright": "La Luna (La Lune) apunta a lo oculto: miedos, engaños y confusión que provienen del inconsciente. Invita a ser cuidadoso y a escuchar la intuición.",
+      "upright": "ilusiones, confusión, miedos, inconsciente, misterios"
+    },
+    "La Muerte": {
+      "image": "tarot_img/MajorArcanaCards/La Mort.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Mort a l'envers.jpg",
+      "reversed": "resistencia al cambio, estancamiento, miedo a lo desconocido, transformación bloqueada",
+      "signification reversed": "Invertida puede mostrar miedo a soltar el pasado, resistencia al cambio o estancamiento emocional.",
+      "signification upright": "La Muerte (La Mort) simboliza una transformación profunda y necesaria. No suele aludir a la muerte física, sino al fin de una etapa para permitir el renacer.",
+      "upright": "transformación profunda, fin de ciclo, renacimiento, cambio radical, purificación"
+    },
+    "La Rueda de la Fortuna": {
+      "image": "tarot_img/MajorArcanaCards/La Roue de La Fortune.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Roue de La Fortune a l'envers.jpg",
+      "reversed": "mala racha persistente, resistencia a los ciclos, mal karma, estancamiento",
+      "signification reversed": "Invertida puede mostrar estancamiento, mala suerte prolongada o repetición de errores. Es momento de romper patrones.",
+      "signification upright": "La Rueda de la Fortuna simboliza los ciclos de la vida y las oportunidades que llegan con el tiempo. Indica cambios inevitables y la importancia de adaptarse a las vueltas del destino.",
+      "upright": "ciclos naturales, karma, oportunidad, cambio de fortuna, destino en movimiento"
+    },
+    "La Suma Sacerdotisa": {
+      "image": "tarot_img/MajorArcanaCards/La Papesse.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Papesse a l'envers.jpg",
+      "reversed": "secretos ocultos, ignorancia voluntaria, intuición bloqueada, superficialidad",
+      "signification reversed": "Invertida puede señalar secretos guardados, rechazo a la sabiduría interior o intuición bloqueada por prejuicios. También advierte sobre espiritualidades superficiales o manipulación del saber.",
+      "signification upright": "La Suma Sacerdotisa (La Papesse) representa la intuición, el conocimiento interior y el misterio. Invita a la introspección, a escuchar la voz interior y a buscar la verdad desde la calma y la reflexión.",
+      "upright": "intuición, sabiduría, conocimiento, misterio, secretos"
+    },
+    "La Templanza": {
+      "image": "tarot_img/MajorArcanaCards/La Temperance.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Temperance a l'envers.jpg",
+      "reversed": "desequilibrio, excesos, impaciencia, mezcla caótica, desarmonía",
+      "signification reversed": "Invertida advierte sobre falta de equilibrio, prisas o mezclas desordenadas que impiden la evolución.",
+      "signification upright": "La Templanza (La Temperance) invita a combinar opuestos con armonía para sanar y crecer. Representa paciencia, equilibrio y progreso gradual.",
+      "upright": "alquimia, sanación, protección divina, equilibrio de fuerzas, transformación gradual"
+    },
+    "La Torre": {
+      "image": "tarot_img/MajorArcanaCards/La Maison Dieu.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Maison Dieu a l'envers.jpg",
+      "reversed": "resistencia al cambio, destrucción evitada, caída atenuada, transformación progresiva",
+      "signification reversed": "Invertida sugiere que el cambio ha sido menos drástico o que se está resistiendo el proceso; puede indicar adaptaciones graduales en lugar de colapsos.",
+      "signification upright": "La Torre (La Maison Dieu) anuncia cambios repentinos que derriban estructuras falsas. Aunque impactantes, estas rupturas suelen abrir paso a la verdad y a la reconstrucción necesaria.",
+      "upright": "trastorno, revelación, destrucción liberadora, despertar abrupto, cambio repentino"
+    },
+    "Los Enamorados": {
+      "image": "tarot_img/MajorArcanaCards/L'Amoureux.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Amoureux a l'envers.jpg",
+      "reversed": "mala elección, separación, indecisión, conflicto interior",
+      "signification reversed": "Invertida puede indicar decisiones erróneas, rupturas o incapacidad para comprometerse. Señala conflictos internos y arrepentimiento por elecciones pasadas.",
+      "signification upright": "Los Enamorados (L'Amoureux) hablan de decisiones cruciales, de relaciones y de la necesidad de elegir con el corazón y la razón equilibrados. Representa el compromiso auténtico y la armonía entre opuestos.",
+      "upright": "elección difícil, unión, amor, dualidad, decisión importante"
+    },
+    "Reina de Bastos": {
+      "image": "tarot_img/MajorArcanaCards/La Reine de Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine de Baton a l'envers.jpg",
+      "reversed": "celos creativos, posesividad excesiva, ira destructiva, egoísmo artístico",
+      "signification reversed": "Invertida puede mostrar celos, competencia malsana o egoísmo que impide compartir la inspiración.",
+      "signification upright": "La Reina de Bastos es creativa y estimulante; nutre proyectos con energía y entusiasmo. Representa a quien inspira con su vitalidad.",
+      "upright": "creatividad radiante, pasión contagiosa, generosidad cálida, inspiración fértil"
+    },
+    "Reina de Copas": {
+      "image": "tarot_img/MajorArcanaCards/La Reine De Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine De Coupe a l'envers.jpg",
+      "reversed": "excesiva emotividad, dependencia afectiva, ilusiones sentimentales, sacrificio destructivo",
+      "signification reversed": "Invertida puede mostrar límites faltantes, codependencia o entrega dañina que impide el autocuidado.",
+      "signification upright": "La Reina de Copas representa sensibilidad, compasión y sabiduría emocional. Ofrece refugio y comprensión a quienes la rodean.",
+      "upright": "intuición profunda, empatía auténtica, amor incondicional, guía espiritual"
+    },
+    "Reina de Espadas": {
+      "image": "tarot_img/MajorArcanaCards/La Reine D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine D'Epee a l'envers.jpg",
+      "reversed": "amargura, rencor, crítica destructiva, frialdad excesiva",
+      "signification reversed": "Invertida advierte sobre críticas hirientes, resentimiento o uso de la verdad para herir en lugar de ayudar.",
+      "signification upright": "La Reina de Espadas representa claridad de pensamiento, independencia basada en la experiencia y consejos directos pero sabios.",
+      "upright": "independencia, lucidez, franqueza, inteligencia pragmática, experiencia del dolor"
+    },
+    "Reina de Oros": {
+      "image": "tarot_img/MajorArcanaCards/La Reine De Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine De Deniers a l'envers.jpg",
+      "reversed": "avaricia protectora, materialismo posesivo, abandono del hogar, desperdicio",
+      "signification reversed": "Invertida advierte sobre exceso de apego a lo material o mala administración de los recursos familiares.",
+      "signification upright": "La Reina de Oros simboliza cuidado, recursos compartidos y habilidad para gestionar la prosperidad de forma amorosa y práctica.",
+      "upright": "abundancia nutritiva, generosidad práctica, prosperidad compartida, sabiduría doméstica"
+    },
+    "Rey de Bastos": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi De Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi De Baton a l'envers.jpg",
+      "reversed": "tiranía creativa, autoritarismo impulsivo, dominio excesivo, ira destructiva",
+      "signification reversed": "Invertida advierte sobre abuso de poder, decisiones impulsivas o liderazgo que aplasta a los demás.",
+      "signification upright": "El Rey de Bastos encarna liderazgo visionario y pasión creativa. Inspira y moviliza a otros hacia proyectos ambiciosos.",
+      "upright": "liderazgo carismático, visión emprendedora, autoridad natural, creatividad dirigida"
+    },
+    "Rey de Copas": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi de Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi de Coupe a l'envers.jpg",
+      "reversed": "manipulación emocional, frialdad calculada, chantaje afectivo, inestabilidad oculta",
+      "signification reversed": "Invertida advierte sobre uso manipulatorio de las emociones o inestabilidad tras una fachada de control.",
+      "signification upright": "El Rey de Copas simboliza madurez emocional, empatía y capacidad de liderazgo desde la ternura y la comprensión.",
+      "upright": "dominio emocional, compasión sabia, equilibrio afectivo, liderazgo benevolente"
+    },
+    "Rey de Espadas": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi D'Epee a l'envers.jpg",
+      "reversed": "tiranía, abuso de poder, frialdad extrema, manipulación mental",
+      "signification reversed": "Invertida advierte sobre uso frío de la inteligencia para manipular o imponer autoridad sin empatía.",
+      "signification upright": "El Rey de Espadas simboliza la razón, la justicia y el juicio claro. Representa el uso de la inteligencia para el bien común y decisiones éticas.",
+      "upright": "inteligencia, autoridad justa, claridad mental, objetividad, justicia"
+    },
+    "Rey de Oros": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi De Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi De Deniers a l'envers.jpg",
+      "reversed": "avaricia, corrupción, abuso de riqueza, materialismo excesivo",
+      "signification reversed": "Invertida puede mostrar codicia, corrupción o uso indebido de recursos.",
+      "signification upright": "El Rey de Oros representa estabilidad económica, gestión prudente y éxito material alcanzado con responsabilidad.",
+      "upright": "prosperidad consolidada, dominio financiero, generosidad sabia, liderazgo material"
+    },
+    "Sota de Bastos": {
+      "image": "tarot_img/MajorArcanaCards/Le Valet de Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet de Baton a l'envers.jpg",
+      "reversed": "falsa promesa, proyecto abortado, entusiasmo superficial, impaciencia creativa",
+      "signification reversed": "Invertida alerta sobre promesas vacías, proyectos inconclusos o falta de madurez en la ejecución.",
+      "signification upright": "La Sota de Bastos anuncia ideas frescas y el inicio de iniciativas creativas. Es símbolo de entusiasmo y aprendizaje.",
+      "upright": "mensajero creativo, nueva inspiración, proyecto en germen, entusiasmo juvenil"
+    },
+    "Sota de Copas": {
+      "image": "tarot_img/MajorArcanaCards/Le Valet De Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet De Coupe a l'envers.jpg",
+      "reversed": "inmadurez emocional, sensibilidad herida, creatividad bloqueada, ingenuidad peligrosa",
+      "signification reversed": "Invertida advierte sobre inmadurez afectiva o heridas que impiden la expresión creativa.",
+      "signification upright": "La Sota de Copas anuncia sensibilidad, inspiración y la llegada de mensajes que tocan el corazón. Es el inicio de una expresión emocional creativa.",
+      "upright": "mensaje emocional, inspiración artística, despertar sensible, creatividad incipiente"
     },
     "Sota de Espadas": {
-      "upright": "curiosidad intelectual, mensajes importantes, vigilancia, agilidad mental",
+      "image": "tarot_img/MajorArcanaCards/Le Valet D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet D'Epee a l'envers.jpg",
       "reversed": "indiscreción, espionaje malintencionado, mentiras, manipulación de información",
+      "signification reversed": "Invertida advierte sobre chismes, desinformación o uso de datos para perjudicar.",
       "signification upright": "La Sota de Espadas simboliza mente ágil, curiosidad y llegada de noticias que requieren atención y discernimiento.",
-      "signification reversed": "Invertida advierte sobre chismes, desinformación o uso de datos para perjudicar."
+      "upright": "curiosidad intelectual, mensajes importantes, vigilancia, agilidad mental"
+    },
+    "Sota de Oros": {
+      "image": "tarot_img/MajorArcanaCards/Le Valet De Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet De Deniers a l'envers.jpg",
+      "reversed": "pereza pseudoestudiosa, oportunismo, superficialidad en el aprendizaje, negligencia",
+      "signification reversed": "Invertida advierte sobre falta de constancia o enfoque en atajos que perjudican el crecimiento.",
+      "signification upright": "La Sota de Oros indica aprendizaje serio y oportunidades materiales emergentes gracias al esfuerzo aplicado.",
+      "upright": "estudiante aplicado, aprendizaje práctico, nueva oportunidad material, diligencia"
     }
   }
 }

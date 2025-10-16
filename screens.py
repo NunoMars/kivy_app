@@ -7,6 +7,7 @@ Contient les classes d'écrans (RootScreen, CardScreen, ResponseScreen) et leurs
 from __future__ import annotations
 
 import os
+import json
 import random
 
 # Kivy imports
@@ -25,7 +26,7 @@ from kivy.animation import Animation
 
 # Local modules
 from i18n_loader import tr, get_system_language
-from i18n_loader import SIGNIFICATION_KEY_MAP, get_cards_signification, get_card_name_for_lang, get_card_image_path
+from i18n_loader import get_cards_signification  # get_cards_signification(lang: str) -> dict
 
 # Popups
 from popups import LoadingPopup, FullScreenCardPopup, MmeTChatPopup, AdsPopup
@@ -40,7 +41,6 @@ except ImportError:
 READING_COUNT = 0
 
 # Use the central language detection from translations.py (imported above)
-# This ensures APP_LANG and set_app_language() are respected across modules.
 CURRENT_LANG = get_system_language()
 
 # Platform detection
@@ -54,6 +54,47 @@ except Exception:
 DEFAULT_MME_T_SPACE = "https://loupy222-mme-t.hf.space"
 MME_T_BACKEND_URL = os.environ.get("MME_T_BACKEND_URL", DEFAULT_MME_T_SPACE)
 MME_T_DEFAULT_MODEL = os.environ.get("MME_T_DEFAULT_MODEL", "gpt-3.5-turbo")
+
+
+# -------------------------
+# Lang resolution utilities
+# -------------------------
+def _normalize_lang(code: str) -> str:
+    if not code:
+        return "en"
+    code = code.lower().replace("_", "-")
+    # map common variants to our filenames (fr, en, pt, es, etc.)
+    if code.startswith("fr"):
+        return "fr"
+    if code.startswith("en"):
+        return "en"
+    if code.startswith("pt"):
+        return "pt"
+    if code.startswith("es"):
+        return "es"
+    # fallback
+    return code[:2] if len(code) >= 2 else "en"
+
+
+def resolve_lang() -> str:
+    """
+    Ordre de priorité:
+    1) App.cfg['force_lang'] (si présent),
+    2) ENV APP_LANG,
+    3) get_system_language(),
+    4) 'en'
+    """
+    lang_forced = None
+    try:
+        app = App.get_running_app()
+        if hasattr(app, "cfg"):
+            lang_forced = app.cfg.get("force_lang") or app.cfg.get("language")
+    except Exception:
+        pass
+    env_lang = os.environ.get("APP_LANG")
+
+    chosen = lang_forced or env_lang or get_system_language() or "en"
+    return _normalize_lang(chosen)
 
 
 def should_show_ad():
@@ -173,31 +214,38 @@ class CardScreen(Screen):
 
     def perform_card_draw(self, _dt):
         try:
-            # Load signification bundles for the current language and use their
-            # keys as the source of truth for available cards.
-            cards_signification = get_cards_signification()
+            # Charge le bundle de la langue active (avec fallback interne du loader)
+            lang = resolve_lang()
+            try:
+                cards_signification = get_cards_signification(lang) or {}
+            except Exception as e:
+                print(f"⚠️ get_cards_signification failed for '{lang}': {e}")
+                # ultime fallback: tente EN
+                try:
+                    cards_signification = get_cards_signification("en") or {}
+                except Exception:
+                    cards_signification = {}
+
             try:
                 cards = list(cards_signification.keys()) if isinstance(cards_signification, dict) else []
             except Exception:
                 cards = []
-            print(f"DEBUG: signification keys count = {len(cards)}")
+            print(f"DEBUG LANG: {lang}")
+            print(f"DEBUG: signification keys count = {len(cards)} | first keys: {cards[:5]}")
 
-            # Si aucune signification n'est fournie (modules vides), fallback
-            # vers les noms de fichiers présents dans tarot_img/MajorArcanaCards
+            # Fallback vers les fichiers si nécessaire
             if not cards:
                 try:
                     maj_dir = os.path.join(os.path.dirname(__file__), "tarot_img", "MajorArcanaCards")
                     if not os.path.exists(maj_dir):
                         maj_dir = os.path.join(os.path.dirname(__file__), "tarot_img")
                     files = [f for f in os.listdir(maj_dir) if os.path.isfile(os.path.join(maj_dir, f))]
-                    # Garder les noms sans extension et nettoyer les espaces
                     cards = [os.path.splitext(f)[0] for f in files if f.lower().endswith(('.jpg', '.jpeg', '.png', '.gif'))]
                     print(f"⚠️ Fallback cards from files: {len(cards)} found")
                 except Exception as e:
                     print(f"⚠️ Impossible de lister MajorArcanaCards: {e}")
                     cards = []
 
-            # Si après fallback il n'y a toujours rien, annuler proprement
             if not cards:
                 print("✗ Aucun nom de carte disponible pour le tirage (cards vide). Annulation.")
                 if self.loading_popup:
@@ -206,12 +254,13 @@ class CardScreen(Screen):
                     except Exception:
                         pass
                 return
-            # Nombre de cartes à tirer configurable via variable d'environnement
+
+            # Nombre de cartes à tirer (env)
             try:
                 count = int(os.environ.get("TAROT_DRAW_COUNT", "3"))
             except Exception:
                 count = 3
-            count = max(1, min(4, count))  # limiter entre 1 et 4
+            count = max(1, min(4, count))
 
             drawn_cards = []
             remaining = list(cards)
@@ -221,12 +270,12 @@ class CardScreen(Screen):
                 card = random.choice(remaining)
                 remaining.remove(card)
                 state = random.choice(["droite", "a l'envers"])
-                drawn_cards.append((card, state))
+                state_json = "upright" if state in ["droite", "right"] else "reversed"
+                drawn_cards.append((card, state_json))
 
-            # Diagnostics: s'assurer qu'on a bien tiré des cartes
             print(f"Disponibles pour tirage: {len(cards)} cartes")
             if not drawn_cards:
-                print("✗ Aucun carte tirée — annulation du tirage")
+                print("✗ Aucune carte tirée — annulation du tirage")
                 if self.loading_popup:
                     try:
                         self.loading_popup.dismiss()
@@ -234,11 +283,9 @@ class CardScreen(Screen):
                         pass
                 return
 
-            # Pour compatibilité UI (car l'écran de réponse attend une carte principale),
-            # on prend la première carte comme principale, mais on enregistre le tirage complet
             drawn_card, drawn_state = drawn_cards[0]
 
-            # Stocker le tirage complet sur l'app pour un contexte détaillé
+            # Stocker le tirage complet sur l'app
             try:
                 app = App.get_running_app()
                 app.last_drawn_cards = drawn_cards
@@ -246,7 +293,8 @@ class CardScreen(Screen):
                 pass
 
             print(f"Cartes tirées: {drawn_cards}")
-            print(f"📊 Lecture #{READING_COUNT + 1}")
+            # Note: should_show_ad() incrémente READING_COUNT. On loggue le compteur courant.
+            print(f"📊 Lecture #{READING_COUNT}")
 
             if self.loading_popup:
                 self.loading_popup.dismiss()
@@ -258,9 +306,7 @@ class CardScreen(Screen):
             def _show_response_screen(*_args):
                 if self.manager:
                     response_screen = self.manager.get_screen("response_screen")
-                    # Passer la première carte au setup (UI existant)
                     response_screen.setup_card(drawn_card, drawn_state)
-                    # Fournir le contexte complet (liste) si besoin
                     if hasattr(response_screen, "set_full_draw"):
                         try:
                             response_screen.set_full_draw(drawn_cards)
@@ -318,10 +364,9 @@ class ResponseScreen(Screen):
         main_layout.bind(pos=self.update_bg, size=self.update_bg)
 
         # Nom de la carte
-
         self.card_name_label = Label(
             text=tr("your_card"),
-            font_size="32sp",  # Encore plus grand
+            font_size="32sp",
             color=[0.9, 0.7, 0.3, 1],
             size_hint_y=None,
             height=dp(48),
@@ -332,12 +377,12 @@ class ResponseScreen(Screen):
         self.card_name_label.bind(size=lambda inst, val: setattr(inst, 'text_size', (val[0] * 0.95, None)))
         main_layout.add_widget(self.card_name_label)
 
-        # Espace sous le nom de la carte
+        # Espace
         main_layout.add_widget(Label(size_hint_y=None, height=dp(6)))
 
         self.card_state_label = Label(
             text="",
-            font_size="22sp",  # Plus grand
+            font_size="22sp",
             color=[0.8, 0.6, 0.4, 1],
             size_hint_y=None,
             height=dp(32),
@@ -348,31 +393,30 @@ class ResponseScreen(Screen):
         self.card_state_label.bind(size=lambda inst, val: setattr(inst, 'text_size', (val[0] * 0.95, None)))
         main_layout.add_widget(self.card_state_label)
 
-        # Espace sous la position
+        # Espace
         main_layout.add_widget(Label(size_hint_y=None, height=dp(4)))
 
         self.keywords_label = Label(
             text="",
-            font_size="18sp",  # Plus grand
+            font_size="18sp",
             color=[0.7, 0.7, 0.9, 1],
             size_hint_y=None,
             height=dp(28),
-            italic=True,
             halign='center',
             valign='middle',
         )
         self.keywords_label.bind(size=lambda inst, val: setattr(inst, 'text_size', (val[0] * 0.95, None)))
         main_layout.add_widget(self.keywords_label)
 
-        # Espace sous le sous-titre (plus grand pour descendre l'image)
+        # Espace sous-titre
         main_layout.add_widget(Label(size_hint_y=None, height=dp(50)))
 
-        # Container image CLIQUABLE (plus grand)
+        # Container image cliquable
         image_container = FloatLayout(size_hint_y=None, height=dp(320))
 
         self.card_image = Image(
             source="tarot_img/Back.jpg",
-            size_hint=(1, 1),  # Encore plus large
+            size_hint=(1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.5},
             allow_stretch=True,
             keep_ratio=True
@@ -403,14 +447,15 @@ class ResponseScreen(Screen):
         image_container.add_widget(overlay_label)
         main_layout.add_widget(image_container)
 
-        # Espace sous l'image (plus grand pour descendre la signification)
+        # Espace
         main_layout.add_widget(Label(size_hint_y=None, height=dp(50)))
 
-        # Signification avec scroll (occupe l'espace restant)
+        # Signification avec scroll
+        from kivy.uix.scrollview import ScrollView
         scroll = ScrollView(size_hint_y=1)
         self.signification_label = Label(
             text=tr("loading"),
-            font_size="20sp",  # Plus grand
+            font_size="20sp",
             color=[1, 1, 1, 1],
             halign='left',
             valign='top',
@@ -426,7 +471,7 @@ class ResponseScreen(Screen):
         scroll.add_widget(self.signification_label)
         main_layout.add_widget(scroll)
 
-        # Conteneur bas pour les boutons (collé en bas)
+        # Bas
         bottom_container = BoxLayout(
             orientation="vertical",
             size_hint_y=None,
@@ -435,7 +480,7 @@ class ResponseScreen(Screen):
         )
         bottom_container.bind(minimum_height=bottom_container.setter('height'))
 
-        # Bouton premium - achat intégré
+        # Bouton premium
         self.premium_btn = Button(
             text=tr("premium_button_base").replace(" Premium", ""),
             size_hint=(0.7, None),
@@ -472,7 +517,7 @@ class ResponseScreen(Screen):
         self.premium_status_label.bind(size=lambda inst, val: setattr(inst, 'text_size', (val[0] * 0.95, None)))
         bottom_container.add_widget(self.premium_status_label)
 
-        # Bouton retour (directement après, encore plus compact)
+        # Bouton retour
         self.back_btn = Button(
             text=tr("new_reading"),
             size_hint=(0.7, None),
@@ -497,12 +542,12 @@ class ResponseScreen(Screen):
         self.back_btn.bind(on_press=self.go_back)
         bottom_container.add_widget(self.back_btn)
 
-        # Ajouter le conteneur bas en toute fin pour qu'il reste en bas
+        # Ajouter le conteneur bas
         main_layout.add_widget(bottom_container)
 
-        # Bannière pub (cachée par défaut)
+        # Bannière pub (cachée)
         self.ad_banner = Label(
-            text=tr("crystals_ad"),  # ou une autre pub de ton choix
+            text=tr("crystals_ad"),
             font_size="16sp",
             color=[1, 0.8, 0.2, 1],
             size_hint_y=None,
@@ -517,7 +562,7 @@ class ResponseScreen(Screen):
         self.add_widget(main_layout)
 
     def show_fullscreen_card(self, instance):
-        """NOUVELLE FONCTIONNALITÉ: Affiche la carte en plein écran"""
+        """Affiche la carte en plein écran"""
         print(f"Affichage plein écran: {self.current_card_name}")
 
         # Animation click
@@ -534,178 +579,75 @@ class ResponseScreen(Screen):
         fullscreen_popup.open()
 
     def setup_card(self, card_name, state):
-        print(f"=== SETUP CARTE: {card_name} - {state} ===")
-
-        # Sauvegarder pour le plein écran
+        print(f"=== SETUP CARTE (NOUVEAU): {card_name} - {state} ===")
         self.current_card_name = card_name
         self.current_card_state = state
-        # Récupérer la langue courante au moment de l'affichage (respecte set_app_language)
-        try:
-            lang = get_system_language()
-        except Exception:
-            lang = CURRENT_LANG
 
-        # Normaliser d'abord sur le nom français canonique (pour garder
-        # la correspondance avec les fichiers). Ensuite obtenir le nom
-        # d'affichage dans la langue courante (si disponible).
+        # langue courante (force/auto)
+        lang = resolve_lang()
         try:
-            french_canon = __import__('cards_mapping').get_french_card_name(card_name)
-        except Exception:
-            french_canon = card_name
+            cards_signification = get_cards_signification(lang) or {}
+        except Exception as e:
+            print(f"⚠️ get_cards_signification failed for '{lang}': {e}")
+            try:
+                cards_signification = get_cards_signification("en") or {}
+            except Exception:
+                cards_signification = {}
 
-        display_card_name = get_card_name_for_lang(french_canon, lang)
-        # If the mapping didn't produce a localized name (still french), try
-        # a few heuristics: normalize keys and consult the explicit
-        # FRENCH_TO_PORTUGUESE mapping in `cards_mapping`.
-        try:
-            l_low = (str(lang or "") ).lower()
-            if l_low.startswith('pt') and display_card_name == french_canon:
-                # Try normalized lookup via cards_mapping constants
-                try:
-                    from cards_mapping import FRENCH_TO_PORTUGUESE, _normalize_card_key
-                    target_key = _normalize_card_key(french_canon)
-                    for fk, pv in FRENCH_TO_PORTUGUESE.items():
-                        try:
-                            if _normalize_card_key(fk) == target_key:
-                                display_card_name = pv
-                                break
-                        except Exception:
-                            continue
-                except Exception:
-                    # last resort: try remove accents and remap
-                    try:
-                        from cards_mapping import remove_accents
-                        alt = get_card_name_for_lang(remove_accents(french_canon), 'pt')
-                        if alt and alt != french_canon:
-                            display_card_name = alt
-                    except Exception:
-                        pass
-        except Exception:
-            pass
-        # Debug info: print resolved language and canonical French name
-        try:
-            print(f"DEBUG setup_card: lang={lang} | card_name_param={card_name} | french_canon={french_canon} | display_before_fix={display_card_name}")
-        except Exception:
-            pass
+        print(f"DEBUG: signification keys count = {len(cards_signification)} | first keys: {list(cards_signification.keys())[:5]}")
+        card_info = cards_signification.get(card_name, {}) or {}
 
-        # If for some reason the display name is still the French canonical name
-        # while the language is Portuguese, attempt a forced lookup using 'pt'
-        try:
-            l_low = (str(lang or "")).lower()
-            if l_low.startswith('pt') and display_card_name == french_canon:
-                alt = get_card_name_for_lang(french_canon, 'pt')
-                if alt and alt != french_canon:
-                    print(f"DEBUG setup_card: forcing pt name fallback: {alt}")
-                    display_card_name = alt
-        except Exception:
-            pass
-
-        print(f"Nom affiché: {display_card_name}")
-
-        # Nom affiché (encore plus grand)
-        self.card_name_label.text = display_card_name
+        # Nom de la carte
+        self.card_name_label.text = card_name
         self.card_name_label.font_size = "38sp"
         self.card_name_label.height = dp(56)
 
-        # État traduit selon la langue — afficher toujours via les messages (tr)
+        # État (upright/reversed) traduit
         state_norm = (state or "").strip().lower()
-        lookup_state = "upright"
-        # Normaliser détection d'envers (regarde quelques variants connus)
-        if state_norm in ["a l'envers", "à l'envers", "envers", "reversed", "invertida"]:
-            lookup_state = "reversed"
-            self.card_state_label.text = tr("reversed")
-        else:
-            lookup_state = "upright"
-            self.card_state_label.text = tr("upright")
-
-        # Agrandir la police et la taille du sous-titre
+        lookup_state = "reversed" if state_norm in ["a l'envers", "à l'envers", "envers", "reversed", "invertida"] else "upright"
+        self.card_state_label.text = tr("reversed") if lookup_state == "reversed" else tr("upright")
         self.card_state_label.font_size = "28sp"
         self.card_state_label.height = dp(40)
         self.keywords_label.font_size = "22sp"
         self.keywords_label.height = dp(34)
 
-        # Agrandir l'image de la carte
+        # Image (image / image_reversed)
         try:
             self.card_image.size_hint = (1.1, 1.1)
+            image_path = card_info.get("image_reversed") if lookup_state == "reversed" else card_info.get("image")
+            self.current_card_image_path = image_path or "tarot_img/Back.jpg"
+            self.card_image.source = self.current_card_image_path
             self.card_image.reload()
-        except Exception:
-            pass
-
-        # Image (garder le nom français pour les fichiers)
-        try:
-            image_path = get_card_image_path(card_name, state)
-            self.current_card_image_path = image_path
-            self.card_image.source = image_path
-            self.card_image.reload()
-            if os.path.exists(image_path):
+            if image_path and os.path.exists(image_path):
                 print(f"✓ Image chargée: {image_path}")
             else:
-                print(f"✗ Image non trouvée (fallback utilisé): {image_path}")
+                print(f"✗ Image non trouvée (fallback utilisé): {self.current_card_image_path}")
         except Exception as e:
             print(f"✗ Erreur image: {e}")
             self.current_card_image_path = "tarot_img/Back.jpg"
             self.card_image.source = self.current_card_image_path
             self.card_image.reload()
 
-        # Signification avec le bon nom de carte selon la langue
+        # Mots-clés et signification
         try:
-            cards_signification = get_cards_signification()
-            # When the app language is English or Portuguese the signification
-            # modules use translated card names as keys, so use the translated
-            # display name for lookup. Otherwise keep the original French name.
+            # keywords: 'upright' | 'reversed'
+            keywords = card_info.get(lookup_state)
 
-            # Construire une liste de candidats en privilégiant la clé
-            # localisée (celle tirée). Ensuite essayer le nom affiché et le
-            # nom français canonique comme fallbacks.
-            candidates = []
-            if card_name and card_name not in candidates:
-                candidates.append(card_name)  # card_name is the drawn localized key
-            if display_card_name and display_card_name not in candidates:
-                candidates.append(display_card_name)
-            if french_canon and french_canon not in candidates:
-                candidates.append(french_canon)
+            # texte long: 'signification upright' | 'signification reversed'
+            detail = card_info.get(f"signification {lookup_state}")
 
-            print(f"Recherche signification, candidats = {candidates}")
-
-            found_key = None
-            card_data = None
-            for cand in candidates:
-                if cand in cards_signification:
-                    found_key = cand
-                    card_data = cards_signification[cand]
-                    break
-
-            if card_data:
-                print(f"Clés disponibles: {list(card_data.keys())}")
-
-                # Use the language detected at display time (respects APP_LANG / set_app_language)
-                key_bundle = SIGNIFICATION_KEY_MAP.get(
-                    lang, SIGNIFICATION_KEY_MAP.get("en", {})
-                )
-                keyword_key = key_bundle.get("keywords", {}).get(lookup_state)
-                detail_key = key_bundle.get("detail", {}).get(lookup_state)
-
-                if keyword_key and keyword_key in card_data:
-                    try:
-                        self.keywords_label.text = f"💫 {card_data[keyword_key].upper()} 💫"
-                    except Exception:
-                        self.keywords_label.text = f"💫 {card_data.get(keyword_key, '')} 💫"
-
-                if detail_key and detail_key in card_data:
-                    signification = str(card_data[detail_key])
-                    self.start_typewriter(signification)
-                    print(f"✓ Signification trouvée avec clé: {detail_key}")
-                elif keyword_key and keyword_key in card_data:
-                    self.start_typewriter(card_data[keyword_key])
-                else:
-                    self.start_typewriter(tr("no_description"))
-
-                Clock.schedule_once(self.setup_text_wrapping, 0.1)
+            if keywords:
+                self.keywords_label.text = f"💫 {str(keywords).upper()} 💫"
             else:
-                # Aucun résultat trouvé dans les modules de signification
-                self.signification_label.text = tr("no_description")
-                print(f"✗ Aucun résultat pour candidats {candidates} dans les signification disponibles ({len(cards_signification)} entrées)")
+                self.keywords_label.text = ""
 
+            if detail:
+                self.start_typewriter(str(detail))
+                print(f"✓ Signification trouvée pour {card_name} [{lookup_state}]")
+            else:
+                self.start_typewriter(tr("no_description"))
+
+            Clock.schedule_once(self.setup_text_wrapping, 0.1)
         except Exception as e:
             print(f"✗ Erreur signification: {e}")
             self.signification_label.text = tr("signification_error")
@@ -731,6 +673,7 @@ class ResponseScreen(Screen):
 
     def go_back(self, instance):
         if self.manager:
+            # adapte si ton écran principal s'appelle "card_screen"
             self.manager.current = "main_screen"
 
     def purchase_chat_luna(self, *_args):
@@ -750,7 +693,6 @@ class ResponseScreen(Screen):
         billing.start_premium_purchase()
 
     def update_premium_button(self, available, price_text, mode):
-        # Texte court pour éviter le débordement
         button_text = tr("chat_mme_t")
         if price_text:
             button_text += f" ({price_text})"
@@ -793,8 +735,7 @@ class ResponseScreen(Screen):
     def open_mme_t_chat(self, provider="google", price_text=None):
         if self.chat_popup and self.chat_popup.parent:
             self.chat_popup.dismiss()
-        # Provide up to 3 drawn cards explicitly so Mme T backend always
-        # receives three cards as requested by the service contract.
+        # Fournir jusqu'à 3 cartes tirées
         try:
             app = App.get_running_app()
             drawn = getattr(app, 'last_drawn_cards', None) or []
@@ -805,7 +746,7 @@ class ResponseScreen(Screen):
             drawn_three.append((None, None))
 
         self.chat_popup = MmeTChatPopup(
-            language=get_system_language(),
+            language=resolve_lang(),
             provider=provider,
             price_text=price_text,
             context_text=self._build_mme_t_context(),
@@ -817,57 +758,31 @@ class ResponseScreen(Screen):
 
     def _build_mme_t_context(self):
         parts = []
-        # Use localized UI strings when building the context sent to Mme T so
-        # the backend receives the same language as the user.
+        # Ajoute la liste des trois cartes tirées en tout début
+        try:
+            app = App.get_running_app()
+            drawn = getattr(app, "last_drawn_cards", None)
+            if drawn and isinstance(drawn, (list, tuple)) and len(drawn) > 0:
+                def fmt(c, s):
+                    display = c if c else tr('your_card')
+                    state_label = tr('upright') if s == 'upright' else tr('reversed')
+                    return f"{display} ({state_label})"
+                drawn_summary = " | ".join(fmt(c, s) for c, s in drawn)
+                parts.append(f"{tr('draw_card')} ({len(drawn)}): {drawn_summary}")
+        except Exception:
+            pass
+        # Ajoute ensuite le reste du contexte
         card_title = (self.card_name_label.text or "").strip()
         if card_title:
             parts.append(f"{tr('your_card')}: {card_title}")
         card_state = (self.card_state_label.text or "").strip()
         if card_state:
-            parts.append(f"{tr('preparing_arcana') if False else tr('drawing_card')}: {card_state}")
+            parts.append(f"Position: {card_state}")
         keywords = (self.keywords_label.text or "").strip()
         if keywords:
             clean_keywords = keywords.replace("💫", "").strip()
             if clean_keywords:
-                # Try to use an i18n key for the keywords label; if missing,
-                # use a small builtin per-language fallback to avoid sending
-                # French when the app language is Portuguese.
-                lang = get_system_language()
-                kw_label = tr('keywords')
-                if not kw_label or kw_label == 'keywords':
-                    if str(lang).startswith('pt'):
-                        kw_label = 'Palavras-chave'
-                    elif str(lang).startswith('fr'):
-                        kw_label = 'Mots-clés'
-                    else:
-                        kw_label = 'Keywords'
-                parts.append(f"{kw_label}: {clean_keywords}")
-        # Si un tirage complet est disponible (stocké sur l'app), l'ajouter en contexte
-        try:
-            app = App.get_running_app()
-            drawn = getattr(app, "last_drawn_cards", None)
-            if drawn and isinstance(drawn, (list, tuple)) and len(drawn) > 0:
-                # Construire une ligne courte listant toutes les cartes
-                # Use current language for card display names in the context
-                cur_lang = get_system_language()
-                def fmt(c, s):
-                    # Ensure we localize the card name correctly: get the
-                    # french canonical name first (cards mappings are built
-                    # around French canonical keys), then request the
-                    # localized name for the current language.
-                    try:
-                        french = __import__('cards_mapping').get_french_card_name(c)
-                    except Exception:
-                        french = c
-                    display = get_card_name_for_lang(french, cur_lang)
-                    state_label = tr('upright') if (s in ['droite', 'right']) else tr('reversed')
-                    return f"{display} ({state_label})"
-
-                drawn_summary = " | ".join(fmt(c, s) for c, s in drawn)
-                # 'Tirage' label: reuse a short localized label if possible
-                parts.append(f"{tr('draw_card')} ({len(drawn)}): {drawn_summary}")
-        except Exception:
-            pass
+                parts.append(f"Keywords: {clean_keywords}")
         return " | ".join(parts)
 
     def _on_chat_complete(self):
@@ -945,4 +860,4 @@ class ResponseScreen(Screen):
         else:
             if self.typewriter_event:
                 self.typewriter_event.cancel()
-            return False  # Stop le schedule
+            return False

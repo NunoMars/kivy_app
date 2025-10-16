@@ -118,7 +118,23 @@ class GooglePurchasesUpdatedListener(PythonJavaClass):  # pragma: no cover - And
                         print(f"⚠️ Erreur traitement purchase state: {exc}")
 
                 # notifier succès global
-                self.manager._notify_success("google")
+                # Collecter tous les product_ids des achats réussis
+                all_product_ids = []
+                for idx in range(purchases.size()):
+                    p = purchases.get(idx)
+                    try:
+                        plist = p.getProducts()
+                        for j in range(plist.size()):
+                            all_product_ids.append(plist.get(j))
+                    except Exception:
+                        try:
+                            sl = p.getSkus()
+                            for j in range(sl.size()):
+                                all_product_ids.append(sl.get(j))
+                        except Exception:
+                            pass
+                
+                self.manager._notify_success("google", all_product_ids)
             elif (
                 self.manager.google_client_class
                 and response_code
@@ -294,7 +310,7 @@ class AmazonPurchasingListener(PythonJavaClass):  # pragma: no cover
                     except Exception as exc:
                         print(f"⚠️ Erreur traitement achat Amazon: {exc}")
 
-                    self.manager._notify_success("amazon")
+                    self.manager._notify_success("amazon", [product_id])
                 else:
                     print("⚠️ Achat Amazon sans receipt")
                     self.manager._notify_error("Achat Amazon invalide", provider="amazon")
@@ -523,10 +539,22 @@ class InAppPurchaseManager:
         except Exception:
             pass
 
-    def _notify_success(self, provider):
+    def _notify_success(self, provider, product_ids=None):
         """Notifie un achat réussi."""
         print(f"✅ Achat {provider} réussi")
-        # Ici on pourrait déclencher des actions comme activer des features premium
+        
+        # Appeler le callback de succès de l'app pour chaque produit acheté
+        if product_ids:
+            try:
+                from kivy.app import App
+                app = App.get_running_app()
+                if app:
+                    for product_id in product_ids:
+                        app.on_purchase_success(product_id, provider)
+            except Exception as e:
+                print(f"❌ Erreur appel on_purchase_success: {e}")
+        else:
+            print("⚠️ Aucun product_id fourni pour la notification de succès")
 
     def _notify_error(self, message, provider, warn_only=False):
         """Notifie une erreur d'achat."""

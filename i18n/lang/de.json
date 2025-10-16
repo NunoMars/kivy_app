@@ -1,39 +1,18 @@
 {
   "messages": {
-    "draw_card": "KARTE ZIEHEN",
-    "drawing_card": "KARTE WIRD GEZOGEN...",
-    "concentrating": "Konzentriere mich...",
-    "preparing_arcana": "Bereite die Arkana vor...",
-    "upright": "⬆ AUFRECHT ⬆",
-    "reversed": "⬇ UMGEKEHRT ⬇",
-    "thanks": "✨ Ich hoffe, dir hat deine Legung gefallen! ✨",
-    "continue_exploring": "🔮 Erkunde weiter die Geheimnisse des Tarots! 🔮",
-    "new_reading": "✨ Neue Legung",
-    "new_reading_countdown": "✨ Neue Legung ({seconds}s) ✨",
-    "app_title": "Willkommen beim Wahrsage-Tarot",
-    "draw_instruction": "Berühre die Karte\nfür eine Vorhersage",
-    "mme_t_intro": "Hallo ✨ Ich bin Mme T, deine Kartenlegerin. Welche Frage beschäftigt dich heute? Womit kann ich dir helfen?",
-    "mme_t_thanks": "Danke, dass du Mme T konsultiert hast. Komm jederzeit für weitere Orientierung zurück.",
-    "crystals_ad": "💎 Kristalle & Mineralien Shop - Kostenloser Versand 💎",
-    "love_ad": "💕 Finde Liebe mit Astrology+ 💕\nKompatibilität basierend auf deinem Geburtshoroskop",
-    "tarot_course_ad": "🔮 Professioneller Tarot-Kurs 🔮\nWerde zertifizierter Kartenleger - Kostenlose Anmeldung",
-    "tap_to_return": "Tippe auf die Karte, um zurückzukehren",
-    "touch_to_enlarge": "🔍 Zum Vergrößern tippen",
-    "your_card": "Deine Karte",
-    "support_app": "App unterstützen",
     "ad_message": "Gefällt dir diese kostenlose App?\nHilf uns, sie zu erhalten und zu verbessern!",
-    "later": "Später",
-    "support": "Unterstützen",
+    "app_title": "Willkommen beim Wahrsage-Tarot",
+    "chat_mme_t": "Chat Mme T",
+    "concentrating": "Konzentriere mich...",
+    "configure_backend_hint": "Konfiguriere MME_T_BACKEND_URL, um die Mme T-Beratung zu aktivieren.",
+    "continue_exploring": "🔮 Erkunde weiter die Geheimnisse des Tarots! 🔮",
+    "crystals_ad": "💎 Kristalle & Mineralien Shop - Kostenloser Versand 💎",
     "done": "Fertig",
-    "premium_button_base": "Chat mit Mme T Premium",
-    "premium_button_price_suffix": " ({price})",
-    "premium_button_provider_suffix": " - {provider}",
-    "provider_google": "Google Play",
-    "provider_amazon": "Amazon Appstore",
-    "provider_simulation": "Demo-Modus",
-    "provider_disabled": "Nicht verfügbar",
+    "draw_card": "KARTE ZIEHEN",
+    "draw_instruction": "Berühre die Karte\nfür eine Vorhersage",
+    "drawing_card": "KARTE WIRD GEZOGEN...",
+    "later": "Später",
     "loading": "Wird geladen...",
-    "signification_error": "Fehler beim Laden der Bedeutung",
     "loading_messages": [
       "🔮 Ich konzentriere mich auf deine Frage...",
       "🃏 Mische die Karten...",
@@ -41,249 +20,342 @@
       "🌙 Sterne werden befragt...",
       "💫 Deute die Arkana..."
     ],
-    "chat_mme_t": "Chat Mme T",
+    "love_ad": "💕 Finde Liebe mit Astrology+ 💕\nKompatibilität basierend auf deinem Geburtshoroskop",
+    "mme_t_intro": "Hallo ✨ Ich bin Mme T, deine Kartenlegerin. Welche Frage beschäftigt dich heute? Womit kann ich dir helfen?",
+    "mme_t_thanks": "Danke, dass du Mme T konsultiert hast. Komm jederzeit für weitere Orientierung zurück.",
+    "new_reading": "✨ Neue Legung",
+    "new_reading_countdown": "✨ Neue Legung ({seconds}s) ✨",
+    "premium_button_base": "Chat mit Mme T Premium",
+    "premium_button_price_suffix": " ({price})",
+    "premium_button_provider_suffix": " - {provider}",
+    "preparing_arcana": "Bereite die Arkana vor...",
+    "provider_amazon": "Amazon Appstore",
+    "provider_disabled": "Nicht verfügbar",
+    "provider_google": "Google Play",
+    "provider_simulation": "Demo-Modus",
+    "purchase_error_title": "Kauf nicht möglich",
+    "reversed": "⬇ UMGEKEHRT ⬇",
+    "signification_error": "Fehler beim Laden der Bedeutung",
+    "store_mobile_only": "Kauf nur auf Mobilgerät verfügbar",
     "store_preparing": "Shop wird vorbereitet...",
     "store_preparing_retry": "Shop wird vorbereitet, bitte gleich erneut versuchen",
     "store_unavailable_platform": "Shop auf dieser Plattform nicht verfügbar",
-    "store_mobile_only": "Kauf nur auf Mobilgerät verfügbar",
+    "support": "Unterstützen",
+    "support_app": "App unterstützen",
+    "tap_to_return": "Tippe auf die Karte, um zurückzukehren",
+    "tarot_course_ad": "🔮 Professioneller Tarot-Kurs 🔮\nWerde zertifizierter Kartenleger - Kostenlose Anmeldung",
+    "thanks": "✨ Ich hoffe, dir hat deine Legung gefallen! ✨",
     "thanks_for_support": "Danke für deine Unterstützung!",
     "thanks_for_support_via": "Danke für deine Unterstützung über {provider}!",
-    "configure_backend_hint": "Konfiguriere MME_T_BACKEND_URL, um die Mme T-Beratung zu aktivieren.",
-    "purchase_error_title": "Kauf nicht möglich",
-    "thanks_title": "Danke!"
+    "thanks_title": "Danke!",
+    "touch_to_enlarge": "🔍 Zum Vergrößern tippen",
+    "upright": "⬆ AUFRECHT ⬆",
+    "your_card": "Deine Karte"
   },
   "significations": {
-    "Der Narr": {
-      "upright": "Neuanfänge, Spontaneität, Freiheit, Abenteuer, Potenzial",
-      "reversed": "Leichtsinn, Orientierungslosigkeit, Nachlässigkeit, Zögern",
-      "signification upright": "Der Narr steht für den Mut, ins Unbekannte zu springen. Er symbolisiert neue Anfänge, Unbekümmertheit und Vertrauen ins Leben. Offenheit und experimentierfreudige Schritte eröffnen Chancen.",
-      "signification reversed": "Umgekehrt warnt der Narr vor Leichtsinn und unbedachten Handlungen. Impulse brauchen jetzt Verantwortung, Struktur und einen realistischen Blick."
-    },
-    "Der Magier": {
-      "upright": "Beginn, Ressourcen, Enthusiasmus, Energie, Kreativität",
-      "reversed": "Täuschung, Manipulation, Zerstreuung, mangelnde Fokussierung",
-      "signification upright": "Der Magier bündelt Wille, Verstand und Mittel, um Ideen zu verkörpern. Jetzt stehen die nötigen Ressourcen bereit, um bewusst zu handeln.",
-      "signification reversed": "Umgekehrt drohen Blendwerk, Selbstüberschätzung oder Missbrauch der eigenen Fähigkeiten. Fokus sammeln und integre Ziele klären."
-    },
-    "Die Hohepriesterin": {
-      "upright": "Intuition, Weisheit, Geheimnis, innere Erkenntnis",
-      "reversed": "verdrängte Geheimnisse, blockierte Intuition, Oberflächlichkeit",
-      "signification upright": "Schweigen, Tiefe und inneres Wissen. Lausche der Intuition, suche nach verborgener Wahrheit jenseits des Lärms.",
-      "signification reversed": "Umgekehrt: Intuition ignoriert, Wissen instrumentalisiert oder nur an der Oberfläche geblieben. Innere Stimme wieder kultivieren."
-    },
-    "Die Kaiserin": {
-      "upright": "Fruchtbarkeit, Fülle, Kreativität, Fürsorge, Naturverbundenheit",
-      "reversed": "Abhängigkeit, Vernachlässigung, kreative Blockade, Kontrollzwang",
-      "signification upright": "Schöpfungskraft, Wachstum und liebevolle Fülle. Kreativität nähren und das Leben gedeihen lassen.",
-      "signification reversed": "Umgekehrt: Überbehütung, Stagnation oder das Abkoppeln von natürlichen Zyklen. Loslassen und Vertrauen lernen."
-    },
-    "Der Kaiser": {
-      "upright": "Autorität, Struktur, Stabilität, Verantwortung",
-      "reversed": "Tyrannei, Härte, Machtmissbrauch, fehlende Flexibilität",
-      "signification upright": "Ordnung schaffen, Verantwortung übernehmen, Grenzen setzen. Weitsichtige Führung stabilisiert.",
-      "signification reversed": "Umgekehrt: Starrheit, Kontrolle um der Kontrolle willen, autoritäre Tendenzen. Flexibilität und Fairness zurückgewinnen."
-    },
-    "Der Hierophant": {
-      "upright": "Tradition, Lehre, moralische Führung, Initiation",
-      "reversed": "Dogmatismus, veraltete Regeln, blinder Gehorsam",
-      "signification upright": "Vermittlung von Sinn durch Tradition, Rituale und Mentoren. Lernen, einordnen, Sinn stiften.",
-      "signification reversed": "Umgekehrt: Erstarrte Systeme, blinder Formalismus. Eigene Werte prüfen und lebendig erneuern."
-    },
-    "Die Liebenden": {
-      "upright": "Wahl, Verbindung, Liebe, Dualität, wichtige Entscheidung",
-      "reversed": "Fehlentscheidung, Trennung, Unentschlossenheit, Konflikt",
-      "signification upright": "Eine Herzensentscheidung steht an. Authentizität, Werteharmonie und ehrliches Einverständnis führen zur richtigen Wahl.",
-      "signification reversed": "Umgekehrt: Unklare Motive, Ambivalenz oder dysbalancierte Bindungen. Entscheidung aufschieben bis Klarheit reift."
-    },
-    "Der Wagen": {
-      "upright": "Beherrschung widerstreitender Kräfte, Zielstrebigkeit, Sieg",
-      "reversed": "Verlust der Kontrolle, zersplitterte Energie, Misserfolg durch Unklarheit",
-      "signification upright": "Willenskraft bündelt Gegensätze zum Vorwärtskommen. Disziplin und Ausrichtung bringen Sieg.",
-      "signification reversed": "Umgekehrt: Unfokussiertheit, innere Reibung, Richtungslosigkeit. Kurs korrigieren und Zügel wieder aufnehmen."
-    },
-    "Die Gerechtigkeit": {
-      "upright": "Gerechtigkeit, Gleichgewicht, Wahrheit, Gesetz, Fairness",
-      "reversed": "Ungerechtigkeit, Ungleichgewicht, Parteilichkeit, Korruption, Rachsucht",
-      "signification upright": "Klar abwägen, Verantwortung tragen, Wahrheit anerkennen. Konsequente Fairness ist gefragt.",
-      "signification reversed": "Umgekehrt: Voreingenommenheit, Fehlurteil oder missbräuchliche Systeme. Nachjustieren, Transparenz herstellen."
-    },
-    "Der Eremit": {
-      "upright": "Suche nach Wissen, Reflexion, Rückzug, innere Führung",
-      "reversed": "Isolation, Verweigerung von Rat, fehlende Einsicht",
-      "signification upright": "Innehalten, reflektieren, Weisheit vertiefen. Die innere Laterne weist den Weg.",
-      "signification reversed": "Umgekehrt: Rückzug ohne Reife, Rat ausschlagen. Herz öffnen, Lehren annehmen."
-    },
-    "Das Rad des Schicksals": {
-      "upright": "Zyklen, Schicksal, Chance, Veränderung",
-      "reversed": "anhaltendes Pech, Widerstand gegen Wandel, karmische Folgen",
-      "signification upright": "Zyklen drehen sich – günstige Wendungen erkennen und nutzen. Mitfließen statt festhalten.",
-      "signification reversed": "Umgekehrt: Festklammern an Vergangenem, Wiederholen alter Muster. Lernaufgabe annehmen."
-    },
-    "Die Kraft": {
-      "upright": "innere Stärke, Geduld, Mitgefühl, Mut",
-      "reversed": "Schwäche, Kontrollverlust, Aggression, Feigheit",
-      "signification upright": "Sanfte Stärke zähmt das Wilde. Mut, Selbstbeherrschung und Herzintelligenz siegen.",
-      "signification reversed": "Umgekehrt: Unbeherrschte Impulse oder Resignation. Milde mit Klarheit verbinden."
-    },
-    "Der Gehängte": {
-      "upright": "opferbereite Haltung, Perspektivwechsel, Loslassen, Geduld",
-      "reversed": "sinnloses Opfer, Starrsinn, Widerstand gegen Veränderung",
-      "signification upright": "Anhalten, anders sehen, hingeben. Durch Loslassen reifen Einsichten.",
-      "signification reversed": "Umgekehrt: Blockierte Entwicklung, festgefahrene Sicht. Beweglichkeit üben."
-    },
-    "Der Tod": {
-      "upright": "tiefgreifende Veränderung, Ende eines Zyklus, Neubeginn",
-      "reversed": "Widerstand gegen Wandel, Stagnation, Angst vor dem Unbekannten",
-      "signification upright": "Transformation durch Abschied. Platz schaffen für neues Leben.",
-      "signification reversed": "Umgekehrt: Festhalten verhindert Erneuerung. Trauer und Angst würdigen, dann lösen."
-    },
-    "Die Mäßigkeit": {
-      "upright": "Ausgleich, Heilung, Geduld, harmonische Verbindung",
-      "reversed": "Ungleichgewicht, Exzesse, Ungeduld, disharmonisches Mischen",
-      "signification upright": "Maß, Rhythmus und feines Mischen der Gegensätze. Heilung reift schrittweise.",
-      "signification reversed": "Umgekehrt: Zuviel oder Zuwenig, hastiges Erzwingen. Sanft nachjustieren."
-    },
-    "Der Teufel": {
-      "upright": "Abhängigkeiten, Illusionen, Materialismus, Versuchung",
-      "reversed": "Befreiung, Erkenntnis, Überwindung von Ketten",
-      "signification upright": "Schattenseiten, Bindungen, Verstrickungen bewusst machen. Wahrheit ist der Schlüssel.",
-      "signification reversed": "Umgekehrt: Ketten lösen sich, Bewusstsein wächst. Verantwortung zurücknehmen."
-    },
-    "Der Turm": {
-      "upright": "Erschütterung, Offenbarung, abruptes Ende, befreiende Zerstörung",
-      "reversed": "Widerstand gegen Wandel, abgeschwächte Umwälzung, schrittweise Umstrukturierung",
-      "signification upright": "Plötzliche Klarheit sprengt falsche Strukturen. Neubeginn auf ehrlicher Basis.",
-      "signification reversed": "Umgekehrt: Sanftere Korrektur oder aufgeschobener Umbruch. Lernen ist dennoch nötig."
-    },
-    "Der Stern": {
-      "upright": "Hoffnung, Inspiration, Spiritualität, Optimismus",
-      "reversed": "Verzweiflung, Glaubensverlust, Pessimismus",
-      "signification upright": "Vertrauen, Leichtigkeit, Ausrichtung am Sinn. Heilendes Licht nach der Nacht.",
-      "signification reversed": "Umgekehrt: Zuversicht verloren. Milde Schritte zurück ins Vertrauen gehen."
-    },
-    "Der Mond": {
-      "upright": "Illusionen, Verwirrung, Ängste, Unterbewusstes, Geheimnisse",
-      "reversed": "Klarheit, aufgedeckte Wahrheiten, Ende von Illusionen",
-      "signification upright": "Nebel, Projektionen, tiefe Gefühle. Vorsicht und Selbstbeobachtung sind weise.",
-      "signification reversed": "Umgekehrt: Klärung, entzauberte Täuschungen. Intuition wird wieder verlässlich."
-    },
-    "Die Sonne": {
-      "upright": "Freude, Erfolg, Lebenskraft, Erfolgserlebnis",
-      "reversed": "Eitelkeit, falscher Stolz, oberflächlicher Erfolg",
-      "signification upright": "Wärme, Sichtbarkeit, kreatives Strahlen. Ernte reift – feiern erlaubt.",
-      "signification reversed": "Umgekehrt: Glanz ohne Tiefe, Übermut. Demut bewahrt die Strahlkraft."
-    },
-    "Das Gericht": {
-      "upright": "Wiedergeburt, Berufung, Abrechnung, innere Prüfung",
-      "reversed": "Verweigerung der Entwicklung, hartes Urteil, Schuldgefühle",
-      "signification upright": "Erwachen, Ruf der Seele, Bilanz. Vergebung befreit für den nächsten Schritt.",
-      "signification reversed": "Umgekehrt: Am Alten kleben, Selbstverurteilung. Milde üben, Lernschritt annehmen."
-    },
-    "Die Welt": {
-      "upright": "Vollendung, Harmonie, Abschluss eines Zyklus, Ganzheit",
-      "reversed": "nahe am Ziel gescheitert, Perfektionismus, Unvollständigkeit",
-      "signification upright": "Integration, Meisterschaft, runder Abschluss. Ein Tor öffnet sich zum neuen Kreis.",
-      "signification reversed": "Umgekehrt: Fast am Ziel, doch etwas hält zurück. Vollendung erlauben."
-    },
-
-    "König der Stäbe": {
-      "upright": "charismatische Führung, visionäres Handeln, kreative Lenkung",
-      "reversed": "impulsiver Autoritarismus, Dominanz, cholerische Entscheidungen",
-      "signification upright": "Inspiration bündeln, andere mitreißen, mutig gestalten. Führungsstärke mit Sinn.",
-      "signification reversed": "Umgekehrt: Ego treibt, Wut lenkt. Zuhören und Teamgeist kultivieren."
-    },
-    "Königin der Stäbe": {
-      "upright": "strahlende Kreativität, warme Großzügigkeit, inspirierende Präsenz",
-      "reversed": "Eifersucht, Besitzergreifen, kreative Blockade",
-      "signification upright": "Leidenschaftlich fördern, wärmen, ermutigen. Kreative Funken entzünden.",
-      "signification reversed": "Umgekehrt: Vergleich, Misstrauen, Groll. Eigene Flamme nähren statt zehren."
-    },
-    "Ritter der Stäbe": {
-      "upright": "Abenteuer, Vorwärtsdrang, schnelle Initiative",
-      "reversed": "Hast, Flucht, ungeduldige Zersplitterung",
-      "signification upright": "Jetzt mutig starten, Terrain erkunden, Momentum nutzen.",
-      "signification reversed": "Umgekehrt: Aktionismus ohne Richtung. Plan schärfen, dann reiten."
-    },
-    "Bube der Stäbe": {
-      "upright": "kreative Botschaft, neue Idee, jugendliche Begeisterung",
-      "reversed": "leere Versprechen, oberflächliche Begeisterung, Ungeduld",
-      "signification upright": "Neuer Funke, Lernlust, erste Schritte im Schaffen.",
-      "signification reversed": "Umgekehrt: Frühfrust, zu schnell aufgeben. Dranbleiben lernen."
-    },
-
-    "König der Münzen": {
-      "upright": "gefestigter Wohlstand, kluge Verwaltung, materielles Verantwortungsbewusstsein",
-      "reversed": "Geiz, Korruption, materialistische Fixierung",
-      "signification upright": "Werte sichern, langfristig investieren, großzügig fördern.",
-      "signification reversed": "Umgekehrt: Besitz ohne Ethik. Großzügigkeit und Maß zurückfinden."
-    },
-    "Königin der Münzen": {
-      "upright": "nährende Fülle, praktische Fürsorge, geteilte Prosperität",
-      "reversed": "überbehütender Materialismus, Vernachlässigung des Heims",
-      "signification upright": "Geborgenheit schaffen, Ressourcen mehren, Bodenhaftung wahren.",
-      "signification reversed": "Umgekehrt: Gier, Streuung, Prioritätenverlust. Ordnung und Herz zurückholen."
-    },
-    "Ritter der Münzen": {
-      "upright": "Fleiß, Methode, Ausdauer, Verantwortlichkeit",
-      "reversed": "Routinefalle, Trägheit, Ambitionsmangel",
-      "signification upright": "Schritt für Schritt, verlässlich bauen. Beständigkeit zahlt sich aus.",
-      "signification reversed": "Umgekehrt: Erstarrung oder Bequemlichkeit. Kleine, klare Ziele setzen."
+    "Bube der Kelche": {
+      "image": "tarot_img/MajorArcanaCards/Le Valet De Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet De Coupe a l'envers.jpg",
+      "reversed": "emotionale Unreife, gekränkte Sensibilität, Blockade",
+      "signification reversed": "Umgekehrt: Launen, Kränkungen, Rückzug. Resilienz üben.",
+      "signification upright": "Herz öffnet sich, Inspiration keimt. Sanft ausdrücken.",
+      "upright": "emotionale Nachricht, künstlerischer Impuls, zarte Öffnung"
     },
     "Bube der Münzen": {
-      "upright": "lernender Praxisbezug, neue materielle Chance, Sorgfalt",
+      "image": "tarot_img/MajorArcanaCards/Le Valet De Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet De Deniers a l'envers.jpg",
       "reversed": "studierte Faulheit, Opportunismus, Nachlässigkeit",
+      "signification reversed": "Umgekehrt: Oberflächliches Lernen, Abkürzungen. Handwerk ernst nehmen.",
       "signification upright": "Grundlagen legen, üben, verbessern. Gelegenheit ergreifen.",
-      "signification reversed": "Umgekehrt: Oberflächliches Lernen, Abkürzungen. Handwerk ernst nehmen."
-    },
-
-    "König der Kelche": {
-      "upright": "emotionale Meisterschaft, weise Empathie, milde Autorität",
-      "reversed": "emotionale Manipulation, kühle Berechnung, verdeckte Instabilität",
-      "signification upright": "Herz und Verstand in Balance führen, heilsam moderieren.",
-      "signification reversed": "Umgekehrt: Gefühle instrumentalisieren. Aufrichtigkeit üben."
-    },
-    "Königin der Kelche": {
-      "upright": "tiefe Intuition, echte Empathie, bedingungslose Liebe",
-      "reversed": "Überemotionalität, Abhängigkeit, selbstschädigender Einsatz",
-      "signification upright": "Sich einfühlen, halten, seelisch nähren. Grenzen liebevoll wahren.",
-      "signification reversed": "Umgekehrt: Sich verlieren, ausbluten. Selbstschutz und Klarheit stärken."
-    },
-    "Ritter der Kelche": {
-      "upright": "Romantik, Einladung, Charme, kreative Botschaft",
-      "reversed": "romantische Illusionen, leere Versprechen, Taktik",
-      "signification upright": "Angebote des Herzens, Kunst, Versöhnung. Feinfühlig auftreten.",
-      "signification reversed": "Umgekehrt: Schein ohne Sein. Auf Integrität prüfen."
-    },
-    "Bube der Kelche": {
-      "upright": "emotionale Nachricht, künstlerischer Impuls, zarte Öffnung",
-      "reversed": "emotionale Unreife, gekränkte Sensibilität, Blockade",
-      "signification upright": "Herz öffnet sich, Inspiration keimt. Sanft ausdrücken.",
-      "signification reversed": "Umgekehrt: Launen, Kränkungen, Rückzug. Resilienz üben."
-    },
-
-    "König der Schwerter": {
-      "upright": "klare Vernunft, gerechte Autorität, Objektivität",
-      "reversed": "Kälte, Machtmissbrauch, manipulative Intelligenz",
-      "signification upright": "Sachlich entscheiden, Wahrheit benennen, fair urteilen.",
-      "signification reversed": "Umgekehrt: Schärfe ohne Herz. Empathie integrieren."
-    },
-    "Königin der Schwerter": {
-      "upright": "Unabhängigkeit, Klarblick, aufrichtige Direktheit",
-      "reversed": "Verbitterung, Groll, zerstörerische Kritik",
-      "signification upright": "Erfahrung in klare Worte fassen, Grenzen sauber ziehen.",
-      "signification reversed": "Umgekehrt: Verletzung spricht. Heilung vor Urteil."
-    },
-    "Ritter der Schwerter": {
-      "upright": "mutige Aktion, Entschlossenheit, schnelle Wende",
-      "reversed": "Übereifer, Aggression, blinde Zerstörung",
-      "signification upright": "Zeit für beherztes Handeln. Klar und tapfer vorangehen.",
-      "signification reversed": "Umgekehrt: Angriff ohne Ziel. Tempo drosseln, prüfen."
+      "upright": "lernender Praxisbezug, neue materielle Chance, Sorgfalt"
     },
     "Bube der Schwerter": {
-      "upright": "geistige Wachheit, wichtige Nachrichten, Wachsamkeit",
+      "image": "tarot_img/MajorArcanaCards/Le Valet D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet D'Epee a l'envers.jpg",
       "reversed": "Indiskretion, Gerüchte, Informationsmanipulation",
+      "signification reversed": "Umgekehrt: Reden ohne Verantwortung. Fakten prüfen, Schweigen lernen.",
       "signification upright": "Beobachten, recherchieren, klug kommunizieren.",
-      "signification reversed": "Umgekehrt: Reden ohne Verantwortung. Fakten prüfen, Schweigen lernen."
+      "upright": "geistige Wachheit, wichtige Nachrichten, Wachsamkeit"
+    },
+    "Bube der Stäbe": {
+      "image": "tarot_img/MajorArcanaCards/Le Valet de Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet de Baton a l'envers.jpg",
+      "reversed": "leere Versprechen, oberflächliche Begeisterung, Ungeduld",
+      "signification reversed": "Umgekehrt: Frühfrust, zu schnell aufgeben. Dranbleiben lernen.",
+      "signification upright": "Neuer Funke, Lernlust, erste Schritte im Schaffen.",
+      "upright": "kreative Botschaft, neue Idee, jugendliche Begeisterung"
+    },
+    "Das Gericht": {
+      "image": "tarot_img/MajorArcanaCards/Le Jugement.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Jugement a l'envers.jpg",
+      "reversed": "Verweigerung der Entwicklung, hartes Urteil, Schuldgefühle",
+      "signification reversed": "Umgekehrt: Am Alten kleben, Selbstverurteilung. Milde üben, Lernschritt annehmen.",
+      "signification upright": "Erwachen, Ruf der Seele, Bilanz. Vergebung befreit für den nächsten Schritt.",
+      "upright": "Wiedergeburt, Berufung, Abrechnung, innere Prüfung"
+    },
+    "Das Rad des Schicksals": {
+      "image": "tarot_img/MajorArcanaCards/La Roue de La Fortune.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Roue de La Fortune a l'envers.jpg",
+      "reversed": "anhaltendes Pech, Widerstand gegen Wandel, karmische Folgen",
+      "signification reversed": "Umgekehrt: Festklammern an Vergangenem, Wiederholen alter Muster. Lernaufgabe annehmen.",
+      "signification upright": "Zyklen drehen sich – günstige Wendungen erkennen und nutzen. Mitfließen statt festhalten.",
+      "upright": "Zyklen, Schicksal, Chance, Veränderung"
+    },
+    "Der Eremit": {
+      "image": "tarot_img/MajorArcanaCards/L'Hermite.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Hermite a l'envers.jpg",
+      "reversed": "Isolation, Verweigerung von Rat, fehlende Einsicht",
+      "signification reversed": "Umgekehrt: Rückzug ohne Reife, Rat ausschlagen. Herz öffnen, Lehren annehmen.",
+      "signification upright": "Innehalten, reflektieren, Weisheit vertiefen. Die innere Laterne weist den Weg.",
+      "upright": "Suche nach Wissen, Reflexion, Rückzug, innere Führung"
+    },
+    "Der Gehängte": {
+      "image": "tarot_img/MajorArcanaCards/Le Pendu.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Pendu a l'envers.jpg",
+      "reversed": "sinnloses Opfer, Starrsinn, Widerstand gegen Veränderung",
+      "signification reversed": "Umgekehrt: Blockierte Entwicklung, festgefahrene Sicht. Beweglichkeit üben.",
+      "signification upright": "Anhalten, anders sehen, hingeben. Durch Loslassen reifen Einsichten.",
+      "upright": "opferbereite Haltung, Perspektivwechsel, Loslassen, Geduld"
+    },
+    "Der Hierophant": {
+      "image": "tarot_img/MajorArcanaCards/Le Pape.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Pape a l'envers.jpg",
+      "reversed": "Dogmatismus, veraltete Regeln, blinder Gehorsam",
+      "signification reversed": "Umgekehrt: Erstarrte Systeme, blinder Formalismus. Eigene Werte prüfen und lebendig erneuern.",
+      "signification upright": "Vermittlung von Sinn durch Tradition, Rituale und Mentoren. Lernen, einordnen, Sinn stiften.",
+      "upright": "Tradition, Lehre, moralische Führung, Initiation"
+    },
+    "Der Kaiser": {
+      "image": "tarot_img/MajorArcanaCards/L'Empereur.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Empereur a l'envers.jpg",
+      "reversed": "Tyrannei, Härte, Machtmissbrauch, fehlende Flexibilität",
+      "signification reversed": "Umgekehrt: Starrheit, Kontrolle um der Kontrolle willen, autoritäre Tendenzen. Flexibilität und Fairness zurückgewinnen.",
+      "signification upright": "Ordnung schaffen, Verantwortung übernehmen, Grenzen setzen. Weitsichtige Führung stabilisiert.",
+      "upright": "Autorität, Struktur, Stabilität, Verantwortung"
+    },
+    "Der Magier": {
+      "image": "tarot_img/MajorArcanaCards/Le Bateleur.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Bateleur a l'envers.jpg",
+      "reversed": "Täuschung, Manipulation, Zerstreuung, mangelnde Fokussierung",
+      "signification reversed": "Umgekehrt drohen Blendwerk, Selbstüberschätzung oder Missbrauch der eigenen Fähigkeiten. Fokus sammeln und integre Ziele klären.",
+      "signification upright": "Der Magier bündelt Wille, Verstand und Mittel, um Ideen zu verkörpern. Jetzt stehen die nötigen Ressourcen bereit, um bewusst zu handeln.",
+      "upright": "Beginn, Ressourcen, Enthusiasmus, Energie, Kreativität"
+    },
+    "Der Mond": {
+      "image": "tarot_img/MajorArcanaCards/La Lune.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Lune a l'envers.jpg",
+      "reversed": "Klarheit, aufgedeckte Wahrheiten, Ende von Illusionen",
+      "signification reversed": "Umgekehrt: Klärung, entzauberte Täuschungen. Intuition wird wieder verlässlich.",
+      "signification upright": "Nebel, Projektionen, tiefe Gefühle. Vorsicht und Selbstbeobachtung sind weise.",
+      "upright": "Illusionen, Verwirrung, Ängste, Unterbewusstes, Geheimnisse"
+    },
+    "Der Narr": {
+      "image": "tarot_img/MajorArcanaCards/Le Mat.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Mat a l'envers.jpg",
+      "reversed": "Leichtsinn, Orientierungslosigkeit, Nachlässigkeit, Zögern",
+      "signification reversed": "Umgekehrt warnt der Narr vor Leichtsinn und unbedachten Handlungen. Impulse brauchen jetzt Verantwortung, Struktur und einen realistischen Blick.",
+      "signification upright": "Der Narr steht für den Mut, ins Unbekannte zu springen. Er symbolisiert neue Anfänge, Unbekümmertheit und Vertrauen ins Leben. Offenheit und experimentierfreudige Schritte eröffnen Chancen.",
+      "upright": "Neuanfänge, Spontaneität, Freiheit, Abenteuer, Potenzial"
+    },
+    "Der Stern": {
+      "image": "tarot_img/MajorArcanaCards/L'Etoile.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Etoile a l'envers.jpg",
+      "reversed": "Verzweiflung, Glaubensverlust, Pessimismus",
+      "signification reversed": "Umgekehrt: Zuversicht verloren. Milde Schritte zurück ins Vertrauen gehen.",
+      "signification upright": "Vertrauen, Leichtigkeit, Ausrichtung am Sinn. Heilendes Licht nach der Nacht.",
+      "upright": "Hoffnung, Inspiration, Spiritualität, Optimismus"
+    },
+    "Der Teufel": {
+      "image": "tarot_img/MajorArcanaCards/Le Diable.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Diable a l'envers.jpg",
+      "reversed": "Befreiung, Erkenntnis, Überwindung von Ketten",
+      "signification reversed": "Umgekehrt: Ketten lösen sich, Bewusstsein wächst. Verantwortung zurücknehmen.",
+      "signification upright": "Schattenseiten, Bindungen, Verstrickungen bewusst machen. Wahrheit ist der Schlüssel.",
+      "upright": "Abhängigkeiten, Illusionen, Materialismus, Versuchung"
+    },
+    "Der Tod": {
+      "image": "tarot_img/MajorArcanaCards/La Mort.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Mort a l'envers.jpg",
+      "reversed": "Widerstand gegen Wandel, Stagnation, Angst vor dem Unbekannten",
+      "signification reversed": "Umgekehrt: Festhalten verhindert Erneuerung. Trauer und Angst würdigen, dann lösen.",
+      "signification upright": "Transformation durch Abschied. Platz schaffen für neues Leben.",
+      "upright": "tiefgreifende Veränderung, Ende eines Zyklus, Neubeginn"
+    },
+    "Der Turm": {
+      "image": "tarot_img/MajorArcanaCards/La Maison Dieu.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Maison Dieu a l'envers.jpg",
+      "reversed": "Widerstand gegen Wandel, abgeschwächte Umwälzung, schrittweise Umstrukturierung",
+      "signification reversed": "Umgekehrt: Sanftere Korrektur oder aufgeschobener Umbruch. Lernen ist dennoch nötig.",
+      "signification upright": "Plötzliche Klarheit sprengt falsche Strukturen. Neubeginn auf ehrlicher Basis.",
+      "upright": "Erschütterung, Offenbarung, abruptes Ende, befreiende Zerstörung"
+    },
+    "Der Wagen": {
+      "image": "tarot_img/MajorArcanaCards/Le Chariot.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Chariot a l'envers.jpg",
+      "reversed": "Verlust der Kontrolle, zersplitterte Energie, Misserfolg durch Unklarheit",
+      "signification reversed": "Umgekehrt: Unfokussiertheit, innere Reibung, Richtungslosigkeit. Kurs korrigieren und Zügel wieder aufnehmen.",
+      "signification upright": "Willenskraft bündelt Gegensätze zum Vorwärtskommen. Disziplin und Ausrichtung bringen Sieg.",
+      "upright": "Beherrschung widerstreitender Kräfte, Zielstrebigkeit, Sieg"
+    },
+    "Die Gerechtigkeit": {
+      "image": "tarot_img/MajorArcanaCards/La Justice.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Justice a l'envers.jpg",
+      "reversed": "Ungerechtigkeit, Ungleichgewicht, Parteilichkeit, Korruption, Rachsucht",
+      "signification reversed": "Umgekehrt: Voreingenommenheit, Fehlurteil oder missbräuchliche Systeme. Nachjustieren, Transparenz herstellen.",
+      "signification upright": "Klar abwägen, Verantwortung tragen, Wahrheit anerkennen. Konsequente Fairness ist gefragt.",
+      "upright": "Gerechtigkeit, Gleichgewicht, Wahrheit, Gesetz, Fairness"
+    },
+    "Die Hohepriesterin": {
+      "image": "tarot_img/MajorArcanaCards/La Papesse.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Papesse a l'envers.jpg",
+      "reversed": "verdrängte Geheimnisse, blockierte Intuition, Oberflächlichkeit",
+      "signification reversed": "Umgekehrt: Intuition ignoriert, Wissen instrumentalisiert oder nur an der Oberfläche geblieben. Innere Stimme wieder kultivieren.",
+      "signification upright": "Schweigen, Tiefe und inneres Wissen. Lausche der Intuition, suche nach verborgener Wahrheit jenseits des Lärms.",
+      "upright": "Intuition, Weisheit, Geheimnis, innere Erkenntnis"
+    },
+    "Die Kaiserin": {
+      "image": "tarot_img/MajorArcanaCards/L'Imperatrice.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Imperatrice a l'envers.jpg",
+      "reversed": "Abhängigkeit, Vernachlässigung, kreative Blockade, Kontrollzwang",
+      "signification reversed": "Umgekehrt: Überbehütung, Stagnation oder das Abkoppeln von natürlichen Zyklen. Loslassen und Vertrauen lernen.",
+      "signification upright": "Schöpfungskraft, Wachstum und liebevolle Fülle. Kreativität nähren und das Leben gedeihen lassen.",
+      "upright": "Fruchtbarkeit, Fülle, Kreativität, Fürsorge, Naturverbundenheit"
+    },
+    "Die Kraft": {
+      "image": "tarot_img/MajorArcanaCards/La Force.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Force a l'envers.jpg",
+      "reversed": "Schwäche, Kontrollverlust, Aggression, Feigheit",
+      "signification reversed": "Umgekehrt: Unbeherrschte Impulse oder Resignation. Milde mit Klarheit verbinden.",
+      "signification upright": "Sanfte Stärke zähmt das Wilde. Mut, Selbstbeherrschung und Herzintelligenz siegen.",
+      "upright": "innere Stärke, Geduld, Mitgefühl, Mut"
+    },
+    "Die Liebenden": {
+      "image": "tarot_img/MajorArcanaCards/L'Amoureux.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Amoureux a l'envers.jpg",
+      "reversed": "Fehlentscheidung, Trennung, Unentschlossenheit, Konflikt",
+      "signification reversed": "Umgekehrt: Unklare Motive, Ambivalenz oder dysbalancierte Bindungen. Entscheidung aufschieben bis Klarheit reift.",
+      "signification upright": "Eine Herzensentscheidung steht an. Authentizität, Werteharmonie und ehrliches Einverständnis führen zur richtigen Wahl.",
+      "upright": "Wahl, Verbindung, Liebe, Dualität, wichtige Entscheidung"
+    },
+    "Die Mäßigkeit": {
+      "image": "tarot_img/MajorArcanaCards/La Temperance.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Temperance a l'envers.jpg",
+      "reversed": "Ungleichgewicht, Exzesse, Ungeduld, disharmonisches Mischen",
+      "signification reversed": "Umgekehrt: Zuviel oder Zuwenig, hastiges Erzwingen. Sanft nachjustieren.",
+      "signification upright": "Maß, Rhythmus und feines Mischen der Gegensätze. Heilung reift schrittweise.",
+      "upright": "Ausgleich, Heilung, Geduld, harmonische Verbindung"
+    },
+    "Die Sonne": {
+      "image": "tarot_img/MajorArcanaCards/Le Soleil.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Soleil a l'envers.jpg",
+      "reversed": "Eitelkeit, falscher Stolz, oberflächlicher Erfolg",
+      "signification reversed": "Umgekehrt: Glanz ohne Tiefe, Übermut. Demut bewahrt die Strahlkraft.",
+      "signification upright": "Wärme, Sichtbarkeit, kreatives Strahlen. Ernte reift – feiern erlaubt.",
+      "upright": "Freude, Erfolg, Lebenskraft, Erfolgserlebnis"
+    },
+    "Die Welt": {
+      "image": "tarot_img/MajorArcanaCards/Le Monde.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Monde a l'envers.jpg",
+      "reversed": "nahe am Ziel gescheitert, Perfektionismus, Unvollständigkeit",
+      "signification reversed": "Umgekehrt: Fast am Ziel, doch etwas hält zurück. Vollendung erlauben.",
+      "signification upright": "Integration, Meisterschaft, runder Abschluss. Ein Tor öffnet sich zum neuen Kreis.",
+      "upright": "Vollendung, Harmonie, Abschluss eines Zyklus, Ganzheit"
+    },
+    "König der Kelche": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi de Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi de Coupe a l'envers.jpg",
+      "reversed": "emotionale Manipulation, kühle Berechnung, verdeckte Instabilität",
+      "signification reversed": "Umgekehrt: Gefühle instrumentalisieren. Aufrichtigkeit üben.",
+      "signification upright": "Herz und Verstand in Balance führen, heilsam moderieren.",
+      "upright": "emotionale Meisterschaft, weise Empathie, milde Autorität"
+    },
+    "König der Münzen": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi De Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi De Deniers a l'envers.jpg",
+      "reversed": "Geiz, Korruption, materialistische Fixierung",
+      "signification reversed": "Umgekehrt: Besitz ohne Ethik. Großzügigkeit und Maß zurückfinden.",
+      "signification upright": "Werte sichern, langfristig investieren, großzügig fördern.",
+      "upright": "gefestigter Wohlstand, kluge Verwaltung, materielles Verantwortungsbewusstsein"
+    },
+    "König der Schwerter": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi D'Epee a l'envers.jpg",
+      "reversed": "Kälte, Machtmissbrauch, manipulative Intelligenz",
+      "signification reversed": "Umgekehrt: Schärfe ohne Herz. Empathie integrieren.",
+      "signification upright": "Sachlich entscheiden, Wahrheit benennen, fair urteilen.",
+      "upright": "klare Vernunft, gerechte Autorität, Objektivität"
+    },
+    "König der Stäbe": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi De Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi De Baton a l'envers.jpg",
+      "reversed": "impulsiver Autoritarismus, Dominanz, cholerische Entscheidungen",
+      "signification reversed": "Umgekehrt: Ego treibt, Wut lenkt. Zuhören und Teamgeist kultivieren.",
+      "signification upright": "Inspiration bündeln, andere mitreißen, mutig gestalten. Führungsstärke mit Sinn.",
+      "upright": "charismatische Führung, visionäres Handeln, kreative Lenkung"
+    },
+    "Königin der Kelche": {
+      "image": "tarot_img/MajorArcanaCards/La Reine De Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine De Coupe a l'envers.jpg",
+      "reversed": "Überemotionalität, Abhängigkeit, selbstschädigender Einsatz",
+      "signification reversed": "Umgekehrt: Sich verlieren, ausbluten. Selbstschutz und Klarheit stärken.",
+      "signification upright": "Sich einfühlen, halten, seelisch nähren. Grenzen liebevoll wahren.",
+      "upright": "tiefe Intuition, echte Empathie, bedingungslose Liebe"
+    },
+    "Königin der Münzen": {
+      "image": "tarot_img/MajorArcanaCards/La Reine De Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine De Deniers a l'envers.jpg",
+      "reversed": "überbehütender Materialismus, Vernachlässigung des Heims",
+      "signification reversed": "Umgekehrt: Gier, Streuung, Prioritätenverlust. Ordnung und Herz zurückholen.",
+      "signification upright": "Geborgenheit schaffen, Ressourcen mehren, Bodenhaftung wahren.",
+      "upright": "nährende Fülle, praktische Fürsorge, geteilte Prosperität"
+    },
+    "Königin der Schwerter": {
+      "image": "tarot_img/MajorArcanaCards/La Reine D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine D'Epee a l'envers.jpg",
+      "reversed": "Verbitterung, Groll, zerstörerische Kritik",
+      "signification reversed": "Umgekehrt: Verletzung spricht. Heilung vor Urteil.",
+      "signification upright": "Erfahrung in klare Worte fassen, Grenzen sauber ziehen.",
+      "upright": "Unabhängigkeit, Klarblick, aufrichtige Direktheit"
+    },
+    "Königin der Stäbe": {
+      "image": "tarot_img/MajorArcanaCards/La Reine de Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine de Baton a l'envers.jpg",
+      "reversed": "Eifersucht, Besitzergreifen, kreative Blockade",
+      "signification reversed": "Umgekehrt: Vergleich, Misstrauen, Groll. Eigene Flamme nähren statt zehren.",
+      "signification upright": "Leidenschaftlich fördern, wärmen, ermutigen. Kreative Funken entzünden.",
+      "upright": "strahlende Kreativität, warme Großzügigkeit, inspirierende Präsenz"
+    },
+    "Ritter der Kelche": {
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier De Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier De Coupe a l'envers.jpg",
+      "reversed": "romantische Illusionen, leere Versprechen, Taktik",
+      "signification reversed": "Umgekehrt: Schein ohne Sein. Auf Integrität prüfen.",
+      "signification upright": "Angebote des Herzens, Kunst, Versöhnung. Feinfühlig auftreten.",
+      "upright": "Romantik, Einladung, Charme, kreative Botschaft"
+    },
+    "Ritter der Münzen": {
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier de Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier de Deniers a l'envers.jpg",
+      "reversed": "Routinefalle, Trägheit, Ambitionsmangel",
+      "signification reversed": "Umgekehrt: Erstarrung oder Bequemlichkeit. Kleine, klare Ziele setzen.",
+      "signification upright": "Schritt für Schritt, verlässlich bauen. Beständigkeit zahlt sich aus.",
+      "upright": "Fleiß, Methode, Ausdauer, Verantwortlichkeit"
+    },
+    "Ritter der Schwerter": {
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier D'Epee a l'envers.jpg",
+      "reversed": "Übereifer, Aggression, blinde Zerstörung",
+      "signification reversed": "Umgekehrt: Angriff ohne Ziel. Tempo drosseln, prüfen.",
+      "signification upright": "Zeit für beherztes Handeln. Klar und tapfer vorangehen.",
+      "upright": "mutige Aktion, Entschlossenheit, schnelle Wende"
+    },
+    "Ritter der Stäbe": {
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier de Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier de Baton a l'envers.jpg",
+      "reversed": "Hast, Flucht, ungeduldige Zersplitterung",
+      "signification reversed": "Umgekehrt: Aktionismus ohne Richtung. Plan schärfen, dann reiten.",
+      "signification upright": "Jetzt mutig starten, Terrain erkunden, Momentum nutzen.",
+      "upright": "Abenteuer, Vorwärtsdrang, schnelle Initiative"
     }
   }
 }

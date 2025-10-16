@@ -38,9 +38,6 @@ from i18n_loader import (
     MESSAGES,
     tr,
     get_system_language,
-    get_card_image_path,
-    get_card_name_for_lang,
-    get_french_card_name,
 )
 
 # Ads manager (local) — import sécurisé car peut échouer en environnement non-Android
@@ -601,45 +598,6 @@ class MmeTChatPopup(Popup):
                 slots.append((cname, cstate))
         while len(slots) < 3:
             slots.append((None, None))
-
-        miniatures = BoxLayout(orientation="horizontal", spacing=dp(18), size_hint=(1, None), height=dp(180), padding=[0,0,0,0])
-        for cname, cstate in slots:
-            try:
-                imgpath = get_card_image_path(cname, cstate) if cname else "tarot_img/Back.jpg"
-                thumb_img = Image(
-                    source=imgpath,
-                    size_hint=(None, None),
-                    size=(dp(110), dp(175)),
-                    allow_stretch=True,
-                    keep_ratio=True,
-                )
-                thumb = Button(
-                    size_hint=(None, None),
-                    size=(dp(110), dp(175)),
-                    background_normal='',
-                    background_color=[0, 0, 0, 0],
-                )
-                thumb.add_widget(thumb_img)
-                def _open_fullscreen(instance, cname=cname, cstate=cstate, imgpath=imgpath):
-                    try:
-                        popup = FullScreenCardPopup(
-                            card_image_source=imgpath,
-                            card_name=(get_card_name_for_lang(get_french_card_name(cname), get_system_language()) if cname else tr('your_card')),
-                            card_state=("À l'envers" if cstate and 'envers' in str(cstate).lower() else "À l'endroit"),
-                        )
-                        popup.open()
-                    except Exception:
-                        try:
-                            popup = FullScreenCardPopup(card_image_source=imgpath, card_name=(cname or tr('your_card')), card_state=(cstate or ""))
-                            popup.open()
-                        except Exception:
-                            pass
-                thumb.bind(on_press=_open_fullscreen)
-            except Exception:
-                thumb = Button(size_hint=(None, None), size=(dp(110), dp(175)), background_normal='', background_color=[0, 0, 0, 0])
-            miniatures.add_widget(thumb)
-        # Centrer le BoxLayout horizontal dans la popup
-        main_layout.add_widget(miniatures)
 
         self.content = main_layout
 

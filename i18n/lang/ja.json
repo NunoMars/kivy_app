@@ -1,37 +1,18 @@
 {
   "messages": {
-    "draw_card": "カードを引く",
-    "drawing_card": "カードを引いています...",
-    "concentrating": "集中しています...",
-    "preparing_arcana": "アルカナを準備中...",
-    "upright": "⬆ 正位置 ⬆",
-    "reversed": "⬇ 逆位置 ⬇",
-    "thanks": "✨ リーディングを楽しんでいただけたら幸いです！ ✨",
-    "continue_exploring": "🔮 タロットの神秘を探求し続けましょう！ 🔮",
-    "new_reading": "✨ 新しいリーディング",
-    "new_reading_countdown": "✨ 新しいリーディング ({seconds}s) ✨",
-    "app_title": "占いタロットへようこそ",
-    "draw_instruction": "カードをタッチして\n予言を受け取る",
-    "crystals_ad": "💎 クリスタル＆ミネラルショップ - 送料無料 💎",
-    "love_ad": "💕 Astrology+で愛を見つけよう 💕\n出生図に基づく相性診断",
-    "tarot_course_ad": "🔮 プロフェッショナルタロット講座 🔮\n認定カードリーダーになろう - 無料登録",
-    "tap_to_return": "カードをタップして戻る",
-    "touch_to_enlarge": "🔍 タップして拡大",
-    "your_card": "あなたのカード",
-    "support_app": "アプリをサポートする",
     "ad_message": "この無料アプリは気に入りましたか？\n維持と改善のためにご協力ください！",
-    "later": "後で",
-    "support": "サポート",
+    "app_title": "占いタロットへようこそ",
+    "chat_mme_t": "Mme T チャット",
+    "concentrating": "集中しています...",
+    "configure_backend_hint": "Mme T相談を有効にするにはMME_T_BACKEND_URLを設定してください。",
+    "continue_exploring": "🔮 タロットの神秘を探求し続けましょう！ 🔮",
+    "crystals_ad": "💎 クリスタル＆ミネラルショップ - 送料無料 💎",
     "done": "完了",
-    "premium_button_base": "Mme T プレミアムチャット",
-    "premium_button_price_suffix": " ({price})",
-    "premium_button_provider_suffix": " - {provider}",
-    "provider_google": "Google Play",
-    "provider_amazon": "Amazon Appstore",
-    "provider_simulation": "デモモード",
-    "provider_disabled": "利用不可",
+    "draw_card": "カードを引く",
+    "draw_instruction": "カードをタッチして\n予言を受け取る",
+    "drawing_card": "カードを引いています...",
+    "later": "後で",
     "loading": "読み込み中...",
-    "signification_error": "意味の読み込みエラー",
     "loading_messages": [
       "🔮 あなたの質問に集中しています...",
       "🃏 カードをシャッフルしています...",
@@ -39,252 +20,342 @@
       "🌙 星を占っています...",
       "💫 アルカナを解釈しています..."
     ],
-    "chat_mme_t": "Mme T チャット",
+    "love_ad": "💕 Astrology+で愛を見つけよう 💕\n出生図に基づく相性診断",
     "mme_t_intro": "こんにちは ✨ 私はMme T、あなたのカードリーダーです。今日はどんなご質問がありますか？どうお手伝いできますか？",
     "mme_t_thanks": "ご相談いただきありがとうございます。いつでもまたお越しください。",
+    "new_reading": "✨ 新しいリーディング",
+    "new_reading_countdown": "✨ 新しいリーディング ({seconds}s) ✨",
+    "premium_button_base": "Mme T プレミアムチャット",
+    "premium_button_price_suffix": " ({price})",
+    "premium_button_provider_suffix": " - {provider}",
+    "preparing_arcana": "アルカナを準備中...",
+    "provider_amazon": "Amazon Appstore",
+    "provider_disabled": "利用不可",
+    "provider_google": "Google Play",
+    "provider_simulation": "デモモード",
+    "purchase_error_title": "購入できません",
+    "reversed": "⬇ 逆位置 ⬇",
+    "signification_error": "意味の読み込みエラー",
+    "store_mobile_only": "モバイルでのみ購入可能",
     "store_preparing": "ショップを準備中...",
     "store_preparing_retry": "ショップを準備中です。しばらくしてから再試行してください",
     "store_unavailable_platform": "このプラットフォームではショップは利用できません",
-    "store_mobile_only": "モバイルでのみ購入可能",
+    "support": "サポート",
+    "support_app": "アプリをサポートする",
+    "tap_to_return": "カードをタップして戻る",
+    "tarot_course_ad": "🔮 プロフェッショナルタロット講座 🔮\n認定カードリーダーになろう - 無料登録",
+    "thanks": "✨ リーディングを楽しんでいただけたら幸いです！ ✨",
     "thanks_for_support": "ご支援ありがとうございます！",
     "thanks_for_support_via": "{provider}経由でご支援ありがとうございます！",
-    "configure_backend_hint": "Mme T相談を有効にするにはMME_T_BACKEND_URLを設定してください。",
-    "purchase_error_title": "購入できません",
-    "thanks_title": "ありがとう！"
+    "thanks_title": "ありがとう！",
+    "touch_to_enlarge": "🔍 タップして拡大",
+    "upright": "⬆ 正位置 ⬆",
+    "your_card": "あなたのカード"
   },
   "significations": {
-    "魔術師": {
-      "upright": "新たな始まり、行動力、熱意、エネルギー、創造性",
-      "reversed": "錯覚、操作、集中力の欠如、散漫、欺き",
-      "signification upright": "意図・言葉・行動が一致し、アイデアを現実化できる時。機会を掴み、主体的に動くほど流れが味方します。",
-      "signification reversed": "見せかけや口約束に注意。焦点を一つに絞り、誠実さと基礎づくりを優先しましょう。"
-    },
-    "女教皇": {
-      "upright": "直感、英知、知識、神秘、秘められた真実",
-      "reversed": "隠された秘密、意図的な無知、直感の封鎖、表面的な理解",
-      "signification upright": "静けさの中に答えがあります。夢・身体感覚・サインを記録し、内なる声に従って判断を保留しましょう。",
-      "signification reversed": "知っているのに認めない状態。ノイズを減らし、恐れではなく直感に再接続を。"
-    },
-    "女帝": {
-      "upright": "豊穣、創造性、恵み、母性、自然とのつながり",
-      "reversed": "創造性の停滞、過保護、依存、完璧主義",
-      "signification upright": "育てる喜びが成果を招く時。体の声を尊重し、楽しさと心地よさをプロセスに取り戻して。",
-      "signification reversed": "締め付けは芽をしおれさせます。休息・委ねる・受け取るのバランスを。"
-    },
-    "皇帝": {
-      "upright": "秩序、構造、境界、戦略、公正な権威",
-      "reversed": "硬直、過干渉、権力乱用、厳しすぎる姿勢",
-      "signification upright": "人を活かすルールと責任分担が力に。長期視点と透明性で信頼を築きます。",
-      "signification reversed": "マイクロマネジメントは創造性を損ないます。任せる勇気と明確な目標に立ち返って。"
-    },
-    "法王": {
-      "upright": "伝統、学び、儀式、コミュニティ、価値観",
-      "reversed": "教条主義、形式主義、偽りの権威、盲従",
-      "signification upright": "形式は本質を護る器。良い慣習に乗り、師や仲間から知恵を受け取りましょう。",
-      "signification reversed": "形骸化したルールは見直しの合図。生きた価値だけを残す改革を。"
-    },
-    "恋人": {
-      "upright": "選択、愛、同盟、価値の一致、誠実さ",
-      "reversed": "優柔不断、三角関係、妥協のしすぎ、断絶",
-      "signification upright": "欲求・真実・責任が同じ方向を向く選び方を。価値観の一致が絆を育てます。",
-      "signification reversed": "恐れからの「はい」は自分への「いいえ」。動機を整えてから決め直して。"
-    },
-    "戦車": {
-      "upright": "意思、前進、規律、勝利、集中",
-      "reversed": "混乱、空回り、方向喪失、分散",
-      "signification upright": "相反する力を一つの目標へ。小さな達成を積み重ね、牽引力を作りましょう。",
-      "signification reversed": "優先度を絞り、進捗指標を再設定。少なく鋭くが前進の鍵。"
-    },
-    "正義": {
-      "upright": "公正、真実、責任、均衡、法",
-      "reversed": "不公正、偏り、復讐、判断ミス",
-      "signification upright": "事実と価値を丁寧に秤に。透明性と修復が信頼を生みます。",
-      "signification reversed": "拙速な断罪に注意。データ不足や権力差を是正してから結論を。"
-    },
-    "隠者": {
-      "upright": "内省、熟慮、英知、内なる導き、成熟",
-      "reversed": "孤立、閉鎖、助言拒否、独善",
-      "signification upright": "一歩退くことで道が見えます。学びが熟したら静かに分かち合って。",
-      "signification reversed": "隠れるだけでは癒えません。信頼できる関係へ再接続を。"
-    },
-    "運命の輪": {
-      "upright": "周期、好機、転機、流れ、シンクロ",
-      "reversed": "繰り返し、停滞、抵抗、不運感",
-      "signification upright": "変化の波に乗る準備を。荷を軽くし、開いた扉に素直に「はい」。",
-      "signification reversed": "違う結果は違う行動から。小さな習慣を替え、ループを断ち切って。"
-    },
-    "力": {
-      "upright": "勇気、自己調整、思いやり、回復力",
-      "reversed": "衝動、無気力、怒り、迎合",
-      "signification upright": "柔らかな強さが嵐を鎮めます。優しさと境界の両立を。",
-      "signification reversed": "呼吸・境界・小さな勇気へ回帰。強さは内側から再点火されます。"
-    },
-    "吊るされた男": {
-      "upright": "一時停止、手放し、新しい視点、受容",
-      "reversed": "停滞、無益な犠牲、頑固、回避",
-      "signification upright": "動かない勇気が洞察を生む時。視点の転換が扉を開きます。",
-      "signification reversed": "学びが無ければただの足踏み。意味ある手放しを一つ選んで。"
-    },
-    "死神": {
-      "upright": "終焉、変容、再生、浄化",
-      "reversed": "抵抗、執着、恐れ、移行の停滞",
-      "signification upright": "形は終わっても価値は残る。尊厳あるクローズが新空間を生みます。",
-      "signification reversed": "避けた終わりは力を奪うだけ。終わりを名指しし、優しく閉じましょう。"
-    },
-    "節制": {
-      "upright": "調和、統合、癒し、節度、バランス",
-      "reversed": "過不足、混沌、焦り、不調和",
-      "signification upright": "異なる要素を少しずつ混ぜる錬金術。ゆっくりだからこそ根付きます。",
-      "signification reversed": "材料を減らし配分を整える時。シンプルに戻って再調合を。"
-    },
-    "悪魔": {
-      "upright": "束縛、依存、影、誘惑、物質主義",
-      "reversed": "解放、節度、境界、選択の回復",
-      "signification upright": "名前を与えると鎖は緩みます。自動反応から意識的選択へ。",
-      "signification reversed": "一つのNO、一つの境界、一つの健全な選択。尊厳は小さな解放の連続で戻る。"
-    },
-    "塔": {
-      "upright": "崩壊、真実、覚醒、危機、断絶",
-      "reversed": "早期警報、是正、予防、調整",
-      "signification upright": "耐えないものは壊れ、真実が残る。正直な土台で再構築を。",
-      "signification reversed": "今日の亀裂の告白が明日の崩落を防ぎます。謙虚さは耐震装置。"
-    },
-    "星": {
-      "upright": "希望、導き、霊感、信頼、美",
-      "reversed": "失望、シニシズム、消耗、断絶",
-      "signification upright": "嵐の後の光。休息・美・優しさで心を潤し、羅針盤を整えましょう。",
-      "signification reversed": "小さな約束を守るほど希望は再点灯します。ノイズを減らして。"
-    },
-    "月": {
-      "upright": "無意識、幻想、直感、恐れ、夢",
-      "reversed": "明晰、事実、調整、出口",
-      "signification upright": "霧と鏡の中をゆっくり進む時。投影を検証し、身体の合図を信頼して。",
-      "signification reversed": "霧が晴れ、事実と内なる感覚が一致。地図を更新して再出発を。"
-    },
-    "太陽": {
-      "upright": "喜び、成功、活力、明快、祝福",
-      "reversed": "虚栄、自己中心、燃え尽き、見せかけ",
-      "signification upright": "分かち合うほど光は増えます。遊び心と誠実さで創造を。",
-      "signification reversed": "輝きの根を真実と奉仕に。演出より本物へ。"
-    },
-    "審判": {
-      "upright": "呼びかけ、刷新、赦し、召命、覚醒",
-      "reversed": "罪悪感、否認、変化恐怖、厳しすぎる裁き",
-      "signification upright": "正直な振り返りと赦しが再スタートを可能に。学びを他者のために使う時です。",
-      "signification reversed": "自己断罪を具体的責任へ翻訳し、行動で示しましょう。"
-    },
-    "世界": {
-      "upright": "完成、達成、統合、充足、熟達",
-      "reversed": "完璧主義、締めの遅れ、引き延ばし、空虚",
-      "signification upright": "一章が美しく閉じます。祝福・記録・次章の準備を。",
-      "signification reversed": "「完了」を定義し最後の結び目を。完成は解放です。"
-    },
-
-    "ワンドのキング": {
-      "upright": "カリスマ、ビジョン、創造的リーダー、拡大、大胆さ",
-      "reversed": "横暴、衝動、怒り、誇大さ",
-      "signification upright": "目的明快・委任上手・情熱安定。燃やすのでなく灯す炎で導きます。",
-      "signification reversed": "支配は信頼を枯らす。傾聴と境界設定、成果で語って。"
-    },
-    "ワンドのクイーン": {
-      "upright": "魅力、創造性、熱量、寛大さ、存在感",
-      "reversed": "嫉妬、過剰露出、消耗、分散",
-      "signification upright": "あなたの温かさが人と企画を花開かせる。喜びは創造の燃料。",
-      "signification reversed": "比較は火を奪う。エネルギーを守り、舞台を分かち合って。"
-    },
-    "ワンドのナイト": {
-      "upright": "勢い、冒険、迅速な変化、探求、勇気",
-      "reversed": "無謀、一貫性不足、逃避、口だけ",
-      "signification upright": "惰性を破る推進力。短い区切りで走りながら学ぶ。",
-      "signification reversed": "持続しない出発は疲弊に。簡素な仕組みで安定化を。"
-    },
-    "ワンドのページ": {
-      "upright": "創造の知らせ、新アイデア、学び、好奇心",
-      "reversed": "未熟、中断、表層、結果焦り",
-      "signification upright": "まずは小さく試作。招待・実験・遊びから始めてOK。",
-      "signification reversed": "最初の障害は結論ではない。今日、小さく出す。"
-    },
-
-    "ペンタクルのキング": {
-      "upright": "安定、繁栄、管理能力、信頼、継続価値",
-      "reversed": "強欲、硬直、物質偏重、金での支配",
-      "signification upright": "健全な予算・品質・人への配慮が資産を育てます。",
-      "signification reversed": "溜め込むだけでは貧しくなる。委任と分かち合いを。"
-    },
-    "ペンタクルのクイーン": {
-      "upright": "ケア、実用、家庭の繁栄、安心、滋養",
-      "reversed": "自己放棄、過剰奉仕、浪費、所有欲",
-      "signification upright": "愛のある家計と小さな儀式が大きな安心を生む。",
-      "signification reversed": "受け取らない善意は枯れる。休息と境界も資産。"
-    },
-    "ペンタクルのナイト": {
-      "upright": "粘り、手順、責任、効くルーティン",
-      "reversed": "単調、怠慢、停滞、変化拒否",
-      "signification upright": "一歩ずつ良い仕事。記録→納品→改善の循環を。",
-      "signification reversed": "方法をアップデートし、作業の意味を再接続。"
-    },
-    "ペンタクルのページ": {
-      "upright": "学習、実践、物質的チャンス、集中、種まき",
-      "reversed": "先延ばし、近道志向、散らかり、視野の狭さ",
-      "signification upright": "観察・質問・練習。土は継続に応えます。",
-      "signification reversed": "空間・計画・予算を整頓。日々の習慣が最強の近道。"
-    },
-
     "カップのキング": {
-      "upright": "情緒成熟、共感、バランス、受容、助言",
+      "image": "tarot_img/MajorArcanaCards/Le Roi de Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi de Coupe a l'envers.jpg",
       "reversed": "操作、冷淡、隠れた不安定",
+      "signification reversed": "抑えることと否認は別。率直に頼り、必要なら監督を。",
       "signification upright": "整った中心から導く。聴く・名付ける・受け止めるで場を整える。",
-      "signification reversed": "抑えることと否認は別。率直に頼り、必要なら監督を。"
+      "upright": "情緒成熟、共感、バランス、受容、助言"
     },
     "カップのクイーン": {
-      "upright": "直感、慈愛、受容性、繊細なケア、芸術",
+      "image": "tarot_img/MajorArcanaCards/La Reine De Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine De Coupe a l'envers.jpg",
       "reversed": "共依存、過剰共感、自己犠牲、理想化",
+      "signification reversed": "境界なき共感は溺れます。愛あるNOで自他を守って。",
       "signification upright": "心の避難所。優しい境界と創造が癒しを生む。",
-      "signification reversed": "境界なき共感は溺れます。愛あるNOで自他を守って。"
+      "upright": "直感、慈愛、受容性、繊細なケア、芸術"
     },
     "カップのナイト": {
-      "upright": "ロマンス、提案、魅力、インスピレーション、外交",
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier De Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier De Coupe a l'envers.jpg",
       "reversed": "幻想、空約束、都合の良い誘惑、回避",
+      "signification reversed": "言葉と行動を一致させるか、優しく正直に断って。",
       "signification upright": "心からの招待・謝意・提案を運ぶ使者。美しさが扉を開く。",
-      "signification reversed": "言葉と行動を一致させるか、優しく正直に断って。"
+      "upright": "ロマンス、提案、魅力、インスピレーション、外交"
     },
     "カップのページ": {
-      "upright": "感受性、心のメッセージ、創造の芽、遊び",
+      "image": "tarot_img/MajorArcanaCards/Le Valet De Coupe.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet De Coupe a l'envers.jpg",
       "reversed": "過敏、創作ブロック、未熟、逃避",
+      "signification reversed": "全てが個人攻撃ではない。整えて、素朴に表現し直す。",
       "signification upright": "心が話し始める時。書く・描く・謝る—ミューズは遊び好き。",
-      "signification reversed": "全てが個人攻撃ではない。整えて、素朴に表現し直す。"
+      "upright": "感受性、心のメッセージ、創造の芽、遊び"
     },
-
     "ソードのキング": {
-      "upright": "明晰、論理、正義、戦略、真実",
+      "image": "tarot_img/MajorArcanaCards/Le Roi D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi D'Epee a l'envers.jpg",
       "reversed": "冷酷、専横、操作、過度な批判",
+      "signification reversed": "知性だけでは割れる。文脈と共感で刃を丸めて。",
       "signification upright": "事実と意見を切り分け、倫理に根ざして決断。正確な言葉で伝える。",
-      "signification reversed": "知性だけでは割れる。文脈と共感で刃を丸めて。"
+      "upright": "明晰、論理、正義、戦略、真実"
     },
     "ソードのクイーン": {
-      "upright": "洞察、独立、明確な境界、率直、経験",
+      "image": "tarot_img/MajorArcanaCards/La Reine D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine D'Epee a l'envers.jpg",
       "reversed": "苦味、皮肉、冷たさ、攻撃的批評",
+      "signification reversed": "傷が話していないか点検。真実＋思いやりで変容へ。",
       "signification upright": "本質を見抜き、簡潔に語る。壁ではなく境界を。",
-      "signification reversed": "傷が話していないか点検。真実＋思いやりで変容へ。"
+      "upright": "洞察、独立、明確な境界、率直、経験"
     },
     "ソードのナイト": {
-      "upright": "迅速な行動、論戦、知的勇気、変化、防衛",
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier D'Epee a l'envers.jpg",
       "reversed": "軽率、攻撃性、衝動、空しい争い",
+      "signification reversed": "地図なしの突撃は損害を生む。呼吸し、検証してから。",
       "signification upright": "必要な時に即応。データ・目的・直言を準備して介入を。",
-      "signification reversed": "地図なしの突撃は損害を生む。呼吸し、検証してから。"
+      "upright": "迅速な行動、論戦、知的勇気、変化、防衛"
     },
     "ソードのページ": {
-      "upright": "好奇心、警戒、情報、素早い学習、観察眼",
+      "image": "tarot_img/MajorArcanaCards/Le Valet D'Epee.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet D'Epee a l'envers.jpg",
       "reversed": "噂、無分別、被害妄想、歪んだデータ",
+      "signification reversed": "怪しい情報源を閉じ、検証を徹底。正確さが最良の守り。",
       "signification upright": "目を開き正しく問いかける。調査・学び・交渉に有利。",
-      "signification reversed": "怪しい情報源を閉じ、検証を徹底。正確さが最良の守り。"
+      "upright": "好奇心、警戒、情報、素早い学習、観察眼"
     },
-
+    "ペンタクルのキング": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi De Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi De Deniers a l'envers.jpg",
+      "reversed": "強欲、硬直、物質偏重、金での支配",
+      "signification reversed": "溜め込むだけでは貧しくなる。委任と分かち合いを。",
+      "signification upright": "健全な予算・品質・人への配慮が資産を育てます。",
+      "upright": "安定、繁栄、管理能力、信頼、継続価値"
+    },
+    "ペンタクルのクイーン": {
+      "image": "tarot_img/MajorArcanaCards/La Reine De Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine De Deniers a l'envers.jpg",
+      "reversed": "自己放棄、過剰奉仕、浪費、所有欲",
+      "signification reversed": "受け取らない善意は枯れる。休息と境界も資産。",
+      "signification upright": "愛のある家計と小さな儀式が大きな安心を生む。",
+      "upright": "ケア、実用、家庭の繁栄、安心、滋養"
+    },
+    "ペンタクルのナイト": {
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier de Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier de Deniers a l'envers.jpg",
+      "reversed": "単調、怠慢、停滞、変化拒否",
+      "signification reversed": "方法をアップデートし、作業の意味を再接続。",
+      "signification upright": "一歩ずつ良い仕事。記録→納品→改善の循環を。",
+      "upright": "粘り、手順、責任、効くルーティン"
+    },
+    "ペンタクルのページ": {
+      "image": "tarot_img/MajorArcanaCards/Le Valet De Deniers.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet De Deniers a l'envers.jpg",
+      "reversed": "先延ばし、近道志向、散らかり、視野の狭さ",
+      "signification reversed": "空間・計画・予算を整頓。日々の習慣が最強の近道。",
+      "signification upright": "観察・質問・練習。土は継続に応えます。",
+      "upright": "学習、実践、物質的チャンス、集中、種まき"
+    },
+    "ワンドのキング": {
+      "image": "tarot_img/MajorArcanaCards/Le Roi De Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Roi De Baton a l'envers.jpg",
+      "reversed": "横暴、衝動、怒り、誇大さ",
+      "signification reversed": "支配は信頼を枯らす。傾聴と境界設定、成果で語って。",
+      "signification upright": "目的明快・委任上手・情熱安定。燃やすのでなく灯す炎で導きます。",
+      "upright": "カリスマ、ビジョン、創造的リーダー、拡大、大胆さ"
+    },
+    "ワンドのクイーン": {
+      "image": "tarot_img/MajorArcanaCards/La Reine de Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Reine de Baton a l'envers.jpg",
+      "reversed": "嫉妬、過剰露出、消耗、分散",
+      "signification reversed": "比較は火を奪う。エネルギーを守り、舞台を分かち合って。",
+      "signification upright": "あなたの温かさが人と企画を花開かせる。喜びは創造の燃料。",
+      "upright": "魅力、創造性、熱量、寛大さ、存在感"
+    },
+    "ワンドのナイト": {
+      "image": "tarot_img/MajorArcanaCards/Le Cavalier de Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier de Baton a l'envers.jpg",
+      "reversed": "無謀、一貫性不足、逃避、口だけ",
+      "signification reversed": "持続しない出発は疲弊に。簡素な仕組みで安定化を。",
+      "signification upright": "惰性を破る推進力。短い区切りで走りながら学ぶ。",
+      "upright": "勢い、冒険、迅速な変化、探求、勇気"
+    },
+    "ワンドのページ": {
+      "image": "tarot_img/MajorArcanaCards/Le Valet de Baton.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Valet de Baton a l'envers.jpg",
+      "reversed": "未熟、中断、表層、結果焦り",
+      "signification reversed": "最初の障害は結論ではない。今日、小さく出す。",
+      "signification upright": "まずは小さく試作。招待・実験・遊びから始めてOK。",
+      "upright": "創造の知らせ、新アイデア、学び、好奇心"
+    },
+    "世界": {
+      "image": "tarot_img/MajorArcanaCards/Le Monde.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Monde a l'envers.jpg",
+      "reversed": "完璧主義、締めの遅れ、引き延ばし、空虚",
+      "signification reversed": "「完了」を定義し最後の結び目を。完成は解放です。",
+      "signification upright": "一章が美しく閉じます。祝福・記録・次章の準備を。",
+      "upright": "完成、達成、統合、充足、熟達"
+    },
+    "力": {
+      "image": "tarot_img/MajorArcanaCards/La Force.gif",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Force a l'envers.jpg",
+      "reversed": "衝動、無気力、怒り、迎合",
+      "signification reversed": "呼吸・境界・小さな勇気へ回帰。強さは内側から再点火されます。",
+      "signification upright": "柔らかな強さが嵐を鎮めます。優しさと境界の両立を。",
+      "upright": "勇気、自己調整、思いやり、回復力"
+    },
+    "吊るされた男": {
+      "image": "tarot_img/MajorArcanaCards/Le Pendu.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Pendu a l'envers.jpg",
+      "reversed": "停滞、無益な犠牲、頑固、回避",
+      "signification reversed": "学びが無ければただの足踏み。意味ある手放しを一つ選んで。",
+      "signification upright": "動かない勇気が洞察を生む時。視点の転換が扉を開きます。",
+      "upright": "一時停止、手放し、新しい視点、受容"
+    },
+    "塔": {
+      "image": "tarot_img/MajorArcanaCards/La Maison Dieu.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Maison Dieu a l'envers.jpg",
+      "reversed": "早期警報、是正、予防、調整",
+      "signification reversed": "今日の亀裂の告白が明日の崩落を防ぎます。謙虚さは耐震装置。",
+      "signification upright": "耐えないものは壊れ、真実が残る。正直な土台で再構築を。",
+      "upright": "崩壊、真実、覚醒、危機、断絶"
+    },
+    "太陽": {
+      "image": "tarot_img/MajorArcanaCards/Le Soleil.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Soleil a l'envers.jpg",
+      "reversed": "虚栄、自己中心、燃え尽き、見せかけ",
+      "signification reversed": "輝きの根を真実と奉仕に。演出より本物へ。",
+      "signification upright": "分かち合うほど光は増えます。遊び心と誠実さで創造を。",
+      "upright": "喜び、成功、活力、明快、祝福"
+    },
+    "女帝": {
+      "image": "tarot_img/MajorArcanaCards/L'Imperatrice.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Imperatrice a l'envers.jpg",
+      "reversed": "創造性の停滞、過保護、依存、完璧主義",
+      "signification reversed": "締め付けは芽をしおれさせます。休息・委ねる・受け取るのバランスを。",
+      "signification upright": "育てる喜びが成果を招く時。体の声を尊重し、楽しさと心地よさをプロセスに取り戻して。",
+      "upright": "豊穣、創造性、恵み、母性、自然とのつながり"
+    },
+    "女教皇": {
+      "image": "tarot_img/MajorArcanaCards/La Papesse.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Papesse a l'envers.jpg",
+      "reversed": "隠された秘密、意図的な無知、直感の封鎖、表面的な理解",
+      "signification reversed": "知っているのに認めない状態。ノイズを減らし、恐れではなく直感に再接続を。",
+      "signification upright": "静けさの中に答えがあります。夢・身体感覚・サインを記録し、内なる声に従って判断を保留しましょう。",
+      "upright": "直感、英知、知識、神秘、秘められた真実"
+    },
+    "審判": {
+      "image": "tarot_img/MajorArcanaCards/Le Jugement.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Jugement a l'envers.jpg",
+      "reversed": "罪悪感、否認、変化恐怖、厳しすぎる裁き",
+      "signification reversed": "自己断罪を具体的責任へ翻訳し、行動で示しましょう。",
+      "signification upright": "正直な振り返りと赦しが再スタートを可能に。学びを他者のために使う時です。",
+      "upright": "呼びかけ、刷新、赦し、召命、覚醒"
+    },
+    "恋人": {
+      "image": "tarot_img/MajorArcanaCards/L'Amoureux.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Amoureux a l'envers.jpg",
+      "reversed": "優柔不断、三角関係、妥協のしすぎ、断絶",
+      "signification reversed": "恐れからの「はい」は自分への「いいえ」。動機を整えてから決め直して。",
+      "signification upright": "欲求・真実・責任が同じ方向を向く選び方を。価値観の一致が絆を育てます。",
+      "upright": "選択、愛、同盟、価値の一致、誠実さ"
+    },
+    "悪魔": {
+      "image": "tarot_img/MajorArcanaCards/Le Diable.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Diable a l'envers.jpg",
+      "reversed": "解放、節度、境界、選択の回復",
+      "signification reversed": "一つのNO、一つの境界、一つの健全な選択。尊厳は小さな解放の連続で戻る。",
+      "signification upright": "名前を与えると鎖は緩みます。自動反応から意識的選択へ。",
+      "upright": "束縛、依存、影、誘惑、物質主義"
+    },
     "愚者": {
-      "upright": "新たな出発、純真さ、自発性、冒険、無限の可能性",
+      "image": "tarot_img/MajorArcanaCards/Le Mat.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Mat a l'envers.jpg",
       "reversed": "軽率、無邪気すぎる、無責任、不注意",
+      "signification reversed": "準備不足は転びやすい。安全策と境界を整えてからGO。",
       "signification upright": "偏見なく踏み出す勇気が新世界を開きます。経験が最良の教師。",
-      "signification reversed": "準備不足は転びやすい。安全策と境界を整えてからGO。"
+      "upright": "新たな出発、純真さ、自発性、冒険、無限の可能性"
+    },
+    "戦車": {
+      "image": "tarot_img/MajorArcanaCards/Le Chariot.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Chariot a l'envers.jpg",
+      "reversed": "混乱、空回り、方向喪失、分散",
+      "signification reversed": "優先度を絞り、進捗指標を再設定。少なく鋭くが前進の鍵。",
+      "signification upright": "相反する力を一つの目標へ。小さな達成を積み重ね、牽引力を作りましょう。",
+      "upright": "意思、前進、規律、勝利、集中"
+    },
+    "星": {
+      "image": "tarot_img/MajorArcanaCards/L'Etoile.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Etoile a l'envers.jpg",
+      "reversed": "失望、シニシズム、消耗、断絶",
+      "signification reversed": "小さな約束を守るほど希望は再点灯します。ノイズを減らして。",
+      "signification upright": "嵐の後の光。休息・美・優しさで心を潤し、羅針盤を整えましょう。",
+      "upright": "希望、導き、霊感、信頼、美"
+    },
+    "月": {
+      "image": "tarot_img/MajorArcanaCards/La Lune.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Lune a l'envers.jpg",
+      "reversed": "明晰、事実、調整、出口",
+      "signification reversed": "霧が晴れ、事実と内なる感覚が一致。地図を更新して再出発を。",
+      "signification upright": "霧と鏡の中をゆっくり進む時。投影を検証し、身体の合図を信頼して。",
+      "upright": "無意識、幻想、直感、恐れ、夢"
+    },
+    "正義": {
+      "image": "tarot_img/MajorArcanaCards/La Justice.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Justice a l'envers.jpg",
+      "reversed": "不公正、偏り、復讐、判断ミス",
+      "signification reversed": "拙速な断罪に注意。データ不足や権力差を是正してから結論を。",
+      "signification upright": "事実と価値を丁寧に秤に。透明性と修復が信頼を生みます。",
+      "upright": "公正、真実、責任、均衡、法"
+    },
+    "死神": {
+      "image": "tarot_img/MajorArcanaCards/La Mort.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Mort a l'envers.jpg",
+      "reversed": "抵抗、執着、恐れ、移行の停滞",
+      "signification reversed": "避けた終わりは力を奪うだけ。終わりを名指しし、優しく閉じましょう。",
+      "signification upright": "形は終わっても価値は残る。尊厳あるクローズが新空間を生みます。",
+      "upright": "終焉、変容、再生、浄化"
+    },
+    "法王": {
+      "image": "tarot_img/MajorArcanaCards/Le Pape.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Pape a l'envers.jpg",
+      "reversed": "教条主義、形式主義、偽りの権威、盲従",
+      "signification reversed": "形骸化したルールは見直しの合図。生きた価値だけを残す改革を。",
+      "signification upright": "形式は本質を護る器。良い慣習に乗り、師や仲間から知恵を受け取りましょう。",
+      "upright": "伝統、学び、儀式、コミュニティ、価値観"
+    },
+    "皇帝": {
+      "image": "tarot_img/MajorArcanaCards/L'Empereur.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Empereur a l'envers.jpg",
+      "reversed": "硬直、過干渉、権力乱用、厳しすぎる姿勢",
+      "signification reversed": "マイクロマネジメントは創造性を損ないます。任せる勇気と明確な目標に立ち返って。",
+      "signification upright": "人を活かすルールと責任分担が力に。長期視点と透明性で信頼を築きます。",
+      "upright": "秩序、構造、境界、戦略、公正な権威"
+    },
+    "節制": {
+      "image": "tarot_img/MajorArcanaCards/La Temperance.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Temperance a l'envers.jpg",
+      "reversed": "過不足、混沌、焦り、不調和",
+      "signification reversed": "材料を減らし配分を整える時。シンプルに戻って再調合を。",
+      "signification upright": "異なる要素を少しずつ混ぜる錬金術。ゆっくりだからこそ根付きます。",
+      "upright": "調和、統合、癒し、節度、バランス"
+    },
+    "運命の輪": {
+      "image": "tarot_img/MajorArcanaCards/La Roue de La Fortune.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/La Roue de La Fortune a l'envers.jpg",
+      "reversed": "繰り返し、停滞、抵抗、不運感",
+      "signification reversed": "違う結果は違う行動から。小さな習慣を替え、ループを断ち切って。",
+      "signification upright": "変化の波に乗る準備を。荷を軽くし、開いた扉に素直に「はい」。",
+      "upright": "周期、好機、転機、流れ、シンクロ"
+    },
+    "隠者": {
+      "image": "tarot_img/MajorArcanaCards/L'Hermite.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/L'Hermite a l'envers.jpg",
+      "reversed": "孤立、閉鎖、助言拒否、独善",
+      "signification reversed": "隠れるだけでは癒えません。信頼できる関係へ再接続を。",
+      "signification upright": "一歩退くことで道が見えます。学びが熟したら静かに分かち合って。",
+      "upright": "内省、熟慮、英知、内なる導き、成熟"
+    },
+    "魔術師": {
+      "image": "tarot_img/MajorArcanaCards/Le Bateleur.jpg",
+      "image_reversed": "tarot_img/MajorArcanaCards/Le Bateleur a l'envers.jpg",
+      "reversed": "錯覚、操作、集中力の欠如、散漫、欺き",
+      "signification reversed": "見せかけや口約束に注意。焦点を一つに絞り、誠実さと基礎づくりを優先しましょう。",
+      "signification upright": "意図・言葉・行動が一致し、アイデアを現実化できる時。機会を掴み、主体的に動くほど流れが味方します。",
+      "upright": "新たな始まり、行動力、熱意、エネルギー、創造性"
     }
   }
 }

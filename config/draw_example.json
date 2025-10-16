@@ -1,0 +1,7 @@
+{
+  "draw": [
+    { "index": 1, "orientation": "auto" },
+    { "index": 10, "orientation": "auto" },
+    { "index": 22, "orientation": "auto" }
+  ]
+}

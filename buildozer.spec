@@ -12,8 +12,8 @@ source.include_patterns = libs/*.py, fonts/*.ttf, fonts/*.otf, i18n/lang/*.json
 # Si tu préfères forcer un dossier "fonts" entier dans assets :
 # android.add_assets = fonts:fonts
 
-version = 1.13
-android.numeric_version = 1130000
+version = 1.14
+android.numeric_version = 1140000
 
 # Dépendances Python 
 requirements = python3==3.11.5, kivy==2.3.1, filetype==1.2.0, requests==2.32.3, certifi
@@ -44,8 +44,8 @@ android.permissions = INTERNET, ACCESS_NETWORK_STATE, com.google.android.gms.per
 android.meta_data = com.google.android.gms.ads.APPLICATION_ID=ca-app-pub-5749803259882370~1482612480
 
 # Formats de build
-android.release_artifact = apk
-android.debug_artifact = apk
+android.release_artifact = aab
+android.debug_artifact = aab
 android.archs = arm64-v8a
 # Si tu veux supporter aussi les vieux devices 32 bits :
 # android.archs = arm64-v8a, armeabi-v7a
