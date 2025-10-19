@@ -14,6 +14,8 @@ bin/
 dist/
 venv/
 .env
+.venv/
+.venv/*
 # Android signing keys (NEVER commit these!)
 *.keystore
 *.keystore.base64

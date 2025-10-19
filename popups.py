@@ -33,12 +33,6 @@ from kivy.core.window import Window
 # Third-party
 import requests
 
-# Local modules
-from i18n_loader import (
-    MESSAGES,
-    tr,
-    get_system_language,
-)
 
 # Ads manager (local) — import sécurisé car peut échouer en environnement non-Android
 try:
@@ -143,7 +137,7 @@ class AdPopup(Popup):
     def __init__(self, **kwargs):
         super(AdPopup, self).__init__(**kwargs)
         self.title = ""
-        self.size_hint = (0.9, 0.7)
+        self.size_hint = (1, 1)
         self.auto_dismiss = False
         self.separator_height = 0
 
@@ -159,9 +153,13 @@ class AdPopup(Popup):
             )
         layout.bind(pos=self.update_bg, size=self.update_bg)
 
-        # Titre publicité
+        # Titre publicité — utiliser la fonction de traduction centralisée si fournie par main
+        app = App.get_running_app()
+        tr_func = kwargs.pop("tr", None) or getattr(app, "tr", None)
+        # exposer pour d'autres méthodes si besoin
+        self.tr_func = tr_func
         ad_title = Label(
-            text=tr("support_app"),  # "Soutenez l'application"
+            text=tr_func("messages.support_app") if callable(tr_func) else "Supportez l'application !",
             font_size="20sp",
             color=[0.9, 0.7, 0.3, 1],
             size_hint_y=0.2,
@@ -174,7 +172,7 @@ class AdPopup(Popup):
 
         # Message
         ad_message = Label(
-            text=tr("ad_message"),  # Message de soutien
+            text=tr_func("messages.ad_message") if callable(tr_func) else "Merci de soutenir le développement.",
             font_size="16sp",
             color=[1, 1, 1, 1],
             size_hint_y=0.4,
@@ -189,7 +187,7 @@ class AdPopup(Popup):
 
         # Bouton "Plus tard"
         later_btn = Button(
-            text=tr("later"),  # "Plus tard"
+            text=tr_func("messages.later") if callable(tr_func) else "Plus tard",
             size_hint=(0.5, 1),
             font_size="16sp",
             background_normal='',
@@ -204,7 +202,7 @@ class AdPopup(Popup):
 
         # Bouton "Soutenir"
         support_btn = Button(
-            text=tr("support"),  # "Soutenir"
+            text=tr_func("messages.support") if callable(tr_func) else "Soutenir",
             size_hint=(0.5, 1),
             font_size="16sp",
             background_normal='',
@@ -229,8 +227,8 @@ class AdPopup(Popup):
         entrance_anim = Animation(opacity=1, duration=0.3)
         entrance_anim.start(self)
 
-        # Auto-fermeture après 10 secondes
-        Clock.schedule_once(self.auto_close, 10)
+        # Auto-fermeture après 5 secondes
+        Clock.schedule_once(self.auto_close, 5)
 
     def update_bg(self, instance, value):
         self.bg_rect.pos = instance.pos
@@ -255,7 +253,7 @@ class AdPopup(Popup):
 class FullScreenCardPopup(Popup):
     """Popup plein écran pour afficher la carte"""
 
-    def __init__(self, card_image_source, card_name, card_state, **kwargs):
+    def __init__(self, card_image_source, card_name, **kwargs):
         super(FullScreenCardPopup, self).__init__(**kwargs)
 
         self.title = ""
@@ -270,8 +268,28 @@ class FullScreenCardPopup(Popup):
             self.bg_rect = Rectangle(pos=layout.pos, size=layout.size)
         layout.bind(pos=self.update_bg, size=self.update_bg)
 
+        # Bannière pub en haut
+        ad_banner = BoxLayout(orientation="vertical", size_hint_y=0.1, padding=[10, 5])
+        app = App.get_running_app()
+        trf = getattr(app, 'tr', None)
+        banner_text = random.choice([
+            (trf("messages.crystals_ad") if callable(trf) else "💎 Cristaux en promo !"),
+            (trf("messages.love_ad") if callable(trf) else "💕 Amour et tarot !"),
+            (trf("messages.tarot_course_ad") if callable(trf) else "📚 Cours de tarot !"),
+        ])
+        ad_banner_label = Label(
+            text=banner_text,
+            font_size="14sp",
+            color=[1, 0.85, 0.3, 1],
+            halign='center',
+            valign='middle',
+        )
+        ad_banner_label.bind(size=lambda inst, val: setattr(inst, "text_size", (val[0] * 0.95, None)))
+        ad_banner.add_widget(ad_banner_label)
+        layout.add_widget(ad_banner)
+
         # Header avec nom et état
-        header = BoxLayout(orientation="vertical", size_hint_y=0.15, padding=[20, 10])
+        header = BoxLayout(orientation="vertical", size_hint_y=0.12, padding=[20, 10])
 
         title_label = Label(
             text=card_name,
@@ -283,21 +301,10 @@ class FullScreenCardPopup(Popup):
         )
         title_label.bind(size=lambda inst, val: setattr(inst, 'text_size', (val[0] * 0.9, None)))
         header.add_widget(title_label)
-
-        state_label = Label(
-            text=card_state,
-            font_size="17sp",
-            color=[0.8, 0.6, 0.4, 1],
-            halign='center',
-            valign='middle',
-            bold=True
-        )
-        state_label.bind(size=lambda inst, val: setattr(inst, 'text_size', (val[0] * 0.9, None)))
-        header.add_widget(state_label)
         layout.add_widget(header)
 
         # Zone carte cliquable
-        card_container = FloatLayout(size_hint_y=0.7)
+        card_container = FloatLayout(size_hint_y=0.65)
 
         self.fullscreen_image = Image(
             source=card_image_source,
@@ -320,9 +327,10 @@ class FullScreenCardPopup(Popup):
         layout.add_widget(card_container)
 
         # Footer
-        footer = BoxLayout(orientation="vertical", size_hint_y=0.2, padding=[20, 10], spacing=dp(8))
+        footer = BoxLayout(orientation="vertical", size_hint_y=0.13, padding=[20, 10], spacing=dp(8))
+        tr_func = kwargs.pop("tr", None)
         instruction = Label(
-            text=tr("tap_to_return"),  # Au lieu de "Touchez la carte pour revenir"
+            text=(tr_func("messages.tap_to_return") if callable(tr_func) else (getattr(App.get_running_app(), "tr", lambda k: "Touchez pour revenir")("messages.tap_to_return") if getattr(App.get_running_app(), "tr", None) else "Touchez pour revenir")),
             font_size="16sp",
             color=[0.7, 0.7, 0.7, 1],
             halign='center',
@@ -331,20 +339,6 @@ class FullScreenCardPopup(Popup):
         )
         instruction.bind(size=lambda inst, val: setattr(inst, 'text_size', (val[0] * 0.95, None)))
         footer.add_widget(instruction)
-        banner_text = random.choice([
-            tr("crystals_ad"),
-            tr("love_ad"),
-            tr("tarot_course_ad"),
-        ])
-        ad_label = Label(
-            text=banner_text,
-            font_size="14sp",
-            color=[1, 0.85, 0.3, 1],
-            halign='center',
-            valign='middle',
-        )
-        ad_label.bind(size=lambda inst, val: setattr(inst, "text_size", (val[0] * 0.95, None)))
-        footer.add_widget(ad_label)
         layout.add_widget(footer)
 
         self.content = layout
@@ -390,8 +384,10 @@ class LoadingPopup(Popup):
         layout = BoxLayout(orientation="vertical", spacing=10, padding=[20, 20, 20, 20])
 
         # Label de chargement
+        tr_func = kwargs.pop("tr", None)
+        trf = tr_func or getattr(App.get_running_app(), 'tr', None)
         self.loading_label = Label(
-            text=tr("concentrating"),
+            text=(trf("concentrating") if callable(trf) else "Concentration..."),
             font_size="17sp",
             color=[0.9, 0.7, 0.3, 1],
             halign='center',
@@ -399,6 +395,18 @@ class LoadingPopup(Popup):
         )
         self.loading_label.bind(size=lambda inst, val: setattr(inst, 'text_size', (val[0] * 0.95, None)))
         layout.add_widget(self.loading_label)
+
+        # Label fixe pour indiquer le tirage
+        fixed_label = Label(
+            text=(trf("messages.drawing_card") if callable(trf) else "Tirando cartas..."),
+            font_size="16sp",
+            color=[0.9, 0.7, 0.3, 1],
+            size_hint_y=0.1,
+            halign="center",
+            valign="middle",
+        )
+        fixed_label.bind(size=lambda inst, val: setattr(inst, 'text_size', (val[0] * 0.95, None)))
+        layout.add_widget(fixed_label)
 
         # Zone animation
         self.anim_zone = FloatLayout(size_hint_y=0.8)
@@ -437,8 +445,11 @@ class LoadingPopup(Popup):
         self.start_shuffle_animation()
 
         # Bannière publicitaire pendant le brassage
-        ad_choices = ["crystals_ad", "love_ad", "tarot_course_ad"]
-        chosen_ad = tr(random.choice(ad_choices))
+        ad_choices = ["messages.crystals_ad", "messages.love_ad", "messages.tarot_course_ad"]
+        tr_func = kwargs.pop("tr", None)
+        trf = tr_func or getattr(App.get_running_app(), 'tr', None)
+        choice_key = random.choice(ad_choices)
+        chosen_ad = (trf(choice_key) if callable(trf) else ("Cristaux en promo !" if choice_key.endswith("crystals_ad") else ("Amour et tarot !" if choice_key.endswith("love_ad") else "Cours de tarot !")))
         self.ad_banner = Label(
             text=chosen_ad,
             font_size="14sp",
@@ -451,8 +462,8 @@ class LoadingPopup(Popup):
         self.ad_banner.bind(size=lambda inst, val: setattr(inst, "text_size", (val[0] * 0.95, None)))
         layout.add_widget(self.ad_banner)
 
-        Clock.schedule_once(lambda dt: self.update_message(tr("preparing_arcana")), 1.5)
-        Clock.schedule_once(lambda dt: self.update_message(tr("drawing_card")), 3)
+        Clock.schedule_once(lambda dt: self.update_message((trf("messages.preparing_arcana") if callable(trf) else "Préparation des arcanes...")), 1.5)
+        Clock.schedule_once(lambda dt: self.update_message((trf("messages.drawing_card") if callable(trf) else "Tirage de la carte...")), 3)
 
     def start_shuffle_animation(self):
         # Animation de gauche à droite ou droite à gauche
@@ -493,19 +504,16 @@ class MmeTChatPopup(Popup):
         on_session_complete=None,
         **kwargs,
     ):
+        # Retirer 'tr' des kwargs avant de passer à super().__init__
+        self.tr = kwargs.pop("tr", None)
+        
         kwargs.setdefault("title", "")
         kwargs.setdefault("size_hint", (1, 1))  # Plein écran
         kwargs.setdefault("separator_height", 0)
         super().__init__(**kwargs)
 
-        # Prefer explicit language param; fallback to detected system language.
-        try:
-            if language:
-                self.language = str(language).lower()
-            else:
-                self.language = get_system_language() or "fr"
-        except Exception:
-            self.language = "fr"
+        # La langue doit être passée explicitement par le caller (screens.py ou main.py)
+        self.language = str(language).lower() if language else "fr"
         self.provider = provider or "google"
         self.price_text = price_text
         self.session_id = str(uuid.uuid4())
@@ -599,6 +607,73 @@ class MmeTChatPopup(Popup):
         while len(slots) < 3:
             slots.append((None, None))
 
+        # Créer le conteneur centré pour les miniatures des cartes
+        self.card_anchor = AnchorLayout(
+            size_hint_y=None,
+            height=dp(110),  # Hauteur pour les cartes + padding
+            anchor_x='center',
+            anchor_y='center'
+        )
+
+        self.card_bar = BoxLayout(
+            orientation="horizontal",
+            size_hint=(None, None),
+            width=dp(330),  # Largeur fixe pour 3 cartes de 100dp + espacements
+            height=dp(100),  # Hauteur des cartes
+            spacing=dp(8),
+        )
+
+        # Ajouter les 3 miniatures de cartes
+        for i, (cname, cstate) in enumerate(slots):
+            card_container = FloatLayout(size_hint=(None, None), width=dp(100), height=dp(100))  # Augmenté de 70x70 à 100x100
+            
+            if cname:
+                # Récupérer l'image de la carte
+                try:
+                    from main import get_cards_signification
+                    card_data = get_cards_signification(cname)
+                    image_path = card_data.get("image_reversed") if cstate == "reversed" else card_data.get("image")
+                    image_path = image_path or "tarot_img/Back.jpg"
+                except Exception:
+                    image_path = "tarot_img/Back.jpg"
+                
+                # Miniature cliquable
+                card_img = Image(
+                    source=image_path,
+                    size_hint=(1, 1),
+                    pos_hint={'center_x': 0.5, 'center_y': 0.5},
+                    allow_stretch=True,
+                    keep_ratio=True
+                )
+                
+                # Bouton transparent pour gérer le clic
+                card_btn = Button(
+                    text="",
+                    background_color=[0, 0, 0, 0],
+                    size_hint=(1, 1),
+                    pos_hint={'center_x': 0.5, 'center_y': 0.5}
+                )
+                card_btn.bind(on_press=lambda instance, card=cname, state=cstate: self.show_fullscreen_card(card, state))
+                
+                card_container.add_widget(card_img)
+                card_container.add_widget(card_btn)
+            else:
+                # Carte vide (Back.jpg)
+                card_img = Image(
+                    source="tarot_img/Back.jpg",
+                    size_hint=(1, 1),
+                    pos_hint={'center_x': 0.5, 'center_y': 0.5},
+                    allow_stretch=True,
+                    keep_ratio=True,
+                    opacity=0.3
+                )
+                card_container.add_widget(card_img)
+            
+            self.card_bar.add_widget(card_container)
+        
+        self.card_anchor.add_widget(self.card_bar)
+        main_layout.add_widget(self.card_anchor, index=1)  # Après le header
+
         self.content = main_layout
 
         self.status_label = Label(
@@ -664,7 +739,7 @@ class MmeTChatPopup(Popup):
         # Bouton de fermeture en bas
         close_btn_container = BoxLayout(orientation="horizontal", size_hint_y=None, height=dp(45), padding=[dp(10), dp(4)])
         self.close_btn = Button(
-            text="✓ " + self._label("done"),
+            text="✓ " + self._label("consultation_done"),
             size_hint=(1, None),
             height=dp(38),
             background_normal='',
@@ -692,7 +767,7 @@ class MmeTChatPopup(Popup):
             # Use translated introduction text via translations.tr() with the
             # popup language to ensure Mme T receives the preferred language.
             try:
-                intro = tr('mme_t_intro', self.language)
+                intro = self.tr('messages.mme_t_intro') if self.tr else 'Hello ✨ I\'m Mme T, your card reader. What question is on your mind today? How can I help you?'
             except Exception:
                 # Fallback to English literal if translations not available
                 intro = "Hello ✨ I'm Mme T, your card reader. What question is on your mind today? How can I help you?"
@@ -849,13 +924,13 @@ class MmeTChatPopup(Popup):
 
     def _label(self, key, **kwargs):
         # Try centralized translations first (translations.tr)
-        try:
-            txt = tr(key, **kwargs)
-            # tr() may return the key itself when missing; only use if different
-            if txt and txt != key:
-                return txt
-        except Exception:
-            pass
+        if self.tr:
+            try:
+                txt = self.tr("messages." + key, **kwargs)
+                if txt and txt != "messages." + key:
+                    return txt
+            except Exception:
+                pass
 
         labels = {
             # 'send' short label kept below; long variant removed to avoid duplication
@@ -893,7 +968,7 @@ class MmeTChatPopup(Popup):
                 "es": "Mme T no esta disponible. Verifica tu conexion e intentalo de nuevo.",
                 "pt": "Mme T esta indisponivel. Verifica a tua ligacao e tenta novamente.",
             },
-            "done": {
+            "consultation_done": {
                 "fr": "Consultation terminee",
                 "en": "Reading complete",
                 "es": "Lectura completada",
@@ -1048,13 +1123,13 @@ class MmeTChatPopup(Popup):
         self._loading_index = 0
 
         # Récupérer les messages de chargement selon la langue
-        loading_messages = MESSAGES.get(self.language, MESSAGES["fr"]).get("loading_messages", [
-            "🔮 Je me concentre sur ta question...",
-            "🃏 Mélange des cartes en cours...",
-            "✨ Les énergies s'alignent...",
-            "🌙 Consultation des astres...",
-            "💫 Interprétation des arcanes...",
-        ])
+        loading_messages = self.tr("messages.loading_messages") if self.tr else [
+            "🔮 Concentrating on your question...",
+            "🃏 Shuffling cards...",
+            "✨ Energies are aligning...",
+            "🌙 Consulting the stars...",
+            "💫 Interpreting the arcana..."
+        ]
 
         # Créer la bulle de chargement
         self._loading_bubble = self._create_message_bubble(loading_messages[0], sender="mme_t")
@@ -1093,6 +1168,31 @@ class MmeTChatPopup(Popup):
                                 self.chat_bubbles.remove(self._loading_bubble)
                             break
             self._loading_bubble = None
+
+    def show_fullscreen_card(self, card_name, card_state):
+        """Affiche la carte en plein écran"""
+        try:
+            # Utiliser FullScreenCardPopup existant
+            popup = FullScreenCardPopup(
+                card_image_source=self._get_card_image_path(card_name, card_state),
+                card_name=card_name,
+                card_state=card_state
+            )
+            popup.open()
+        except Exception as e:
+            print(f"[MME_T DEBUG] Erreur affichage plein écran: {e}")
+
+    def _get_card_image_path(self, card_name, card_state):
+        """Récupère le chemin de l'image de la carte"""
+        try:
+            from main import get_cards_signification
+            card_data = get_cards_signification(card_name)
+            if card_state == "reversed":
+                return card_data.get("image_reversed") or card_data.get("image") or "tarot_img/Back.jpg"
+            else:
+                return card_data.get("image") or "tarot_img/Back.jpg"
+        except Exception:
+            return "tarot_img/Back.jpg"
 
     def on_send_question(self, *_args):
         if self.awaiting_reply or not self.backend_url:
@@ -1133,7 +1233,7 @@ class MmeTChatPopup(Popup):
                 history_text = "\n\nHistorique de la conversation:\n"
                 # Prendre tous les échanges sauf la question actuelle
                 for entry in self.conversation_history[:-1]:
-                    role = "Vous" if entry["role"] == "user" else "Mme T"
+                    role = self.tr("messages.you") if entry["role"] == "user" else "Mme T"
                     history_text += f"{role}: {entry['content']}\n"
                 full_context = full_context + history_text
 
@@ -1223,11 +1323,16 @@ class MmeTChatPopup(Popup):
     def _call_gradio_backend(self, message: str, context_text: str) -> str:
         """Appelle le backend Gradio avec le client officiel ou REST en fallback"""
 
+        # Ajouter la langue dans le contexte si disponible
+        full_context = context_text or ""
+        if self.language and self.language != "fr":
+            full_context = f"language={self.language}\n{full_context}"
+
         # LOG: Afficher les paramètres envoyés
         print(f"\n{'='*60}")
         print("📤 ENVOI AU BACKEND:")
         print(f"   Message: {message}")
-        print(f"   Contexte: {context_text or '(vide)'}")
+        print(f"   Contexte: {full_context or '(vide)'}")
         print(f"   URL: {self.backend_url}")
         print(f"{'='*60}\n")
 
@@ -1244,7 +1349,7 @@ class MmeTChatPopup(Popup):
 
         # Payload Gradio pour la fonction consulter_madame_t(message, contexte)
         payload = {
-            "data": [message, context_text or ""]
+            "data": [message, full_context or ""]
         }
 
         print("🔄 Utilisation de l'API Gradio moderne avec SSE...")
@@ -1396,6 +1501,9 @@ class MmeTChatPopup(Popup):
 
 class AdsPopup(Popup):
     def __init__(self, on_close_callback, **kwargs):
+        # Retirer 'tr' des kwargs avant de passer à super().__init__
+        self.trf = kwargs.pop("tr", None)
+        
         super().__init__(**kwargs)
         self.title = ""
         self.size_hint = (1, 1)  # Plein écran
@@ -1412,12 +1520,14 @@ class AdsPopup(Popup):
         layout.bind(pos=lambda i, v: setattr(self.bg_rect, 'pos', v), size=lambda i, v: setattr(self.bg_rect, 'size', v))
 
         # Bandeau promotion traduit
+        trf = self.trf or getattr(App.get_running_app(), 'tr', None)
         ad_choices = [
-            tr("crystals_ad"),
-            tr("love_ad"),
-            tr("tarot_course_ad"),
+            "messages.crystals_ad",
+            "messages.love_ad", 
+            "messages.tarot_course_ad",
         ]
-        chosen_ad = random.choice(ad_choices)
+        choice_key = random.choice(ad_choices)
+        chosen_ad = (trf(choice_key) if callable(trf) else ("💎 Cristaux en promo !" if "crystals" in choice_key else ("💕 Amour et tarot !" if "love" in choice_key else "📚 Cours de tarot !")))
 
         promo = Label(
             text=chosen_ad,
@@ -1433,8 +1543,9 @@ class AdsPopup(Popup):
         )
         layout.add_widget(promo)
 
-        self.countdown_seconds = 30
-        btn_text = tr("new_reading_countdown", seconds=self.countdown_seconds)
+        self.countdown_seconds = 15
+        # Exposer la fonction de traduction pour méthodes ultérieures
+        btn_text = (self.trf("messages.new_reading_countdown", seconds=self.countdown_seconds) if callable(self.trf) else f"Nouvelle lecture dans {self.countdown_seconds}s")
         self.next_btn = Button(
             text=btn_text,
             size_hint=(0.75, None),
@@ -1459,21 +1570,66 @@ class AdsPopup(Popup):
         layout.add_widget(self.next_btn)
 
         self.content = layout
-        self.countdown_event = Clock.schedule_interval(self.update_countdown, 1)
+        # Démarrer le countdown immédiatement
+        self.update_countdown(0)
 
     def update_btn_canvas(self, instance, value):
         self.btn_bg.pos = instance.pos
         self.btn_bg.size = instance.size
 
     def update_countdown(self, dt):
-        self.countdown_seconds -= 1
         if self.countdown_seconds > 0:
-            self.next_btn.text = tr("new_reading_countdown", seconds=self.countdown_seconds)
+            new_text = (self.trf("messages.new_reading_countdown", seconds=self.countdown_seconds) if callable(self.trf) else f"Nouvelle lecture dans {self.countdown_seconds}s")
+            self.next_btn.text = new_text
+            # Force refresh multiple ways
+            self.next_btn.canvas.ask_update()
+            self.next_btn._trigger_texture_update()
+            # Force layout update
+            if self.next_btn.parent:
+                self.next_btn.parent.do_layout()
+            
+            self.countdown_seconds -= 1
+            # Reprogrammer pour la prochaine seconde
+            Clock.schedule_once(self.update_countdown, 1)
         else:
-            self.next_btn.text = tr("new_reading")
+            final_text = (self.trf("messages.new_reading") if callable(self.trf) else "Nouvelle lecture")
+            self.next_btn.text = final_text
             self.next_btn.disabled = False
-            if self.countdown_event:
-                self.countdown_event.cancel()
+            # Force refresh
+            self.next_btn.canvas.ask_update()
+            self.next_btn._trigger_texture_update()
+            if self.next_btn.parent:
+                self.next_btn.parent.do_layout()
+
+    def show_fullscreen_card(self, card_key, card_state):
+        """Affiche la carte en plein écran"""
+        try:
+            # Récupérer les données de la carte
+            from main import get_cards_signification
+            card_data = get_cards_signification(card_key)
+            
+            # Déterminer l'image à afficher
+            if card_state == "reversed":
+                image_path = card_data.get("image_reversed") or card_data.get("image")
+            else:
+                image_path = card_data.get("image")
+            
+            image_path = image_path or "tarot_img/Back.jpg"
+            
+            # Récupérer le nom de la carte
+            card_name = card_data.get("name", card_key)
+            
+            # Ouvrir le popup plein écran
+            fullscreen_popup = FullScreenCardPopup(
+                card_image_source=image_path,
+                card_name=card_name,
+
+                tr=self.tr
+            )
+            fullscreen_popup.open()
+            
+        except Exception as e:
+            print(f"Erreur lors de l'affichage de la carte plein écran: {e}")
 
     def close_popup(self, instance):
         self.dismiss()

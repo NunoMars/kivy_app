@@ -3,6 +3,14 @@
     "ad_message": "¿Te gusta esta aplicación gratuita?\n¡Ayúdanos a mantenerla y mejorarla!",
     "app_title": "Bienvenido al tarot adivinatorio",
     "chat_mme_t": "Chat Mme T",
+    "connecting": "Mme T llegara en unos momentos...",
+    "error": "Mme T no esta disponible. Verifica tu conexion e intentalo de nuevo.",
+    "ask_hint": "Tu pregunta...",
+    "send": "Enviar",
+    "sending": "Conectando...",
+    "no_backend": "Servicio no disponible: configura MME_T_BACKEND_URL.",
+    "consultation_done": "Lectura completada",
+    "you": "Tú",
     "concentrating": "Concentrando...",
     "configure_backend_hint": "Configura MME_T_BACKEND_URL para activar la consulta de Mme T.",
     "continue_exploring": "🔮 ¡Sigue explorando los misterios del tarot! 🔮",
@@ -53,309 +61,347 @@
     "your_card": "Tu carta"
   },
   "significations": {
-    "Caballero de Bastos": {
+    "major_00": {
       "image": "tarot_img/MajorArcanaCards/Le Cavalier de Baton.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier de Baton a l'envers.jpg",
       "reversed": "temeridad, inconstancia, fuga, promesas sin cumplir",
       "signification reversed": "Arrancar sin sostener cansa. Define una regla: no prometas lo que no puedes mantener. Ancla el fuego en sistemas simples y cumplibles. Velocidad sí, pero con dirección.",
       "signification upright": "Movimiento que rompe la inercia. Toma la primera colina con pasión y aprende en la ruta. Ideal para lanzar, explorar mercados o vivir un romance vibrante. Canaliza el impulso con hitos cortos.",
-      "upright": "ímpetu, aventura, cambio rápido, exploración, valentía"
+      "upright": "ímpetu, aventura, cambio rápido, exploración, valentía",
+      "name": "Caballero de Bastos"
     },
-    "Caballero de Copas": {
+    "major_01": {
       "image": "tarot_img/MajorArcanaCards/Le Cavalier De Coupe.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier De Coupe a l'envers.jpg",
       "reversed": "ilusiones, promesas huecas, seducción interesada, evasión",
       "signification reversed": "El encanto sin compromiso confunde. Alinea palabras y actos. Si no puedes sostenerlo, nómbralo. Mejor una verdad amable que un sueño prestado.",
       "signification upright": "Mensajero del corazón: conversaciones profundas, disculpas sinceras o propuestas creativas. Lleva belleza a la mesa y escucha de verdad. El gesto poético abre puertas.",
-      "upright": "romance, propuesta, inspiración, encanto, diplomacia"
+      "upright": "romance, propuesta, inspiración, encanto, diplomacia",
+      "name": "Caballero de Copas"
     },
-    "Caballero de Espadas": {
+    "major_02": {
       "image": "tarot_img/MajorArcanaCards/Le Cavalier D'Epee.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier D'Epee a l'envers.jpg",
       "reversed": "imprudencia, agresión, impulsividad, conflicto inútil",
       "signification reversed": "Cargar sin mapa provoca daños colaterales. Respira, verifica y elige batallas. La mente aguda también sabe detenerse.",
       "signification upright": "Intervienes cuando otros dudan: cortas nudos, enfrías crisis y avanzas. Prepara datos, define objetivo y sé directo. La velocidad sirve a la claridad.",
-      "upright": "acción rápida, debate, valentía mental, cambio, defensa"
+      "upright": "acción rápida, debate, valentía mental, cambio, defensa",
+      "name": "Caballero de Espadas"
     },
-    "Caballero de Oros": {
+    "major_03": {
       "image": "tarot_img/MajorArcanaCards/Le Cavalier de Deniers.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/Le Cavalier de Deniers a l'envers.jpg",
       "reversed": "rigidez, monotonía, pereza, resistencia al cambio",
       "signification reversed": "La rutina sin sentido erosiona. Actualiza métodos, introduce mejoras mínimas viables y retoma el orgullo por la obra. Si es no, di no con honestidad.",
       "signification upright": "Trabajo bien hecho, paso a paso. Documentas, cumples plazos y mejoras procesos. Lo pequeño repetido con calidad crea grandes resultados. Tu palabra es contrato.",
-      "upright": "constancia, método, responsabilidad, rutina eficaz, fiabilidad"
+      "upright": "constancia, método, responsabilidad, rutina eficaz, fiabilidad",
+      "name": "Caballero de Oros"
     },
-    "El Carro": {
+    "major_04": {
       "image": "tarot_img/MajorArcanaCards/Le Chariot.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/Le Chariot a l'envers.jpg",
       "reversed": "descontrol, falta de rumbo, orgullo, dispersión",
       "signification reversed": "Las ruedas patinan cuando la meta es vaga o el orgullo no acepta ajustes. Si fuerzas resultados, afloja el agarre y corrige el mapa. Alinea métricas con sentido, acorta bucles de feedback y delega lo que drena foco. Menos prioridades, más tracción.",
       "signification upright": "Dos fuerzas tiran en sentidos distintos; liderar es elegir dirección común. Define la meta, establece límites y cumple contigo. La victoria es un momentum disciplinado, no velocidad histérica. En conflictos, regula, reencuadra y conduce: no aplastes la oposición, alinéalas hacia el objetivo. Pequeños logros repetibles mueven el vehículo.",
-      "upright": "voluntad, avance, disciplina, victoria, enfoque"
+      "upright": "voluntad, avance, disciplina, victoria, enfoque",
+      "name": "El Carro"
     },
-    "El Colgado": {
+    "major_05": {
       "image": "tarot_img/MajorArcanaCards/Le Pendu.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/Le Pendu a l'envers.jpg",
       "reversed": "estancamiento, sacrificio inútil, terquedad, evasión",
       "signification reversed": "Colgarse sin aprender es perder tiempo. Si el orgullo se niega a flexibilizar, elige una renuncia pequeña y significativa. El movimiento regresa cuando regresa el sentido. Liberarte de la prisa abre claridad.",
       "signification upright": "Suspender la acción para ver de otra forma. Rendir no es perder: es girar hacia la sabiduría. Al ceder el ángulo viejo, aparece un movimiento más elegante. La paciencia aquí no es pasividad, es mirada nueva. Confía en la maduración invisible.",
-      "upright": "pausa, rendición, perspectiva nueva, paciencia, visión"
+      "upright": "pausa, rendición, perspectiva nueva, paciencia, visión",
+      "name": "El Colgado"
     },
-    "El Diablo": {
+    "major_06": {
       "image": "tarot_img/MajorArcanaCards/Le Diable.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/Le Diable a l'envers.jpg",
       "reversed": "liberación, sobriedad, límites, claridad, elección",
       "signification reversed": "La llave aparece cuando dejas de fingir que no hay puerta. Elige un corte limpio o un límite concreto y mantenlo. La sobriedad (literal o emocional) amplía espacio vital. La dignidad vuelve paso a paso; tu no también es amor propio.",
       "signification upright": "Nombra las cadenas: hábitos, deudas, obsesiones, vínculos tóxicos. La conciencia disuelve el glamour y te devuelve consentimiento. El deseo no es enemigo; la compulsión inconsciente sí. Mira tu sombra sin morbo y con responsabilidad. Libertad es elegir con los ojos abiertos.",
-      "upright": "ataduras, tentación, sombra, compulsión, materialismo"
+      "upright": "ataduras, tentación, sombra, compulsión, materialismo",
+      "name": "El Diablo"
     },
-    "El Emperador": {
+    "major_07": {
       "image": "tarot_img/MajorArcanaCards/L'Empereur.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/L'Empereur a l'envers.jpg",
       "reversed": "rigidez, control, abuso de poder, dureza",
       "signification reversed": "Apretar por miedo rompe lo que sostienes. El control micromanager desgasta la confianza y la creatividad. Cambia rigidez por objetivos claros y autonomía. La fortaleza verdadera es flexible, rinde cuentas y es equitativa. Si el orgullo guía, escucha; si la defensa se cierra, abre diálogo.",
       "signification upright": "Estructuras que sirven a las personas, no al revés. Límites claros, estrategia y previsión convierten el caos en base firme. Lidera con ejemplo y decisiones transparentes. Protege a los vulnerables, administra recursos con responsabilidad y piensa a largo plazo. El orden calmado es una forma de cuidado. La autoridad justa se nota en su estabilidad.",
-      "upright": "estructura, límites, estrategia, autoridad justa, protección"
+      "upright": "estructura, límites, estrategia, autoridad justa, protección",
+      "name": "El Emperador"
     },
-    "El Ermitaño": {
+    "major_08": {
       "image": "tarot_img/MajorArcanaCards/L'Hermite.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/L'Hermite a l'envers.jpg",
       "reversed": "aislamiento, orgullo espiritual, cerrazón, soledad",
       "signification reversed": "Esconderse no es sanar. Si el orgullo bloquea consejos o la soledad se endurece, regresa al vínculo con suavidad. La sabiduría también se prueba en compañía. El silencio sirve cuando te mantiene aprendiendo.",
       "signification upright": "Retirarte un paso aclara la verdad. La introspección destila el ruido en conocimiento útil. Busca mentores discretos o sé tu propia guía; deja que la lámpara interior marque el ritmo. Comparte lo aprendido cuando haya madurado. La soledad elegida es cuna de lucidez.",
-      "upright": "introspección, sabiduría, retiro, guía interior, madurez"
+      "upright": "introspección, sabiduría, retiro, guía interior, madurez",
+      "name": "El Ermitaño"
     },
-    "El Hierofante": {
+    "major_09": {
       "image": "tarot_img/MajorArcanaCards/Le Pape.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/Le Pape a l'envers.jpg",
       "reversed": "dogma, hipocresía, formalismo vacío, rebelión ciega",
       "signification reversed": "Cuando la forma suplanta al espíritu, el sistema se fosiliza. Cuestiona mandatos que reducen compasión. Conserva lo sabio, suelta lo muerto. Reformar no es destruir, es abrir espacio para que la esencia vuelva a respirar.",
       "signification upright": "El sentido se transmite por linaje, maestros y rituales compartidos. Aprende la forma para tocar el espíritu; enseña con humildad. Las buenas reglas protegen la libertad y generan pertenencia. Pregunta: «¿Cuál es el principio vivo tras la tradición?» Integrar no es copiar—es comprender y encarnar.",
-      "upright": "tradición, enseñanza, rito, comunidad, valores"
+      "upright": "tradición, enseñanza, rito, comunidad, valores",
+      "name": "El Hierofante"
     },
-    "El Juicio": {
+    "major_10": {
       "image": "tarot_img/MajorArcanaCards/Le Jugement.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/Le Jugement a l'envers.jpg",
       "reversed": "culpa, negación, miedo al cambio, juicio duro",
       "signification reversed": "Estancada entre la culpa y la negación. Cambia autoacusación por responsabilidad concreta y enmiendas visibles. Elige un paso que demuestre renovación. El perdón real incluye límites y acción.",
       "signification upright": "Despiertas a tu próxima misión. Revisa con honestidad, perdona con sabiduría y responde al llamado. Lo aprendido se convierte en vocación cuando lo pones al servicio. Cierra juicios viejos y permite una vida más ancha.",
-      "upright": "llamado, renovación, perdón, vocación, despertar"
+      "upright": "llamado, renovación, perdón, vocación, despertar",
+      "name": "El Juicio"
     },
-    "El Loco": {
+    "major_11": {
       "image": "tarot_img/MajorArcanaCards/Le Mat.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/Le Mat a l'envers.jpg",
       "reversed": "imprudencia, escapismo, falta de preparación, ingenuidad",
       "signification reversed": "La impulsividad o el escapismo pueden estar guiando el volante. Actuar para no sentir incomodidad crea desvíos evitables. Baja la velocidad lo suficiente para medir consecuencias y seguridad básica. La ingenuidad o el optimismo mágico pueden ocultar miedo al compromiso. Revisa tu porqué, coloca barandillas simples y da el siguiente paso con presencia. Empezar con sabiduría sigue siendo empezar.",
       "signification upright": "Un nuevo inicio pide confianza más que planes perfectos. El Loco te invita a moverte con curiosidad, jugar y aprender en marcha. La ruta puede ser poco convencional, pero el potencial es real si viajas ligero: suelta etiquetas, expectativas ajenas y el miedo a equivocarte. En amor, honestidad abierta; en trabajo, prototipa y experimenta. No necesitas todas las respuestas para empezar—solo un sí sincero y atento a las señales. La fe en tu propia experiencia es el mapa.",
-      "upright": "nuevo comienzo, inocencia, espontaneidad, aventura, potencial"
+      "upright": "nuevo comienzo, inocencia, espontaneidad, aventura, potencial",
+      "name": "El Loco"
     },
-    "El Mago": {
+    "major_12": {
       "image": "tarot_img/MajorArcanaCards/Le Bateleur.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/Le Bateleur a l'envers.jpg",
       "reversed": "manipulación, dispersión, promesas vacías, control",
       "signification reversed": "El encanto sin integridad se vuelve en contra. La dispersión, las medias verdades o el intento de controlar a otros drenan poder y confianza. Si la energía está fragmentada, reduce entradas y elige una palanca. Audita motivos: ¿necesitas demostrarte o servir al trabajo? Regresa a métodos limpios, sistemas simples y promesas responsables. La disciplina sostiene la magia.",
       "signification upright": "Tu atención es la varita: idea, intención y acción se alinean para generar resultados. Nombra el efecto que deseas, reúne las herramientas disponibles y ejecuta un paso enfocado. Comunica con precisión—pide lo que necesitas y promete lo que puedes cumplir. Favorece el aprendizaje visible y el liderazgo práctico: muestra, no solo cuentes. En relaciones, expresa necesidades con claridad; en carrera, entrega algo tangible. El impulso se multiplica cuando tu voluntad sirve a un propósito mayor que el ego.",
-      "upright": "voluntad, recursos, enfoque, comunicación, creación"
+      "upright": "voluntad, recursos, enfoque, comunicación, creación",
+      "name": "El Mago"
     },
-    "El Mundo": {
+    "major_13": {
       "image": "tarot_img/MajorArcanaCards/Le Monde.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/Le Monde a l'envers.jpg",
       "reversed": "perfeccionismo, cierre pendiente, dilación, vacío post-logro",
       "signification reversed": "El 95% puede sentirse como cero. El perfeccionismo frena la entrega o evita el adiós. Define “terminado”, ata el último cabo y permítele estar completo. Cerrar bien es un regalo para tu yo futuro.",
       "signification upright": "Integración lograda: no solo acumulaste experiencias, las hilaste en sentido. Documenta, celebra y comparte el patrón que dominas. Se cierra un ciclo y se abre un portal. Enseña lo que te hubiera ayudado al comienzo y entra más ligera en la secuela.",
-      "upright": "culminación, maestría, integración, logro, plenitud"
+      "upright": "culminación, maestría, integración, logro, plenitud",
+      "name": "El Mundo"
     },
-    "El Sol": {
+    "major_14": {
       "image": "tarot_img/MajorArcanaCards/Le Soleil.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/Le Soleil a l'envers.jpg",
       "reversed": "ego, vanidad, burnout, apariencia",
       "signification reversed": "El brillo sin raíz se apaga pronto. Reenraíza en autenticidad y servicio y la radiancia regresa. Menos performance, más verdad. El éxito que nutre no compite con nadie.",
       "signification upright": "Alegría, visibilidad y maestría lúdica. Comparte el mérito, saborea resultados y crea desde el gozo. Tu luz anima la de otros; la abundancia crece al circular. La vida quiere verte brillar sin pedir permiso.",
-      "upright": "alegría, éxito, vitalidad, claridad, celebración"
+      "upright": "alegría, éxito, vitalidad, claridad, celebración",
+      "name": "El Sol"
     },
-    "La Emperatriz": {
+    "major_15": {
       "image": "tarot_img/MajorArcanaCards/L'Imperatrice.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/L'Imperatrice a l'envers.jpg",
       "reversed": "sobreprotección, estancamiento creativo, carencia, perfeccionismo",
       "signification reversed": "Apretar demasiado asfixia. El sobrecuidado para sentirte necesaria agota. Toma distancia, respira y vuelve a los ciclos de descanso y maduración. Permite ayuda, suelta el perfeccionismo y confía en que el suelo hace su trabajo. Nutrirte a ti también es parte del cultivo.",
       "signification upright": "La vida florece: crea, nutre y deja crecer al ritmo de la naturaleza. El placer, la belleza y el cuidado regeneran tu campo creativo. Invierte en cuerpo, hogar y arte; recibe tanto como das. La colaboración prospera donde la generosidad es auténtica. En relaciones, la calidez y la receptividad profundizan vínculos; en proyectos, un ecosistema de apoyo multiplica resultados. La abundancia real es orgánica y comparte.",
-      "upright": "creatividad, fertilidad, abundancia, cuidado, belleza"
+      "upright": "creatividad, fertilidad, abundancia, cuidado, belleza",
+      "name": "La Emperatriz"
     },
-    "La Estrella": {
+    "major_16": {
       "image": "tarot_img/MajorArcanaCards/L'Etoile.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/L'Etoile a l'envers.jpg",
       "reversed": "desaliento, cinismo, agotamiento, desconexión",
       "signification reversed": "La esperanza tenue no es esperanza muerta. Reduce ruido, busca maravillas pequeñas y deja que la confianza rebrote con promesas diminutas cumplidas. Pide ayuda. Lo esencial vuelve cuando quitas lo accesorio.",
       "signification upright": "Vuelve la luz tras la tormenta. Rehidrata el espíritu con belleza, descanso y gestos de bondad. Compartir sin cálculo multiplica la gracia. Tu brújula se realinea cuando confías en algo mayor. Esperanza aquí no es fantasía: es práctica diaria de cuidado.",
-      "upright": "esperanza, guía, inspiración, fe, belleza"
+      "upright": "esperanza, guía, inspiración, fe, belleza",
+      "name": "La Estrella"
     },
-    "La Fuerza": {
+    "major_17": {
       "image": "tarot_img/MajorArcanaCards/La Force.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/La Force a l'envers.jpg",
       "reversed": "impulsividad, apatía, complacencia, estallidos",
       "signification reversed": "Estallidos, colapsos o complacencia indican desregulación. Vuelve a lo básico: respiración, límites simples, actos pequeños pero valientes. Recuperar fuerza empieza dentro. Tu león responde mejor al cuidado que al látigo.",
       "signification upright": "Poder suave que regula la tormenta. Encuentra presencia en vez de pánico, firmeza con ternura. Domar no es someter por miedo, sino canalizar lo salvaje con respeto. En amor y trabajo, coraje más amabilidad generan confianza. El autocuidado sostenido es valentía.",
-      "upright": "coraje, autocontrol, compasión, resiliencia, templanza"
+      "upright": "coraje, autocontrol, compasión, resiliencia, templanza",
+      "name": "La Fuerza"
     },
-    "La Justicia": {
+    "major_18": {
       "image": "tarot_img/MajorArcanaCards/La Justice.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/La Justice a l'envers.jpg",
       "reversed": "injusticia, sesgo, venganza, proceso defectuoso",
       "signification reversed": "Algo cojea: contexto incompleto, partes con poder desigual o una historia contada a medias. Evita juicios exprés: confirma fuentes. Si contigo eres implacable, cambia castigo por responsabilidad y reparación. Los sistemas tienen sesgos; defiende el proceso justo, no solo el resultado que te conviene.",
       "signification upright": "Equilibrio es proporción justa, no 50/50. Sopesar hechos, nombrar sesgos y actuar con transparencia. Donde haga falta, enmienda; y reconoce méritos con equidad. En asuntos legales o de límites, documenta con claridad. Las decisiones de hoy establecen precedentes para mañana. La verdad con compasión se vuelve camino.",
-      "upright": "equidad, verdad, ley, balance, responsabilidad"
+      "upright": "equidad, verdad, ley, balance, responsabilidad",
+      "name": "La Justicia"
     },
-    "La Luna": {
+    "major_19": {
       "image": "tarot_img/MajorArcanaCards/La Lune.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/La Lune a l'envers.jpg",
       "reversed": "claridad, verdad, regulación, salida del laberinto",
       "signification reversed": "La niebla levanta. Los hechos salen a la superficie y el sentido interno se estabiliza. Ajusta el mapa y continúa con confianza suave. Habrá restos de duda, pero ya no gobiernan. Tu claridad es suficiente para hoy.",
       "signification upright": "Niebla y espejos: avanza despacio, revisa proyecciones y sigue señales del cuerpo. No todo peligro es real ni toda señal es falsa. Trabaja sueños, arte y terapia para dialogar con lo inconsciente. La intuición guía si la ansiedad no toma el mando.",
-      "upright": "inconsciente, ilusiones, intuición, miedo, sueños"
+      "upright": "inconsciente, ilusiones, intuición, miedo, sueños",
+      "name": "La Luna"
     },
-    "La Muerte": {
+    "major_20": {
       "image": "tarot_img/MajorArcanaCards/La Mort.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/La Mort a l'envers.jpg",
       "reversed": "resistencia, apegos, miedo, transición bloqueada",
       "signification reversed": "Los finales evitados goteran energía. Nombra lo que terminó, busca apoyo y cierra con suavidad. Incluso microcierres (un correo, un ritual, un límite) invitan aire fresco. El cambio no espera, pero puedes recibirlo con cuidado.",
       "signification upright": "Un ciclo concluye. Soltar no es fracaso, es cosecha: te quedas con el aprendizaje, no con la forma. Marca el final con un gesto consciente, permite el duelo y despeja espacio. La vitalidad regresa tras la despedida. Cada cierre digno abre un comienzo limpio.",
-      "upright": "cierre, transformación, duelo, renacimiento, limpieza"
+      "upright": "cierre, transformación, duelo, renacimiento, limpieza",
+      "name": "La Muerte"
     },
-    "La Rueda de la Fortuna": {
+    "major_21": {
       "image": "tarot_img/MajorArcanaCards/La Roue de La Fortune.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/La Roue de La Fortune a l'envers.jpg",
       "reversed": "repetición, estancamiento, resistencia, mala racha",
       "signification reversed": "Aferrarte repite lo que temes. Rompe el bucle cambiando un comportamiento sostenido. Acepta la lección, suelta el guion y pide una escena nueva. La fortuna mejora donde hay flexibilidad y aprendizaje.",
       "signification upright": "La rueda gira: aprovecha la corriente manteniéndote ligero y receptivo. Observa el tiempo oportuno, alinéate con lo que ya se mueve y di sí a puertas reales. Lo que regresa trae una nueva elección: esta vez puedes responder diferente. El cambio no es capricho: es ciclo.",
-      "upright": "ciclos, oportunidad, giro, destino, sincronía"
+      "upright": "ciclos, oportunidad, giro, destino, sincronía",
+      "name": "La Rueda de la Fortuna"
     },
-    "La Sacerdotisa": {
+    "major_22": {
       "image": "tarot_img/MajorArcanaCards/La Papesse.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/La Papesse a l'envers.jpg",
       "reversed": "secreto, autoengaño, intuición bloqueada, evasión",
       "signification reversed": "Puedes estar ignorando la intuición para encajar expectativas, o manteniéndote ambigua para evitar la verdad. Los secretos sanan cuando se miran con amabilidad. Nombra lo que sabes y aún no admites. Simplifica tus entradas (opiniones, noticias, pantallas) para que la señal interna se fortalezca. El conocimiento usado para controlar encierra; usado para comprender, libera.",
       "signification upright": "El silencio aquí es un órgano sensorial. Las respuestas emergen cuando dejas de forzar y escuchas bajo el ruido. Sueña, escribe, observa patrones: lo que se repite, habla. Protege tu misterio: no todo debe explicarse hoy. En amor, honra límites y tiempos sagrados; en trabajo, investiga en privado y actúa cuando tu sí interior y las señales externas se alineen. La sabiduría madura en la oscuridad antes de compartirse en la luz.",
-      "upright": "intuición, misterio, conocimiento interior, silencio, sueños"
+      "upright": "intuición, misterio, conocimiento interior, silencio, sueños",
+      "name": "La Sacerdotisa"
     },
-    "La Templanza": {
+    "major_23": {
       "image": "tarot_img/MajorArcanaCards/La Temperance.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/La Temperance a l'envers.jpg",
       "reversed": "exceso, desorden, impaciencia, mezcla caótica",
       "signification reversed": "Demasiado o demasiado poco arruinan la receta. Retira un exceso, añade un estabilizador y concede tiempo de reposo. Si la mezcla es caótica, vuelve a dos ingredientes esenciales y recomienza. La prisa desordena lo que la paciencia acomoda.",
       "signification upright": "Mezcla opuestos con arte: la sanación madura gradualmente. Ajusta entradas, ritmo y límites; integra en lugar de oscilar. Donde hay equilibrio dinámico, la vida se reordena sola. Tu ángel guarda el proceso si tú cuidas la medida.",
-      "upright": "equilibrio, integración, sanación, medida, armonía"
+      "upright": "equilibrio, integración, sanación, medida, armonía",
+      "name": "La Templanza"
     },
-    "La Torre": {
+    "major_24": {
       "image": "tarot_img/MajorArcanaCards/La Maison Dieu.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/La Maison Dieu a l'envers.jpg",
       "reversed": "alarma temprana, ajuste, prevención, corrección",
       "signification reversed": "Corrección más suave: aprende ahora o la llamada será más alta luego. Retira el ladrillo suelto antes de que el muro deba irse. Admitir fisuras evita colapsos. La humildad es arquitectura antisísmica.",
       "signification upright": "Estructuras falsas caen para que la verdad se sostenga. Aunque brusco, el despeje es misericordioso: quita lo que no podía sostenerse. Tras el derrumbe, reconstruye sobre suelo honesto y líneas simples. La revelación duele, pero libera. La claridad es tu cimiento nuevo.",
-      "upright": "derribo, verdad, despertar, crisis, ruptura"
+      "upright": "derribo, verdad, despertar, crisis, ruptura",
+      "name": "La Torre"
     },
-    "Los Enamorados": {
+    "major_25": {
       "image": "tarot_img/MajorArcanaCards/L'Amoureux.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/L'Amoureux a l'envers.jpg",
       "reversed": "indecisión, triángulos, autoengaño, ruptura",
       "signification reversed": "Motivaciones mezcladas y concesiones por miedo a perder generan fricción. Decir sí para evitar vacío es decirte no. Pausa plazos, despeja triángulos y pregunta qué verdad estás evitando. Asumir elecciones repara; si separarse honra la integridad, despide con claridad y avanza.",
       "signification upright": "Una decisión de valores disfrazada de romance u opciones. Elige el camino donde deseo, honestidad y responsabilidad conviven. Di tu sí/no real y permite lo mismo en el otro. La alineación supera a la perfección: si comparten dirección, el diseño de detalles es posible. La pareja se profundiza cuando cada uno permanece entero. La creatividad florece donde la relación con el proyecto es auténtica.",
-      "upright": "elección, amor, alianza, valores, autenticidad"
+      "upright": "elección, amor, alianza, valores, autenticidad",
+      "name": "Los Enamorados"
     },
-    "Reina de Bastos": {
+    "major_26": {
       "image": "tarot_img/MajorArcanaCards/La Reine de Baton.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/La Reine de Baton a l'envers.jpg",
       "reversed": "celos, autoexposición, agotamiento, dispersión",
       "signification reversed": "Compararte te roba chispa. Cierra filtraciones de energía: menos pantallas, más cuerpo. Comparte foco, establece límites y nutre tu fuego sin quemarte en todas partes.",
       "signification upright": "Tu calidez contagia iniciativa. Creas espacios fértiles donde otros florecen y los proyectos se vuelven más valientes. Honras tu energía vital con descanso y placer como combustible del arte. Brillas y haces brillar.",
-      "upright": "magnetismo, creatividad, entusiasmo, generosidad, presencia"
+      "upright": "magnetismo, creatividad, entusiasmo, generosidad, presencia",
+      "name": "Reina de Bastos"
     },
-    "Reina de Copas": {
+    "major_27": {
       "image": "tarot_img/MajorArcanaCards/La Reine De Coupe.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/La Reine De Coupe a l'envers.jpg",
       "reversed": "codependencia, desborde, sacrificio dañino, idealización",
       "signification reversed": "Empatía sin bordes te ahoga. Repara límites, prioriza autocuidado y distingue ayuda de rescate. El amor sano incluye decir no.",
       "signification upright": "Refugio emocional: sostienes con escucha, suavidad y arte. Tu intuición capta lo no dicho y ofrece alivio. Canaliza sensibilidad en creación amorosa.",
-      "upright": "intuición, compasión, receptividad, cuidado sutil, arte"
+      "upright": "intuición, compasión, receptividad, cuidado sutil, arte",
+      "name": "Reina de Copas"
     },
-    "Reina de Espadas": {
+    "major_28": {
       "image": "tarot_img/MajorArcanaCards/La Reine D'Epee.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/La Reine D'Epee a l'envers.jpg",
       "reversed": "amargura, cinismo, dureza, crítica hiriente",
       "signification reversed": "La herida habla por la boca. Suaviza el filo con compasión y pausa. La verdad que cuida transforma mejor que la que humilla.",
       "signification upright": "Ves lo esencial y lo dices con elegancia sobria. Tu historia te enseñó a discernir; ahora tu claridad es medicina. Límites firmes, no muros.",
-      "upright": "lucidez, independencia, límites claros, franqueza, experiencia"
+      "upright": "lucidez, independencia, límites claros, franqueza, experiencia",
+      "name": "Reina de Espadas"
     },
-    "Reina de Oros": {
+    "major_29": {
       "image": "tarot_img/MajorArcanaCards/La Reine De Deniers.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/La Reine De Deniers a l'envers.jpg",
       "reversed": "descuido de sí, hiperentrega, gasto impulsivo, posesividad",
       "signification reversed": "Dar sin recibir te vacía. Pon límites, simplifica gastos emocionales y financieros, y programa descanso. Tu bienestar es patrimonio del proyecto.",
       "signification upright": "Administras con amor: cuerpo, casa, equipo y recursos florecen bajo tu mano paciente. Pequeños rituales generan gran bienestar. Tu generosidad es sabia y sostenible.",
-      "upright": "cuidado, hogar próspero, practicidad, nutrición, seguridad"
+      "upright": "cuidado, hogar próspero, practicidad, nutrición, seguridad",
+      "name": "Reina de Oros"
     },
-    "Rey de Bastos": {
+    "major_30": {
       "image": "tarot_img/MajorArcanaCards/Le Roi De Baton.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/Le Roi De Baton a l'envers.jpg",
       "reversed": "autoritarismo, impulsividad, ira, grandilocuencia",
       "signification reversed": "Dominar por miedo apaga la llama. La prisa y el orgullo generan errores y desmovilizan. Practica escucha, límites con respeto y metas medibles. El coraje verdadero incluye rectificar.",
       "signification upright": "Liderazgo que enciende: conviertes propósito en movimiento y das ejemplo con pasión serena. Inspiras autonomía, confías en el talento y abres camino hacia metas ambiciosas. Comunica visión en imágenes claras y delega con respeto. Tu fuego dirige sin quemar.",
-      "upright": "carisma, visión, liderazgo creativo, expansión, audacia"
+      "upright": "carisma, visión, liderazgo creativo, expansión, audacia",
+      "name": "Rey de Bastos"
     },
-    "Rey de Copas": {
+    "major_31": {
       "image": "tarot_img/MajorArcanaCards/Le Roi de Coupe.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/Le Roi de Coupe a l'envers.jpg",
       "reversed": "manipulación, frialdad, volatilidad oculta, pasivo-agresividad",
       "signification reversed": "Controlar sentimientos no es negarlos. Evita juegos emocionales o silencios punitivos. Pide lo que necesitas sin dramatizar. Terapia o supervisión suman.",
       "signification upright": "Lideras desde el centro emocional regulado: escuchas, nombras y encauzas. Tu presencia calma aguas revueltas y facilita acuerdos. Vulnerabilidad con límites: sabiduría del corazón.",
-      "upright": "madurez emocional, empatía, equilibrio, contención, consejo"
+      "upright": "madurez emocional, empatía, equilibrio, contención, consejo",
+      "name": "Rey de Copas"
     },
-    "Rey de Espadas": {
+    "major_32": {
       "image": "tarot_img/MajorArcanaCards/Le Roi D'Epee.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/Le Roi D'Epee a l'envers.jpg",
       "reversed": "frialdad, tiranía, manipulación, exceso crítico",
       "signification reversed": "Intelecto sin corazón divide. Suelta la necesidad de tener razón, escucha contexto y evita usar la verdad como arma. Inteligencia es también empatía.",
       "signification upright": "Corte limpio: separas hecho de opinión y decides con ética. Tu mente ordena el laberinto y comunica con precisión. Liderazgo que piensa en sistemas y personas.",
-      "upright": "claridad, lógica, justicia, estrategia, verdad"
+      "upright": "claridad, lógica, justicia, estrategia, verdad",
+      "name": "Rey de Espadas"
     },
-    "Rey de Oros": {
+    "major_33": {
       "image": "tarot_img/MajorArcanaCards/Le Roi De Deniers.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/Le Roi De Deniers a l'envers.jpg",
       "reversed": "avaricia, rigidez, materialismo, control por dinero",
       "signification reversed": "Acumular sin disfrutar empobrece. Afloja el control, revisa creencias de escasez y comparte. Diversifica, delega y recuerda: riqueza también es tiempo y salud.",
       "signification upright": "Creas valor duradero con paciencia y sentido práctico. Sistemas claros, presupuestos sanos y cuidado por tu gente. Invertir en calidad hoy ahorra costos mañana. Lideras como buen jardinero: constancia y estación adecuada.",
-      "upright": "estabilidad, prosperidad, gestión, confiabilidad, legado"
+      "upright": "estabilidad, prosperidad, gestión, confiabilidad, legado",
+      "name": "Rey de Oros"
     },
-    "Sota de Bastos": {
+    "major_34": {
       "image": "tarot_img/MajorArcanaCards/Le Valet de Baton.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/Le Valet de Baton a l'envers.jpg",
       "reversed": "inmadurez, abandono, superficialidad, ansiedad por resultados",
       "signification reversed": "Pánico al primer obstáculo. Cambia perfección por progreso: una pequeña entrega semanal. Busca mentores, reduce alcance y termina algo pequeño hoy.",
       "signification upright": "Chispa inicial: mensajes, invitaciones o hallazgos que reavivan tu entusiasmo. Prueba, juega, prototipa. El valor está en empezar ligero, con hambre de aprender.",
-      "upright": "noticia creativa, idea nueva, aprendizaje, curiosidad, comienzo"
+      "upright": "noticia creativa, idea nueva, aprendizaje, curiosidad, comienzo",
+      "name": "Sota de Bastos"
     },
-    "Sota de Copas": {
+    "major_35": {
       "image": "tarot_img/MajorArcanaCards/Le Valet De Coupe.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/Le Valet De Coupe a l'envers.jpg",
       "reversed": "hipersensibilidad, bloqueo creativo, inmadurez, escapismo",
       "signification reversed": "Tomar todo como ataque cierra el canal. Practica regulación y expresión sencilla: “siento… necesito…”. Crea aunque te tiemble el pulso.",
       "signification upright": "Corazón aprendiendo a hablar. Escribe, canta, pinta, pide perdón. La ternura es competente: empieza pequeño y honesto. La musa acude donde hay juego.",
-      "upright": "sensibilidad, mensaje emotivo, inicio creativo, juego, vulnerabilidad"
+      "upright": "sensibilidad, mensaje emotivo, inicio creativo, juego, vulnerabilidad",
+      "name": "Sota de Copas"
     },
-    "Sota de Espadas": {
+    "major_36": {
       "image": "tarot_img/MajorArcanaCards/Le Valet D'Epee.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/Le Valet D'Epee a l'envers.jpg",
       "reversed": "rumores, indiscreción, paranoia, datos sesgados",
       "signification reversed": "Demasiadas pestañas abiertas. Cierra fuentes dudosas, contrasta y evita chismes. La precisión es tu protección.",
       "signification upright": "Ojos abiertos: preguntas correctas, lectura fina del entorno y mensajes clave. Excelente para investigar, estudiar o negociar. Observa primero, actúa después.",
-      "upright": "curiosidad, alerta, información, aprendizaje rápido, vigilancia"
+      "upright": "curiosidad, alerta, información, aprendizaje rápido, vigilancia",
+      "name": "Sota de Espadas"
     },
-    "Sota de Oros": {
+    "major_37": {
       "image": "tarot_img/MajorArcanaCards/Le Valet De Deniers.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/Le Valet De Deniers a l'envers.jpg",
       "reversed": "procrastinación, atajos, desorden, visión corta",
       "signification reversed": "Querer cosecha sin siembra. Ordena tu espacio, plan de estudio y presupuesto. Un hábito diario vale más que una racha culpable.",
       "signification upright": "Aprendiz aplicado: curso, beca o proyecto semilla con potencial. Observa, toma notas, pregunta y practica. La tierra responde a la diligencia.",
-      "upright": "estudio, oportunidad material, práctica, enfoque, semilla"
+      "upright": "estudio, oportunidad material, práctica, enfoque, semilla",
+      "name": "Sota de Oros"
     }
   }
 }
