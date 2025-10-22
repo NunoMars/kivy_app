@@ -1,68 +1,25 @@
-Timestamp: 2025-10-19T13:59:31.573166Z
-Exception: TypeError("Properties ['tr'] passed to __init__ may not be existing property names. Valid properties are ['_anim_alpha', '_anim_duration', '_container', '_is_open', '_window', 'anchor_x', 'anchor_y', 'attach_to', 'auto_dismiss', 'background', 'background_color', 'border', 'center', 'center_x', 'center_y', 'children', 'cls', 'content', 'disabled', 'height', 'ids', 'motion_filter', 'opacity', 'overlay_color', 'padding', 'parent', 'pos', 'pos_hint', 'right', 'separator_color', 'separator_height', 'size', 'size_hint', 'size_hint_max', 'size_hint_max_x', 'size_hint_max_y', 'size_hint_min', 'size_hint_min_x', 'size_hint_min_y', 'size_hint_x', 'size_hint_y', 'title', 'title_align', 'title_color', 'title_font', 'title_size', 'top', 'width', 'x', 'y']")
+Timestamp: 2025-10-20T15:28:33.618485Z
+Exception: KeyboardInterrupt()
 
 Traceback:
 Traceback (most recent call last):
-  File "kivy/_event.pyx", line 235, in kivy._event.EventDispatcher.__init__
-TypeError: object.__init__() takes exactly one argument (the instance to initialize)
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "/home/loupy/kivy_app/main.py", line 372, in <module>
-    TarotApp().run()
-  File "/home/loupy/.local/lib/python3.10/site-packages/kivy/app.py", line 956, in run
+  File "/home/loupy/kivy_app/main.py", line 370, in <module>
+    try:
+  File "/home/loupy/kivy_app/venv/lib/python3.10/site-packages/kivy/app.py", line 956, in run
     runTouchApp()
-  File "/home/loupy/.local/lib/python3.10/site-packages/kivy/base.py", line 574, in runTouchApp
+  File "/home/loupy/kivy_app/venv/lib/python3.10/site-packages/kivy/base.py", line 574, in runTouchApp
     EventLoop.mainloop()
-  File "/home/loupy/.local/lib/python3.10/site-packages/kivy/base.py", line 339, in mainloop
+  File "/home/loupy/kivy_app/venv/lib/python3.10/site-packages/kivy/base.py", line 339, in mainloop
     self.idle()
-  File "/home/loupy/.local/lib/python3.10/site-packages/kivy/base.py", line 383, in idle
-    self.dispatch_input()
-  File "/home/loupy/.local/lib/python3.10/site-packages/kivy/base.py", line 334, in dispatch_input
-    post_dispatch_input(*pop(0))
-  File "/home/loupy/.local/lib/python3.10/site-packages/kivy/base.py", line 263, in post_dispatch_input
-    listener.dispatch('on_motion', etype, me)
-  File "kivy/_event.pyx", line 731, in kivy._event.EventDispatcher.dispatch
-  File "/home/loupy/.local/lib/python3.10/site-packages/kivy/core/window/__init__.py", line 1709, in on_motion
-    self.dispatch('on_touch_down', me)
-  File "kivy/_event.pyx", line 731, in kivy._event.EventDispatcher.dispatch
-  File "/home/loupy/.local/lib/python3.10/site-packages/kivy/core/window/__init__.py", line 1726, in on_touch_down
-    if w.dispatch('on_touch_down', touch):
-  File "kivy/_event.pyx", line 731, in kivy._event.EventDispatcher.dispatch
-  File "/home/loupy/.local/lib/python3.10/site-packages/kivy/uix/screenmanager.py", line 1210, in on_touch_down
-    return super(ScreenManager, self).on_touch_down(touch)
-  File "/home/loupy/.local/lib/python3.10/site-packages/kivy/uix/widget.py", line 589, in on_touch_down
-    if child.dispatch('on_touch_down', touch):
-  File "kivy/_event.pyx", line 731, in kivy._event.EventDispatcher.dispatch
-  File "/home/loupy/.local/lib/python3.10/site-packages/kivy/uix/relativelayout.py", line 306, in on_touch_down
-    ret = super(RelativeLayout, self).on_touch_down(touch)
-  File "/home/loupy/.local/lib/python3.10/site-packages/kivy/uix/widget.py", line 589, in on_touch_down
-    if child.dispatch('on_touch_down', touch):
-  File "kivy/_event.pyx", line 731, in kivy._event.EventDispatcher.dispatch
-  File "/home/loupy/.local/lib/python3.10/site-packages/kivy/uix/widget.py", line 589, in on_touch_down
-    if child.dispatch('on_touch_down', touch):
-  File "kivy/_event.pyx", line 731, in kivy._event.EventDispatcher.dispatch
-  File "/home/loupy/.local/lib/python3.10/site-packages/kivy/uix/widget.py", line 589, in on_touch_down
-    if child.dispatch('on_touch_down', touch):
-  File "kivy/_event.pyx", line 731, in kivy._event.EventDispatcher.dispatch
-  File "/home/loupy/.local/lib/python3.10/site-packages/kivy/uix/behaviors/button.py", line 151, in on_touch_down
-    self.dispatch('on_press')
-  File "kivy/_event.pyx", line 727, in kivy._event.EventDispatcher.dispatch
-  File "kivy/_event.pyx", line 1307, in kivy._event.EventObservers.dispatch
-  File "kivy/_event.pyx", line 1231, in kivy._event.EventObservers._dispatch
-  File "/home/loupy/kivy_app/screens.py", line 672, in show_fullscreen_card
-    popup = FullScreenCardPopup(
-  File "/home/loupy/kivy_app/popups.py", line 257, in __init__
-    super(FullScreenCardPopup, self).__init__(**kwargs)
-  File "/home/loupy/.local/lib/python3.10/site-packages/kivy/uix/modalview.py", line 195, in __init__
-    super(ModalView, self).__init__(**kwargs)
-  File "/home/loupy/.local/lib/python3.10/site-packages/kivy/uix/anchorlayout.py", line 68, in __init__
-    super(AnchorLayout, self).__init__(**kwargs)
-  File "/home/loupy/.local/lib/python3.10/site-packages/kivy/uix/layout.py", line 76, in __init__
-    super(Layout, self).__init__(**kwargs)
-  File "/home/loupy/.local/lib/python3.10/site-packages/kivy/uix/widget.py", line 357, in __init__
-    super(Widget, self).__init__(**kwargs)
-  File "kivy/_event.pyx", line 238, in kivy._event.EventDispatcher.__init__
-TypeError: Properties ['tr'] passed to __init__ may not be existing property names. Valid properties are ['_anim_alpha', '_anim_duration', '_container', '_is_open', '_window', 'anchor_x', 'anchor_y', 'attach_to', 'auto_dismiss', 'background', 'background_color', 'border', 'center', 'center_x', 'center_y', 'children', 'cls', 'content', 'disabled', 'height', 'ids', 'motion_filter', 'opacity', 'overlay_color', 'padding', 'parent', 'pos', 'pos_hint', 'right', 'separator_color', 'separator_height', 'size', 'size_hint', 'size_hint_max', 'size_hint_max_x', 'size_hint_max_y', 'size_hint_min', 'size_hint_min_x', 'size_hint_min_y', 'size_hint_x', 'size_hint_y', 'title', 'title_align', 'title_color', 'title_font', 'title_size', 'top', 'width', 'x', 'y']
+  File "/home/loupy/kivy_app/venv/lib/python3.10/site-packages/kivy/base.py", line 379, in idle
+    Clock.tick()
+  File "/home/loupy/kivy_app/venv/lib/python3.10/site-packages/kivy/clock.py", line 733, in tick
+    self.post_idle(ts, self.idle())
+  File "/home/loupy/kivy_app/venv/lib/python3.10/site-packages/kivy/clock.py", line 689, in idle
+    usleep(1000000 * sleeptime)
+  File "/home/loupy/kivy_app/venv/lib/python3.10/site-packages/kivy/clock.py", line 965, in usleep
+    _usleep(microseconds, self._sleep_obj)
+  File "/home/loupy/kivy_app/venv/lib/python3.10/site-packages/kivy/clock.py", line 556, in _usleep
+    _libc_usleep(int(microseconds))
+KeyboardInterrupt
 

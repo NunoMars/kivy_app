@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import annotations
-
-# === Imports standards ===
 import os
 import sys
 import re
@@ -9,12 +7,10 @@ import uuid
 import locale
 import random
 import threading
-import platform
 import requests
 import traceback
 import time
 import json
-from typing import Optional, TYPE_CHECKING
 
 # === Configuration préliminaire Kivy / Environnement ===
 os.environ["KIVY_IMAGE"] = "sdl2"
@@ -30,74 +26,7 @@ def has_internet(timeout: float = 2.0) -> bool:
     except Exception:
         return False
 
-# === Traductions globales ===
-translations = {}
-
-# === Détection de la langue système ===
-def pick_supported_lang(tag: str, supported=("fr","en","pt","es","de","it","nl","ru","ja","zh","tr")) -> str:
-    if not tag:
-        return "en"
-    primary = tag.split("-", 1)[0].lower()
-    return primary if primary in supported else "en"
-
-
-def get_system_language() -> str:
-    # 1) Variables d'environnement (utile pour tests)
-    try:
-        forced = os.environ.get("APP_LANG") or os.environ.get("LANGUAGE")
-        if forced:
-            return forced[:2].lower()
-    except Exception:
-        pass
-
-    # 2) Détection Android via pyjnius
-    try:
-        from jnius import autoclass, cast
-
-        PythonActivity = autoclass('org.kivy.android.PythonActivity')
-        Context = autoclass('android.content.Context')
-        VERSION = autoclass('android.os.Build$VERSION')  # ✅ Correct
-        activity = PythonActivity.mActivity
-        if activity is None:
-            raise RuntimeError("Activity not ready")
-        ctx = cast('android.content.Context', activity)
-
-        # Android 13+ : langue par app
-        if VERSION.SDK_INT >= 33:
-            LocaleManager = autoclass('android.app.LocaleManager')
-            svc = ctx.getSystemService(Context.LOCALE_SERVICE)  # ✅ Correct
-            lm = cast('android.app.LocaleManager', svc)
-            app_locales = lm.getApplicationLocales()
-            if app_locales is not None and not app_locales.isEmpty():
-                return pick_supported_lang(app_locales.toLanguageTags())
-
-        # Android 7.0+ : locales système
-        resources = ctx.getResources()
-        config = resources.getConfiguration()
-        if VERSION.SDK_INT >= 24:
-            locales = config.getLocales()
-            if locales is not None and not locales.isEmpty():
-                return pick_supported_lang(locales.get(0).toLanguageTag())
-        else:
-            loc = config.locale
-            tag = getattr(loc, 'toLanguageTag', None)
-            tag = loc.toLanguageTag() if tag else f"{loc.getLanguage()}-{loc.getCountry()}" if loc.getCountry() else loc.getLanguage()
-            return pick_supported_lang(tag)
-    except Exception as e:
-        print(f"🌍 Échec détection Android avancée: {e}")
-
-    # 3) Fallback locale classique
-    try:
-        system_locale = (locale.getdefaultlocale()[0] or "").lower()
-        for prefix in ("fr","pt","en","es","de","it","nl","ru","ja","zh","tr"):
-            if system_locale.startswith(prefix):
-                return prefix
-    except Exception:
-        pass
-    return "fr"
-
-
-# === Imports Kivy après configuration ===
+# === Config Kivy (avant import kivy) ===
 from kivy.config import Config
 Config.set("graphics", "width", "540")
 Config.set("graphics", "height", "1080")
@@ -110,6 +39,7 @@ kivy.require("2.3.1")
 
 from kivy.app import App
 from kivy.clock import Clock
+from kivy.properties import StringProperty, DictProperty, ListProperty
 from kivy.animation import Animation
 from kivy.metrics import dp
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -124,7 +54,9 @@ from kivy.uix.scrollview import ScrollView
 from kivy.uix.textinput import TextInput
 from kivy.graphics import Color, Rectangle, RoundedRectangle
 from kivy.core.text import LabelBase
-from kivy.resources import resource_add_path
+from kivy.resources import resource_find, resource_add_path
+from kivy.logger import Logger
+from kivy.utils import platform as kivy_platform  # évite la collision avec le stdlib
 
 # === Fonts locales ===
 BASE_DIR = os.path.dirname(__file__)
@@ -136,6 +68,9 @@ if os.path.isdir(FONTS_DIR):
     except Exception as e:
         print("### FIX POLICE: fallback police Kivy ->", e)
 
+# Fallback police globale pour tout le projet
+BODY_FONT = "Body"
+
 # === Gestion pyjnius (Android bridge) ===
 PYJNIUS_AVAILABLE = True
 try:
@@ -143,7 +78,12 @@ try:
     jnius = importlib.import_module("jnius")
     autoclass = getattr(jnius, "autoclass", None)
     cast = getattr(jnius, "cast", None)
-    from android.runnable import run_on_ui_thread
+    try:
+        from android.runnable import run_on_ui_thread
+    except Exception:
+        # Desktop fallback
+        def run_on_ui_thread(func):
+            return func
 except Exception:
     PYJNIUS_AVAILABLE = False
     def cast(cls, obj): return obj
@@ -172,10 +112,22 @@ from screens import (
     ResponseScreen,
 )
 from ads_manager import load_config, AdsManager, maybe_fetch_remote_config
-from kivy.utils import platform  # ✅ pour éviter ton bug "platform non défini"
 
 DEFAULT_MME_T_SPACE = "https://huggingface.co/spaces/Loupy222/mme_t"
-
+# === Fonction debug i18n ===
+def debug_check_i18n():
+    rel = "i18n/lang/fr.json"
+    path = resource_find(rel)
+    print(f"[I18N DEBUG] resource_find({rel}) -> {path}")
+    if path and os.path.exists(path):
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            print(f"[I18N DEBUG] open OK, top-level keys: {list(data.keys())[:5]}")
+        except Exception as e:
+            print(f"[I18N DEBUG] open FAILED: {e}")
+    else:
+        print("[I18N DEBUG] path is None or file missing on filesystem")
 
 def _normalize_mme_t_backend_url(raw_url: str) -> str:
     url = (raw_url or "").strip()
@@ -188,33 +140,10 @@ def _normalize_mme_t_backend_url(raw_url: str) -> str:
             parts = suffix.split("/")
             if len(parts) >= 2:
                 owner, space = parts[:2]
-                owner_slug = re.sub(r"[^a-z0-9-]", "-", owner.lower())
-                space_slug = re.sub(r"[^a-z0-9-]", "-", space.lower())
-                owner_slug = owner_slug.strip("-") or owner.lower()
-                space_slug = space_slug.strip("-") or space.lower()
+                owner_slug = re.sub(r"[^a-z0-9-]", "-", owner.lower()).strip("-") or owner.lower()
+                space_slug = re.sub(r"[^a-z0-9-]", "-", space.lower()).strip("-") or space.lower()
                 return f"https://{owner_slug}-{space_slug}.hf.space"
     return url
-
-
-# === Fallbacks globales ===
-translations = {}
-
-def tr(key: str, **kwargs) -> str:
-    parts = key.split('.')
-    cur = translations
-    for p in parts:
-        if isinstance(cur, dict) and p in cur:
-            cur = cur[p]
-        else:
-            return ""
-    txt = cur
-    if kwargs and isinstance(txt, str):
-        try:
-            return txt.format(**kwargs)
-        except Exception:
-            return txt
-    return txt
-
 
 MME_T_BACKEND_URL = _normalize_mme_t_backend_url(os.environ.get("MME_T_BACKEND_URL", DEFAULT_MME_T_SPACE))
 MME_T_DEFAULT_MODEL = os.environ.get("MME_T_MODEL", "gemini-1.5-flash")
@@ -230,17 +159,29 @@ def reset_reading_count():
     global READING_COUNT
     READING_COUNT = 0
 
+def debug_list_i18n_dir():
+    # resource_find ne marche pas pour un dossier; on log juste la vue locale s'il existe
+    base = os.path.join(BASE_DIR, "i18n", "lang")
+    if os.path.isdir(base):
+        try:
+            files = os.listdir(base)
+            Logger.info(f"I18N: local dir {base} -> {files}")
+        except Exception as e:
+            Logger.error(f"I18N: cannot list {base}: {e}")
+    else:
+        Logger.info("I18N: no local i18n/lang directory (OK on Android)")
 
-# === Classe principale App ===
 class TarotApp(App):
     """Application principale de tarot"""
 
-    def build(self):
-        print("🏗️ Construction de l'application Tarot...")
-        self.tr = tr
-        self.get_cards_signification = get_cards_signification
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        debug_list_i18n_dir()  # Sanity check visible dans le logcat
+        self.lang = self.get_system_lang()
+        self.i18n = self.load_i18n(self.lang)
+        self.tr = self._tr
+        self.get_cards_signification = self._get_cards_signification
 
-        # Chargement config et modules
         try:
             self.cfg = load_config()
             print(f"✅ Config chargée: {len(self.cfg)} paramètres")
@@ -262,108 +203,227 @@ class TarotApp(App):
             print(f"⚠️ Erreur facturation: {e}")
             self.billing = None
 
-        # Créer l’écran principal
+    def get_system_lang(self) -> str:
+        forced = os.environ.get("APP_LANG") or os.environ.get("LANGUAGE")
+        if forced:
+            lang = forced[:2].lower()
+        else:
+            if PYJNIUS_AVAILABLE:
+                try:
+                    LocaleList = autoclass('android.os.LocaleList')
+                    Build = autoclass('android.os.Build')
+                    Locale = autoclass('java.util.Locale')
+                    if Build.VERSION.SDK_INT >= 24:
+                        locales = LocaleList.getDefault()
+                        if locales and locales.size() > 0:
+                            lang = locales.get(0).getLanguage()
+                        else:
+                            lang = Locale.getDefault().getLanguage()
+                    else:
+                        lang = Locale.getDefault().getLanguage()
+                except Exception:
+                    lang = (locale.getdefaultlocale()[0] or 'en')[:2]
+            else:
+                lang = (locale.getdefaultlocale()[0] or 'en')[:2]
+
+        # Sélectionne une langue supportée
+        l = lang.lower()
+        return ('fr' if l.startswith('fr') else
+                'pt' if l.startswith('pt') else
+                'es' if l.startswith('es') else
+                'de' if l.startswith('de') else
+                'it' if l.startswith('it') else
+                'nl' if l.startswith('nl') else
+                'ru' if l.startswith('ru') else
+                'ja' if l.startswith('ja') else
+                'zh' if l.startswith('zh') else
+                'tr' if l.startswith('tr') else 'en')
+
+    def load_i18n(self, lang_code: str) -> dict:
+        lc = (lang_code or "").strip().lower()
+        candidates = [
+            f"i18n/lang/{lc}.json",   # langue demandée
+            "i18n/lang/en.json",      # fallback unique
+        ]
+
+        last_err = None
+        for rel in candidates:
+            # 1) Ressource packagée (Android / desktop si resource_add_path a été appelé)
+            path = resource_find(rel)
+            if path:
+                try:
+                    with open(path, "r", encoding="utf-8") as f:
+                        data = json.load(f)
+                    Logger.info(f"I18N: loaded packaged '{rel}' -> {path}")                  
+                    return data
+                except Exception as e:
+                    last_err = e
+                    Logger.error(f"I18N: read error for packaged '{path}': {e}")
+                    continue
+
+            # 2) Fallback dev (exécution depuis sources)
+            if os.path.exists(rel):
+                try:
+                    with open(rel, "r", encoding="utf-8") as f:
+                        data = json.load(f)
+                    Logger.info(f"I18N: loaded local '{rel}'")
+                    print(f"I18N: loaded local '{rel}'")
+                    return data
+                except Exception as e:
+                    last_err = e
+                    Logger.error(f"I18N: read error for local '{rel}': {e}")
+                    continue
+
+            Logger.debug(f"I18N: candidate not found: {rel}")
+
+        raise FileNotFoundError(f"I18N: not found {candidates}. last_err={last_err}")
+
+    def _tr(self, key, **kwargs):
+        # key peut être "messages.app_title" ou "significations.major_00.name"
+        parts = key.split('.')
+        val = self.i18n
+        try:
+            for p in parts:
+                val = val[p]
+            if kwargs and isinstance(val, str):
+                try:
+                    return val.format(**kwargs)
+                except Exception:
+                    return val
+            return val
+        except Exception:
+            return f"[{key}]"
+
+    def _get_cards_signification(self):
+        return self.i18n.get("significations", {})
+
+    def build(self):
+        self.font_body = BODY_FONT
+        print("🏗️ Construction de l'application Tarot...")
         try:
             root_screen = RootScreen()
-            card_screen = CardScreen(name="main_screen")
+            card_screen = CardScreen(name="card_screen")
             response_screen = ResponseScreen(name="response_screen")
             root_screen.add_widget(card_screen)
             root_screen.add_widget(response_screen)
             self.response_screen = response_screen
+
+            # Les traductions et polices sont appliquées dans on_start (UI attachée)
+
+            # Simule le prix premium sur desktop
             if not hasattr(sys, 'getandroidapilevel'):
                 response_screen.update_premium_button(True, "2,49€", "simulation")
-            root_screen.current = "main_screen"
-            print("✅ Écrans créés et configurés")
 
-            # Lancer détection langue après création UI
-            Clock.schedule_once(self._init_locale, 0)
+            root_screen.current = "card_screen"
+            print("✅ Écrans créés et configurés")
             return root_screen
         except Exception as e:
             print(f"❌ Erreur création écrans: {e}")
             traceback.print_exc()
             return None
 
-    def _init_locale(self, *_):
-        """Détection tardive de la langue + chargement traductions"""
-        global translations
-        lang = get_system_language()
-        self.lang = lang
-        print(f"🌍 Langue détectée: {lang}")
-        try:
-            path = os.path.join(os.path.dirname(__file__), "i18n", "lang", f"{lang}.json")
-            with open(path, "r", encoding="utf-8") as f:
-                translations = json.load(f)
-            print(f"✅ Traductions chargées pour la langue: {lang}")
-            # Rafraîchir les labels traduits de CardScreen
-            try:
-                card_screen = self.root.get_screen("main_screen")
-                card_screen.tr = tr
-                card_screen.lang = lang
-                card_screen.refresh_translations()
-            except Exception as e:
-                print(f"⚠️ Erreur mise à jour CardScreen: {e}")
-        except Exception as e:
-            print(f"⚠️ Erreur chargement {lang}: {e}")
-            fallback = os.path.join(os.path.dirname(__file__), "i18n", "lang", "fr.json")
-            with open(fallback, "r", encoding="utf-8") as f:
-                translations = json.load(f)
-            print("✅ Fallback français chargé")
-
-
     def on_start(self):
         print("🚀 Application démarrée")
+        debug_check_i18n()
+        # Programme l'application des traductions et police au prochain frame
+        try:
+            from kivy.clock import Clock
+            def _apply_all(_dt):
+                try:
+                    root = getattr(self, 'root', None)
+                    if not root:
+                        return
+                    for scr in getattr(root, 'screens', []) or []:
+                        try:
+                            if hasattr(scr, 'apply_i18n'):
+                                scr.apply_i18n()
+                            if hasattr(scr, '_refresh_fonts'):
+                                scr._refresh_fonts()
+                        except Exception as e:
+                            print(f"⚠️ Warning applying i18n/fonts in on_start for {scr}: {e}")
+                    # Ajoute un overlay global de debug au-dessus de tout pour vérifier le rendu texte
+                    # Désactivé par défaut en production. Pour activer temporairement, exportez:
+                    # DEBUG_GLOBAL_OVERLAY=1
+                    try:
+                        if os.environ.get('DEBUG_GLOBAL_OVERLAY', '0') != '1':
+                            # Overlay disabled by default
+                            print('MAIN: global debug overlay disabled')
+                        else:
+                            from kivy.uix.floatlayout import FloatLayout
+                            from kivy.uix.label import Label
+                            from kivy.graphics import Color, Rectangle
+
+                            # Determine proper target to receive the overlay: prefer the active Screen
+                            target = None
+                            try:
+                                if hasattr(root, 'current_screen') and root.current_screen is not None:
+                                    target = root.current_screen
+                                elif hasattr(root, 'get_screen') and getattr(root, 'current', None):
+                                    try:
+                                        target = root.get_screen(root.current)
+                                    except Exception:
+                                        target = None
+                            except Exception:
+                                target = None
+                            if target is None:
+                                target = root
+
+                            overlay = FloatLayout()
+
+                            with overlay.canvas.before:
+                                Color(0, 0, 0, 0.85)
+                                # use target size so the bg matches the screen/container
+                                bg = Rectangle(pos=(0, 0), size=(getattr(target, 'width', 0), getattr(target, 'height', 0)))
+
+                            # Bind pour suivre la taille du target
+                            def _sync_rect(inst, val):
+                                try:
+                                    bg.size = (getattr(target, 'width', 0), getattr(target, 'height', 0))
+                                except Exception:
+                                    pass
+                            try:
+                                target.bind(size=_sync_rect)
+                            except Exception:
+                                pass
+
+                            lbl = Label(text=f"DEBUG GLOBAL: lang={getattr(self, 'lang', None)}\ntr(app_title)={self._tr('messages.app_title')}", halign='center', valign='middle', color=(1,1,1,1), font_size='22sp')
+                            lbl.bind(size=lambda i,v: setattr(i, 'text_size', v))
+                            overlay.add_widget(lbl)
+
+                            try:
+                                # add overlay to the determined target (Screen or root fallback)
+                                target.add_widget(overlay)
+                                print("MAIN: global debug overlay added to target", target)
+                                # suppression après 20s
+                                from kivy.clock import Clock as _Clock
+                                def _remove_overlay(__dt):
+                                    try:
+                                        if overlay.parent:
+                                            overlay.parent.remove_widget(overlay)
+                                    except Exception:
+                                        pass
+                                _Clock.schedule_once(_remove_overlay, 20)
+                            except Exception as e:
+                                print(f"⚠️ Could not add global overlay to target: {e}")
+                    except Exception as e:
+                        print(f"⚠️ Error building global overlay: {e}")
+                except Exception as e:
+                    print(f"⚠️ Error in scheduled screen refresh: {e}")
+            Clock.schedule_once(_apply_all, 0)
+        except Exception as e:
+            print(f"⚠️ Error scheduling screen refresh: {e}")
 
     def on_stop(self):
         print("🛑 Application arrêtée")
 
-
 # === Loader de signification cartes ===
 def get_cards_signification(card_name=None):
-    sigs = translations.get("significations", {})
+    app = App.get_running_app()
+    i18n = getattr(app, "i18n", {}) or {}
+    sigs = i18n.get("significations", {})
     if card_name:
-        if card_name in sigs:
-            return sigs[card_name]
-        try:
-            fr_path = os.path.join(os.path.dirname(__file__), "i18n", "lang", "fr.json")
-            with open(fr_path, "r", encoding="utf-8") as f:
-                fr_data = json.load(f)
-            fr_sigs = fr_data.get("significations", {})
-            if card_name in fr_sigs:
-                result = fr_sigs[card_name].copy()
-                result["fallback"] = True
-                print(f"🌍 Fallback français pour carte: {card_name}")
-                return result
-        except Exception as e:
-            print(f"🌍 Erreur fallback français: {e}")
-        return {}
+        return sigs.get(card_name, {})  # aucun I/O, pas de fallback fichier
     return sigs
-
-
-# === Gestion erreurs startup ===
-def _write_startup_traceback(exc: BaseException) -> None:
-    try:
-        import traceback as _traceback
-        from datetime import datetime as _dt
-        tb = _traceback.format_exc()
-        now = _dt.utcnow().isoformat() + "Z"
-        contents = f"Timestamp: {now}\nException: {exc!r}\n\nTraceback:\n{tb}\n"
-        sdcard_path = "/sdcard/macartedetarot_startup_traceback.txt"
-        written = False
-        try:
-            if os.path.exists("/sdcard"):
-                with open(sdcard_path, "w", encoding="utf-8") as f:
-                    f.write(contents)
-                written = True
-        except Exception:
-            written = False
-        if not written:
-            local_path = os.path.join(BASE_DIR, "startup_traceback.txt")
-            with open(local_path, "w", encoding="utf-8") as f:
-                f.write(contents)
-        print("--- Startup traceback written ---")
-        print(contents)
-    except Exception:
-        pass
 
 
 # === Entrée principale ===
@@ -371,5 +431,5 @@ if __name__ == "__main__":
     try:
         TarotApp().run()
     except BaseException as e:
-        _write_startup_traceback(e)
+        print(f"❌ Erreur fatale application: {e}")
         raise

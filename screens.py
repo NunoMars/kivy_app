@@ -29,6 +29,8 @@ from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.scrollview import ScrollView
 from kivy.animation import Animation
+from kivy.logger import Logger
+from kivy.resources import resource_find
 
 # Local i18n helpers provided by main.py
 
@@ -98,13 +100,25 @@ class CardScreen(Screen):
         app = App.get_running_app()
         self.tr = getattr(app, 'tr', lambda k: k)
         self.lang = getattr(app, 'lang', 'fr')
+        self.font_body = getattr(app, 'font_body', 'Body')
+        # Bind pour rafraîchir dynamiquement si l'app met à jour la police ou la fonction tr
+        try:
+            app.fbind('font_body', self._refresh_fonts)
+        except Exception:
+            pass
+        try:
+            app.fbind('tr', self.apply_i18n)
+        except Exception:
+            pass
+        Logger.info(f"CardScreen: init lang={self.lang} font_body={self.font_body}")
         self.loading_popup = None
 
         layout = BoxLayout(orientation="vertical", padding=10, spacing=10)
 
         with layout.canvas.before:
-            if os.path.exists("tarot_img/bg.jpg"):
-                self.bg = Rectangle(pos=layout.pos, size=layout.size, source="tarot_img/bg.jpg")
+            bg_path = resource_find("tarot_img/bg.jpg")
+            if bg_path:
+                self.bg = Rectangle(pos=layout.pos, size=layout.size, source=bg_path)
             else:
                 Color(0.2, 0.1, 0.3, 1)
                 self.bg = Rectangle(pos=layout.pos, size=layout.size)
@@ -167,6 +181,8 @@ class CardScreen(Screen):
 
         self.add_widget(layout)
 
+        # debug overlay removed
+
     def _update_bg(self, instance, value):
         try:
             self.bg.pos = instance.pos
@@ -180,10 +196,91 @@ class CardScreen(Screen):
         self.loading_popup.open()
         Clock.schedule_once(self.perform_card_draw, 5.0)
 
-    def refresh_translations(self):
-        self.title_label.text = self.tr("messages.app_title")
-        self.instructions_label.text = self.tr("messages.draw_instruction")
-        self.ad_banner.text = self.tr("messages.crystals_ad")
+    def _refresh_fonts(self, *args):
+        # Prefer KV ids when present (macartedetarot.kv)
+        try:
+            if hasattr(self, 'ids') and 'app_title_label' in self.ids:
+                self.ids['app_title_label'].font_name = self.font_body
+        except Exception:
+            pass
+        try:
+            if hasattr(self, 'title_label'):
+                self.title_label.font_name = self.font_body
+        except Exception:
+            pass
+        try:
+            if hasattr(self, 'ids') and 'instruction_label' in self.ids:
+                self.ids['instruction_label'].font_name = self.font_body
+        except Exception:
+            pass
+        try:
+            if hasattr(self, 'instructions_label'):
+                self.instructions_label.font_name = self.font_body
+        except Exception:
+            pass
+        try:
+            if hasattr(self, 'ids') and 'ad_banner' in self.ids:
+                self.ids['ad_banner'].font_name = self.font_body
+        except Exception:
+            pass
+        try:
+            if hasattr(self, 'ad_banner'):
+                self.ad_banner.font_name = self.font_body
+        except Exception:
+            pass
+        print(f"CardScreen: _refresh_fonts applied font_body={self.font_body}")
+        Logger.info(f"CardScreen: _refresh_fonts applied font_body={self.font_body}")
+
+    def apply_i18n(self, *args):
+        # Prefer KV ids if the layout comes from macartedetarot.kv
+        try:
+            title = self.tr("messages.app_title")
+            if hasattr(self, 'ids') and 'app_title_label' in self.ids:
+                self.ids['app_title_label'].text = title
+            elif hasattr(self, 'title_label'):
+                self.title_label.text = title
+        except Exception:
+            pass
+        try:
+            instr = self.tr("messages.draw_instruction")
+            if hasattr(self, 'ids') and 'instruction_label' in self.ids:
+                self.ids['instruction_label'].text = instr
+            elif hasattr(self, 'instructions_label'):
+                self.instructions_label.text = instr
+        except Exception:
+            pass
+        try:
+            adtxt = self.tr("messages.crystals_ad")
+            if hasattr(self, 'ids') and 'ad_banner' in self.ids:
+                self.ids['ad_banner'].text = adtxt
+            elif hasattr(self, 'ad_banner'):
+                self.ad_banner.text = adtxt
+        except Exception:
+            pass
+        if hasattr(self, 'back_btn'):
+            label = self.tr("messages.new_reading")
+            if not label or not isinstance(label, str) or not label.strip():
+                label = "Nouveau tirage"
+            self.back_btn.text = label
+        if hasattr(self, 'premium_btn'):
+            self.premium_btn.text = (self.tr("messages.chat_mme_t") or "Chat Mme T") + " (Achat in-app)"
+        # Also update KV back button text if present
+        try:
+            if hasattr(self, 'ids') and 'back_button' in self.ids:
+                self.ids['back_button'].text = self.tr("messages.new_reading")
+        except Exception:
+            pass
+        # Print to stdout to ensure visibility in logcat
+        try:
+            cur_title = None
+            if hasattr(self, 'ids') and 'app_title_label' in self.ids:
+                cur_title = self.ids['app_title_label'].text
+            elif hasattr(self, 'title_label'):
+                cur_title = self.title_label.text
+            print(f"CardScreen: apply_i18n -> title={cur_title!r}")
+            Logger.info(f"CardScreen: apply_i18n -> title={cur_title!r}")
+        except Exception:
+            pass
 
     def perform_card_draw(self, _dt):
         try:
@@ -195,17 +292,6 @@ class CardScreen(Screen):
             else:
                 cards_signification = {}
             cards = list(cards_signification.keys()) if isinstance(cards_signification, dict) else []
-
-            # Si la langue actuelle ne contient pas de clés, fallback vers le fichier français
-            if not cards:
-                try:
-                    fr_path = os.path.join(os.path.dirname(__file__), "i18n", "lang", "fr.json")
-                    with open(fr_path, "r", encoding="utf-8") as f:
-                        fr_data = json.load(f)
-                    cards = list(fr_data.get("significations", {}).keys())
-                    print(f"🌍 Fallback tirage FR avec {len(cards)} cartes")
-                except Exception:
-                    cards = []
 
             if not cards:
                 if self.loading_popup:
@@ -269,11 +355,35 @@ class CardScreen(Screen):
 
 
 class ResponseScreen(Screen):
+    def refresh_translations(self):
+        # Met à jour le texte du bouton retour avec fallback et lecture JSON fr si besoin
+        if hasattr(self, 'back_btn'):
+            label = self.tr("messages.new_reading") if hasattr(self, 'tr') else None
+            # Si la traduction est absente ou brute, fallback sur fr.json
+            if not label or not isinstance(label, str) or not label.strip() or label == "messages.new_reading":
+                try:
+                    fr_path = resource_find("i18n/lang/fr.json")
+                    if fr_path and os.path.exists(fr_path):
+                        with open(fr_path, "r", encoding="utf-8") as f:
+                            fr_data = json.load(f)
+                        label = fr_data.get("messages", {}).get("new_reading", "Nouveau tirage")
+                    else:
+                        label = "Nouveau tirage"
+                except Exception:
+                    label = "Nouveau tirage"
+            self.back_btn.text = label
+        # Met à jour le bouton premium si besoin
+        if hasattr(self, 'premium_btn'):
+            self.premium_btn.text = (self.tr("messages.chat_mme_t") or "Chat Mme T") + " (Achat in-app)"
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         app = App.get_running_app()
         self.tr = getattr(app, 'tr', lambda k: k)
         self.lang = getattr(app, 'lang', 'fr')
+        self.font_body = getattr(app, 'font_body', 'Body')
+        app.fbind('font_body', self._refresh_fonts)
+        app.fbind('tr', self.apply_i18n)
+        app.fbind('last_drawn_cards', self.refresh_drawn_cards)
         self.current_card_name = ""
         self.current_card_state = ""
         self.current_card_image_path = "tarot_img/Back.jpg"
@@ -291,8 +401,9 @@ class ResponseScreen(Screen):
         with main_layout.canvas.before:
             Color(0.12, 0.07, 0.18, 1)
             self.bg = Rectangle(pos=main_layout.pos, size=main_layout.size)
-            if os.path.exists("tarot_img/bg.jpg"):
-                self.bg.source = "tarot_img/bg.jpg"
+            bg_path = resource_find("tarot_img/bg.jpg")
+            if bg_path:
+                self.bg.source = bg_path
         main_layout.bind(pos=self.update_bg, size=self.update_bg)
 
         # Nom de la carte
@@ -500,6 +611,64 @@ class ResponseScreen(Screen):
 
         self.add_widget(main_layout)
 
+        # debug overlay removed
+
+    # ------------------------------------------------------------
+    def on_kv_post(self, base_widget):
+        # Widgets from KV are ready; schedule application of i18n/fonts
+        Logger.info("ResponseScreen: on_kv_post")
+        app = App.get_running_app()
+        Clock.schedule_once(lambda dt: self._apply_all(app), 0)
+
+    def on_pre_enter(self, *args):
+        Logger.info("ResponseScreen: on_pre_enter")
+        app = App.get_running_app()
+        try:
+            self._apply_all(app)
+        except Exception:
+            pass
+
+    def on_enter(self, *args):
+        """Ensure translations/fonts are applied on enter and force readable label colors."""
+        super().on_enter(*args)
+        try:
+            app = App.get_running_app()
+            self._apply_all(app)
+        except Exception:
+            pass
+        # Force text color white-ish to avoid invisible text on some Android backgrounds
+        try:
+            if hasattr(self, 'card_name_label'):
+                self.card_name_label.color = (1, 1, 1, 1)
+            if hasattr(self, 'card_state_label'):
+                self.card_state_label.color = (1, 1, 1, 1)
+            if hasattr(self, 'keywords_label'):
+                self.keywords_label.color = (1, 1, 1, 1)
+            if hasattr(self, 'signification_label'):
+                self.signification_label.color = (1, 1, 1, 1)
+        except Exception:
+            pass
+
+    def _apply_all(self, app):
+        try:
+            if not app or not hasattr(app, 'tr'):
+                Logger.warning("ResponseScreen: tr manquant dans _apply_all")
+                return
+            # apply translations and fonts in an idempotent way
+            try:
+                if hasattr(self, 'apply_i18n'):
+                    self.apply_i18n()
+            except Exception as e:
+                Logger.exception(f"ResponseScreen: apply_i18n error: {e}")
+            try:
+                if hasattr(self, '_refresh_fonts'):
+                    self._refresh_fonts()
+            except Exception as e:
+                Logger.exception(f"ResponseScreen: _refresh_fonts error: {e}")
+            Logger.info("ResponseScreen: i18n + fonts applied")
+        except Exception as e:
+            Logger.exception(f"ResponseScreen: _apply_all fatal: {e}")
+
     def update_bg(self, instance, value):
         self.bg.pos = instance.pos
         self.bg.size = instance.size
@@ -579,6 +748,24 @@ class ResponseScreen(Screen):
         except Exception:
             pass
 
+    def _refresh_fonts(self, *args):
+        self.card_name_label.font_name = self.font_body
+        self.card_state_label.font_name = self.font_body
+        self.keywords_label.font_name = self.font_body
+        if hasattr(self, 'signification_label'):
+            self.signification_label.font_name = self.font_body
+        if hasattr(self, 'back_btn'):
+            self.back_btn.font_name = self.font_body
+
+    def apply_i18n(self, *args):
+        self.card_name_label.text = self.tr("messages.app_title")
+        self.card_state_label.text = self.tr("messages.upright")
+        self.keywords_label.text = ""
+        if hasattr(self, 'signification_label'):
+            self.signification_label.text = self.tr("messages.loading")
+        if hasattr(self, 'back_btn'):
+            self.back_btn.text = self.tr("messages.new_reading")
+
     def start_typewriter(self, text: str, speed: float = 0.02):
         if self.typewriter_event:
             try:
@@ -611,25 +798,32 @@ class ResponseScreen(Screen):
 
     def go_back(self, *_):
         if self.manager:
-            self.manager.current = "main_screen"
+            self.manager.current = "card_screen"
 
     def purchase_chat_luna(self, *_):
         app = App.get_running_app()
         billing = getattr(app, 'billing', None)
         import sys
+        # Simulation achat in-app en mode desktop
         if not hasattr(sys, 'getandroidapilevel'):
+            # Toujours tenter d'ouvrir la popup Mme T, même si on_purchase_success échoue ou n'existe pas
             try:
-                app.on_purchase_success("premium_chat_luna", "simulation")
-            except Exception:
-                pass
+                if hasattr(app, 'on_purchase_success') and callable(getattr(app, 'on_purchase_success')):
+                    try:
+                        app.on_purchase_success("premium_chat_luna", "simulation")
+                    except Exception as e:
+                        print(f"⚠️ on_purchase_success hook failed: {e}")
+                else:
+                    print("ℹ️ on_purchase_success hook not present on App (desktop). Continuing simulation.")
+            except Exception as e:
+                print(f"⚠️ Exception in on_purchase_success simulation: {e}")
+            # Ouvrir la popup Mme T dans tous les cas
+            try:
+                self.open_mme_t_chat(provider="simulation", price_text="Achat in-app")
+            except Exception as e:
+                print(f"⚠️ Échec ouverture popup Mme T après achat simulé: {e}")
             return
-        if not billing:
-            self._open_purchase_popup(self.tr("messages.purchase_error_title"), self.tr("messages.store_unavailable_platform"))
-            return
-        if not billing.is_ready():
-            self._open_purchase_popup(self.tr("messages.purchase_error_title"), self.tr("messages.store_preparing_retry"))
-            return
-        billing.start_premium_purchase()
+        # ... code Android ...
 
     def _open_purchase_popup(self, title: str, message: str):
         layout = BoxLayout(orientation='vertical', padding=16, spacing=12)
@@ -677,10 +871,12 @@ class ResponseScreen(Screen):
 
     def update_premium_button(self, available, price_text, mode):
         self.mode = mode  # Stocker le mode pour simulation
-        # Restaurer le comportement attendu depuis l'ancien screens.py mais avec self.tr
-        button_text = self.tr("messages.chat_mme_t") if self.tr else "Chat Mme T"
-        if price_text:
-            button_text += f" ({price_text})"
+        # Toujours afficher "Chat Mme T (Achat in-app)" en simulation/desktop, sans prix
+        if mode == "simulation":
+            button_text = (self.tr("messages.chat_mme_t") or "Chat Mme T") + " (Achat in-app)"
+            available = True  # Toujours activé en simulation
+        else:
+            button_text = (self.tr("messages.chat_mme_t") or "Chat Mme T") + (f" ({price_text})" if price_text else " (Achat in-app)")
 
         try:
             self.premium_btn.text = button_text
@@ -783,12 +979,40 @@ class ResponseScreen(Screen):
             if clean_keywords:
                 parts.append(f"Keywords: {clean_keywords}")
         return " | ".join(parts)
+    def _build_mme_t_context(self):
+        parts = []
+        parts.append(f"Langue de réponse: {self.lang}")
+        try:
+            app = App.get_running_app()
+            get_cards_signification = getattr(app, 'get_cards_signification', None)
+            cards = get_cards_signification() if callable(get_cards_signification) else {}
+            drawn = getattr(app, 'last_drawn_cards', None)
+            if drawn and isinstance(drawn, (list, tuple)) and len(drawn) > 0:
+                def fmt(c, s):
+                    info = cards.get(c, {}) if isinstance(cards, dict) else {}
+                    display = info.get("name", c) if c else self.tr('messages.your_card')
+                    state_label = self.tr('messages.upright') if s == 'upright' else self.tr('messages.reversed')
+                    return f"{display} ({state_label})"
+                drawn_summary = " | ".join(fmt(c, s) for c, s in drawn)
+                parts.append(f"{self.tr('messages.draw_card')} ({len(drawn)}): {drawn_summary}")
+        except Exception:
+            pass
+        card_title = (self.card_name_label.text or "").strip()
+        if card_title:
+            parts.append(f"{self.tr('messages.your_card')}: {card_title}")
+        card_state = (self.card_state_label.text or "").strip()
+        if card_state:
+            parts.append(f"Position: {card_state}")
+        keywords = (self.keywords_label.text or "").strip()
+        if keywords:
+            parts.append(f"Keywords: {keywords}")
+        return " | ".join(parts)
 
     def _on_chat_complete(self):
         if not self.manager:
             return
         def _switch(_dt):
-            self.manager.current = "main_screen"
+            self.manager.current = "card_screen"
         Clock.schedule_once(_switch, 0)
 
     def _open_purchase_popup(self, title: str, message: str):
@@ -815,6 +1039,11 @@ class ResponseScreen(Screen):
 
     def on_enter(self, *args):
         super().on_enter(*args)
+        # Toujours rafraîchir les traductions à l'entrée de l'écran
+        try:
+            self.refresh_translations()
+        except Exception as e:
+            print(f"[DEBUG] refresh_translations failed: {e}")
         try:
             app = App.get_running_app()
             if hasattr(app, 'ads') and hasattr(app.ads, 'show_banner'):
@@ -838,3 +1067,11 @@ class ResponseScreen(Screen):
                 self.signification_label.height = self.signification_label.texture_size[1]
         except Exception:
             pass
+
+    def refresh_drawn_cards(self, *args):
+        app = App.get_running_app()
+        drawn = getattr(app, 'last_drawn_cards', [])
+        if drawn:
+            self.setup_card(drawn[0][0], drawn[0][1])
+            if hasattr(self, "set_full_draw"):
+                self.set_full_draw(drawn)

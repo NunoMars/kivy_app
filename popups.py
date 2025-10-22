@@ -1170,13 +1170,18 @@ class MmeTChatPopup(Popup):
             self._loading_bubble = None
 
     def show_fullscreen_card(self, card_name, card_state):
-        """Affiche la carte en plein écran"""
+        """Affiche la carte en plein écran avec nom localisé et image correcte"""
         try:
-            # Utiliser FullScreenCardPopup existant
+            app = App.get_running_app()
+            get_cards_signification = getattr(app, 'get_cards_signification', None)
+            cards = get_cards_signification() if callable(get_cards_signification) else {}
+            info = cards.get(card_name, {}) if isinstance(cards, dict) else {}
+            display_name = info.get("name", card_name)
+            image_path = info.get("image_reversed") if card_state == "reversed" else info.get("image")
+            image_path = image_path or "tarot_img/Back.jpg"
             popup = FullScreenCardPopup(
-                card_image_source=self._get_card_image_path(card_name, card_state),
-                card_name=card_name,
-                card_state=card_state
+                card_image_source=image_path,
+                card_name=display_name
             )
             popup.open()
         except Exception as e:

@@ -15,14 +15,16 @@ author = © Nuno Marcelino
 source.include_exts = py,kv,png,jpg,ttf,otf,mp3,mp4,json,ini
 source.exclude_exts = spec,md
 source.exclude_dirs = tests, bin, venv, .github, __pycache__, .git, .vscode, guides, backend, docs, play_store_screenshots, tarot_img/MajorArcanaCards_backup, scripts
-source.include_patterns = libs/*.py, fonts/*.ttf, fonts/*.otf, i18n/lang/*.json
+# Patterns d'inclusion très spécifiques (Robustesse)
+source.include_patterns = libs/*.py, fonts/*.ttf, fonts/*.otf, i18n/lang/*.json, tarot_img/*, main.py, app.py, billing.py, ads_manager.py
 
-# Inclure les dossiers de ressources dans l’APK (nécessaire pour Android)
+
+# Inclure les dossiers de ressources dans l’APK (NÉCESSAIRE pour resource_open)
 android.add_assets = i18n/lang:i18n/lang,tarot_img:tarot_img,fonts:fonts
 
 # ───────────────────────────────
 # 🐍 Dépendances Python
-requirements = python3==3.11.5, kivy==2.3.1, filetype==1.2.0, requests==2.32.3, certifi, jnius, plyer, kivmob
+requirements = python3==3.11.5, kivy==2.3.1, filetype==1.2.0, requests==2.32.3, certifi, pyjnius, plyer, kivmob
 
 # ───────────────────────────────
 # 🖼️ Visuels & UI
@@ -40,7 +42,8 @@ android.accept_sdk_license = True
 android.enable_androidx = True
 android.allow_backup = True
 android.copy_libs = 1
-p4a.branch = master
+# Utiliser 'develop' pour la branche P4A la plus stable et mise à jour
+p4a.branch = develop 
 
 # ───────────────────────────────
 # 🪄 Logs & debug
@@ -55,19 +58,18 @@ android.permissions = INTERNET, ACCESS_NETWORK_STATE, com.google.android.gms.per
 # 💰 AdMob / Billing
 android.meta_data = com.google.android.gms.ads.APPLICATION_ID=ca-app-pub-5749803259882370~1482612480
 android.add_gradle_repositories = mavenCentral()
+# Vos dépendances Gradle sont bien définies pour les fonctionnalités avancées
 android.gradle_dependencies = com.google.android.gms:play-services-ads:23.6.0, com.android.billingclient:billing-ktx:8.0.0
 
 # ───────────────────────────────
 # 🧱 Formats de build
 android.release_artifact = apk
 android.debug_artifact = apk
-android.archs = arm64-v8a
-# Pour supporter les anciens téléphones : décommente la ligne suivante
-# android.archs = arm64-v8a, armeabi-v7a
+android.archs = arm64-v8a, armeabi-v7a
 
 # ───────────────────────────────
 # ⚙️ Optimisation du packaging
-android.add_aapt_options = --no-compress,resources.arsc,--no-compress,.json
+android.add_aapt_options = -0 arsc -0 json
 android.extra_args = --release
 android.exclude_patterns = *.bak,*.tmp,*.log,__pycache__/,*.spec
 
@@ -83,3 +85,33 @@ android.release_keyalias_passwd = nunotheboss
 [buildozer]
 warn_on_root = 1
 log_level = 2
+
+# ───────────────────────
+# Manifest injections
+android.add_manifest_xml = """
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Supprime la permission Billing legacy injectée par billing-ktx -->
+    <uses-permission
+        android:name="com.android.vending.BILLING"
+        tools:node="remove" />
+
+    <!-- Corrige les <queries> générées par Ads :
+         1) on retire la variante cassée (path="tel:")
+         2) on ajoute la bonne (scheme="tel") -->
+    <queries tools:node="merge">
+
+        <intent tools:node="remove">
+            <action android:name="android.intent.action.DIAL" />
+            <data android:path="tel:" />
+        </intent>
+
+        <intent>
+            <action android:name="android.intent.action.DIAL" />
+            <data android:scheme="tel" />
+        </intent>
+
+    </queries>
+</manifest>
+"""

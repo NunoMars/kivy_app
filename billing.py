@@ -440,17 +440,39 @@ class InAppPurchaseManager:
         """Initialise Google Play Billing."""
         try:
             from jnius import autoclass
-            from android import activity
+            # Use PythonActivity.mActivity as the Android Context (safer than passing the android.activity module)
+            try:
+                PythonActivity = autoclass('org.kivy.android.PythonActivity')
+                ctx = getattr(PythonActivity, 'mActivity', None)
+            except Exception:
+                ctx = None
 
-            self.activity = activity
+            # Fallback: try to import android.activity if ctx not available
+            if ctx is None:
+                try:
+                    from android import activity as _activity_module
+                    ctx = _activity_module
+                except Exception:
+                    ctx = None
+
+            if ctx is None:
+                raise RuntimeError('No Android Context available for Billing initialization')
+
+            self.activity = ctx
             self.google_client_class = autoclass('com.android.billingclient.api.BillingClient')
             self.google_billing_client = None
 
             # Créer le client de facturation
-            builder = self.google_client_class.newBuilder(activity)
+            # Some BillingClient versions provide enablePendingPurchases as a
+            # static/class method that must be called on the BillingClient class
+            # (not on the builder instance). Call the class method if present
+            # to avoid Java signature mismatch errors.
+            builder = self.google_client_class.newBuilder(ctx)
             builder.setListener(GooglePurchasesUpdatedListener(self))
-            builder.enablePendingPurchases()
 
+
+            # Appel obligatoire sur l’instance builder pour BillingClient v8
+            builder.enablePendingPurchases()
             self.google_billing_client = builder.build()
 
             # Se connecter au service
