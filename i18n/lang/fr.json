@@ -19,7 +19,8 @@
     "tarot_course_ad": "🔮 Formation Tarot Professionnel 🔮\nDevenez cartomancien certifié - Inscription gratuite",
     "tap_to_return": "Touchez la carte pour revenir",
     "touch_to_enlarge": "🔍 Touchez pour agrandir",
-    "your_card": "Votre carte",
+  "your_card": "Votre carte",
+  "about": "À propos",
     "support_app": "Soutenez l'application",
     "ad_message": "Cette application gratuite vous plaît ?\nAidez-nous à la maintenir et l'améliorer !",
     "later": "Plus tard",
@@ -54,6 +55,10 @@
       "🌙 Consultation des astres...",
       "💫 Interprétation des arcanes..."
     ]
+  },
+  "about": {
+    "title": "À propos",
+    "disclaimer": "Cette application est destinée au divertissement. Les tirages sont aléatoires et ne constituent ni un conseil professionnel ni une consultation en personne. Pour toute décision importante, demandez l’avis d’un professionnel qualifié.\n\nVotre destinée se construit à chaque décision. Les cartes proposent des pistes, mais vous restez maître de vos choix et de votre chemin. Écoutez votre intuition, avancez pas à pas et prenez soin de vous."
   },
   "significations": {
     "major_00": {

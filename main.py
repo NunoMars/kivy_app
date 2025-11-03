@@ -28,11 +28,19 @@ def has_internet(timeout: float = 2.0) -> bool:
 
 # === Config Kivy (avant import kivy) ===
 from kivy.config import Config
-Config.set("graphics", "width", "540")
-Config.set("graphics", "height", "1080")
-Config.set("graphics", "multisamples", "0")
-Config.set("kivy", "log_level", "warning")
-Config.set("kivy", "show_cursor", "1")
+IS_ANDROID = "ANDROID_ARGUMENT" in os.environ  # <- fiable avec p4a
+
+if not IS_ANDROID:
+    Config.set("graphics", "width", "540")
+    Config.set("graphics", "height", "1080")
+    Config.set("graphics", "multisamples", "0")
+    Config.set("kivy", "log_level", "warning")
+    Config.set("kivy", "show_cursor", "1")
+    os.environ["KIVY_DPI"] = "420"  # simulation desktop seulement
+else:
+    # Sur Android, ne force rien
+    os.environ.pop("KIVY_DPI", None)
+
 
 import kivy
 kivy.require("2.3.1")
@@ -68,7 +76,7 @@ if os.path.isdir(FONTS_DIR):
     except Exception as e:
         print("### FIX POLICE: fallback police Kivy ->", e)
 
-# Fallback police globale pour tout le projet
+# Police par défaut utilisée dans toute l’app (doit correspondre au nom enregistré via LabelBase.register)
 BODY_FONT = "Body"
 
 # === Gestion pyjnius (Android bridge) ===
@@ -110,6 +118,7 @@ from screens import (
     RootScreen,
     CardScreen,
     ResponseScreen,
+    AboutScreen,
 )
 from ads_manager import load_config, AdsManager, maybe_fetch_remote_config
 
@@ -181,6 +190,8 @@ class TarotApp(App):
         self.i18n = self.load_i18n(self.lang)
         self.tr = self._tr
         self.get_cards_signification = self._get_cards_signification
+        # --- AJOUT IAP (flag premium) ---
+        self.enable_premium = False
 
         try:
             self.cfg = load_config()
@@ -298,14 +309,17 @@ class TarotApp(App):
         return self.i18n.get("significations", {})
 
     def build(self):
+        # Police disponible pour tous les écrans via App.get_running_app().font_body
         self.font_body = BODY_FONT
         print("🏗️ Construction de l'application Tarot...")
         try:
             root_screen = RootScreen()
             card_screen = CardScreen(name="card_screen")
             response_screen = ResponseScreen(name="response_screen")
+            about_screen = AboutScreen(name="about_screen")
             root_screen.add_widget(card_screen)
             root_screen.add_widget(response_screen)
+            root_screen.add_widget(about_screen)
             self.response_screen = response_screen
 
             # Les traductions et polices sont appliquées dans on_start (UI attachée)
@@ -415,6 +429,40 @@ class TarotApp(App):
 
     def on_stop(self):
         print("🛑 Application arrêtée")
+        
+ # --- AJOUT IAP : action bouton "Acheter Premium" ---
+    def on_buy_premium(self, *_):
+        try:
+            if self.billing and self.billing.is_ready():
+                self.billing.purchase_product("premium_features")
+            else:
+                print("Paiement non prêt")
+        except Exception as e:
+            print(f"⚠️ Erreur on_buy_premium: {e}")
+
+    # --- AJOUT IAP : callback succès appelé par billing.py ---
+    def on_purchase_success(self, product_id, provider):
+        try:
+            if product_id == "premium_features":
+                self.enable_premium = True
+                print(f"✨ Premium activé ! (provider={provider})")
+
+                # Optionnel : mettre à jour le bouton premium si l'écran l’expose
+                try:
+                    if hasattr(self, 'response_screen') and hasattr(self.response_screen, 'update_premium_button'):
+                        # On masque/désactive le bouton d’achat côté UI
+                        price_txt = None
+                        try:
+                            if self.billing:
+                                price_txt = self.billing.get_product_price()
+                        except Exception:
+                            price_txt = None
+                        self.response_screen.update_premium_button(False, price_txt, provider)
+                except Exception as _e:
+                    print(f"ℹ️ UI non mise à jour (facultatif): {_e}")
+        except Exception as e:
+            print(f"⚠️ Erreur on_purchase_success: {e}")
+            self.enable_premium = False
 
 # === Loader de signification cartes ===
 def get_cards_signification(card_name=None):

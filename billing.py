@@ -1,12 +1,28 @@
 # -*- coding: utf-8 -*-
 """
-Module de facturation pour l'application Kivy.
-Contient les classes de gestion des achats Google Play et Amazon IAP.
+billing.py — Gestion in-app pour Kivy (Google Play v8 + option Amazon IAP)
+
+✔ Google Play Billing v8:
+   - queryProductDetailsAsync avec ArrayList Java
+   - launchBillingFlow via setProductDetailsParamsList([...])
+   - Ack automatique + restauration des achats
+✔ Fallback desktop (PyJNIUS absent) : mode simulé
+✔ Appel automatique App.on_purchase_success(product_id, provider)
+
+ATTENTES CÔTÉ APP:
+- Définis un produit INAPP "premium_features" dans la Play Console.
+- Dans ton App, implémente:
+    def on_purchase_success(self, product_id, provider):
+        if product_id == "premium_features":
+            self.enable_premium = True
+            # persiste le statut si nécessaire
 """
 
 from __future__ import annotations
 
+# ──────────────────────────────────────────────────────────────────────────────
 # JNI / Android (pyjnius) — optional with robust fallback
+# ──────────────────────────────────────────────────────────────────────────────
 PYJNIUS_AVAILABLE = True
 try:
     from jnius import (
@@ -25,55 +41,54 @@ try:
         activity = None
 except Exception:
     PYJNIUS_AVAILABLE = False
-    autoclass = None
-    def cast(cls, obj):
-        return obj
-    JavaException = Exception
+    autoclass = None  # type: ignore
 
-    class PythonJavaClass:
+    def cast(cls, obj):  # type: ignore
+        return obj
+
+    JavaException = Exception  # type: ignore
+
+    class PythonJavaClass:  # type: ignore
         pass
 
-    def java_method(signature):
+    def java_method(signature):  # type: ignore
         def decorator(func):
             return func
-
         return decorator
 
-    def run_on_ui_thread(func):
+    def run_on_ui_thread(func):  # type: ignore
         return func
-    activity = None
+
+    activity = None  # type: ignore
 
 
+# ──────────────────────────────────────────────────────────────────────────────
+# LISTENERS GOOGLE
+# ──────────────────────────────────────────────────────────────────────────────
 class GooglePurchasesUpdatedListener(PythonJavaClass):  # pragma: no cover - Android only
     """Gestion des retours d'achats Google Play Billing."""
-
     __javacontext__ = "app"
-    __javainterfaces__ = [
-        "com/android/billingclient/api/PurchasesUpdatedListener",
-    ]
+    __javainterfaces__ = ["com/android/billingclient/api/PurchasesUpdatedListener"]
 
     def __init__(self, manager):
         super().__init__()
         self.manager = manager
 
-    @java_method(
-        "(Lcom/android/billingclient/api/BillingResult;Ljava/util/List;)V"
-    )
+    @java_method("(Lcom/android/billingclient/api/BillingResult;Ljava/util/List;)V")
     def onPurchasesUpdated(self, billing_result, purchases):
         try:
             response_code = billing_result.getResponseCode()
-            if (
-                self.manager.google_client_class
-                and response_code
-                == self.manager.google_client_class.BillingResponseCode.OK
-                and purchases
-                and purchases.size() > 0
-            ):
-                # parcourir toutes les purchases
-                for idx in range(purchases.size()):
-                    p = purchases.get(idx)
-                    # nouvel API : getProducts() sinon fallback getSkus()
+            OK = self.manager.google_client_class.BillingResponseCode.OK
+            USER_CANCELED = self.manager.google_client_class.BillingResponseCode.USER_CANCELED
+
+            if response_code == OK and purchases and purchases.size() > 0:
+                # Parcours achats : ack + callback app
+                all_product_ids = []
+                for i in range(purchases.size()):
+                    p = purchases.get(i)
                     product_ids = []
+
+                    # API v6+: getProducts(), fallback getSkus()
                     try:
                         plist = p.getProducts()
                         for j in range(plist.size()):
@@ -87,59 +102,51 @@ class GooglePurchasesUpdatedListener(PythonJavaClass):  # pragma: no cover - And
                             pass
 
                     print(f"✅ Achat Google confirmé pour {product_ids}")
+                    all_product_ids.extend(product_ids)
 
-                    # Vérifier l'état et ack si nécessaire
+                    # Ack si nécessaire
                     try:
-                        PURCHASED = autoclass('com.android.billingclient.api.Purchase$PurchaseState').PURCHASED
-                        if p.getPurchaseState() == PURCHASED:
-                            if not p.isAcknowledged():
-                                AcknowledgePurchaseParams_Builder = autoclass('com.android.billingclient.api.AcknowledgePurchaseParams$Builder')
-                                ack_params = AcknowledgePurchaseParams_Builder()\
-                                    .setPurchaseToken(p.getPurchaseToken())\
-                                    .build()
+                        PURCHASED = autoclass(
+                            "com.android.billingclient.api.Purchase$PurchaseState"
+                        ).PURCHASED
+                        if p.getPurchaseState() == PURCHASED and not p.isAcknowledged():
+                            AcknowledgePurchaseParams_Builder = autoclass(
+                                "com.android.billingclient.api.AcknowledgePurchaseParams$Builder"
+                            )
+                            ack_params = (
+                                AcknowledgePurchaseParams_Builder()
+                                .setPurchaseToken(p.getPurchaseToken())
+                                .build()
+                            )
 
-                                class AckListener(PythonJavaClass):
-                                    __javainterfaces__ = ['com/android/billingclient/api/AcknowledgePurchaseResponseListener']
-                                    __javacontext__ = 'app'
+                            class AckListener(PythonJavaClass):
+                                __javainterfaces__ = [
+                                    "com/android/billingclient/api/AcknowledgePurchaseResponseListener"
+                                ]
+                                __javacontext__ = "app"
 
-                                    @java_method('(Lcom/android/billingclient/api/BillingResult;)V')
-                                    def onAcknowledgePurchaseResponse(self, br):
-                                        try:
-                                            rc = br.getResponseCode()
-                                            print(f"🔔 Acknowledge response: {rc}")
-                                        except Exception:
-                                            pass
+                                @java_method(
+                                    "(Lcom/android/billingclient/api/BillingResult;)V"
+                                )
+                                def onAcknowledgePurchaseResponse(self_, br):
+                                    try:
+                                        rc = br.getResponseCode()
+                                        print(f"🔔 Acknowledge response: {rc}")
+                                    except Exception:
+                                        pass
 
-                                try:
-                                    self.manager.google_billing_client.acknowledgePurchase(ack_params, AckListener())
-                                except Exception as exc:
-                                    print(f"✗ Erreur ack purchase: {exc}")
+                            try:
+                                self.manager.google_billing_client.acknowledgePurchase(
+                                    ack_params, AckListener()
+                                )
+                            except Exception as exc:
+                                print(f"✗ Erreur ack purchase: {exc}")
                     except Exception as exc:
                         print(f"⚠️ Erreur traitement purchase state: {exc}")
 
-                # notifier succès global
-                # Collecter tous les product_ids des achats réussis
-                all_product_ids = []
-                for idx in range(purchases.size()):
-                    p = purchases.get(idx)
-                    try:
-                        plist = p.getProducts()
-                        for j in range(plist.size()):
-                            all_product_ids.append(plist.get(j))
-                    except Exception:
-                        try:
-                            sl = p.getSkus()
-                            for j in range(sl.size()):
-                                all_product_ids.append(sl.get(j))
-                        except Exception:
-                            pass
-                
                 self.manager._notify_success("google", all_product_ids)
-            elif (
-                self.manager.google_client_class
-                and response_code
-                == self.manager.google_client_class.BillingResponseCode.USER_CANCELED
-            ):
+
+            elif response_code == USER_CANCELED:
                 print("ℹ️ Achat Google annulé par l'utilisateur")
                 self.manager._notify_error(
                     "Achat annulé", provider="google", warn_only=True
@@ -149,7 +156,8 @@ class GooglePurchasesUpdatedListener(PythonJavaClass):  # pragma: no cover - And
                 self.manager._notify_error(
                     f"Erreur achat (code {response_code})", provider="google"
                 )
-        except Exception as exc:  # pragma: no cover - Android only
+
+        except Exception as exc:  # pragma: no cover
             print(f"✗ Exception traitement achat Google: {exc}")
             self.manager._notify_error(
                 "Erreur inattendue lors de l'achat", provider="google"
@@ -158,11 +166,8 @@ class GooglePurchasesUpdatedListener(PythonJavaClass):  # pragma: no cover - And
 
 class GoogleBillingStateListener(PythonJavaClass):  # pragma: no cover
     """Réception de l'état de connexion au service de facturation Google."""
-
     __javacontext__ = "app"
-    __javainterfaces__ = [
-        "com/android/billingclient/api/BillingClientStateListener",
-    ]
+    __javainterfaces__ = ["com/android/billingclient/api/BillingClientStateListener"]
 
     def __init__(self, manager):
         super().__init__()
@@ -171,27 +176,19 @@ class GoogleBillingStateListener(PythonJavaClass):  # pragma: no cover
     @java_method("(Lcom/android/billingclient/api/BillingResult;)V")
     def onBillingSetupFinished(self, billing_result):
         try:
-            response_code = billing_result.getResponseCode()
-            if (
-                self.manager.google_client_class
-                and response_code
-                == self.manager.google_client_class.BillingResponseCode.OK
-            ):
+            rc = billing_result.getResponseCode()
+            OK = self.manager.google_client_class.BillingResponseCode.OK
+            if rc == OK:
                 print("✅ Connexion Billing Google établie")
                 self.manager._on_google_billing_ready()
             else:
-                print(
-                    f"⚠️ Connexion Billing Google interrompue (code {response_code})"
-                )
+                print(f"⚠️ Connexion Billing Google interrompue (code {rc})")
                 self.manager._notify_error(
-                    "Service de paiement indisponible",
-                    provider="google",
+                    "Service de paiement indisponible", provider="google"
                 )
         except Exception as exc:
             print(f"✗ Exception connexion Billing Google: {exc}")
-            self.manager._notify_error(
-                "Erreur Billing Google", provider="google"
-            )
+            self.manager._notify_error("Erreur Billing Google", provider="google")
 
     @java_method("()V")
     def onBillingServiceDisconnected(self):
@@ -202,10 +199,9 @@ class GoogleBillingStateListener(PythonJavaClass):  # pragma: no cover
 
 class GoogleProductDetailsListener(PythonJavaClass):
     """Réception asynchrone des ProductDetails (Google Play Billing v8+)."""
-
     __javacontext__ = "app"
     __javainterfaces__ = [
-        "com/android/billingclient/api/ProductDetailsResponseListener",
+        "com/android/billingclient/api/ProductDetailsResponseListener"
     ]
 
     def __init__(self, manager):
@@ -215,41 +211,123 @@ class GoogleProductDetailsListener(PythonJavaClass):
     @java_method("(Lcom/android/billingclient/api/BillingResult;Ljava/util/List;)V")
     def onProductDetailsResponse(self, billing_result, product_details_list):
         try:
-            response_code = billing_result.getResponseCode()
-            if (
-                self.manager.google_client_class
-                and response_code
-                == self.manager.google_client_class.BillingResponseCode.OK
-                and product_details_list
-                and product_details_list.size() > 0
-            ):
+            rc = billing_result.getResponseCode()
+            OK = self.manager.google_client_class.BillingResponseCode.OK
+            if rc == OK and product_details_list and product_details_list.size() > 0:
                 details = product_details_list.get(0)
-                # Pour produits one-time (INAPP), récupère le prix formaté si disponible
-                price_text = None
+                self.manager.google_product_details = details
+
+                # Prix formaté si INAPP (one-time)
                 try:
                     otp = details.getOneTimePurchaseOfferDetails()
                     if otp:
-                        price_text = otp.getFormattedPrice()
+                        self.manager.display_price = otp.getFormattedPrice()
                 except Exception:
-                    price_text = None
+                    pass
 
-                self.manager.google_product_details = details
-                if price_text:
-                    self.manager.display_price = price_text
-                print("✅ ProductDetails Google récupérés: %s" % getattr(self.manager, 'display_price', ''))
+                print("✅ ProductDetails Google récupérés:", getattr(self.manager, "display_price", ""))
                 self.manager._dispatch_state_change()
             else:
-                print(f"⚠️ ProductDetails indisponibles (code {response_code})")
+                print(f"⚠️ ProductDetails indisponibles (code {rc})")
                 self.manager.google_product_details = None
-                self.manager._notify_error("Produit indisponible sur Play Store", provider="google")
+                self.manager._notify_error(
+                    "Produit indisponible sur Play Store", provider="google"
+                )
         except Exception as exc:
             print(f"✗ Exception lecture ProductDetails Google: {exc}")
-            self.manager._notify_error("Erreur produit sur Play Store", provider="google")
+            self.manager._notify_error(
+                "Erreur produit sur Play Store", provider="google"
+            )
+
+
+class GooglePurchasesResponseListener(PythonJavaClass):  # pragma: no cover
+    """Listener pour queryPurchasesAsync (restauration)."""
+    __javacontext__ = "app"
+    __javainterfaces__ = [
+        "com/android/billingclient/api/PurchasesResponseListener"
+    ]
+
+    def __init__(self, manager):
+        super().__init__()
+        self.manager = manager
+
+    @java_method("(Lcom/android/billingclient/api/BillingResult;Ljava/util/List;)V")
+    def onQueryPurchasesResponse(self, billing_result, purchases_list):
+        try:
+            rc = billing_result.getResponseCode()
+            OK = self.manager.google_client_class.BillingResponseCode.OK
+            if rc == OK and purchases_list and purchases_list.size() > 0:
+                restored_ids = []
+                for i in range(purchases_list.size()):
+                    p = purchases_list.get(i)
+                    # getProducts() / fallback getSkus()
+                    product_ids = []
+                    try:
+                        plist = p.getProducts()
+                        for j in range(plist.size()):
+                            product_ids.append(plist.get(j))
+                    except Exception:
+                        try:
+                            sl = p.getSkus()
+                            for j in range(sl.size()):
+                                product_ids.append(sl.get(j))
+                        except Exception:
+                            pass
+
+                    # Ack si nécessaire
+                    try:
+                        PURCHASED = autoclass(
+                            "com.android.billingclient.api.Purchase$PurchaseState"
+                        ).PURCHASED
+                        if p.getPurchaseState() == PURCHASED and not p.isAcknowledged():
+                            AcknowledgePurchaseParams_Builder = autoclass(
+                                "com.android.billingclient.api.AcknowledgePurchaseParams$Builder"
+                            )
+                            ack_params = (
+                                AcknowledgePurchaseParams_Builder()
+                                .setPurchaseToken(p.getPurchaseToken())
+                                .build()
+                            )
+
+                            class AckListener(PythonJavaClass):
+                                __javainterfaces__ = [
+                                    "com/android/billingclient/api/AcknowledgePurchaseResponseListener"
+                                ]
+                                __javacontext__ = "app"
+
+                                @java_method(
+                                    "(Lcom/android/billingclient/api/BillingResult;)V"
+                                )
+                                def onAcknowledgePurchaseResponse(self_, br):
+                                    try:
+                                        rc2 = br.getResponseCode()
+                                        print(f"🔔 Acknowledge (restore) response: {rc2}")
+                                    except Exception:
+                                        pass
+
+                            try:
+                                self.manager.google_billing_client.acknowledgePurchase(
+                                    ack_params, AckListener()
+                                )
+                            except Exception as exc:
+                                print(f"✗ Erreur ack (restore): {exc}")
+
+                    except Exception as exc:
+                        print(f"⚠️ Erreur état purchase (restore): {exc}")
+
+                    restored_ids.extend(product_ids)
+
+                if restored_ids:
+                    print(f"♻️ Restaurations détectées: {restored_ids}")
+                    self.manager._notify_success("google", restored_ids)
+            else:
+                print("ℹ️ Pas d’achats à restaurer")
+        except Exception as exc:
+            print(f"✗ Exception restore purchases: {exc}")
 
 
 class LaunchBillingRunnable(PythonJavaClass):  # pragma: no cover
     """Exécute le lancement du flux d'achat sur le thread UI Android."""
-
     __javacontext__ = "app"
     __javainterfaces__ = ["java/lang/Runnable"]
 
@@ -272,13 +350,13 @@ class LaunchBillingRunnable(PythonJavaClass):  # pragma: no cover
             )
 
 
+# ──────────────────────────────────────────────────────────────────────────────
+# LISTENER AMAZON (optionnel)
+# ──────────────────────────────────────────────────────────────────────────────
 class AmazonPurchasingListener(PythonJavaClass):  # pragma: no cover
     """Gestionnaire des callbacks Amazon IAP."""
-
     __javacontext__ = "app"
-    __javainterfaces__ = [
-        "com/amazon/device/iap/PurchasingListener",
-    ]
+    __javainterfaces__ = ["com/amazon/device/iap/PurchasingListener"]
 
     def __init__(self, manager):
         super().__init__()
@@ -298,14 +376,14 @@ class AmazonPurchasingListener(PythonJavaClass):  # pragma: no cover
                     product_id = receipt.getSku()
                     print(f"✅ Achat Amazon confirmé pour {product_id}")
 
-                    # Traiter l'achat Amazon
                     try:
-                        # Vérifier si c'est un achat consommable
-                        if receipt.getProductType() == self.manager.amazon_service.getProductType().CONSUMABLE:
-                            # Consommer l'achat
+                        if (
+                            receipt.getProductType()
+                            == self.manager.amazon_service.getProductType().CONSUMABLE
+                        ):
                             self.manager.amazon_service.notifyFulfillment(
                                 receipt.getReceiptId(),
-                                self.manager.amazon_service.getFulfillmentResult().FULFILLED
+                                self.manager.amazon_service.getFulfillmentResult().FULFILLED,
                             )
                     except Exception as exc:
                         print(f"⚠️ Erreur traitement achat Amazon: {exc}")
@@ -313,20 +391,14 @@ class AmazonPurchasingListener(PythonJavaClass):  # pragma: no cover
                     self.manager._notify_success("amazon", [product_id])
                 else:
                     print("⚠️ Achat Amazon sans receipt")
-                    self.manager._notify_error("Achat Amazon invalide", provider="amazon")
-            elif (
-                self.manager.amazon_service
-                and response_status
-                == self.manager.service.getRequestStatus().ALREADY_PURCHASED
-            ):
-                print("ℹ️ Produit Amazon déjà acheté")
-                self.manager._notify_error(
-                    "Produit déjà acheté", provider="amazon", warn_only=True
-                )
+                    self.manager._notify_error(
+                        "Achat Amazon invalide", provider="amazon"
+                    )
             else:
                 print(f"⚠️ Achat Amazon échoué - status: {response_status}")
                 self.manager._notify_error(
-                    f"Erreur achat Amazon (status {response_status})", provider="amazon"
+                    f"Erreur achat Amazon (status {response_status})",
+                    provider="amazon",
                 )
         except Exception as exc:
             print(f"✗ Exception traitement achat Amazon: {exc}")
@@ -345,19 +417,20 @@ class AmazonPurchasingListener(PythonJavaClass):  # pragma: no cover
             ):
                 product_data = product_data_response.getProductData()
                 if product_data and product_data.size() > 0:
-                    # Prendre le premier produit
                     product = product_data.values().iterator().next()
                     if product:
                         price = product.getPrice()
                         self.manager.amazon_product_data = product
                         if price:
                             self.manager.display_price = price
-                        print("✅ ProductData Amazon récupérés: %s" % getattr(self.manager, 'display_price', ''))
+                        print("✅ ProductData Amazon récupérés:", getattr(self.manager, "display_price", ""))
                         self.manager._dispatch_state_change()
                 else:
                     print("⚠️ ProductData Amazon vides")
                     self.manager.amazon_product_data = None
-                    self.manager._notify_error("Produit indisponible sur Amazon", provider="amazon")
+                    self.manager._notify_error(
+                        "Produit indisponible sur Amazon", provider="amazon"
+                    )
             else:
                 print(f"⚠️ ProductData Amazon indisponibles (status {response_status})")
                 self.manager.amazon_product_data = None
@@ -392,8 +465,13 @@ class AmazonPurchasingListener(PythonJavaClass):  # pragma: no cover
             print(f"✗ Exception lecture UserData Amazon: {exc}")
 
 
+# ──────────────────────────────────────────────────────────────────────────────
+# MANAGER CENTRAL
+# ──────────────────────────────────────────────────────────────────────────────
 class InAppPurchaseManager:
     """Gestionnaire centralisé des achats in-app (Google Play et Amazon)."""
+
+    GOOGLE_INAPP_PRODUCT_ID = "premium_features"  # ← adapte si nécessaire
 
     def __init__(self):
         self.billing_ready = False
@@ -408,74 +486,56 @@ class InAppPurchaseManager:
         self.activity = None
         self.listeners = []
 
-        # Initialiser les services selon la plateforme
         self._init_billing_services()
 
+    # ── INIT
     def _init_billing_services(self):
-        """Initialise les services de facturation selon la plateforme détectée."""
         if not PYJNIUS_AVAILABLE:
             print("ℹ️ PyJNIUS non disponible - mode desktop simulé")
-            # En mode desktop, considérer comme prêt immédiatement avec simulation
             self.billing_ready = True
             self._dispatch_state_change()
             return
 
         try:
-            # Détection de la plateforme
-            from jnius import autoclass as jnius_autoclass
-            Build = jnius_autoclass('android.os.Build')
+            Build = autoclass("android.os.Build")
             manufacturer = Build.MANUFACTURER.lower()
 
-            if 'amazon' in manufacturer:
-                # Amazon Fire TV/Tablets
+            if "amazon" in manufacturer:
                 self._init_amazon_billing()
             else:
-                # Google Play (Android standard)
                 self._init_google_billing()
 
         except Exception as exc:
             print(f"⚠️ Erreur initialisation billing: {exc}")
 
     def _init_google_billing(self):
-        """Initialise Google Play Billing."""
+        """Initialise Google Play Billing v8."""
         try:
-            from jnius import autoclass
-            # Use PythonActivity.mActivity as the Android Context (safer than passing the android.activity module)
+            # Activity/Context
             try:
-                PythonActivity = autoclass('org.kivy.android.PythonActivity')
-                ctx = getattr(PythonActivity, 'mActivity', None)
+                PythonActivity = autoclass("org.kivy.android.PythonActivity")
+                ctx = getattr(PythonActivity, "mActivity", None)
             except Exception:
                 ctx = None
-
-            # Fallback: try to import android.activity if ctx not available
             if ctx is None:
                 try:
-                    from android import activity as _activity_module
+                    from android import activity as _activity_module  # type: ignore
                     ctx = _activity_module
                 except Exception:
                     ctx = None
-
             if ctx is None:
-                raise RuntimeError('No Android Context available for Billing initialization')
+                raise RuntimeError("No Android Context for Billing init")
 
             self.activity = ctx
-            self.google_client_class = autoclass('com.android.billingclient.api.BillingClient')
-            self.google_billing_client = None
+            self.google_client_class = autoclass("com.android.billingclient.api.BillingClient")
 
-            # Créer le client de facturation
-            # Some BillingClient versions provide enablePendingPurchases as a
-            # static/class method that must be called on the BillingClient class
-            # (not on the builder instance). Call the class method if present
-            # to avoid Java signature mismatch errors.
+            # Builder + listener
             builder = self.google_client_class.newBuilder(ctx)
             builder.setListener(GooglePurchasesUpdatedListener(self))
-
-
-            # Appel obligatoire sur l’instance builder pour BillingClient v8
-            builder.enablePendingPurchases()
+            builder.enablePendingPurchases()  # obligatoire
             self.google_billing_client = builder.build()
 
-            # Se connecter au service
+            # Connexion
             self.google_billing_client.startConnection(GoogleBillingStateListener(self))
 
         except Exception as exc:
@@ -484,158 +544,176 @@ class InAppPurchaseManager:
     def _init_amazon_billing(self):
         """Initialise Amazon In-App Purchasing."""
         try:
-            from jnius import autoclass
-
-            self.amazon_service = autoclass('com.amazon.device.iap.PurchasingService')
+            self.amazon_service = autoclass("com.amazon.device.iap.PurchasingService")
             self.request_status_class = autoclass(
                 "com.amazon.device.iap.model.PurchaseResponse$RequestStatus"
             )
-
-            # Enregistrer le listener
             listener = AmazonPurchasingListener(self)
             self.amazon_service.registerListener(activity.getApplicationContext(), listener)
             self.listeners.append(listener)
-
-            # Amazon IAP est prêt immédiatement après l'enregistrement
             self.billing_ready = True
             self._dispatch_state_change()
             print("✅ Amazon IAP initialisé et prêt")
-
         except Exception as exc:
             print(f"✗ Erreur initialisation Amazon IAP: {exc}")
 
+    # ── READY → FETCH PRODUCT DETAILS + RESTORE
     def _on_google_billing_ready(self):
-        """Appelé quand Google Billing est prêt."""
         self.billing_ready = True
         self._dispatch_state_change()
+        self._fetch_google_product_details()
+        self.restore_google_purchases()
 
-        # Récupérer les détails du produit
+    def _fetch_google_product_details(self):
+        """Interroge les ProductDetails via ArrayList Java (v8)."""
         try:
-            from jnius import autoclass
-            QueryProductDetailsParams_Builder = autoclass('com.android.billingclient.api.QueryProductDetailsParams$Builder')
+            QueryProductDetailsParams_Builder = autoclass(
+                "com.android.billingclient.api.QueryProductDetailsParams$Builder"
+            )
+            Product_Builder = autoclass(
+                "com.android.billingclient.api.QueryProductDetailsParams$Product$Builder"
+            )
+            ArrayList = autoclass("java.util.ArrayList")
 
-            # Créer la liste des produits à interroger
-            product_list = []
-            product_builder = autoclass('com.android.billingclient.api.QueryProductDetailsParams$Product$Builder')
-            product = product_builder.newBuilder()\
-                .setProductId("premium_features")\
-                .setProductType(self.google_client_class.ProductType.INAPP)\
+            product = (
+                Product_Builder()
+                .setProductId(self.GOOGLE_INAPP_PRODUCT_ID)
+                .setProductType(self.google_client_class.ProductType.INAPP)
                 .build()
-            product_list.append(product)
+            )
+            product_list = ArrayList()
+            product_list.add(product)
 
-            params = QueryProductDetailsParams_Builder.newBuilder()\
+            params = QueryProductDetailsParams_Builder()\
                 .setProductList(product_list)\
                 .build()
 
             self.google_billing_client.queryProductDetailsAsync(
-                params,
-                GoogleProductDetailsListener(self)
+                params, GoogleProductDetailsListener(self)
             )
-
         except Exception as exc:
             print(f"⚠️ Erreur requête ProductDetails: {exc}")
 
+    # ── PUBLIC
     def is_ready(self):
-        """Retourne True si le système de facturation est prêt."""
         return self.billing_ready
 
-    def _dispatch_state_change(self):
-        """Dispatch a safe state-change notification to any registered listeners.
+    def get_product_price(self):
+        return self.display_price or "Prix non disponible"
 
-        Many parts of the app call this method; on desktop we simply notify
-        listener objects if they expose a callback. This avoids AttributeError
-        when the Android billing stack is not present.
-        """
+    def add_listener(self, listener_obj_or_callable):
+        """Optionnel: enregistre un listener UI local pour être notifié des changements."""
+        self.listeners.append(listener_obj_or_callable)
+
+    # ── EVENTS
+    def _dispatch_state_change(self):
         try:
             for listener in getattr(self, "listeners", []):
                 try:
-                    # Preferred hook name (if UI register this)
                     if hasattr(listener, "on_billing_state_change"):
                         listener.on_billing_state_change()
-                    # Generic callable listener support
                     elif callable(listener):
                         listener()
                 except Exception:
-                    # Do not fail the whole flow for one bad listener
                     continue
         except Exception:
             pass
 
     def _notify_success(self, provider, product_ids=None):
-        """Notifie un achat réussi."""
         print(f"✅ Achat {provider} réussi")
-        
-        # Appeler le callback de succès de l'app pour chaque produit acheté
         if product_ids:
             try:
                 from kivy.app import App
                 app = App.get_running_app()
                 if app:
                     for product_id in product_ids:
-                        app.on_purchase_success(product_id, provider)
+                        try:
+                            app.on_purchase_success(product_id, provider)
+                        except Exception as e:
+                            print(f"❌ Erreur on_purchase_success({product_id}): {e}")
             except Exception as e:
                 print(f"❌ Erreur appel on_purchase_success: {e}")
         else:
             print("⚠️ Aucun product_id fourni pour la notification de succès")
 
     def _notify_error(self, message, provider, warn_only=False):
-        """Notifie une erreur d'achat."""
         level = "⚠️" if warn_only else "❌"
         print(f"{level} Erreur {provider}: {message}")
 
-    def purchase_product(self, product_id):
-        """Lance le processus d'achat pour un produit."""
+    # ── PURCHASE
+    def purchase_product(self, product_id: str | None = None):
+        """Lance l'achat Google/Amazon pour product_id (par défaut premium_features)."""
         if not self.billing_ready:
             self._notify_error("Service de paiement non prêt", "system")
             return
 
+        target_id = product_id or self.GOOGLE_INAPP_PRODUCT_ID
+
         try:
             if self.google_billing_client:
-                # Google Play
-                self._launch_google_purchase(product_id)
+                self._launch_google_purchase(target_id)
             elif self.amazon_service:
-                # Amazon
-                self._launch_amazon_purchase(product_id)
+                self._launch_amazon_purchase(target_id)
             else:
                 self._notify_error("Aucun service de paiement disponible", "system")
-
         except Exception as exc:
             print(f"✗ Exception lancement achat: {exc}")
             self._notify_error("Erreur lancement achat", "system")
 
     def _launch_google_purchase(self, product_id):
-        """Lance un achat Google Play."""
         try:
-            from jnius import autoclass
-
             if not self.google_product_details:
                 self._notify_error("Détails produit non disponibles", "google")
                 return
 
-            # Créer les paramètres d'achat
-            BillingFlowParams_Builder = autoclass('com.android.billingclient.api.BillingFlowParams$Builder')
-            params = BillingFlowParams_Builder.newBuilder()\
+            # Billing v8: ProductDetailsParams list
+            BillingFlowParams_Builder = autoclass(
+                "com.android.billingclient.api.BillingFlowParams$Builder"
+            )
+            ProductDetailsParams_Builder = autoclass(
+                "com.android.billingclient.api.BillingFlowParams$ProductDetailsParams$Builder"
+            )
+            ArrayList = autoclass("java.util.ArrayList")
+
+            pdp = ProductDetailsParams_Builder()\
                 .setProductDetails(self.google_product_details)\
                 .build()
 
-            # Lancer sur le thread UI
+            pdp_list = ArrayList()
+            pdp_list.add(pdp)
+
+            params = BillingFlowParams_Builder()\
+                .setProductDetailsParamsList(pdp_list)\
+                .build()
+
             runnable = LaunchBillingRunnable(self, params)
-            from android.runnable import run_on_ui_thread
-            run_on_ui_thread(runnable.run)()
+            run_on_ui_thread(runnable.run)()  # type: ignore
 
         except Exception as exc:
             print(f"✗ Exception achat Google: {exc}")
             self._notify_error("Erreur achat Google", "google")
 
     def _launch_amazon_purchase(self, product_id):
-        """Lance un achat Amazon."""
         try:
-            # Demander l'achat
             self.amazon_service.purchase(product_id)
         except Exception as exc:
             print(f"✗ Exception achat Amazon: {exc}")
             self._notify_error("Erreur achat Amazon", "amazon")
 
-    def get_product_price(self):
-        """Retourne le prix formaté du produit."""
-        return self.display_price or "Prix non disponible"
+    # ── RESTORE
+    def restore_google_purchases(self):
+        """Restaure les achats INAPP déjà effectués (et ack si besoin)."""
+        try:
+            QueryPurchasesParams_Builder = autoclass(
+                "com.android.billingclient.api.QueryPurchasesParams$Builder"
+            )
+            params = (
+                QueryPurchasesParams_Builder()
+                .setProductType(self.google_client_class.ProductType.INAPP)
+                .build()
+            )
+            self.google_billing_client.queryPurchasesAsync(
+                params, GooglePurchasesResponseListener(self)
+            )
+        except Exception as e:
+            print(f"⚠️ restore_google_purchases failed: {e}")

@@ -58,7 +58,12 @@
     "thanks_title": "Grazie!",
     "touch_to_enlarge": "🔍 Tocca per ingrandire",
     "upright": "⬆ DRITTA ⬆",
-    "your_card": "La tua carta"
+    "your_card": "La tua carta",
+    "about": "Informazioni"
+  },
+  "about": {
+    "title": "Informazioni",
+    "disclaimer": "Questa app è solo a scopo ricreativo. Le letture sono casuali e non costituiscono consulenza professionale né una consultazione in presenza. Per decisioni importanti rivolgiti a un professionista qualificato.\n\nIl tuo percorso si costruisce con ogni scelta. Le carte offrono prospettive, ma resti l’autore della tua vita. Fidati della tua intuizione, avanza passo dopo passo e prenditi cura di te."
   },
   "significations": {
     "Cavaliere di Bastoni": {

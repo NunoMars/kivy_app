@@ -58,7 +58,12 @@
     "thanks_title": "Thanks!",
     "touch_to_enlarge": "🔍 Touch to enlarge",
     "upright": "⬆ UPRIGHT ⬆",
-    "your_card": "Your card"
+    "your_card": "Your card",
+    "about": "About"
+  },
+  "about": {
+    "title": "About",
+    "disclaimer": "This app is for entertainment purposes only. Readings are random and do not constitute professional advice or an in-person consultation. For important decisions, seek advice from a qualified professional.\n\nYour path is shaped by your choices. The cards offer perspectives, but you remain the author of your life. Trust your intuition, move step by step, and take care of yourself."
   },
   "significations": {
     "major_00": {

@@ -58,7 +58,12 @@
     "thanks_title": "Danke!",
     "touch_to_enlarge": "🔍 Zum Vergrößern tippen",
     "upright": "⬆ AUFRECHT ⬆",
-    "your_card": "Deine Karte"
+    "your_card": "Deine Karte",
+    "about": "Über"
+  },
+  "about": {
+    "title": "Über diese App",
+    "disclaimer": "Diese App dient ausschließlich der Unterhaltung. Die Ziehungen sind zufällig und stellen keine professionelle Beratung oder persönliche Konsultation dar. Für wichtige Entscheidungen wenden Sie sich an eine qualifizierte Fachperson.\n\nIhr Weg entsteht aus Ihren Entscheidungen. Die Karten geben Impulse, doch Sie bleiben die Autorin/der Autor Ihres Lebens. Vertrauen Sie Ihrer Intuition, gehen Sie Schritt für Schritt und sorgen Sie gut für sich."
   },
   "significations": {
     "Bube der Kelche": {

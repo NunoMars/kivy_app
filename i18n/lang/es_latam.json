@@ -58,7 +58,12 @@
     "thanks_title": "¡Gracias!",
     "touch_to_enlarge": "🔍 Toca para ampliar",
     "upright": "⬆ AL DERECHO ⬆",
-    "your_card": "Tu carta"
+    "your_card": "Tu carta",
+    "about": "Acerca de"
+  },
+  "about": {
+    "title": "Acerca de",
+    "disclaimer": "Esta aplicación es solo con fines recreativos. Las tiradas son aleatorias y no constituyen asesoramiento profesional ni una consulta presencial. Para decisiones importantes, consulta a un profesional calificado.\n\nTu camino se construye con cada decisión. Las cartas ofrecen perspectivas, pero tú sigues siendo el autor de tu vida. Confía en tu intuición, avanza paso a paso y cuídate."
   },
   "significations": {
     "Caballero de Bastos": {

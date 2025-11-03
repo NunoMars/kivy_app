@@ -58,7 +58,12 @@
     "thanks_title": "Teşekkürler!",
     "touch_to_enlarge": "🔍 Büyütmek için dokunun",
     "upright": "⬆ DÜZ ⬆",
-    "your_card": "Kartınız"
+    "your_card": "Kartınız",
+    "about": "Hakkında"
+  },
+  "about": {
+    "title": "Uygulama Hakkında",
+    "disclaimer": "Bu uygulama yalnızca eğlence amaçlıdır. Açılımlar rastgeledir ve profesyonel tavsiye ya da yüz yüze danışmanlığın yerine geçmez. Önemli kararlar için yetkin bir uzmana danışın.\n\nYolunuz, yaptığınız seçimlerle şekillenir. Kartlar bakış açıları sunar, ancak hayatınızın yazarı yine sizsiniz. Sezginize güvenin, adım adım ilerleyin ve kendinize iyi bakın."
   },
   "significations": {
     "Adalet": {

@@ -32,9 +32,6 @@ from kivy.animation import Animation
 from kivy.logger import Logger
 from kivy.resources import resource_find
 
-# Local i18n helpers provided by main.py
-
-
 # Popups
 from popups import LoadingPopup, FullScreenCardPopup, MmeTChatPopup, AdPopup, AdsPopup
 
@@ -95,6 +92,7 @@ class CardScreen(Screen):
     def update_bg(self, instance, value):
         self.bg.pos = instance.pos
         self.bg.size = instance.size
+
     def __init__(self, **kwargs):
         super(CardScreen, self).__init__(**kwargs)
         app = App.get_running_app()
@@ -178,6 +176,30 @@ class CardScreen(Screen):
         self.ad_banner.bind(size=lambda inst, val: setattr(inst, 'text_size', (val[0] * 0.95, None)))
         self.ad_banner.opacity = 0
         layout.add_widget(self.ad_banner)
+
+        # --- Bouton "À propos" (disclaimer) en bas ---
+        about_container = BoxLayout(orientation="horizontal", size_hint_y=None, height=dp(44), padding=[0, dp(4), 0, 0])
+        about_btn = Button(
+            text=self.tr("messages.about") if callable(self.tr) else "À propos",
+            size_hint=(0.5, 1),
+            pos_hint={'center_x': 0.5},
+            background_normal='',
+            background_color=[0, 0, 0, 0],
+            color=[1, 1, 1, 1],
+            font_size="14sp",
+            font_name=self.font_body,
+        )
+        # Style arrondi pour s'aligner avec les autres boutons
+        with about_btn.canvas.before:
+            Color(0.6, 0.4, 0.2, 1.0)
+            about_bg = RoundedRectangle(pos=about_btn.pos, size=about_btn.size, radius=[20, 20, 20, 20])
+        about_btn.bind(pos=lambda i, v: setattr(about_bg, 'pos', v), size=lambda i, v: setattr(about_bg, 'size', v))
+        def _go_about(*_):
+            if self.manager:
+                self.manager.current = "about_screen"
+        about_btn.bind(on_press=_go_about)
+        about_container.add_widget(about_btn)
+        layout.add_widget(about_container)
 
         self.add_widget(layout)
 
@@ -285,7 +307,6 @@ class CardScreen(Screen):
     def perform_card_draw(self, _dt):
         try:
             # Tirage basé directement sur les clés fournies par la langue courante
-            # get_cards_signification() doit retourner le dict "significations" de la langue active
             app = App.get_running_app()
             if app and hasattr(app, 'get_cards_signification'):
                 cards_signification = app.get_cards_signification() or {}
@@ -375,6 +396,7 @@ class ResponseScreen(Screen):
         # Met à jour le bouton premium si besoin
         if hasattr(self, 'premium_btn'):
             self.premium_btn.text = (self.tr("messages.chat_mme_t") or "Chat Mme T") + " (Achat in-app)"
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         app = App.get_running_app()
@@ -611,6 +633,15 @@ class ResponseScreen(Screen):
 
         self.add_widget(main_layout)
 
+        # --- écoute des changements de l'état Billing pour mettre à jour le bouton ---
+        try:
+            app = App.get_running_app()
+            billing = getattr(app, 'billing', None)
+            if billing and hasattr(billing, "add_listener"):
+                billing.add_listener(self.on_billing_state_change)
+        except Exception:
+            pass
+
         # debug overlay removed
 
     # ------------------------------------------------------------
@@ -625,27 +656,6 @@ class ResponseScreen(Screen):
         app = App.get_running_app()
         try:
             self._apply_all(app)
-        except Exception:
-            pass
-
-    def on_enter(self, *args):
-        """Ensure translations/fonts are applied on enter and force readable label colors."""
-        super().on_enter(*args)
-        try:
-            app = App.get_running_app()
-            self._apply_all(app)
-        except Exception:
-            pass
-        # Force text color white-ish to avoid invisible text on some Android backgrounds
-        try:
-            if hasattr(self, 'card_name_label'):
-                self.card_name_label.color = (1, 1, 1, 1)
-            if hasattr(self, 'card_state_label'):
-                self.card_state_label.color = (1, 1, 1, 1)
-            if hasattr(self, 'keywords_label'):
-                self.keywords_label.color = (1, 1, 1, 1)
-            if hasattr(self, 'signification_label'):
-                self.signification_label.color = (1, 1, 1, 1)
         except Exception:
             pass
 
@@ -698,9 +708,7 @@ class ResponseScreen(Screen):
 
         popup = FullScreenCardPopup(
             card_image_source=self.current_card_image_path or self.card_image.source,
-            card_name=display_name,
-            card_state=card_state_text,
-            tr=self.tr
+            card_name=display_name
         )
         popup.open()
 
@@ -758,8 +766,21 @@ class ResponseScreen(Screen):
             self.back_btn.font_name = self.font_body
 
     def apply_i18n(self, *args):
-        self.card_name_label.text = self.tr("messages.app_title")
-        self.card_state_label.text = self.tr("messages.upright")
+        # Ne pas écraser le nom de la carte si déjà présent
+        if hasattr(self, 'current_card_name') and self.current_card_name:
+            # Utilise le nom localisé si possible
+            app = App.get_running_app()
+            cards = app.get_cards_signification() if app and hasattr(app, 'get_cards_signification') else {}
+            info = cards.get(self.current_card_name, {}) if isinstance(cards, dict) else {}
+            display_name = info.get("name", self.current_card_name)
+            self.card_name_label.text = display_name
+        else:
+            self.card_name_label.text = self.tr("messages.app_title")
+        # Affiche l’état réel de la carte (upright ou reversed)
+        if hasattr(self, 'current_card_state') and self.current_card_state == "reversed":
+            self.card_state_label.text = self.tr("messages.reversed")
+        else:
+            self.card_state_label.text = self.tr("messages.upright")
         self.keywords_label.text = ""
         if hasattr(self, 'signification_label'):
             self.signification_label.text = self.tr("messages.loading")
@@ -798,7 +819,11 @@ class ResponseScreen(Screen):
 
     def go_back(self, *_):
         if self.manager:
-            self.manager.current = "card_screen"
+            # Revenir au screen de tirage (nom tolérant)
+            try:
+                self.manager.current = "card_screen"
+            except Exception:
+                self.manager.current = "main_screen"
 
     def purchase_chat_luna(self, *_):
         app = App.get_running_app()
@@ -823,7 +848,26 @@ class ResponseScreen(Screen):
             except Exception as e:
                 print(f"⚠️ Échec ouverture popup Mme T après achat simulé: {e}")
             return
-        # ... code Android ...
+
+        # --- ANDROID réel ---
+        try:
+            app = App.get_running_app()
+            billing = getattr(app, 'billing', None)
+            if billing and billing.is_ready():
+                billing.purchase_product("premium_features")
+            else:
+                # informe l'utilisateur que la boutique n'est pas prête
+                self.update_premium_button(False, None, "disabled")
+                self._open_purchase_popup(
+                    title=self.tr("messages.store_preparing"),
+                    message=self.tr("messages.store_mobile_only")
+                )
+        except Exception as e:
+            print(f"⚠️ Exception achat Android: {e}")
+            self._open_purchase_popup(
+                title=self.tr("messages.purchase_error_title"),
+                message=str(e)
+            )
 
     def _open_purchase_popup(self, title: str, message: str):
         layout = BoxLayout(orientation='vertical', padding=16, spacing=12)
@@ -850,24 +894,6 @@ class ResponseScreen(Screen):
                 self.premium_btn_bg.size = instance.size
         except Exception:
             pass
-
-    def show_fullscreen_card(self, *_):
-        try:
-            app = App.get_running_app()
-            if app and hasattr(app, 'get_cards_signification'):
-                cards = app.get_cards_signification() or {}
-            else:
-                cards = {}
-            info = cards.get(self.current_card_name, {}) if isinstance(cards, dict) else {}
-            display_name = info.get("name", self.current_card_name)
-        except Exception:
-            display_name = self.current_card_name
-
-        popup = FullScreenCardPopup(
-            card_image_source=self.current_card_image_path or self.card_image.source,
-            card_name=display_name,
-        )
-        popup.open()
 
     def update_premium_button(self, available, price_text, mode):
         self.mode = mode  # Stocker le mode pour simulation
@@ -957,33 +983,6 @@ class ResponseScreen(Screen):
         parts.append(f"Langue de réponse: {self.lang}")
         try:
             app = App.get_running_app()
-            drawn = getattr(app, 'last_drawn_cards', None)
-            if drawn and isinstance(drawn, (list, tuple)) and len(drawn) > 0:
-                def fmt(c, s):
-                    display = c if c else self.tr('messages.your_card')
-                    state_label = self.tr('messages.upright') if s == 'upright' else self.tr('messages.reversed')
-                    return f"{display} ({state_label})"
-                drawn_summary = " | ".join(fmt(c, s) for c, s in drawn)
-                parts.append(f"{self.tr('messages.draw_card')} ({len(drawn)}): {drawn_summary}")
-        except Exception:
-            pass
-        card_title = (self.card_name_label.text or "").strip()
-        if card_title:
-            parts.append(f"{self.tr('messages.your_card')}: {card_title}")
-        card_state = (self.card_state_label.text or "").strip()
-        if card_state:
-            parts.append(f"Position: {card_state}")
-        keywords = (self.keywords_label.text or "").strip()
-        if keywords:
-            clean_keywords = keywords.replace("💫", "").strip()
-            if clean_keywords:
-                parts.append(f"Keywords: {clean_keywords}")
-        return " | ".join(parts)
-    def _build_mme_t_context(self):
-        parts = []
-        parts.append(f"Langue de réponse: {self.lang}")
-        try:
-            app = App.get_running_app()
             get_cards_signification = getattr(app, 'get_cards_signification', None)
             cards = get_cards_signification() if callable(get_cards_signification) else {}
             drawn = getattr(app, 'last_drawn_cards', None)
@@ -1012,7 +1011,10 @@ class ResponseScreen(Screen):
         if not self.manager:
             return
         def _switch(_dt):
-            self.manager.current = "card_screen"
+            try:
+                self.manager.current = "card_screen"
+            except Exception:
+                self.manager.current = "main_screen"
         Clock.schedule_once(_switch, 0)
 
     def _open_purchase_popup(self, title: str, message: str):
@@ -1038,12 +1040,34 @@ class ResponseScreen(Screen):
             pass
 
     def on_enter(self, *args):
+        """Fusion : i18n + fonts + couleurs + pubs + état Billing."""
         super().on_enter(*args)
-        # Toujours rafraîchir les traductions à l'entrée de l'écran
+        # i18n
         try:
             self.refresh_translations()
         except Exception as e:
             print(f"[DEBUG] refresh_translations failed: {e}")
+
+        # Couleurs lisibles (merge de l'ancien on_enter)
+        try:
+            if hasattr(self, 'card_name_label'):
+                self.card_name_label.color = (1, 1, 1, 1)
+            if hasattr(self, 'card_state_label'):
+                self.card_state_label.color = (1, 1, 1, 1)
+            if hasattr(self, 'keywords_label'):
+                self.keywords_label.color = (1, 1, 1, 1)
+            if hasattr(self, 'signification_label'):
+                self.signification_label.color = (1, 1, 1, 1)
+        except Exception:
+            pass
+
+        # Billing state → bouton premium & prix
+        try:
+            self.on_billing_state_change()
+        except Exception:
+            pass
+
+        # Pubs
         try:
             app = App.get_running_app()
             if hasattr(app, 'ads') and hasattr(app.ads, 'show_banner'):
@@ -1075,3 +1099,130 @@ class ResponseScreen(Screen):
             self.setup_card(drawn[0][0], drawn[0][1])
             if hasattr(self, "set_full_draw"):
                 self.set_full_draw(drawn)
+
+    # ─────────────────────────────────────────────────────────
+    # Billing listener hook (MAJ UI quand prêt / prix récupéré)
+    # ─────────────────────────────────────────────────────────
+    def on_billing_state_change(self, *args):
+        """Appelé quand le billing est prêt / prix chargé → met à jour le bouton."""
+        try:
+            app = App.get_running_app()
+            billing = getattr(app, 'billing', None)
+            if billing and billing.is_ready():
+                price_txt = billing.get_product_price()
+                self.update_premium_button(True, price_txt, "google")
+            else:
+                self.update_premium_button(False, None, "disabled")
+        except Exception:
+            self.update_premium_button(False, None, "disabled")
+
+
+# ================================================================
+# ℹ️ ABOUT SCREEN (Disclaimer)
+# ================================================================
+class AboutScreen(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        app = App.get_running_app()
+        self.tr = getattr(app, 'tr', lambda k: k)
+        self.lang = getattr(app, 'lang', 'fr')
+        self.font_body = getattr(app, 'font_body', 'Body')
+
+        root = BoxLayout(orientation="vertical", padding=dp(15), spacing=dp(8))
+        with root.canvas.before:
+            Color(0.1, 0.07, 0.14, 1)
+            self._about_bg = Rectangle(pos=root.pos, size=root.size)
+        root.bind(pos=lambda i, v: setattr(self._about_bg, 'pos', v), size=lambda i, v: setattr(self._about_bg, 'size', v))
+
+        title = Label(
+            text=self.tr("about.title"),
+            font_size="24sp",
+            color=[0.9, 0.75, 0.35, 1],
+            size_hint_y=None,
+            height=dp(46),
+            bold=True,
+            halign='center',
+            valign='middle',
+            font_name=self.font_body,
+        )
+        title.bind(size=lambda i, v: setattr(i, 'text_size', (v[0] * 0.95, None)))
+        root.add_widget(title)
+
+        scroll = ScrollView(size_hint_y=1)
+        disclaimer = Label(
+            text=self.tr("about.disclaimer"),
+            font_size="17sp",
+            color=[1, 1, 1, 1],
+            halign='center',
+            valign='top',
+            size_hint_y=None,
+            padding=[dp(10), dp(6)],
+            font_name=self.font_body,
+        )
+        disclaimer.bind(
+            width=lambda i, v: setattr(i, 'text_size', (v * 0.96, None)),
+            texture_size=lambda i, v: setattr(i, 'height', v[1] + dp(10))
+        )
+        scroll.add_widget(disclaimer)
+        root.add_widget(scroll)
+
+        bottom = BoxLayout(orientation="horizontal", size_hint_y=None, height=dp(56), spacing=dp(10))
+
+        support_btn = Button(
+            text=self.tr("messages.support") if callable(self.tr) else "Soutenir",
+            size_hint=(0.5, 1),
+            background_normal='',
+            background_color=[0, 0, 0, 0],
+            color=[1, 1, 1, 1],
+            font_size="16sp",
+            bold=True,
+            font_name=self.font_body,
+        )
+        with support_btn.canvas.before:
+            Color(0.35, 0.15, 0.55, 1)  # violet comme le bouton premium
+            support_bg = RoundedRectangle(pos=support_btn.pos, size=support_btn.size, radius=[25, 25, 25, 25])
+        support_btn.bind(pos=lambda i, v: setattr(support_bg, 'pos', v), size=lambda i, v: setattr(support_bg, 'size', v))
+        def _start_new_reading(*_):
+            try:
+                if self.manager:
+                    try:
+                        card = self.manager.get_screen("card_screen")
+                    except Exception:
+                        card = self.manager.get_screen("main_screen")
+                    if hasattr(card, 'perform_card_draw'):
+                        card.perform_card_draw(0)
+                    else:
+                        self.manager.current = getattr(card, 'name', 'card_screen')
+            except Exception as e:
+                print(f"Erreur nouveau tirage depuis À propos: {e}")
+
+        def _open_support(*_):
+            try:
+                popup = AdsPopup(on_close_callback=_start_new_reading, tr=self.tr)
+                popup.open()
+            except Exception as e:
+                print(f"Erreur ouverture AdsPopup: {e}")
+        support_btn.bind(on_press=_open_support)
+        bottom.add_widget(support_btn)
+
+        new_btn = Button(
+            text=self.tr("messages.new_reading"),
+            size_hint=(0.5, 1),
+            background_normal='',
+            background_color=[0, 0, 0, 0],
+            color=[1, 1, 1, 1],
+            font_size="16sp",
+            bold=True,
+            font_name=self.font_body,
+        )
+        with new_btn.canvas.before:
+            Color(0.6, 0.4, 0.2, 1.0)
+            new_btn_bg = RoundedRectangle(pos=new_btn.pos, size=new_btn.size, radius=[25, 25, 25, 25])
+        new_btn.bind(pos=lambda i, v: setattr(new_btn_bg, 'pos', v), size=lambda i, v: setattr(new_btn_bg, 'size', v))
+        # new_btn réutilise le même comportement que la pub une fois fermée
+        # (tirage immédiat)
+        new_btn.bind(on_press=_start_new_reading)
+        bottom.add_widget(new_btn)
+
+        root.add_widget(bottom)
+        self.add_widget(root)

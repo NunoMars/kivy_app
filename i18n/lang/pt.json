@@ -20,6 +20,7 @@
     "tap_to_return": "Toque na carta para voltar",
     "touch_to_enlarge": "🔍 Toque para ampliar",
     "your_card": "Sua carta",
+    "about": "Sobre",
     "support_app": "Apoie o app",
     "ad_message": "Gosta deste aplicativo gratuito?\nAjude-nos a mantê-lo e melhorá-lo!",
     "later": "Mais tarde",
@@ -59,6 +60,10 @@
     "configure_backend_hint": "Configure MME_T_BACKEND_URL para ativar a consulta da Mme T.",
     "purchase_error_title": "Compra não realizada",
     "thanks_title": "Obrigada!"
+  },
+  "about": {
+    "title": "Sobre",
+    "disclaimer": "Este aplicativo destina-se ao entretenimento. As leituras são aleatórias e não constituem aconselhamento profissional nem consulta presencial. Para decisões importantes, procure um profissional qualificado.\n\nSeu caminho é construído a cada decisão. As cartas oferecem perspectivas, mas você continua sendo o autor da sua vida. Confie na sua intuição, avance passo a passo e cuide de si."
   },
   "significations": {
     "major_00": {

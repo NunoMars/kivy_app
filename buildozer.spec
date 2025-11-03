@@ -6,8 +6,8 @@ package.name = macartedetarot
 package.domain = org.tarot
 source.dir = .
 
-version = 1.15
-android.numeric_version = 1150000
+version = 1.16
+android.numeric_version = 1160000
 author = © Nuno Marcelino
 
 # ───────────────────────────────
@@ -57,7 +57,7 @@ android.permissions = INTERNET, ACCESS_NETWORK_STATE, com.google.android.gms.per
 # ───────────────────────────────
 # 💰 AdMob / Billing
 android.meta_data = com.google.android.gms.ads.APPLICATION_ID=ca-app-pub-5749803259882370~1482612480
-android.add_gradle_repositories = mavenCentral()
+android.add_gradle_repositories = "mavenCentral()"
 # Vos dépendances Gradle sont bien définies pour les fonctionnalités avancées
 android.gradle_dependencies = com.google.android.gms:play-services-ads:23.6.0, com.android.billingclient:billing-ktx:8.0.0
 
@@ -76,9 +76,10 @@ android.exclude_patterns = *.bak,*.tmp,*.log,__pycache__/,*.spec
 # ───────────────────────────────
 # 🔏 Signature release
 android.release_keystore = googleplay.keystore
-android.release_keystore_passwd = nunotheboss
+# Buildozer/P4A attend les clés suffixées par _password (et non _passwd)
+android.release_keystore_password = nunotheboss
 android.release_keyalias = upload
-android.release_keyalias_passwd = nunotheboss
+android.release_keyalias_password = nunotheboss
 
 # ───────────────────────────────
 # 🧩 Options générales Buildozer
@@ -91,27 +92,16 @@ log_level = 2
 android.add_manifest_xml = """
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools">
-
-    <!-- Supprime la permission Billing legacy injectée par billing-ktx -->
-    <uses-permission
-        android:name="com.android.vending.BILLING"
-        tools:node="remove" />
-
-    <!-- Corrige les <queries> générées par Ads :
-         1) on retire la variante cassée (path="tel:")
-         2) on ajoute la bonne (scheme="tel") -->
+    <uses-permission android:name="com.android.vending.BILLING" tools:node="remove" />
     <queries tools:node="merge">
-
         <intent tools:node="remove">
             <action android:name="android.intent.action.DIAL" />
             <data android:path="tel:" />
         </intent>
-
         <intent>
             <action android:name="android.intent.action.DIAL" />
             <data android:scheme="tel" />
         </intent>
-
     </queries>
 </manifest>
 """
