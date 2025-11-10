@@ -1,0 +1,6 @@
+# app-ads.txt pour Ma Carte De Tarot
+# Ce fichier permet à Google AdMob de vérifier l'authenticité de votre app
+# et prévenir la fraude publicitaire (Authorized Digital Sellers)
+
+# Google AdMob
+google.com, pub-5749803259882370, DIRECT, f08c47fec0942fa0
