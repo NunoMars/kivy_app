@@ -1,15 +1,44 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""Lightweight AdMob wrapper for Kivy / python-for-android.
+
+The bundled AdsManager depends on the following surface:
+- new_banner(ad_unit_id, top=False)
+- request_banner()
+- show_banner()
+- hide_banner()
+- new_interstitial(ad_unit_id)
+- request_interstitial()
+- show_interstitial()
+- is_interstitial_loaded()
+
+This module implements that API on top of Google Mobile Ads SDK 23+, using
+Pyjnius bridges when running on Android. On desktop the calls silently no-op.
 """
-KivMob - Simplified AdMob wrapper for Kivy
-Compatible with Google Mobile Ads SDK
-"""
-from kivy.utils import platform
+from __future__ import annotations
+
+from typing import Optional
+
 from kivy.logger import Logger
+from kivy.utils import platform
+
+try:  # Android-only imports guarded for desktop execution (build, linters)
+    from jnius import (  # type: ignore
+        PythonJavaClass,
+        autoclass,
+        java_method,
+    )
+    from android.runnable import run_on_ui_thread  # type: ignore
+except Exception:  # pragma: no cover - import errors on non-Android env
+    PythonJavaClass = autoclass = java_method = None  # type: ignore
+
+    def run_on_ui_thread(func):  # type: ignore
+        return func
 
 
 class TestIds:
-    """Test Ad Unit IDs provided by Google"""
+    """Official Google test identifiers."""
+
     BANNER = "ca-app-pub-3940256099942544/6300978111"
     INTERSTITIAL = "ca-app-pub-3940256099942544/1033173712"
     REWARDED = "ca-app-pub-3940256099942544/5224354917"
@@ -18,255 +47,246 @@ class TestIds:
 
 
 class KivMob:
-    """
-    Wrapper simplifié pour Google AdMob sur Android
-    """
-    
-    def __init__(self, app_id=""):
-        """
-        Initialize KivMob
-        
-        Args:
-            app_id (str): AdMob App ID (format: ca-app-pub-XXXXXXXXXXXXXXXX~XXXXXXXXXX)
-        """
+    """Minimal bridge around the Google Mobile Ads SDK for Kivy apps."""
+
+    def __init__(self, app_id: str = "") -> None:
         self.app_id = app_id
         self._is_initialized = False
+        self.banner_ad = None
+        self.banner_position = "bottom"
         self._banner_visible = False
-        
-        if platform == 'android':
-            try:
-                from jnius import autoclass, cast
-                from android.runnable import run_on_ui_thread
-                
-                self.autoclass = autoclass
-                self.cast = cast
-                self.run_on_ui_thread = run_on_ui_thread
-                
-                # Import Android classes
-                self.PythonActivity = autoclass('org.kivy.android.PythonActivity')
-                self.AdView = autoclass('com.google.android.gms.ads.AdView')
-                self.AdRequest = autoclass('com.google.android.gms.ads.AdRequest')
-                self.AdSize = autoclass('com.google.android.gms.ads.AdSize')
-                self.InterstitialAd = autoclass('com.google.android.gms.ads.interstitial.InterstitialAd')
-                self.InterstitialAdLoadCallback = autoclass('com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback')
-                self.MobileAds = autoclass('com.google.android.gms.ads.MobileAds')
-                self.AdError = autoclass('com.google.android.gms.ads.AdError')
-                self.LoadAdError = autoclass('com.google.android.gms.ads.LoadAdError')
-                self.FullScreenContentCallback = autoclass('com.google.android.gms.ads.FullScreenContentCallback')
-                
-                # Get activity and context
-                self.activity = self.PythonActivity.mActivity
-                self.context = self.activity.getApplicationContext()
-                
-                # AdMob objects
-                self.banner_ad = None
-                self.interstitial_ad = None
-                
-                Logger.info("KivMob: Initialized on Android")
-                
-            except Exception as e:
-                Logger.error(f"KivMob: Failed to initialize Android classes: {e}")
-                platform = None  # Fallback to non-Android mode
-        
-        if platform != 'android':
+        self.interstitial_ad = None
+        self._interstitial_unit_id: Optional[str] = None
+
+        if platform != "android" or autoclass is None:
             Logger.warning("KivMob: Not running on Android, ads disabled")
-    
-    def is_initialized(self):
-        """Check if AdMob is initialized"""
-        return self._is_initialized
-    
-    @property
-    def run_on_ui_thread(self):
-        """Get or create run_on_ui_thread decorator"""
-        if platform == 'android':
-            try:
-                from android.runnable import run_on_ui_thread
-                return run_on_ui_thread
-            except:
-                pass
-        
-        # Fallback: no-op decorator
-        def decorator(func):
-            def wrapper(*args, **kwargs):
-                return func(*args, **kwargs)
-            return wrapper
-        return decorator
-    
-    def initialize(self):
-        """Initialize AdMob SDK"""
-        if platform != 'android':
-            Logger.warning("KivMob: Cannot initialize on non-Android platform")
+            self.activity = None
+            self.context = None
             return
-        
-        @self.run_on_ui_thread
-        def init():
+
+        try:
+            self.PythonActivity = autoclass("org.kivy.android.PythonActivity")
+            self.AdView = autoclass("com.google.android.gms.ads.AdView")
+            self.AdRequest = autoclass("com.google.android.gms.ads.AdRequest")
+            self.AdSize = autoclass("com.google.android.gms.ads.AdSize")
+            self.InterstitialAd = autoclass(
+                "com.google.android.gms.ads.interstitial.InterstitialAd"
+            )
+            self.InterstitialAdLoadCallback = autoclass(
+                "com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback"
+            )
+            self.MobileAds = autoclass("com.google.android.gms.ads.MobileAds")
+
+            self.activity = self.PythonActivity.mActivity
+            self.context = self.activity.getApplicationContext()
+
+            Logger.info("KivMob: Android bindings initialised")
+        except Exception as exc:  # pragma: no cover - runtime on device only
+            Logger.error(f"KivMob: Failed to access Android classes: {exc}")
+            self.activity = None
+            self.context = None
+
+    # ------------------------------------------------------------------
+    # Lifecycle helpers
+    # ------------------------------------------------------------------
+    def is_initialized(self) -> bool:
+        return self._is_initialized
+
+    def initialize(self) -> None:
+        if platform != "android" or self.context is None:
+            Logger.warning("KivMob: Cannot initialize outside Android")
+            return
+
+        @run_on_ui_thread
+        def _init() -> None:
             try:
                 self.MobileAds.initialize(self.context)
                 self._is_initialized = True
-                Logger.info("KivMob: AdMob SDK initialized")
-            except Exception as e:
-                Logger.error(f"KivMob: Failed to initialize SDK: {e}")
-        
-        init()
-    
-    def new_banner(self, ad_unit_id, size=None):
-        """
-        Create a banner ad
-        
-        Args:
-            ad_unit_id (str): Banner Ad Unit ID
-            size: AdSize (default: BANNER)
-        """
-        if platform != 'android':
+                Logger.info("KivMob: MobileAds initialized")
+            except Exception as exc:  # pragma: no cover
+                Logger.error(f"KivMob: MobileAds initialization failed: {exc}")
+
+        _init()
+
+    # ------------------------------------------------------------------
+    # Banner API
+    # ------------------------------------------------------------------
+    def new_banner(self, ad_unit_id: str, top: bool = False) -> None:
+        if platform != "android" or self.context is None:
             return
-        
-        @self.run_on_ui_thread
-        def create():
+
+        @run_on_ui_thread
+        def _create() -> None:
             try:
-                if size is None:
-                    ad_size = self.AdSize.BANNER
-                else:
-                    ad_size = size
-                
+                self.banner_position = "top" if top else "bottom"
                 self.banner_ad = self.AdView(self.context)
-                self.banner_ad.setAdSize(ad_size)
+                self.banner_ad.setAdSize(self.AdSize.BANNER)
                 self.banner_ad.setAdUnitId(ad_unit_id)
-                
-                Logger.info(f"KivMob: Banner created with ID {ad_unit_id}")
-            except Exception as e:
-                Logger.error(f"KivMob: Failed to create banner: {e}")
-        
-        create()
-    
-    def add_banner(self, position="bottom"):
-        """
-        Add banner to screen
-        
-        Args:
-            position (str): "top" or "bottom"
-        """
-        if platform != 'android' or not self.banner_ad:
-            return
-        
-        @self.run_on_ui_thread
-        def add():
-            try:
-                from jnius import autoclass
-                
-                # Get layout params classes
-                LayoutParams = autoclass('android.view.ViewGroup$LayoutParams')
-                LinearLayout = autoclass('android.widget.LinearLayout')
-                Gravity = autoclass('android.view.Gravity')
-                
-                # Create layout params
-                params = LayoutParams(
-                    LayoutParams.MATCH_PARENT,
-                    LayoutParams.WRAP_CONTENT
+                Logger.info(
+                    "KivMob: Banner created (%s, position=%s)",
+                    ad_unit_id,
+                    self.banner_position,
                 )
-                
-                # Get root layout
-                layout = self.activity.findViewById(0x01020002)  # android.R.id.content
-                
-                if layout:
-                    # Set gravity
-                    if hasattr(layout, 'setGravity'):
-                        if position == "top":
-                            layout.setGravity(Gravity.TOP)
-                        else:
-                            layout.setGravity(Gravity.BOTTOM)
-                    
-                    # Add banner
-                    layout.addView(self.banner_ad, params)
-                    
-                    # Load ad
-                    ad_request = self.AdRequest.Builder().build()
-                    self.banner_ad.loadAd(ad_request)
-                    
-                    self._banner_visible = True
-                    Logger.info(f"KivMob: Banner added at {position}")
-                else:
-                    Logger.error("KivMob: Could not find root layout")
-                    
-            except Exception as e:
-                Logger.error(f"KivMob: Failed to add banner: {e}")
-        
-        add()
-    
-    def remove_banner(self):
-        """Remove banner from screen"""
-        if platform != 'android' or not self.banner_ad or not self._banner_visible:
+            except Exception as exc:
+                Logger.error(f"KivMob: Failed to create banner: {exc}")
+                self.banner_ad = None
+
+        _create()
+
+    def request_banner(self) -> None:
+        if platform != "android" or not self.banner_ad:
             return
-        
-        @self.run_on_ui_thread
-        def remove():
+
+        @run_on_ui_thread
+        def _load() -> None:
+            try:
+                ad_request = self.AdRequest.Builder().build()
+                self.banner_ad.loadAd(ad_request)
+                Logger.info("KivMob: Banner load requested")
+            except Exception as exc:
+                Logger.error(f"KivMob: Failed to request banner: {exc}")
+
+        _load()
+
+    def show_banner(self) -> None:
+        if platform != "android" or not self.banner_ad:
+            return
+
+        @run_on_ui_thread
+        def _show() -> None:
+            try:
+                FrameLayout = autoclass("android.widget.FrameLayout")
+                Gravity = autoclass("android.view.Gravity")
+
+                layout = self.activity.findViewById(0x01020002)  # android.R.id.content
+                if not layout:
+                    Logger.error("KivMob: Root layout not found")
+                    return
+
+                params = FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.WRAP_CONTENT,
+                    Gravity.TOP if self.banner_position == "top" else Gravity.BOTTOM,
+                )
+
+                parent = self.banner_ad.getParent()
+                if parent:
+                    parent.removeView(self.banner_ad)
+
+                layout.addView(self.banner_ad, params)
+                self._banner_visible = True
+                Logger.info("KivMob: Banner attached to UI")
+            except Exception as exc:
+                Logger.error(f"KivMob: Failed to show banner: {exc}")
+
+        _show()
+
+    def hide_banner(self) -> None:
+        if platform != "android" or not self.banner_ad or not self._banner_visible:
+            return
+
+        @run_on_ui_thread
+        def _hide() -> None:
             try:
                 layout = self.activity.findViewById(0x01020002)
-                if layout and self.banner_ad:
+                if layout:
                     layout.removeView(self.banner_ad)
                     self._banner_visible = False
                     Logger.info("KivMob: Banner removed")
-            except Exception as e:
-                Logger.error(f"KivMob: Failed to remove banner: {e}")
-        
-        remove()
-    
-    def request_interstitial(self, ad_unit_id):
-        """
-        Request (load) an interstitial ad
-        
-        Args:
-            ad_unit_id (str): Interstitial Ad Unit ID
-        """
-        if platform != 'android':
+            except Exception as exc:
+                Logger.error(f"KivMob: Failed to hide banner: {exc}")
+
+        _hide()
+
+    # ------------------------------------------------------------------
+    # Interstitial API
+    # ------------------------------------------------------------------
+    class _InterstitialCallback(PythonJavaClass if PythonJavaClass else object):
+        __javaclass__ = "com/google/android/gms/ads/interstitial/InterstitialAdLoadCallback"
+
+        def __init__(self, outer: "KivMob") -> None:
+            if PythonJavaClass:
+                super().__init__()
+            self.outer = outer
+
+        @java_method("(Lcom/google/android/gms/ads/interstitial/InterstitialAd;)V")
+        def onAdLoaded(self, ad) -> None:  # pragma: no cover - Java call
+            self.outer.interstitial_ad = ad
+            Logger.info("KivMob: Interstitial loaded")
+
+        @java_method("(Lcom/google/android/gms/ads/LoadAdError;)V")
+        def onAdFailedToLoad(self, error) -> None:  # pragma: no cover - Java call
+            self.outer.interstitial_ad = None
+            try:
+                Logger.warning(
+                    "KivMob: Interstitial failed (code=%s): %s",
+                    error.getCode(),
+                    error.getMessage(),
+                )
+            except Exception:
+                Logger.warning("KivMob: Interstitial failed to load")
+
+    def new_interstitial(self, ad_unit_id: str) -> None:
+        if platform != "android" or self.context is None:
             return
-        
-        @self.run_on_ui_thread
-        def load():
+        self._interstitial_unit_id = ad_unit_id
+        self.request_interstitial()
+
+    def request_interstitial(self) -> None:
+        if (
+            platform != "android"
+            or self.context is None
+            or not self._interstitial_unit_id
+        ):
+            return
+
+        @run_on_ui_thread
+        def _load() -> None:
             try:
                 ad_request = self.AdRequest.Builder().build()
-                
-                # Create load callback (simplified - no actual callback implementation)
-                callback = self.InterstitialAdLoadCallback()
-                
-                # Load interstitial
+                callback = KivMob._InterstitialCallback(self)
                 self.InterstitialAd.load(
                     self.context,
-                    ad_unit_id,
+                    self._interstitial_unit_id,
                     ad_request,
-                    callback
+                    callback,
                 )
-                
-                Logger.info(f"KivMob: Interstitial requested with ID {ad_unit_id}")
-            except Exception as e:
-                Logger.error(f"KivMob: Failed to request interstitial: {e}")
-        
-        load()
-    
-    def show_interstitial(self):
-        """Show the loaded interstitial ad"""
-        if platform != 'android' or not self.interstitial_ad:
-            Logger.warning("KivMob: No interstitial loaded")
-            return
-        
-        @self.run_on_ui_thread
-        def show():
-            try:
-                if self.interstitial_ad:
-                    self.interstitial_ad.show(self.activity)
-                    Logger.info("KivMob: Interstitial shown")
-            except Exception as e:
-                Logger.error(f"KivMob: Failed to show interstitial: {e}")
-        
-        show()
-    
-    def is_interstitial_loaded(self):
-        """Check if interstitial is loaded and ready"""
+                Logger.info(
+                    "KivMob: Requesting interstitial (%s)",
+                    self._interstitial_unit_id,
+                )
+            except Exception as exc:
+                Logger.error(f"KivMob: Failed to request interstitial: {exc}")
+
+        _load()
+
+    def is_interstitial_loaded(self) -> bool:
         return self.interstitial_ad is not None
-    
-    def destroy_interstitial(self):
-        """Destroy the interstitial ad"""
+
+    def show_interstitial(self) -> None:
+        if platform != "android":
+            Logger.warning("KivMob: Cannot show interstitial outside Android")
+            return
+        if not self.interstitial_ad:
+            Logger.warning("KivMob: No interstitial ready")
+            return
+
+        @run_on_ui_thread
+        def _show() -> None:
+            try:
+                self.interstitial_ad.show(self.activity)
+                Logger.info("KivMob: Interstitial displayed")
+                self.interstitial_ad = None
+                # Preload the next one immediately for smoother UX
+                self.request_interstitial()
+            except Exception as exc:
+                Logger.error(f"KivMob: Failed to show interstitial: {exc}")
+
+        _show()
+
+    def destroy_interstitial(self) -> None:
         self.interstitial_ad = None
         Logger.info("KivMob: Interstitial destroyed")
 
 
-__all__ = ['KivMob', 'TestIds']
+__all__ = ["KivMob", "TestIds"]

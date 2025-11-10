@@ -82,68 +82,13 @@ class GooglePurchasesUpdatedListener(PythonJavaClass):  # pragma: no cover - And
             USER_CANCELED = self.manager.google_client_class.BillingResponseCode.USER_CANCELED
 
             if response_code == OK and purchases and purchases.size() > 0:
-                # Parcours achats : ack + callback app
                 all_product_ids = []
                 for i in range(purchases.size()):
                     p = purchases.get(i)
-                    product_ids = []
-
-                    # API v6+: getProducts(), fallback getSkus()
-                    try:
-                        plist = p.getProducts()
-                        for j in range(plist.size()):
-                            product_ids.append(plist.get(j))
-                    except Exception:
-                        try:
-                            sl = p.getSkus()
-                            for j in range(sl.size()):
-                                product_ids.append(sl.get(j))
-                        except Exception:
-                            pass
-
+                    product_ids = self.manager._extract_purchase_ids(p)
                     print(f"✅ Achat Google confirmé pour {product_ids}")
                     all_product_ids.extend(product_ids)
-
-                    # Ack si nécessaire
-                    try:
-                        PURCHASED = autoclass(
-                            "com.android.billingclient.api.Purchase$PurchaseState"
-                        ).PURCHASED
-                        if p.getPurchaseState() == PURCHASED and not p.isAcknowledged():
-                            AcknowledgePurchaseParams_Builder = autoclass(
-                                "com.android.billingclient.api.AcknowledgePurchaseParams$Builder"
-                            )
-                            ack_params = (
-                                AcknowledgePurchaseParams_Builder()
-                                .setPurchaseToken(p.getPurchaseToken())
-                                .build()
-                            )
-
-                            class AckListener(PythonJavaClass):
-                                __javainterfaces__ = [
-                                    "com/android/billingclient/api/AcknowledgePurchaseResponseListener"
-                                ]
-                                __javacontext__ = "app"
-
-                                @java_method(
-                                    "(Lcom/android/billingclient/api/BillingResult;)V"
-                                )
-                                def onAcknowledgePurchaseResponse(self_, br):
-                                    try:
-                                        rc = br.getResponseCode()
-                                        print(f"🔔 Acknowledge response: {rc}")
-                                    except Exception:
-                                        pass
-
-                            try:
-                                self.manager.google_billing_client.acknowledgePurchase(
-                                    ack_params, AckListener()
-                                )
-                            except Exception as exc:
-                                print(f"✗ Erreur ack purchase: {exc}")
-                    except Exception as exc:
-                        print(f"⚠️ Erreur traitement purchase state: {exc}")
-
+                    self.manager._ack_purchase_if_needed(p, context="purchase")
                 self.manager._notify_success("google", all_product_ids)
 
             elif response_code == USER_CANCELED:
@@ -195,6 +140,11 @@ class GoogleBillingStateListener(PythonJavaClass):  # pragma: no cover
         print("⚠️ Service Billing Google déconnecté")
         self.manager.billing_ready = False
         self.manager._dispatch_state_change()
+        # Tentative de reconnexion avec backoff exponentiel (limité)
+        try:
+            self.manager._schedule_google_reconnect()
+        except Exception:
+            pass
 
 
 class GoogleProductDetailsListener(PythonJavaClass):
@@ -260,61 +210,8 @@ class GooglePurchasesResponseListener(PythonJavaClass):  # pragma: no cover
                 restored_ids = []
                 for i in range(purchases_list.size()):
                     p = purchases_list.get(i)
-                    # getProducts() / fallback getSkus()
-                    product_ids = []
-                    try:
-                        plist = p.getProducts()
-                        for j in range(plist.size()):
-                            product_ids.append(plist.get(j))
-                    except Exception:
-                        try:
-                            sl = p.getSkus()
-                            for j in range(sl.size()):
-                                product_ids.append(sl.get(j))
-                        except Exception:
-                            pass
-
-                    # Ack si nécessaire
-                    try:
-                        PURCHASED = autoclass(
-                            "com.android.billingclient.api.Purchase$PurchaseState"
-                        ).PURCHASED
-                        if p.getPurchaseState() == PURCHASED and not p.isAcknowledged():
-                            AcknowledgePurchaseParams_Builder = autoclass(
-                                "com.android.billingclient.api.AcknowledgePurchaseParams$Builder"
-                            )
-                            ack_params = (
-                                AcknowledgePurchaseParams_Builder()
-                                .setPurchaseToken(p.getPurchaseToken())
-                                .build()
-                            )
-
-                            class AckListener(PythonJavaClass):
-                                __javainterfaces__ = [
-                                    "com/android/billingclient/api/AcknowledgePurchaseResponseListener"
-                                ]
-                                __javacontext__ = "app"
-
-                                @java_method(
-                                    "(Lcom/android/billingclient/api/BillingResult;)V"
-                                )
-                                def onAcknowledgePurchaseResponse(self_, br):
-                                    try:
-                                        rc2 = br.getResponseCode()
-                                        print(f"🔔 Acknowledge (restore) response: {rc2}")
-                                    except Exception:
-                                        pass
-
-                            try:
-                                self.manager.google_billing_client.acknowledgePurchase(
-                                    ack_params, AckListener()
-                                )
-                            except Exception as exc:
-                                print(f"✗ Erreur ack (restore): {exc}")
-
-                    except Exception as exc:
-                        print(f"⚠️ Erreur état purchase (restore): {exc}")
-
+                    product_ids = self.manager._extract_purchase_ids(p)
+                    self.manager._ack_purchase_if_needed(p, context="restore")
                     restored_ids.extend(product_ids)
 
                 if restored_ids:
@@ -478,6 +375,11 @@ class InAppPurchaseManager:
         self.google_billing_client = None
         self.google_client_class = None
         self.google_product_details = None
+        # Garder des références fortes sur les listeners Java ↔ Python pour éviter le GC
+        self._google_purchase_listener = None
+        self._google_billing_state_listener = None
+        self._google_product_details_listener = None
+        self._google_purchases_response_listener = None
         self.amazon_service = None
         self.amazon_product_data = None
         self.amazon_user_data = None
@@ -485,7 +387,11 @@ class InAppPurchaseManager:
         self.display_price = None
         self.activity = None
         self.listeners = []
+        # Reconnexion Billing
+        self._reconnect_attempts = 0
+        self._max_reconnect_attempts = 5
 
+        # Lance l'initialisation des services Billing (Google / Amazon)
         self._init_billing_services()
 
     # ── INIT
@@ -520,7 +426,8 @@ class InAppPurchaseManager:
             if ctx is None:
                 try:
                     from android import activity as _activity_module  # type: ignore
-                    ctx = _activity_module
+                    # Certains environnements exposent .getApplicationContext()
+                    ctx = getattr(_activity_module, "getApplicationContext", lambda: None)() or _activity_module
                 except Exception:
                     ctx = None
             if ctx is None:
@@ -531,15 +438,51 @@ class InAppPurchaseManager:
 
             # Builder + listener
             builder = self.google_client_class.newBuilder(ctx)
-            builder.setListener(GooglePurchasesUpdatedListener(self))
+            self._google_purchase_listener = GooglePurchasesUpdatedListener(self)
+            builder.setListener(self._google_purchase_listener)
             builder.enablePendingPurchases()  # obligatoire
             self.google_billing_client = builder.build()
 
             # Connexion
-            self.google_billing_client.startConnection(GoogleBillingStateListener(self))
+            self._google_billing_state_listener = GoogleBillingStateListener(self)
+            self.google_billing_client.startConnection(self._google_billing_state_listener)
 
         except Exception as exc:
             print(f"✗ Erreur initialisation Google Billing: {exc}")
+
+    def _connect_google_billing(self):
+        """(Re)connecte BillingClient proprement (v8)."""
+        if not self.google_billing_client or not self.google_client_class or not self.activity:
+            # Contexte incomplet -> réinitialiser complètement
+            self._init_google_billing()
+            return
+        try:
+            self._google_billing_state_listener = GoogleBillingStateListener(self)
+            self.google_billing_client.startConnection(self._google_billing_state_listener)
+        except Exception as exc:
+            print(f"✗ Erreur startConnection Billing: {exc}")
+
+    def _schedule_google_reconnect(self):
+        """Planifie une reconnexion avec backoff exponentiel jusqu’à 5 tentatives."""
+        try:
+            import threading, math
+            if self._reconnect_attempts >= self._max_reconnect_attempts:
+                print("⚠️ Abandon reconnexions Billing (max atteint)")
+                return
+            delay = min(30, 2 ** self._reconnect_attempts)
+            self._reconnect_attempts += 1
+            print(f"⏳ Reconnexion Billing dans {delay}s (tentative {self._reconnect_attempts})")
+            def _do():
+                try:
+                    self._connect_google_billing()
+                finally:
+                    # Si ça réussit, on reset dans onBillingSetupFinished
+                    pass
+            t = threading.Timer(delay, _do)
+            t.daemon = True
+            t.start()
+        except Exception as exc:
+            print(f"✗ Erreur planification reconnexion Billing: {exc}")
 
     def _init_amazon_billing(self):
         """Initialise Amazon In-App Purchasing."""
@@ -557,9 +500,66 @@ class InAppPurchaseManager:
         except Exception as exc:
             print(f"✗ Erreur initialisation Amazon IAP: {exc}")
 
+    # ── UTILITAIRES ACHATS
+    def _extract_purchase_ids(self, purchase):
+        """Retourne la liste des productIds d'un achat (v6+: getProducts, fallback getSkus)."""
+        product_ids = []
+        try:
+            plist = purchase.getProducts()
+            for j in range(plist.size()):
+                product_ids.append(plist.get(j))
+        except Exception:
+            try:
+                sl = purchase.getSkus()
+                for j in range(sl.size()):
+                    product_ids.append(sl.get(j))
+            except Exception:
+                pass
+        return product_ids
+
+    def _ack_purchase_if_needed(self, purchase, context="purchase"):
+        """Reconnaît (acknowledge) l'achat si PURCHASED et pas encore acknowledged."""
+        try:
+            PURCHASED = autoclass(
+                "com.android.billingclient.api.Purchase$PurchaseState"
+            ).PURCHASED
+            if purchase.getPurchaseState() == PURCHASED and not purchase.isAcknowledged():
+                AcknowledgePurchaseParams_Builder = autoclass(
+                    "com.android.billingclient.api.AcknowledgePurchaseParams$Builder"
+                )
+                ack_params = (
+                    AcknowledgePurchaseParams_Builder()
+                    .setPurchaseToken(purchase.getPurchaseToken())
+                    .build()
+                )
+
+                class AckListener(PythonJavaClass):
+                    __javainterfaces__ = [
+                        "com/android/billingclient/api/AcknowledgePurchaseResponseListener"
+                    ]
+                    __javacontext__ = "app"
+
+                    @java_method("(Lcom/android/billingclient/api/BillingResult;)V")
+                    def onAcknowledgePurchaseResponse(self_, br):
+                        try:
+                            rc = br.getResponseCode()
+                            print(f"🔔 Acknowledge response ({context}): {rc}")
+                        except Exception:
+                            pass
+
+                try:
+                    self.google_billing_client.acknowledgePurchase(
+                        ack_params, AckListener()
+                    )
+                except Exception as exc:
+                    print(f"✗ Erreur ack ({context}): {exc}")
+        except Exception as exc:
+            print(f"⚠️ Erreur traitement purchase state ({context}): {exc}")
+
     # ── READY → FETCH PRODUCT DETAILS + RESTORE
     def _on_google_billing_ready(self):
         self.billing_ready = True
+        self._reconnect_attempts = 0  # reset backoff
         self._dispatch_state_change()
         self._fetch_google_product_details()
         self.restore_google_purchases()
@@ -588,8 +588,9 @@ class InAppPurchaseManager:
                 .setProductList(product_list)\
                 .build()
 
+            self._google_product_details_listener = GoogleProductDetailsListener(self)
             self.google_billing_client.queryProductDetailsAsync(
-                params, GoogleProductDetailsListener(self)
+                params, self._google_product_details_listener
             )
         except Exception as exc:
             print(f"⚠️ Erreur requête ProductDetails: {exc}")
@@ -623,7 +624,8 @@ class InAppPurchaseManager:
         print(f"✅ Achat {provider} réussi")
         if product_ids:
             try:
-                from kivy.app import App
+                # Import retardé pour éviter problèmes d'analyse hors Android
+                from kivy.app import App  # type: ignore
                 app = App.get_running_app()
                 if app:
                     for product_id in product_ids:
@@ -712,8 +714,9 @@ class InAppPurchaseManager:
                 .setProductType(self.google_client_class.ProductType.INAPP)
                 .build()
             )
+            self._google_purchases_response_listener = GooglePurchasesResponseListener(self)
             self.google_billing_client.queryPurchasesAsync(
-                params, GooglePurchasesResponseListener(self)
+                params, self._google_purchases_response_listener
             )
         except Exception as e:
             print(f"⚠️ restore_google_purchases failed: {e}")

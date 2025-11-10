@@ -7,9 +7,9 @@ Permet de changer les IDs de pub sans recompiler l'app
 import os
 import json
 import threading
-from kivy.app import App
-from kivy.utils import platform
-from kivy.logger import Logger
+from kivy.app import App  # type: ignore
+from kivy.utils import platform  # type: ignore
+from kivy.logger import Logger  # type: ignore
 
 # Import kivmob from libs folder (embedded in app)
 import sys
@@ -20,7 +20,7 @@ if libs_path not in sys.path:
     sys.path.insert(0, libs_path)
 
 try:
-    from kivmob import KivMob, TestIds
+    from kivmob import KivMob, TestIds  # type: ignore
 except Exception as e:
     Logger.warning(f"AdMob: kivmob not available: {e}")
     KivMob = None
@@ -103,6 +103,10 @@ class AdsManager:
         self._draw_count = 0
         self._ads_frequency = int(cfg.get("ads_frequency", 3))
         
+        # CORRECTIF: garder référence forte sur callbacks Java pour éviter GC
+        self._banner_load_callback = None
+        self._interstitial_load_callback = None
+        
         if not self.enabled:
             Logger.info("AdMob: Disabled by config")
             return
@@ -118,8 +122,40 @@ class AdsManager:
             self.enabled = False
             return
 
-        # Initialize AdMob
-        self._initialize_admob()
+        # Initialize AdMob — délégué après MobileAds.initialize via wait_mobile_ads_ready()
+        # Pour l'instant, créer seulement l'instance KivMob
+        try:
+            app_id = self.cfg.get("admob_app_id")
+            if self.test_mode and TestIds:
+                app_id = getattr(TestIds, "APP", app_id or "")
+            self.sdk = KivMob(app_id)
+            Logger.info(f"AdMob: KivMob instance created (app_id={app_id})")
+        except Exception as e:
+            Logger.error(f"AdMob: Failed to create KivMob instance: {e}")
+            self.enabled = False
+            return
+        
+        # Optionnel: initialiser les SDK de médiation si des clés sont fournies
+        try:
+            self._initialize_mediation_sdks()
+        except Exception as e:
+            Logger.warning(f"Ads: Mediation SDK init skipped/failed: {e}")
+
+
+    def setup_ads_after_sdk_ready(self):
+        """
+        Appelée APRÈS que MobileAds.initialize() soit terminé.
+        Crée et charge les bannières + interstitiels de manière sûre.
+        """
+        if not self.sdk or not self.enabled:
+            Logger.warning("AdMob: SDK not ready or ads disabled")
+            return
+        
+        try:
+            self._initialize_admob()
+            Logger.info("AdMob: Ads setup completed after SDK initialization ✅")
+        except Exception as e:
+            Logger.error(f"AdMob: Failed to setup ads after SDK ready: {e}")
 
     def _initialize_admob(self):
         """Initialize AdMob SDK with IDs from config"""
@@ -137,9 +173,9 @@ class AdsManager:
             Logger.info("AdMob: Using PRODUCTION IDs")
 
         try:
-            # Initialize SDK
-            self.sdk = KivMob(app_id)
-            Logger.info(f"AdMob: Initialized with app_id={app_id}")
+            # SDK instance déjà créée dans __init__, juste initialiser ici
+            if not self.sdk._is_initialized:
+                self.sdk.initialize()
 
             # Setup banner
             if self.banner_enabled and banner_id:
@@ -152,7 +188,6 @@ class AdsManager:
             # Setup interstitial
             if self.interstitial_enabled and inter_id:
                 self.sdk.new_interstitial(inter_id)
-                self.sdk.request_interstitial()
                 Logger.info("AdMob: Interstitial initialized")
 
             Logger.info("AdMob: Fully initialized ✅")
@@ -160,7 +195,60 @@ class AdsManager:
         except Exception as e:
             Logger.error(f"AdMob: Initialization failed: {e}")
             self.enabled = False
-            self.sdk = None
+
+
+    def _initialize_mediation_sdks(self):
+        """Optionally initialize mediation SDKs (ironSource/AppLovin) when running on Android.
+        These inits are not strictly required with AdMob mediation adapters, but recommended.
+        """
+        if platform != "android":
+            return
+        try:
+            from jnius import autoclass  # type: ignore
+        except Exception:
+            Logger.info("Ads: pyjnius not available; skip mediation init")
+            return
+
+        # Acquire Activity
+        activity = None
+        try:
+            PythonActivity = autoclass("org.kivy.android.PythonActivity")
+            activity = getattr(PythonActivity, "mActivity", None)
+        except Exception:
+            pass
+        if activity is None:
+            Logger.info("Ads: No Android activity; skip mediation init")
+            return
+
+        # ironSource (LevelPlay)
+        try:
+            app_key = self.cfg.get("ironsource_app_key") or os.environ.get("IRONSOURCE_APP_KEY") or "243005255"
+            IronSource = autoclass("com.ironsource.mediationsdk.IronSource")
+            IronSource.init(activity, app_key)
+            Logger.info("Ads: ironSource initialized")
+            # Optionally request user consent if known
+            try:
+                consent = os.environ.get("IRONSOURCE_CONSENT")
+                if consent in ("1", "true", "True"):
+                    IronSource.setConsent(True)
+                elif consent in ("0", "false", "False"):
+                    IronSource.setConsent(False)
+            except Exception:
+                pass
+        except Exception as e:
+            Logger.info(f"Ads: ironSource init skipped: {e}")
+
+        # AppLovin SDK (optional)
+        try:
+            sdk_key = self.cfg.get("applovin_sdk_key") or os.environ.get("APPLOVIN_SDK_KEY")
+            if sdk_key:
+                AppLovinSdk = autoclass("com.applovin.sdk.AppLovinSdk")
+                sdk = AppLovinSdk.getInstance(activity)
+                if sdk:
+                    sdk.initializeSdk(activity, None)
+                    Logger.info("Ads: AppLovin SDK initialized")
+        except Exception as e:
+            Logger.info(f"Ads: AppLovin init skipped: {e}")
 
     def on_card_drawn(self):
         """
@@ -255,7 +343,28 @@ def maybe_fetch_remote_config(cfg: dict):
         except Exception as e:
             Logger.error(f"AdMob: Remote config fetch failed: {e}")
     
-    threading.Thread(target=_work, daemon=False).start()
+    # Android 14+: éviter les threads bloquants et threads non-daemon qui empêchent la fermeture
+    threading.Thread(target=_work, daemon=True).start()
+
+class ConsentStatus:
+    UNKNOWN = 0
+    REQUIRED = 1
+    NOT_REQUIRED = 2
+
+def maybe_request_consent():
+    """
+    Placeholder consentement UE (User Messaging Platform SDK).
+    Pour conformité 2025, intégrer le SDK UMP côté Java/Kotlin et l'exposer via pyjnius.
+    Ici, on ne bloque pas le thread UI et on log seulement.
+    """
+    try:
+        from kivy.logger import Logger  # type: ignore
+        if os.environ.get('EU_USER','0') == '1':
+            Logger.info("Consent: EU user flagged -> implement UMP SDK if needed")
+        else:
+            Logger.info("Consent: Not an EU user (env EU_USER != 1)")
+    except Exception:
+        pass
 
 
 # Exemple d'utilisation dans main.py:

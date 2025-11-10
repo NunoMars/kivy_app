@@ -12,6 +12,7 @@ Cette version est une reconstruction propre adaptée à la nouvelle API i18n
 """
 
 import os
+import sys
 import random
 import json
 from typing import Optional, List, Tuple
@@ -31,6 +32,7 @@ from kivy.uix.scrollview import ScrollView
 from kivy.animation import Animation
 from kivy.logger import Logger
 from kivy.resources import resource_find
+from kivy.core.window import Window
 
 # Popups
 from popups import LoadingPopup, FullScreenCardPopup, MmeTChatPopup, AdPopup, AdsPopup
@@ -134,6 +136,24 @@ class CardScreen(Screen):
         )
         self.title_label.bind(size=lambda inst, val: setattr(inst, 'text_size', (val[0] * 0.92, None)))
         layout.add_widget(self.title_label)
+        # Badge quotidien (carte non tirée)
+        self.daily_badge = Label(
+            text=self.tr("messages.daily_badge") if callable(getattr(self, 'tr', None)) else "Carte du jour à tirer",
+            font_size="12sp",
+            color=[1, 0.85, 0.2, 1],
+            size_hint_y=None,
+            height=dp(20),
+            halign='center',
+            valign='middle',
+            font_name="Body",
+            opacity=0,
+        )
+        self.daily_badge.bind(size=lambda i, v: setattr(i, 'text_size', (v[0], None)))
+        layout.add_widget(self.daily_badge)
+        try:
+            self._update_daily_badge()
+        except Exception:
+            pass
 
         card_container = FloatLayout(size_hint_y=0.7)
         self.card_image = Image(
@@ -264,6 +284,11 @@ class CardScreen(Screen):
         except Exception:
             pass
         try:
+            if hasattr(self, 'daily_badge'):
+                self.daily_badge.text = self.tr("messages.daily_badge")
+        except Exception:
+            pass
+        try:
             instr = self.tr("messages.draw_instruction")
             if hasattr(self, 'ids') and 'instruction_label' in self.ids:
                 self.ids['instruction_label'].text = instr
@@ -277,6 +302,12 @@ class CardScreen(Screen):
                 self.ids['ad_banner'].text = adtxt
             elif hasattr(self, 'ad_banner'):
                 self.ad_banner.text = adtxt
+        except Exception:
+            pass
+        try:
+            # mettre à jour visibilité du badge
+            if hasattr(self, '_update_daily_badge'):
+                self._update_daily_badge()
         except Exception:
             pass
         if hasattr(self, 'back_btn'):
@@ -361,9 +392,23 @@ class CardScreen(Screen):
                             pass
                     self.manager.current = "response_screen"
 
-            if should_show_ad():
-                popup = AdsPopup(on_close_callback=lambda *a: _show(), tr=self.tr)
-                popup.open()
+            # 1) Essayer d'afficher un interstitiel AdMob (ne bloque pas la suite)
+            ad_shown = False
+            try:
+                app = App.get_running_app()
+                if hasattr(app, 'ads') and getattr(app.ads, 'enabled', False):
+                    app.ads.on_card_drawn()
+                    ad_shown = True
+            except Exception:
+                ad_shown = False
+
+            # 2) Fallback UX ancien AdsPopup uniquement si AdMob indisponible
+            if not ad_shown and should_show_ad():
+                try:
+                    popup = AdsPopup(on_close_callback=lambda *a: _show(), tr=self.tr)
+                    popup.open()
+                except Exception:
+                    _show()
             else:
                 _show()
         except Exception as exc:
@@ -405,7 +450,10 @@ class ResponseScreen(Screen):
         self.font_body = getattr(app, 'font_body', 'Body')
         app.fbind('font_body', self._refresh_fonts)
         app.fbind('tr', self.apply_i18n)
-        app.fbind('last_drawn_cards', self.refresh_drawn_cards)
+        try:
+            app.fbind('last_drawn_cards', self.refresh_drawn_cards)
+        except Exception:
+            pass
         self.current_card_name = ""
         self.current_card_state = ""
         self.current_card_image_path = "tarot_img/Back.jpg"
@@ -476,11 +524,18 @@ class ResponseScreen(Screen):
         self.keywords_label.bind(size=lambda inst, val: setattr(inst, 'text_size', (val[0] * 0.95, None)))
         main_layout.add_widget(self.keywords_label)
 
-        # Espace sous-titre
-        main_layout.add_widget(Label(size_hint_y=None, height=dp(50)))
+        # Espace sous-titre (réduit pour laisser de la place au texte)
+        main_layout.add_widget(Label(size_hint_y=None, height=dp(8)))
 
         # Container image cliquable
-        image_container = FloatLayout(size_hint_y=None, height=dp(320))
+        # Hauteur d'image responsive pour éviter de masquer le texte sur petits écrans
+        def _compute_image_h():
+            try:
+                return int(max(dp(220), min(Window.height * 0.35, dp(340))))
+            except Exception:
+                return int(dp(300))
+
+        image_container = FloatLayout(size_hint_y=None, height=_compute_image_h())
 
         self.card_image = Image(
             source="tarot_img/Back.jpg",
@@ -516,8 +571,8 @@ class ResponseScreen(Screen):
         image_container.add_widget(overlay_label)
         main_layout.add_widget(image_container)
 
-        # Espace
-        main_layout.add_widget(Label(size_hint_y=None, height=dp(50)))
+        # Espace réduit au-dessus du texte pour conserver de la place au ScrollView
+        main_layout.add_widget(Label(size_hint_y=None, height=dp(8)))
 
         # Signification avec scroll
         scroll = ScrollView(size_hint_y=1)
@@ -922,9 +977,16 @@ class ResponseScreen(Screen):
                 if hasattr(self, 'premium_status_label'):
                     self.premium_status_label.opacity = 1
                     self.premium_status_label.height = dp(20)
-                    if mode in ("disabled", "simulation"):
-                        self.premium_status_label.text = self.tr("messages.store_mobile_only") if self.tr else "Mobile only"
+                    # Choix du message en fonction de la plateforme et du mode
+                    on_android = hasattr(sys, 'getandroidapilevel')
+                    if mode == "disabled":
+                        # Sur Android: boutique en préparation; sur desktop: mobile uniquement
+                        if on_android:
+                            self.premium_status_label.text = self.tr("messages.store_preparing") if self.tr else "Preparing store"
+                        else:
+                            self.premium_status_label.text = self.tr("messages.store_mobile_only") if self.tr else "Mobile only"
                     else:
+                        # Par défaut, indiquer préparation
                         self.premium_status_label.text = self.tr("messages.store_preparing") if self.tr else "Preparing store"
         except Exception:
             pass

@@ -184,3 +184,48 @@ Le projet inclut un site web accessible via GitHub Pages :
 ---
 
 🔮 **Découvrez votre avenir avec le Tarot de Marseille authentique !**
+
+## ☕ Java 21 (LTS) — installation et compatibilité Android
+
+Le projet Android est construit via Buildozer/python-for-android et utilise le JDK présent sur votre machine (JAVA_HOME). Vous pouvez installer Java 21 pour vos outils généraux, mais **le toolchain Android (AGP/p4a) requiert souvent JDK 17**. Recommandation:
+
+- Installez JDK 21 en plus de JDK 17
+- Basculez entre 17 et 21 selon le besoin (build Android ↔ outils locaux)
+
+### Installer JDK 21 (Linux)
+
+Option A — SDKMAN:
+
+```bash
+curl -s "https://get.sdkman.io" | bash
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+sdk install java 21.0.5-tem
+```
+
+Option B — Temurin (Debian/Ubuntu):
+
+```bash
+sudo apt-get update
+sudo apt-get install -y wget gnupg ca-certificates
+wget -O- https://packages.adoptium.net/artifactory/api/gpg/key/public | sudo gpg --dearmor -o /usr/share/keyrings/adoptium.gpg
+echo "deb [signed-by=/usr/share/keyrings/adoptium.gpg] https://packages.adoptium.net/artifactory/deb $(. /etc/os-release && echo "$VERSION_CODENAME") main" | sudo tee /etc/apt/sources.list.d/adoptium.list
+sudo apt-get update
+sudo apt-get install -y temurin-21-jdk
+```
+
+### Basculer entre JDK 17 et JDK 21
+
+Ce dépôt fournit un petit script pour définir JAVA_HOME dans votre shell courant:
+
+```bash
+source bin/java-switch.sh 21   # utiliser JDK 21
+source bin/java-switch.sh 17   # revenir à JDK 17 (souvent requis pour Buildozer)
+```
+
+Vérification rapide:
+
+```bash
+java -version
+```
+
+> Note: si Buildozer/p4a échoue avec JDK 21 (Gradle/AGP incompatibles), repassez en **JDK 17** pour le build Android.

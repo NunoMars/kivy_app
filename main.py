@@ -65,10 +65,27 @@ from kivy.core.text import LabelBase
 from kivy.resources import resource_find, resource_add_path
 from kivy.logger import Logger
 from kivy.utils import platform as kivy_platform  # évite la collision avec le stdlib
+try:
+    from plyer import notification as plyer_notification  # notifications locales
+except Exception:
+    plyer_notification = None
+try:
+    # Pour planifier l'alarme native via pyjnius
+    import jnius
+    _autoclass = jnius.autoclass
+except Exception:
+    _autoclass = None
 
 # === Fonts locales ===
 BASE_DIR = os.path.dirname(__file__)
 FONTS_DIR = os.path.join(BASE_DIR, "fonts")
+# Rendez disponibles les chemins locaux pour resource_find, utile sur Android
+try:
+    resource_add_path(BASE_DIR)
+    if os.path.isdir(os.path.join(BASE_DIR, "i18n")):
+        resource_add_path(os.path.join(BASE_DIR, "i18n"))
+except Exception:
+    pass
 if os.path.isdir(FONTS_DIR):
     resource_add_path(FONTS_DIR)
     try:
@@ -188,6 +205,12 @@ class TarotApp(App):
         debug_list_i18n_dir()  # Sanity check visible dans le logcat
         self.lang = self.get_system_lang()
         self.i18n = self.load_i18n(self.lang)
+        # Tirage / notifications
+        self.enable_premium = False
+        self._last_draw_date = None  # YYYY-MM-DD
+        self._load_last_draw_date()
+        # Consentement pubs (placeholder UMP): None=unknown, True/False
+        self.consent_personalized = self._load_consent()
         self.tr = self._tr
         self.get_cards_signification = self._get_cards_signification
         # --- AJOUT IAP (flag premium) ---
@@ -200,12 +223,22 @@ class TarotApp(App):
             print(f"⚠️ Erreur config: {e}")
             self.cfg = {}
 
+        # Appliquer une politique simple selon le consentement (placeholder UMP)
         try:
-            self.ads = AdsManager(self.cfg)
-            print("✅ Gestionnaire de pubs initialisé")
-        except Exception as e:
-            print(f"⚠️ Erreur pubs: {e}")
-            self.ads = None
+            if self.consent_personalized is None:
+                # Consentement inconnu → désactiver les pubs pour éviter personnalisation involontaire
+                self.cfg["ads_enabled"] = False
+            elif self.consent_personalized is False:
+                # Pas de consentement → activer seulement des pubs non personnalisées (pas de test ads en prod)
+                # TODO: brancher NPA=1 via wrapper KivMob quand exposé; en attendant on garde production standard.
+                self.cfg["ads_enabled"] = True
+        except Exception:
+            pass
+
+        # AdsManager pré-initialisation (sera configuré après UMP + MobileAds.init)
+        self.ads = None
+        self._mobile_ads_ready = False
+        print("ℹ️ Ads init différée jusqu'au MobileAds SDK ready")
 
         try:
             self.billing = InAppPurchaseManager()
@@ -220,20 +253,35 @@ class TarotApp(App):
             lang = forced[:2].lower()
         else:
             if PYJNIUS_AVAILABLE:
+                # Essai robuste via PythonActivity puis fallback LocaleList/Locale
                 try:
-                    LocaleList = autoclass('android.os.LocaleList')
-                    Build = autoclass('android.os.Build')
-                    Locale = autoclass('java.util.Locale')
-                    if Build.VERSION.SDK_INT >= 24:
-                        locales = LocaleList.getDefault()
+                    PythonActivity = autoclass('org.kivy.android.PythonActivity')
+                    activity = getattr(PythonActivity, 'mActivity', None) or PythonActivity.getApplication()
+                    res = activity.getResources()
+                    config = res.getConfiguration()
+                    try:
+                        locales = config.getLocales()
                         if locales and locales.size() > 0:
                             lang = locales.get(0).getLanguage()
                         else:
-                            lang = Locale.getDefault().getLanguage()
-                    else:
-                        lang = Locale.getDefault().getLanguage()
+                            lang = config.locale.getLanguage()
+                    except Exception:
+                        lang = config.locale.getLanguage()
                 except Exception:
-                    lang = (locale.getdefaultlocale()[0] or 'en')[:2]
+                    try:
+                        LocaleList = autoclass('android.os.LocaleList')
+                        Build = autoclass('android.os.Build')
+                        Locale = autoclass('java.util.Locale')
+                        if Build.VERSION.SDK_INT >= 24:
+                            locales = LocaleList.getDefault()
+                            if locales and locales.size() > 0:
+                                lang = locales.get(0).getLanguage()
+                            else:
+                                lang = Locale.getDefault().getLanguage()
+                        else:
+                            lang = Locale.getDefault().getLanguage()
+                    except Exception:
+                        lang = (locale.getdefaultlocale()[0] or 'en')[:2]
             else:
                 lang = (locale.getdefaultlocale()[0] or 'en')[:2]
 
@@ -260,7 +308,7 @@ class TarotApp(App):
         last_err = None
         for rel in candidates:
             # 1) Ressource packagée (Android / desktop si resource_add_path a été appelé)
-            path = resource_find(rel)
+            path = resource_find(rel) or resource_find(os.path.join("assets", rel))
             if path:
                 try:
                     with open(path, "r", encoding="utf-8") as f:
@@ -272,17 +320,17 @@ class TarotApp(App):
                     Logger.error(f"I18N: read error for packaged '{path}': {e}")
                     continue
 
-            # 2) Fallback dev (exécution depuis sources)
-            if os.path.exists(rel):
+            # 2) Fallback dev (exécution depuis sources) - chemin absolu depuis BASE_DIR
+            abs_local = os.path.join(BASE_DIR, rel)
+            if os.path.exists(abs_local):
                 try:
-                    with open(rel, "r", encoding="utf-8") as f:
+                    with open(abs_local, "r", encoding="utf-8") as f:
                         data = json.load(f)
-                    Logger.info(f"I18N: loaded local '{rel}'")
-                    print(f"I18N: loaded local '{rel}'")
+                    Logger.info(f"I18N: loaded local '{abs_local}'")
                     return data
                 except Exception as e:
                     last_err = e
-                    Logger.error(f"I18N: read error for local '{rel}': {e}")
+                    Logger.error(f"I18N: read error for local '{abs_local}': {e}")
                     continue
 
             Logger.debug(f"I18N: candidate not found: {rel}")
@@ -339,9 +387,93 @@ class TarotApp(App):
     def on_start(self):
         print("🚀 Application démarrée")
         debug_check_i18n()
+        try:
+            self._schedule_daily_draw_reminder()
+        except Exception as e:
+            print(f"⚠️ schedule reminder failed: {e}")
+        # Planifier alarm native (si Android)
+        try:
+            if _autoclass is not None and kivy_platform == 'android':
+                PythonActivity = _autoclass('org.kivy.android.PythonActivity')
+                ctx = getattr(PythonActivity, 'mActivity', None)
+                if ctx is not None:
+                    AlarmScheduler = _autoclass('org.tarot.AlarmScheduler')
+                    AlarmScheduler.scheduleDaily(ctx)
+                    print("⏰ AlarmManager: rappel quotidien planifié (natif)")
+        except Exception as e:
+            print(f"⚠️ AlarmManager schedule failed: {e}")
+
+        # UMP: lancer la requête de consentement native et POLLER jusqu'à 8s (300–500ms)
+        try:
+            if _autoclass is not None and kivy_platform == 'android':
+                PythonActivity = _autoclass('org.kivy.android.PythonActivity')
+                act = getattr(PythonActivity, 'mActivity', None)
+                ConsentBridge = _autoclass('org.tarot.ConsentBridge')
+                if act is not None and ConsentBridge is not None:
+                    ConsentBridge.request(act)
+                    self._ump_elapsed = 0.0
+                    def _poll_consent(_dt):
+                        try:
+                            self._ump_elapsed += _dt
+                            res = ConsentBridge.getResult()
+                            decided = (res is not None)
+                            timeout = self._ump_elapsed >= 8.0
+                            if decided or timeout:
+                                Clock.unschedule(_poll_consent)
+                                # Politique release: par défaut pas de personnalisation (NPA)
+                                if not decided:
+                                    effective = False
+                                    print("🧾 UMP timeout -> personnalisation=False (par défaut)")
+                                else:
+                                    # Si UMP dit non requis, nous restons non personnalisés par défaut.
+                                    effective = False if bool(res) else False
+                                    print(f"🧾 UMP décidé (res={bool(res)}) -> personnalisation={effective}")
+                                self.set_user_consent(effective)
+                                # CORRECTIF: Ne plus créer AdsManager ici, il sera créé par _on_init_complete
+                                # après MobileAds.initialize() qui est appelé plus tard dans on_start()
+                                print("ℹ️ Consentement enregistré, ads seront initialisées après MobileAds.init")
+                        except Exception as _e:
+                            print(f"⚠️ UMP poll failed: {_e}")
+                    from kivy.clock import Clock as _Clock
+                    _Clock.schedule_interval(_poll_consent, 0.4)
+        except Exception as e:
+            print(f"⚠️ UMP request failed: {e}")
+        # --- Initialisation Mobile Ads (Google) non bloquante ---
+        try:
+            if PYJNIUS_AVAILABLE and os.environ.get('DISABLE_MOBILE_ADS','0') != '1':
+                from jnius import autoclass  # type: ignore
+                MobileAds = autoclass('com.google.android.gms.ads.MobileAds')
+                # App ID vient du AndroidManifest (meta-data). L'init est asynchrone.
+                def _on_init_complete(status):
+                    try:
+                        print(f"✅ MobileAds init status: {status}")
+                        self._mobile_ads_ready = True
+                        # CORRECTIF: Initialiser AdsManager maintenant que le SDK est prêt
+                        if not self.ads and self.cfg.get("ads_enabled", False):
+                            try:
+                                from ads_manager import AdsManager
+                                self.ads = AdsManager(self.cfg)
+                                # Lancer le setup complet (banner + interstitiel)
+                                self.ads.setup_ads_after_sdk_ready()
+                                print("✅ Pubs configurées après MobileAds.initialize")
+                            except Exception as _e:
+                                print(f"⚠️ Erreur init AdsManager post-SDK: {_e}")
+                    except Exception as _e:
+                        print(f"⚠️ Erreur callback MobileAds init: {_e}")
+                MobileAds.initialize(self.activity or None, _on_init_complete)
+                print("⏳ MobileAds.initialize lancé")
+            else:
+                print("ℹ️ Mobile Ads non initialisé (pyjnius indisponible ou désactivé)")
+        except Exception as e:
+            print(f"⚠️ Erreur initialisation MobileAds: {e}")
+
+        # Placeholder consentement (GDPR) - à remplacer par SDK Consent si ciblage UE
+        if os.environ.get('EU_USER','0') == '1':
+            print("🔐 Consentement UE requis - Implémenter User Messaging Platform SDK")
+
         # Programme l'application des traductions et police au prochain frame
         try:
-            from kivy.clock import Clock
+            from kivy.clock import Clock  # type: ignore
             def _apply_all(_dt):
                 try:
                     root = getattr(self, 'root', None)
@@ -363,9 +495,9 @@ class TarotApp(App):
                             # Overlay disabled by default
                             print('MAIN: global debug overlay disabled')
                         else:
-                            from kivy.uix.floatlayout import FloatLayout
-                            from kivy.uix.label import Label
-                            from kivy.graphics import Color, Rectangle
+                            from kivy.uix.floatlayout import FloatLayout  # type: ignore
+                            from kivy.uix.label import Label  # type: ignore
+                            from kivy.graphics import Color, Rectangle  # type: ignore
 
                             # Determine proper target to receive the overlay: prefer the active Screen
                             target = None
@@ -409,7 +541,7 @@ class TarotApp(App):
                                 target.add_widget(overlay)
                                 print("MAIN: global debug overlay added to target", target)
                                 # suppression après 20s
-                                from kivy.clock import Clock as _Clock
+                                from kivy.clock import Clock as _Clock  # type: ignore
                                 def _remove_overlay(__dt):
                                     try:
                                         if overlay.parent:
@@ -429,6 +561,132 @@ class TarotApp(App):
 
     def on_stop(self):
         print("🛑 Application arrêtée")
+
+    # === Notifications / Tirage quotidien ===
+    def _today_str(self):
+        try:
+            import datetime as _dt
+            return _dt.date.today().isoformat()
+        except Exception:
+            return ""
+
+    def _load_last_draw_date(self):
+        try:
+            p = os.path.join(self.user_data_dir, "last_draw.json")
+            if os.path.exists(p):
+                with open(p, "r", encoding="utf-8") as f:
+                    d = json.load(f)
+                self._last_draw_date = d.get("date")
+        except Exception:
+            self._last_draw_date = None
+
+    def _save_last_draw_date(self):
+        try:
+            os.makedirs(self.user_data_dir, exist_ok=True)
+            p = os.path.join(self.user_data_dir, "last_draw.json")
+            with open(p, "w", encoding="utf-8") as f:
+                json.dump({"date": self._last_draw_date}, f)
+        except Exception as e:
+            print(f"⚠️ save last_draw failed: {e}")
+
+    def record_draw_today(self):
+        self._last_draw_date = self._today_str()
+        self._save_last_draw_date()
+
+    def did_draw_today(self) -> bool:
+        return (self._last_draw_date or "") == self._today_str()
+
+    def _seconds_until_today_11(self):
+        try:
+            import datetime as _dt
+            now = _dt.datetime.now()
+            target = now.replace(hour=11, minute=0, second=0, microsecond=0)
+            if target <= now:
+                # déjà passé aujourd'hui → planifier demain 11h
+                target = target + _dt.timedelta(days=1)
+            return max(1, int((target - now).total_seconds()))
+        except Exception:
+            return 3600
+
+    def _schedule_daily_draw_reminder(self):
+        # Planifie un check à 11h locale (ou demain si 11h passé) tant que l'app tourne.
+        # Limitation: si l'app est tuée, aucune notif. Prochaine itération: service Android.
+        delay = self._seconds_until_today_11()
+        def _fire(_dt):
+            try:
+                self._maybe_notify_draw_reminder()
+            finally:
+                # replanifier pour le lendemain
+                try:
+                    Clock.schedule_once(_fire, 24*3600)
+                except Exception:
+                    pass
+        Clock.schedule_once(_fire, delay)
+
+    def _maybe_notify_draw_reminder(self):
+        try:
+            today = self._today_str()
+            if self._last_draw_date == today:
+                return  # déjà fait
+            title = self.tr("messages.app_title") if callable(getattr(self, 'tr', None)) else "Ma Carte de Tarot"
+            body = self.tr("messages.daily_reminder") if callable(getattr(self, 'tr', None)) else "Votre carte du jour vous attend ✨"
+            if plyer_notification:
+                try:
+                    plyer_notification.notify(title=title, message=body, app_name="Tarot", timeout=10)
+                    print("🔔 Notification tirage envoyée")
+                except Exception as e:
+                    print(f"⚠️ Notification failed: {e}")
+        except Exception as e:
+            print(f"⚠️ maybe_notify failed: {e}")
+
+    # === Consentement (placeholder UMP) ===
+    def _consent_file(self):
+        try:
+            return os.path.join(self.user_data_dir, "consent.json")
+        except Exception:
+            return os.path.join(BASE_DIR, "consent.json")
+
+    def _load_consent(self):
+        try:
+            p = self._consent_file()
+            if os.path.exists(p):
+                with open(p, "r", encoding="utf-8") as f:
+                    d = json.load(f)
+                v = d.get("personalized")
+                if isinstance(v, bool):
+                    return v
+        except Exception:
+            pass
+        return None
+
+    def _save_consent(self, personalized: bool | None):
+        try:
+            os.makedirs(self.user_data_dir, exist_ok=True)
+            p = self._consent_file()
+            with open(p, "w", encoding="utf-8") as f:
+                json.dump({"personalized": personalized}, f)
+        except Exception as e:
+            print(f"⚠️ save consent failed: {e}")
+
+    def set_user_consent(self, personalized: bool):
+        # Appeler ceci quand un flux UMP réel sera intégré
+        self.consent_personalized = bool(personalized)
+        self._save_consent(self.consent_personalized)
+        
+        # CORRECTIF: Mettre à jour cfg AVANT que MobileAds.init ne crée AdsManager
+        try:
+            if self.consent_personalized is None:
+                self.cfg["ads_enabled"] = False
+            elif self.consent_personalized is False:
+                # Pas de test ads en prod; bascule vers non-personnalisé (NPA) quand disponible
+                self.cfg["ads_enabled"] = True
+            else:
+                self.cfg["ads_enabled"] = True
+            print(f"🔐 Consentement appliqué: personalized={self.consent_personalized}, ads_enabled={self.cfg.get('ads_enabled')}")
+        except Exception as e:
+            print(f"⚠️ Update ads config failed after consent change: {e}")
+        
+        # Ne plus créer AdsManager ici, il sera instancié par le callback MobileAds.initialize
         
  # --- AJOUT IAP : action bouton "Acheter Premium" ---
     def on_buy_premium(self, *_):
@@ -445,6 +703,10 @@ class TarotApp(App):
         try:
             if product_id == "premium_features":
                 self.enable_premium = True
+                try:
+                    self._save_premium_status()
+                except Exception:
+                    pass
                 print(f"✨ Premium activé ! (provider={provider})")
 
                 # Optionnel : mettre à jour le bouton premium si l'écran l’expose
@@ -460,9 +722,54 @@ class TarotApp(App):
                         self.response_screen.update_premium_button(False, price_txt, provider)
                 except Exception as _e:
                     print(f"ℹ️ UI non mise à jour (facultatif): {_e}")
+
+                # Ouvrir automatiquement le chat Mme T après achat
+                try:
+                    from popups import MmeTChatPopup
+                    drawn = getattr(self, 'last_drawn_cards', None)
+                    price_txt = None
+                    try:
+                        if self.billing:
+                            price_txt = self.billing.get_product_price()
+                    except Exception:
+                        price_txt = None
+                    popup = MmeTChatPopup(language=self.lang, provider=provider, price_text=price_txt, drawn_cards=drawn, tr=self.tr)
+                    popup.open()
+                except Exception as _e:
+                    print(f"ℹ️ Ouverture chat Mme T échouée (facultatif): {_e}")
         except Exception as e:
             print(f"⚠️ Erreur on_purchase_success: {e}")
             self.enable_premium = False
+            try:
+                self._save_premium_status()
+            except Exception:
+                pass
+
+    # === Premium persistence ===
+    def _premium_file(self):
+        try:
+            return os.path.join(self.user_data_dir, "premium.json")
+        except Exception:
+            return os.path.join(BASE_DIR, "premium.json")
+
+    def _load_premium_status(self):
+        try:
+            p = self._premium_file()
+            if os.path.exists(p):
+                with open(p, "r", encoding="utf-8") as f:
+                    d = json.load(f)
+                self.enable_premium = bool(d.get("enabled", False))
+        except Exception:
+            pass
+
+    def _save_premium_status(self):
+        try:
+            os.makedirs(self.user_data_dir, exist_ok=True)
+            p = self._premium_file()
+            with open(p, "w", encoding="utf-8") as f:
+                json.dump({"enabled": bool(self.enable_premium)}, f)
+        except Exception as e:
+            print(f"⚠️ save premium failed: {e}")
 
 # === Loader de signification cartes ===
 def get_cards_signification(card_name=None):
@@ -472,6 +779,33 @@ def get_cards_signification(card_name=None):
     if card_name:
         return sigs.get(card_name, {})  # aucun I/O, pas de fallback fichier
     return sigs
+
+
+# === API Notifications quotidiennes: ON/OFF ===
+def enable_daily():
+    try:
+        from jnius import autoclass
+        PythonActivity = autoclass('org.kivy.android.PythonActivity')
+        ctx = getattr(PythonActivity, 'mActivity', None)
+        if ctx is not None:
+            AlarmScheduler = autoclass('org.tarot.AlarmScheduler')
+            AlarmScheduler.scheduleDaily(ctx)
+            print("✅ Daily reminder activé")
+    except Exception as e:
+        print(f"⚠️ enable_daily failed: {e}")
+
+
+def disable_daily():
+    try:
+        from jnius import autoclass
+        PythonActivity = autoclass('org.kivy.android.PythonActivity')
+        ctx = getattr(PythonActivity, 'mActivity', None)
+        if ctx is not None:
+            AlarmScheduler = autoclass('org.tarot.AlarmScheduler')
+            AlarmScheduler.cancelDaily(ctx)
+            print("✅ Daily reminder désactivé")
+    except Exception as e:
+        print(f"⚠️ disable_daily failed: {e}")
 
 
 # === Entrée principale ===
