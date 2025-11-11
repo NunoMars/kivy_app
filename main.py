@@ -715,6 +715,13 @@ class TarotApp(App):
                     pass
                 print(f"✨ Premium activé ! (provider={provider})")
 
+                # Journalisation locale + feedback utilisateur
+                try:
+                    self.append_iap_log(f"SUCCESS {provider} {product_id}")
+                    self.show_iap_feedback(self._tr("messages.purchase_success") if callable(getattr(self, '_tr', None)) else "Achat réussi !", success=True)
+                except Exception as _el:
+                    print(f"⚠️ IAP feedback/log failed: {_el}")
+
                 # Optionnel : mettre à jour le bouton premium si l'écran l’expose
                 try:
                     if hasattr(self, 'response_screen') and hasattr(self.response_screen, 'update_premium_button'):
@@ -750,6 +757,38 @@ class TarotApp(App):
                 self._save_premium_status()
             except Exception:
                 pass
+
+    # --- IAP utilitaires: log persistant + popup feedback ---
+    def append_iap_log(self, line: str):
+        try:
+            os.makedirs(self.user_data_dir, exist_ok=True)
+            log_path = os.path.join(self.user_data_dir, "iap_debug.log")
+            with open(log_path, "a", encoding="utf-8") as lf:
+                lf.write(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] {line}\n")
+        except Exception as exc:
+            print(f"⚠️ append_iap_log failed: {exc}")
+
+    def show_iap_feedback(self, message: str, success: bool = True):
+        # Import retardé pour éviter erreurs de résolution hors environnement Kivy (analyse statique)
+        if 'kivy' not in sys.modules:
+            print(f"ℹ️ IAP feedback (popup) ignoré: environnement Kivy non initialisé")
+            return
+        try:
+            from kivy.uix.popup import Popup  # type: ignore
+            from kivy.uix.label import Label  # type: ignore
+            color = [0.2, 0.6, 0.25, 1] if success else [0.85, 0.25, 0.25, 1]
+            title = "Achat" if success else "Achat échoué"
+            try:
+                if hasattr(self, '_tr') and callable(self._tr):
+                    title = self._tr("messages.purchase_title") if success else self._tr("messages.purchase_failed")
+            except Exception:
+                pass
+            popup = Popup(title=title,
+                          content=Label(text=message, color=color, font_name=getattr(self, 'font_body', 'Body')),
+                          size_hint=(0.85, 0.32))
+            popup.open()
+        except Exception as exc:
+            print(f"⚠️ show_iap_feedback failed: {exc}")
 
     # === Premium persistence ===
     def _premium_file(self):
@@ -790,7 +829,11 @@ def get_cards_signification(card_name=None):
 # === API Notifications quotidiennes: ON/OFF ===
 def enable_daily():
     try:
-        from jnius import autoclass
+        # Import différé protégé (évite erreurs lint hors Android)
+        if 'jnius' not in sys.modules:
+            import importlib
+            importlib.import_module('jnius')
+        from jnius import autoclass  # type: ignore
         PythonActivity = autoclass('org.kivy.android.PythonActivity')
         ctx = getattr(PythonActivity, 'mActivity', None)
         if ctx is not None:
@@ -803,7 +846,10 @@ def enable_daily():
 
 def disable_daily():
     try:
-        from jnius import autoclass
+        if 'jnius' not in sys.modules:
+            import importlib
+            importlib.import_module('jnius')
+        from jnius import autoclass  # type: ignore
         PythonActivity = autoclass('org.kivy.android.PythonActivity')
         ctx = getattr(PythonActivity, 'mActivity', None)
         if ctx is not None:
