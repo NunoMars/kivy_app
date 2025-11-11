@@ -1,24 +1,12 @@
-# 🎯 Activation des blocs d'annonces AdMob
+# 🎯 Vérifications AdMob (important)
 
-## ⚠️ PROBLÈME IDENTIFIÉ
+> Note importante: Dans AdMob, la section « Campagnes » (auto‑promo/House ads) peut afficher « 0 activé(e)(s) » sans que cela bloque la diffusion des annonces AdMob classiques. Vous n'avez PAS besoin de créer/activer des campagnes pour voir des pubs AdMob standards. Le « 0 activé(e)(s) » de cette section n'est pas bloquant.
 
-Tes blocs d'annonces sont créés dans AdMob mais **pas activés pour servir des pubs** :
-
-```
-Tarot_Banner (ca-app-pub-5749803259882370/8646786637)
-- 1 élément(s) actif(s)
-- ❌ 0 activé(e)(s)  ← PROBLÈME ICI
-
-Ma carte de tarot pleine page (ca-app-pub-5749803259882370/4840878344)
-- 1 élément(s) actif(s)
-- ❌ 0 activé(e)(s)  ← PROBLÈME ICI
-```
-
-**Résultat** : Aucune pub ne sera affichée même si le code est correct !
+Ce document récapitule les vérifications utiles côté AdMob et côté app pour s'assurer que la diffusion est possible et optimale.
 
 ---
 
-## ✅ SOLUTION : Activer les blocs d'annonces
+## ✅ Vérifier les blocs d'annonces
 
 ### Étape 1 : Aller sur AdMob Console
 
@@ -37,34 +25,10 @@ Ma carte de tarot pleine page (ca-app-pub-5749803259882370/4840878344)
    - `Tarot_Banner` (Bannière)
    - `Ma carte de tarot pleine page` (Interstitiel)
 
-### Étape 4 : Activer chaque bloc d'annonces
+### Étape 4 : Statut des blocs
 
-Pour **CHAQUE** bloc d'annonces (Bannière ET Interstitiel) :
-
-#### A. Ouvrir les paramètres
-- Cliquer sur le bloc d'annonces
-- Ou cliquer sur les 3 points (⋮) → **"Paramètres"**
-
-#### B. Vérifier le statut
-Tu verras quelque chose comme :
-```
-Statut : ⚠️ Inactif
-ou
-Statut : ⏸️ En pause
-```
-
-#### C. Activer le bloc
-1. Chercher l'option **"Activer le bloc d'annonces"** ou **"Enable ad unit"**
-2. Cliquer sur le bouton **"Activer"** / **"Enable"**
-3. Confirmer si demandé
-
-#### D. Vérifier l'activation
-Après activation, tu devrais voir :
-```
-Statut : ✅ Actif
-1 élément(s) actif(s)
-1 activé(e)(s)  ← Maintenant à 1 au lieu de 0 !
-```
+- Ouvrir chaque bloc (bannière et interstitiel) et vérifier qu'il n'est pas en pause/supprimé.
+- La mention « 0 activé(e)(s) » dans « Campagnes » n'a pas d'impact sur les blocs standards.
 
 ---
 
@@ -116,8 +80,9 @@ Au niveau de l'application : Aucune limite ✅
 ### "Le bloc ne peut pas être activé"
 **Causes possibles** :
 1. **App-ads.txt manquant** → Push GitHub + attendre 24h
-2. **App non vérifiée** → Vérifier que l'app est publiée sur Play Store
-3. **Compte AdMob non approuvé** → Vérifier le statut du compte
+2. **Consentement UMP manquant en EEE** → Implémenter le SDK UMP (consentement RGPD)
+3. **App non publiée/associée** → Lister l'app sur le Play Store et l'associer dans AdMob
+4. **Compte AdMob non approuvé** → Vérifier le statut du compte
 
 **Solution** :
 ```bash
@@ -166,13 +131,11 @@ App : Ma Carte De Tarot
 ├─ Blocs d'annonces :
    ├─ Tarot_Banner
    │  ├─ Type : Bannière
-   │  ├─ Statut : ✅ Actif
-   │  ├─ Activé : ✅ 1/1
+   │  ├─ Statut : ✅ Actif (pas en pause)
    │  └─ Médiation : ironSource + AppLovin
    └─ Ma carte de tarot pleine page
       ├─ Type : Interstitiel
-      ├─ Statut : ✅ Actif
-      ├─ Activé : ✅ 1/1
+   ├─ Statut : ✅ Actif (pas en pause)
       └─ Médiation : ironSource + AppLovin
 ```
 

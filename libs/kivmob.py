@@ -68,6 +68,7 @@ class KivMob:
         try:
             self.PythonActivity = autoclass("org.kivy.android.PythonActivity")
             self.AdView = autoclass("com.google.android.gms.ads.AdView")
+            self.AdListener = autoclass("com.google.android.gms.ads.AdListener")
             self.AdRequest = autoclass("com.google.android.gms.ads.AdRequest")
             self.AdSize = autoclass("com.google.android.gms.ads.AdSize")
             self.InterstitialAd = autoclass(
@@ -161,6 +162,36 @@ class KivMob:
     # ------------------------------------------------------------------
     # Banner API
     # ------------------------------------------------------------------
+    class _BannerListener(PythonJavaClass if PythonJavaClass else object):
+        __javaclass__ = "com/google/android/gms/ads/AdListener"
+
+        def __init__(self) -> None:
+            if PythonJavaClass:
+                super().__init__()
+
+        @java_method("()V")
+        def onAdLoaded(self) -> None:  # pragma: no cover - Java call
+            Logger.info("KivMob: Banner loaded")
+
+        @java_method("(Lcom/google/android/gms/ads/LoadAdError;)V")
+        def onAdFailedToLoad(self, error) -> None:  # pragma: no cover - Java call
+            try:
+                Logger.warning(
+                    "KivMob: Banner failed (code=%s): %s",
+                    error.getCode(),
+                    error.getMessage(),
+                )
+            except Exception:
+                Logger.warning("KivMob: Banner failed to load")
+
+        @java_method("()V")
+        def onAdImpression(self) -> None:  # pragma: no cover - Java call
+            Logger.info("KivMob: Banner impression")
+
+        @java_method("()V")
+        def onAdClicked(self) -> None:  # pragma: no cover - Java call
+            Logger.info("KivMob: Banner clicked")
+
     def new_banner(self, ad_unit_id: str, top: bool = False) -> None:
         if platform != "android" or self.context is None:
             return
@@ -172,6 +203,12 @@ class KivMob:
                 self.banner_ad = self.AdView(self.context)
                 self.banner_ad.setAdSize(self.AdSize.BANNER)
                 self.banner_ad.setAdUnitId(ad_unit_id)
+                # Attacher un listener pour logs détaillés
+                try:
+                    listener = KivMob._BannerListener()
+                    self.banner_ad.setAdListener(listener)
+                except Exception as exc:
+                    Logger.warning(f"KivMob: Failed to attach banner listener: {exc}")
                 Logger.info(
                     "KivMob: Banner created (%s, position=%s)",
                     ad_unit_id,
@@ -337,6 +374,53 @@ class KivMob:
     def destroy_interstitial(self) -> None:
         self.interstitial_ad = None
         Logger.info("KivMob: Interstitial destroyed")
+
+    # ------------------------------------------------------------------
+    # Ad Inspector (optionnel, pour diagnostics)
+    # ------------------------------------------------------------------
+    def open_ad_inspector(self) -> None:
+        """Ouvre l'Ad Inspector de Google dans l'app (Android uniquement)."""
+        if platform != "android" or self.context is None:
+            Logger.warning("KivMob: Ad Inspector not available outside Android")
+            return
+
+        @run_on_ui_thread
+        def _open() -> None:
+            try:
+                OnAdInspectorClosedListener = autoclass(
+                    "com.google.android.gms.ads.OnAdInspectorClosedListener"
+                )
+
+                class _Listener(PythonJavaClass if PythonJavaClass else object):
+                    __javaclass__ = (
+                        "com/google/android/gms/ads/OnAdInspectorClosedListener"
+                    )
+
+                    def __init__(self) -> None:
+                        if PythonJavaClass:
+                            super().__init__()
+
+                    @java_method("(Lcom/google/android/gms/ads/AdInspectorError;)V")
+                    def onAdInspectorClosed(self, error) -> None:  # pragma: no cover
+                        if error is None:
+                            Logger.info("KivMob: Ad Inspector closed (no error)")
+                        else:
+                            try:
+                                Logger.warning(
+                                    "KivMob: Ad Inspector error (code=%s): %s",
+                                    error.getCode(),
+                                    error.getMessage(),
+                                )
+                            except Exception:
+                                Logger.warning("KivMob: Ad Inspector closed with error")
+
+                listener = _Listener()
+                self.MobileAds.openAdInspector(self.activity, listener)
+                Logger.info("KivMob: Opening Ad Inspector")
+            except Exception as exc:
+                Logger.error(f"KivMob: Failed to open Ad Inspector: {exc}")
+
+        _open()
 
 
 __all__ = ["KivMob", "TestIds"]
