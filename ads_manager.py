@@ -78,6 +78,15 @@ def load_config() -> dict:
 
     return cfg
 
+# ---------------------------------------------------------------------------
+# IDs de production (fallback constants)
+# Ces constantes garantissent que les IDs d'unités de pub apparaissent dans le
+# bytecode/dex pour les outils de scan, même si on charge aussi depuis JSON.
+# ---------------------------------------------------------------------------
+PROD_APP_ID = "ca-app-pub-5749803259882370~1482612480"
+PROD_BANNER_ID = "ca-app-pub-5749803259882370/8646786637"
+PROD_INTER_ID = "ca-app-pub-5749803259882370/4840878344"
+
 
 class AdsManager:
     """
@@ -125,15 +134,21 @@ class AdsManager:
         # Initialize AdMob — délégué après MobileAds.initialize via wait_mobile_ads_ready()
         # Pour l'instant, créer seulement l'instance KivMob
         try:
-            app_id = self.cfg.get("admob_app_id")
+            # App ID: préférer TestIds en mode test, sinon cfg puis fallback constant
             if self.test_mode and TestIds:
-                app_id = getattr(TestIds, "APP", app_id or "")
-            
+                app_id = getattr(TestIds, "APP", PROD_APP_ID)
+            else:
+                app_id = (self.cfg.get("admob_app_id") or PROD_APP_ID)
+
             # 🔐 Activer NPA en production pour conformité RGPD
             # En mode test, autoriser pubs personnalisées pour meilleur remplissage
             enable_npa = not self.test_mode
             self.sdk = KivMob(app_id, enable_npa=enable_npa)
-            Logger.info(f"AdMob: KivMob instance created (app_id={app_id}, NPA={'enabled' if enable_npa else 'disabled'})")
+            Logger.info(
+                "AdMob: KivMob instance created (app_id=%s, NPA=%s)",
+                app_id,
+                "enabled" if enable_npa else "disabled",
+            )
         except Exception as e:
             Logger.error(f"AdMob: Failed to create KivMob instance: {e}")
             self.enabled = False
@@ -162,19 +177,21 @@ class AdsManager:
             Logger.error(f"AdMob: Failed to setup ads after SDK ready: {e}")
 
     def _initialize_admob(self):
-        """Initialize AdMob SDK with IDs from config"""
-        app_id = self.cfg.get("admob_app_id")
-        banner_id = self.cfg.get("admob_banner_id")
-        inter_id = self.cfg.get("admob_inter_id")
+        """Initialize AdMob SDK with IDs from config (with PROD fallbacks)."""
+        # Lire depuis config et appliquer des fallbacks constants pour que
+        # les ID d'unités soient présents dans le bytecode (scan outillage).
+        banner_id = self.cfg.get("admob_banner_id") or None
+        inter_id = self.cfg.get("admob_inter_id") or None
 
-        # Use test IDs if in test mode
+        # Use test IDs if in test mode; otherwise force PROD fallbacks si manquants
         if self.test_mode:
             Logger.info("AdMob: Using TEST IDs")
-            app_id = getattr(TestIds, "APP", app_id or "")
             banner_id = getattr(TestIds, "BANNER", banner_id or "")
             inter_id = getattr(TestIds, "INTERSTITIAL", inter_id or "")
         else:
             Logger.info("AdMob: Using PRODUCTION IDs")
+            banner_id = banner_id or PROD_BANNER_ID
+            inter_id = inter_id or PROD_INTER_ID
 
         try:
             # SDK instance déjà créée dans __init__, juste initialiser ici

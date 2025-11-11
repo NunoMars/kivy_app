@@ -6,8 +6,8 @@ package.name = macartedetarot
 package.domain = org.tarot
 source.dir = .
 
-version = 2.1
-android.numeric_version = 2100000
+version = 2.3
+android.numeric_version = 2300000
 author = © Nuno Marcelino
 
 # ───────────────────────────────
