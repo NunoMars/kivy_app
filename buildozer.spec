@@ -70,19 +70,6 @@ android.release_artifact = aab
 android.debug_artifact = aab
 android.archs = arm64-v8a, armeabi-v7a
 
-# Configuration Gradle pour symboles natifs
-android.gradle_app_options = """
-android {
-    buildTypes {
-        release {
-            ndk {
-                debugSymbolLevel 'FULL'
-            }
-        }
-    }
-}
-"""
-
 # ───────────────────────────────
 # ⚙️ Packaging
 android.add_aapt_options = -0 arsc -0 json
@@ -99,9 +86,9 @@ android.release_keyalias_password = nunotheboss
 
 # ───────────────────────────────
 # 🧩 ProGuard / R8 - Optimisation + Symboles de débogage
-android.enable_proguard = True
-android.proguard_mapping = mapping.txt
-android.enable_ndk_debug_symbols = True
+# NOTE: Les règles ProGuard sont dans proguard-rules.pro
+# Les symboles natifs et mapping.txt seront générés automatiquement
+# et disponibles dans .buildozer/android/platform/build.../build/outputs/
 
 android.add_proguard_rules = """
  # Conserver les classes AdMob/Play Services
