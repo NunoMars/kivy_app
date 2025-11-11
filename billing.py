@@ -123,16 +123,26 @@ class GoogleBillingStateListener(PythonJavaClass):  # pragma: no cover
         try:
             rc = billing_result.getResponseCode()
             OK = self.manager.google_client_class.BillingResponseCode.OK
+            print(f"🔍 Billing setup response code: {rc}")
+            
             if rc == OK:
                 print("✅ Connexion Billing Google établie")
                 self.manager._on_google_billing_ready()
             else:
                 print(f"⚠️ Connexion Billing Google interrompue (code {rc})")
+                # Mapping des erreurs
+                if rc == 3:
+                    print("   ℹ️ BILLING_UNAVAILABLE - Play Billing non disponible sur ce device")
+                elif rc == 2:
+                    print("   ℹ️ SERVICE_UNAVAILABLE - Service temporairement indisponible")
+                
                 self.manager._notify_error(
                     "Service de paiement indisponible", provider="google"
                 )
         except Exception as exc:
             print(f"✗ Exception connexion Billing Google: {exc}")
+            import traceback
+            traceback.print_exc()
             self.manager._notify_error("Erreur Billing Google", provider="google")
 
     @java_method("()V")
@@ -162,29 +172,61 @@ class GoogleProductDetailsListener(PythonJavaClass):
     def onProductDetailsResponse(self, billing_result, product_details_list):
         try:
             rc = billing_result.getResponseCode()
+            # Log détaillé du code de réponse pour diagnostic
+            print(f"🔍 Billing ProductDetails response code: {rc}")
+            
             OK = self.manager.google_client_class.BillingResponseCode.OK
             if rc == OK and product_details_list and product_details_list.size() > 0:
+                # Log du nombre de produits trouvés
+                print(f"📦 Nombre de produits in-app trouvés: {product_details_list.size()}")
+                
                 details = product_details_list.get(0)
                 self.manager.google_product_details = details
+
+                # Log de l'ID produit pour confirmation
+                try:
+                    product_id = details.getProductId()
+                    print(f"✅ Produit in-app ID: {product_id}")
+                except Exception:
+                    pass
 
                 # Prix formaté si INAPP (one-time)
                 try:
                     otp = details.getOneTimePurchaseOfferDetails()
                     if otp:
                         self.manager.display_price = otp.getFormattedPrice()
+                        print(f"💰 Prix formaté: {self.manager.display_price}")
                 except Exception:
                     pass
 
-                print("✅ ProductDetails Google récupérés:", getattr(self.manager, "display_price", ""))
+                print("✅ ProductDetails Google récupérés:", getattr(self.manager, "display_price", "N/A"))
                 self.manager._dispatch_state_change()
             else:
-                print(f"⚠️ ProductDetails indisponibles (code {rc})")
+                # Logs détaillés en cas d'erreur
+                print(f"⚠️ ProductDetails indisponibles - Code: {rc}")
+                if product_details_list:
+                    print(f"   Liste size: {product_details_list.size()}")
+                else:
+                    print("   Liste NULL - Produit probablement non configuré dans Play Console")
+                
+                # Mapping des codes d'erreur courants
+                error_map = {
+                    4: "ITEM_UNAVAILABLE - Produit non trouvé (vérifier ID et statut dans Play Console)",
+                    5: "DEVELOPER_ERROR - Erreur config (vérifier signing/package name)",
+                    2: "SERVICE_UNAVAILABLE - Service temporairement indisponible",
+                    3: "BILLING_UNAVAILABLE - Billing non supporté sur ce device"
+                }
+                if rc in error_map:
+                    print(f"   ℹ️ {error_map[rc]}")
+                
                 self.manager.google_product_details = None
                 self.manager._notify_error(
                     "Produit indisponible sur Play Store", provider="google"
                 )
         except Exception as exc:
             print(f"✗ Exception lecture ProductDetails Google: {exc}")
+            import traceback
+            traceback.print_exc()
             self.manager._notify_error(
                 "Erreur produit sur Play Store", provider="google"
             )
@@ -567,6 +609,8 @@ class InAppPurchaseManager:
     def _fetch_google_product_details(self):
         """Interroge les ProductDetails via ArrayList Java (v8)."""
         try:
+            print(f"🔍 Requête ProductDetails pour: {self.GOOGLE_INAPP_PRODUCT_ID}")
+            
             QueryProductDetailsParams_Builder = autoclass(
                 "com.android.billingclient.api.QueryProductDetailsParams$Builder"
             )
@@ -592,8 +636,11 @@ class InAppPurchaseManager:
             self.google_billing_client.queryProductDetailsAsync(
                 params, self._google_product_details_listener
             )
+            print(f"📤 ProductDetails request envoyée pour '{self.GOOGLE_INAPP_PRODUCT_ID}'")
         except Exception as exc:
             print(f"⚠️ Erreur requête ProductDetails: {exc}")
+            import traceback
+            traceback.print_exc()
 
     # ── PUBLIC
     def is_ready(self):

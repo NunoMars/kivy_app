@@ -226,12 +226,19 @@ class TarotApp(App):
         # Appliquer une politique simple selon le consentement (placeholder UMP)
         try:
             if self.consent_personalized is None:
-                # Consentement inconnu → désactiver les pubs pour éviter personnalisation involontaire
-                self.cfg["ads_enabled"] = False
+                # Consentement inconnu → activer pubs NON personnalisées (NPA) par défaut
+                # Conforme RGPD : pubs contextuelles sans tracking utilisateur
+                self.cfg["ads_enabled"] = True
+                print("ℹ️ Consentement inconnu → pubs non personnalisées activées (NPA)")
             elif self.consent_personalized is False:
                 # Pas de consentement → activer seulement des pubs non personnalisées (pas de test ads en prod)
                 # TODO: brancher NPA=1 via wrapper KivMob quand exposé; en attendant on garde production standard.
                 self.cfg["ads_enabled"] = True
+                print("ℹ️ Consentement refusé → pubs non personnalisées activées (NPA)")
+            else:
+                # Consentement accordé → pubs personnalisées autorisées
+                self.cfg["ads_enabled"] = True
+                print("ℹ️ Consentement accordé → pubs personnalisées activées")
         except Exception:
             pass
 
@@ -675,14 +682,13 @@ class TarotApp(App):
         
         # CORRECTIF: Mettre à jour cfg AVANT que MobileAds.init ne crée AdsManager
         try:
-            if self.consent_personalized is None:
-                self.cfg["ads_enabled"] = False
-            elif self.consent_personalized is False:
-                # Pas de test ads en prod; bascule vers non-personnalisé (NPA) quand disponible
-                self.cfg["ads_enabled"] = True
+            # Dans tous les cas, activer les pubs (personnalisées ou non selon consentement)
+            self.cfg["ads_enabled"] = True
+            
+            if self.consent_personalized:
+                print(f"🔐 Consentement accordé → pubs personnalisées activées")
             else:
-                self.cfg["ads_enabled"] = True
-            print(f"🔐 Consentement appliqué: personalized={self.consent_personalized}, ads_enabled={self.cfg.get('ads_enabled')}")
+                print(f"🔐 Consentement refusé → pubs non personnalisées activées (NPA)")
         except Exception as e:
             print(f"⚠️ Update ads config failed after consent change: {e}")
         

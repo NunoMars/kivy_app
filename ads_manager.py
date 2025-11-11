@@ -128,8 +128,12 @@ class AdsManager:
             app_id = self.cfg.get("admob_app_id")
             if self.test_mode and TestIds:
                 app_id = getattr(TestIds, "APP", app_id or "")
-            self.sdk = KivMob(app_id)
-            Logger.info(f"AdMob: KivMob instance created (app_id={app_id})")
+            
+            # 🔐 Activer NPA en production pour conformité RGPD
+            # En mode test, autoriser pubs personnalisées pour meilleur remplissage
+            enable_npa = not self.test_mode
+            self.sdk = KivMob(app_id, enable_npa=enable_npa)
+            Logger.info(f"AdMob: KivMob instance created (app_id={app_id}, NPA={'enabled' if enable_npa else 'disabled'})")
         except Exception as e:
             Logger.error(f"AdMob: Failed to create KivMob instance: {e}")
             self.enabled = False

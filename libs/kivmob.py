@@ -49,7 +49,7 @@ class TestIds:
 class KivMob:
     """Minimal bridge around the Google Mobile Ads SDK for Kivy apps."""
 
-    def __init__(self, app_id: str = "") -> None:
+    def __init__(self, app_id: str = "", enable_npa: bool = False) -> None:
         self.app_id = app_id
         self._is_initialized = False
         self.banner_ad = None
@@ -57,6 +57,7 @@ class KivMob:
         self._banner_visible = False
         self.interstitial_ad = None
         self._interstitial_unit_id: Optional[str] = None
+        self.enable_npa = enable_npa  # Non-Personalized Ads (RGPD)
 
         if platform != "android" or autoclass is None:
             Logger.warning("KivMob: Not running on Android, ads disabled")
@@ -76,6 +77,17 @@ class KivMob:
                 "com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback"
             )
             self.MobileAds = autoclass("com.google.android.gms.ads.MobileAds")
+            
+            # Classes pour NPA
+            try:
+                self.RequestConfiguration = autoclass(
+                    "com.google.android.gms.ads.RequestConfiguration"
+                )
+                self.Bundle = autoclass("android.os.Bundle")
+            except Exception:
+                self.RequestConfiguration = None
+                self.Bundle = None
+                Logger.warning("KivMob: RequestConfiguration not available for NPA")
 
             self.activity = self.PythonActivity.mActivity
             self.context = self.activity.getApplicationContext()
@@ -103,10 +115,48 @@ class KivMob:
                 self.MobileAds.initialize(self.context)
                 self._is_initialized = True
                 Logger.info("KivMob: MobileAds initialized")
+                
+                # Configurer NPA globalement si activé
+                if self.enable_npa and self.RequestConfiguration:
+                    try:
+                        config = (
+                            self.RequestConfiguration.Builder()
+                            .setMaxAdContentRating(
+                                self.RequestConfiguration.MAX_AD_CONTENT_RATING_G
+                            )
+                            .build()
+                        )
+                        self.MobileAds.setRequestConfiguration(config)
+                        Logger.info("KivMob: NPA (Non-Personalized Ads) enabled globally")
+                    except Exception as exc:
+                        Logger.warning(f"KivMob: Failed to set NPA config: {exc}")
             except Exception as exc:  # pragma: no cover
                 Logger.error(f"KivMob: MobileAds initialization failed: {exc}")
 
         _init()
+
+    def _build_ad_request(self) -> any:
+        """Construit une AdRequest avec support NPA (Non-Personalized Ads)."""
+        try:
+            builder = self.AdRequest.Builder()
+            
+            # Ajouter npa=1 pour pubs non personnalisées (RGPD)
+            if self.enable_npa and self.Bundle:
+                try:
+                    extras = self.Bundle()
+                    extras.putString("npa", "1")
+                    # Pour AdMob
+                    AdMobAdapter = autoclass("com.google.ads.mediation.admob.AdMobAdapter")
+                    builder.addNetworkExtrasBundle(AdMobAdapter, extras)
+                    Logger.info("KivMob: NPA parameter added to ad request")
+                except Exception as exc:
+                    Logger.warning(f"KivMob: Failed to add NPA bundle: {exc}")
+            
+            return builder.build()
+        except Exception as exc:
+            Logger.error(f"KivMob: Failed to build ad request: {exc}")
+            # Fallback: requête simple sans NPA
+            return self.AdRequest.Builder().build()
 
     # ------------------------------------------------------------------
     # Banner API
@@ -140,7 +190,7 @@ class KivMob:
         @run_on_ui_thread
         def _load() -> None:
             try:
-                ad_request = self.AdRequest.Builder().build()
+                ad_request = self._build_ad_request()
                 self.banner_ad.loadAd(ad_request)
                 Logger.info("KivMob: Banner load requested")
             except Exception as exc:
@@ -243,7 +293,7 @@ class KivMob:
         @run_on_ui_thread
         def _load() -> None:
             try:
-                ad_request = self.AdRequest.Builder().build()
+                ad_request = self._build_ad_request()
                 callback = KivMob._InterstitialCallback(self)
                 self.InterstitialAd.load(
                     self.context,

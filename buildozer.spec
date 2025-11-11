@@ -6,8 +6,8 @@ package.name = macartedetarot
 package.domain = org.tarot
 source.dir = .
 
-version = 2.0
-android.numeric_version = 2000000
+version = 2.1
+android.numeric_version = 2100000
 author = © Nuno Marcelino
 
 # ───────────────────────────────
@@ -70,6 +70,19 @@ android.release_artifact = aab
 android.debug_artifact = aab
 android.archs = arm64-v8a, armeabi-v7a
 
+# Configuration Gradle pour symboles natifs
+android.gradle_app_options = """
+android {
+    buildTypes {
+        release {
+            ndk {
+                debugSymbolLevel 'FULL'
+            }
+        }
+    }
+}
+"""
+
 # ───────────────────────────────
 # ⚙️ Packaging
 android.add_aapt_options = -0 arsc -0 json
@@ -85,17 +98,39 @@ android.release_keyalias = upload
 android.release_keyalias_password = nunotheboss
 
 # ───────────────────────────────
-# 🧩 ProGuard / R8
+# 🧩 ProGuard / R8 - Optimisation + Symboles de débogage
+android.enable_proguard = True
+android.proguard_mapping = mapping.txt
+android.enable_ndk_debug_symbols = True
+
 android.add_proguard_rules = """
+ # Conserver les classes AdMob/Play Services
  -keep class com.google.android.gms.** { *; }
  -keep class com.google.ads.** { *; }
+ -dontwarn com.google.android.gms.**
+ 
+ # Conserver les classes Billing
  -keep class com.android.billingclient.** { *; }
+ -dontwarn com.android.billingclient.**
+ 
+ # Conserver les classes de médiation
  -keep class com.applovin.** { *; }
  -keep class com.ironsource.** { *; }
  -dontwarn com.applovin.**
  -dontwarn com.ironsource.**
+ 
  # UMP (consentement) – conserver toutes les classes pour éviter obfuscation problématique
  -keep class com.google.android.ump.** { *; }
+ -dontwarn com.google.android.ump.**
+ 
+ # Conserver les noms de fichiers sources pour stack traces lisibles
+ -keepattributes SourceFile,LineNumberTable
+ 
+ # Optimisations R8
+ -optimizationpasses 5
+ -dontusemixedcaseclassnames
+ -dontskipnonpubliclibraryclasses
+ -verbose
  """
 
 # ───────────────────────────────
