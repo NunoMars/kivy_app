@@ -688,6 +688,23 @@ class InAppPurchaseManager:
     def _notify_error(self, message, provider, warn_only=False):
         level = "⚠️" if warn_only else "❌"
         print(f"{level} Erreur {provider}: {message}")
+        # Feedback UI + log persistant si l'app expose les helpers
+        try:
+            from kivy.app import App  # type: ignore
+            app = App.get_running_app()
+            if app:
+                if hasattr(app, "append_iap_log"):
+                    try:
+                        app.append_iap_log(f"ERROR {provider} {message}")
+                    except Exception:
+                        pass
+                if hasattr(app, "show_iap_feedback") and not warn_only:
+                    try:
+                        app.show_iap_feedback(f"{provider}: {message}", success=False)
+                    except Exception:
+                        pass
+        except Exception:
+            pass
 
     # ── PURCHASE
     def purchase_product(self, product_id: str | None = None):
