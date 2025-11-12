@@ -138,6 +138,11 @@ from screens import (
     AboutScreen,
 )
 from ads_manager import load_config, AdsManager, maybe_fetch_remote_config
+try:
+    from consent import request_consent as request_ump_consent
+except Exception:
+    def request_ump_consent():
+        return
 
 DEFAULT_MME_T_SPACE = "https://huggingface.co/spaces/Loupy222/mme_t"
 # === Fonction debug i18n ===
@@ -395,6 +400,8 @@ class TarotApp(App):
         print("🚀 Application démarrée")
         debug_check_i18n()
         try:
+            # Avant de planifier un rappel quotidien, s'assurer que la permission notifications est accordée (Android 13+)
+            self._ensure_notification_permission()
             self._schedule_daily_draw_reminder()
         except Exception as e:
             print(f"⚠️ schedule reminder failed: {e}")
@@ -411,40 +418,117 @@ class TarotApp(App):
             print(f"⚠️ AlarmManager schedule failed: {e}")
 
         # UMP: lancer la requête de consentement native et POLLER jusqu'à 8s (300–500ms)
+        # Remplace l'ancien bridge par la version UMP minimale (consent.py)
         try:
-            if _autoclass is not None and kivy_platform == 'android':
-                PythonActivity = _autoclass('org.kivy.android.PythonActivity')
-                act = getattr(PythonActivity, 'mActivity', None)
-                ConsentBridge = _autoclass('org.tarot.ConsentBridge')
-                if act is not None and ConsentBridge is not None:
-                    ConsentBridge.request(act)
-                    self._ump_elapsed = 0.0
-                    def _poll_consent(_dt):
-                        try:
-                            self._ump_elapsed += _dt
-                            res = ConsentBridge.getResult()
-                            decided = (res is not None)
-                            timeout = self._ump_elapsed >= 8.0
-                            if decided or timeout:
-                                Clock.unschedule(_poll_consent)
-                                # Politique release: par défaut pas de personnalisation (NPA)
-                                if not decided:
-                                    effective = False
-                                    print("🧾 UMP timeout -> personnalisation=False (par défaut)")
-                                else:
-                                    # Si UMP dit non requis, nous restons non personnalisés par défaut.
-                                    effective = False if bool(res) else False
-                                    print(f"🧾 UMP décidé (res={bool(res)}) -> personnalisation={effective}")
-                                self.set_user_consent(effective)
-                                # CORRECTIF: Ne plus créer AdsManager ici, il sera créé par _on_init_complete
-                                # après MobileAds.initialize() qui est appelé plus tard dans on_start()
-                                print("ℹ️ Consentement enregistré, ads seront initialisées après MobileAds.init")
-                        except Exception as _e:
-                            print(f"⚠️ UMP poll failed: {_e}")
-                    from kivy.clock import Clock as _Clock
-                    _Clock.schedule_interval(_poll_consent, 0.4)
+            request_ump_consent()
         except Exception as e:
-            print(f"⚠️ UMP request failed: {e}")
+            print(f"⚠️ UMP minimal failed: {e}")
+
+    # ------------------------------------------------------------------
+    # Notifications runtime (Android 13+ POST_NOTIFICATIONS)
+    # ------------------------------------------------------------------
+    def _ensure_notification_permission(self):
+        """Demande la permission POST_NOTIFICATIONS sur Android 13+ si absente.
+        Retourne True si déjà accordée ou plateforme non concernée.
+        """
+        try:
+            if kivy_platform != 'android':
+                return True
+            import importlib
+            jnius_mod = importlib.import_module('jnius')
+            autoclass = jnius_mod.autoclass
+            Build = autoclass('android.os.Build')
+            if Build.VERSION.SDK_INT < 33:  # < Android 13: permission pas requise
+                return True
+            PythonActivity = autoclass('org.kivy.android.PythonActivity')
+            activity = getattr(PythonActivity, 'mActivity', None)
+            if activity is None:
+                return False
+            ManifestPermission = autoclass('android.Manifest$permission')
+            ContextCompat = autoclass('androidx.core.content.ContextCompat')
+            PackageManager = autoclass('android.content.pm.PackageManager')
+            ActivityCompat = autoclass('androidx.core.app.ActivityCompat')
+            current = ContextCompat.checkSelfPermission(activity, ManifestPermission.POST_NOTIFICATIONS)
+            if current == PackageManager.PERMISSION_GRANTED:
+                print('🔔 Permission notifications déjà accordée')
+                return True
+            print('🔔 Demande de permission notifications (Android 13+)')
+            ActivityCompat.requestPermissions(activity, [ManifestPermission.POST_NOTIFICATIONS], 1001)
+            # Poller pendant quelques secondes pour voir si l'utilisateur a accepté
+            self._notif_poll_elapsed = 0.0
+            def _poll_perm(dt):
+                try:
+                    self._notif_poll_elapsed += dt
+                    cur = ContextCompat.checkSelfPermission(activity, ManifestPermission.POST_NOTIFICATIONS)
+                    if cur == PackageManager.PERMISSION_GRANTED:
+                        print('✅ Permission notifications accordée')
+                        Clock.unschedule(_poll_perm)
+                    elif self._notif_poll_elapsed >= 8.0:
+                        print('⚠️ Permission notifications non accordée (timeout)')
+                        Clock.unschedule(_poll_perm)
+                        self._show_notifications_hint_popup()
+                except Exception as _e:
+                    print(f'⚠️ Poll permission failed: {_e}')
+                    Clock.unschedule(_poll_perm)
+            Clock.schedule_interval(_poll_perm, 0.5)
+            return False
+        except Exception as e:
+            print(f'⚠️ ensure_notification_permission failed: {e}')
+            return False
+
+    def _show_notifications_hint_popup(self):
+        """Popup expliquant comment activer les notifications si refusées."""
+        try:
+            layout = BoxLayout(orientation='vertical', spacing=12, padding=[16, 12, 16, 12])
+            lbl = Label(text='Active les notifications dans les paramètres Android\npour recevoir le rappel quotidien.', halign='center', valign='middle')
+            lbl.bind(size=lambda i, v: setattr(i, 'text_size', (v[0]*0.95, None)))
+            btn = Button(text='Ouvrir les paramètres de notifications', size_hint=(1, None), height=dp(44))
+            def _open(*_a):
+                try:
+                    self.open_notification_settings()
+                except Exception as _e:
+                    print(f"⚠️ open_notification_settings failed: {_e}")
+                if popup:
+                    popup.dismiss()
+            btn.bind(on_press=_open)
+            layout.add_widget(lbl)
+            layout.add_widget(btn)
+            popup = Popup(
+                title='Notifications désactivées',
+                content=layout,
+                size_hint=(0.85, 0.35),
+                auto_dismiss=True
+            )
+            popup.open()
+        except Exception as e:
+            print(f'⚠️ show_notifications_hint_popup failed: {e}')
+
+    def open_notification_settings(self):
+        """Ouvre l’écran Android des paramètres de notifications pour l’app."""
+        try:
+            if kivy_platform != 'android':
+                return
+            import importlib
+            jnius_mod = importlib.import_module('jnius')
+            autoclass = jnius_mod.autoclass
+            PythonActivity = autoclass('org.kivy.android.PythonActivity')
+            activity = getattr(PythonActivity, 'mActivity', None)
+            if activity is None:
+                return
+            Intent = autoclass('android.content.Intent')
+            Settings = autoclass('android.provider.Settings')
+            Build = autoclass('android.os.Build')
+            if Build.VERSION.SDK_INT >= 26:
+                intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                # Utiliser la clé officielle de l’extra (string direct pour compatibilité)
+                intent.putExtra('android.provider.extra.APP_PACKAGE', activity.getPackageName())
+            else:
+                intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                Uri = autoclass('android.net.Uri')
+                intent.setData(Uri.parse('package:' + activity.getPackageName()))
+            activity.startActivity(intent)
+        except Exception as e:
+            print(f"⚠️ open_notification_settings error: {e}")
         # --- Initialisation Mobile Ads (Google) non bloquante ---
         try:
             if PYJNIUS_AVAILABLE and os.environ.get('DISABLE_MOBILE_ADS','0') != '1':
@@ -599,9 +683,29 @@ class TarotApp(App):
     def record_draw_today(self):
         self._last_draw_date = self._today_str()
         self._save_last_draw_date()
+        self._sync_last_draw_to_prefs()
 
     def did_draw_today(self) -> bool:
         return (self._last_draw_date or "") == self._today_str()
+
+    def _sync_last_draw_to_prefs(self):
+        """Synchronise la date de tirage dans SharedPreferences pour le receiver Java.
+        Le receiver DailyReminderReceiver lit 'last_draw_date' pour décider d'envoyer ou non la notif.
+        """
+        try:
+            if kivy_platform != 'android' or not PYJNIUS_AVAILABLE:
+                return
+            PythonActivity = autoclass('org.kivy.android.PythonActivity')
+            activity = getattr(PythonActivity, 'mActivity', None)
+            if activity is None:
+                return
+            prefs = activity.getSharedPreferences('tarot_prefs', 0)  # MODE_PRIVATE = 0
+            editor = prefs.edit()
+            editor.putString('last_draw_date', self._last_draw_date or '')
+            editor.apply()
+            print(f"🔄 Sync last_draw_date -> SharedPreferences: {self._last_draw_date}")
+        except Exception as e:
+            print(f"⚠️ sync last_draw prefs failed: {e}")
 
     def _seconds_until_today_11(self):
         try:

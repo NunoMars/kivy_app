@@ -10,6 +10,8 @@ import threading
 from kivy.app import App  # type: ignore
 from kivy.utils import platform  # type: ignore
 from kivy.logger import Logger  # type: ignore
+from kivy.uix.popup import Popup  # type: ignore
+from kivy.uix.label import Label  # type: ignore
 
 # Import kivmob from libs folder (embedded in app)
 import sys
@@ -20,11 +22,10 @@ if libs_path not in sys.path:
     sys.path.insert(0, libs_path)
 
 try:
-    from kivmob import KivMob, TestIds  # type: ignore
+    from kivmob import KivMob  # type: ignore
 except Exception as e:
     Logger.warning(f"AdMob: kivmob not available: {e}")
     KivMob = None
-    TestIds = None
 
 try:
     import requests
@@ -72,7 +73,8 @@ def load_config() -> dict:
         # Fallback minimal si aucune config
         cfg = {
             "ads_enabled": False,
-            "ads_test_mode": True,
+            # Désactivé par défaut, on force PROD en dur ailleurs
+            "ads_test_mode": False,
             "ads_frequency": 3
         }
 
@@ -101,16 +103,17 @@ class AdsManager:
         Args:
             cfg (dict): Configuration dictionary from load_config()
         """
-        self.cfg = cfg
+        self.cfg = cfg or {}
         self.sdk = None
-        self.enabled = bool(cfg.get("ads_enabled", False))
-        self.test_mode = bool(cfg.get("ads_test_mode", True))
-        self.banner_enabled = bool(cfg.get("banner_enabled", True))
-        self.interstitial_enabled = bool(cfg.get("interstitial_enabled", True))
+        # Forcer le mode PRODUCTION sans config JSON (demande utilisateur)
+        self.enabled = True
+        self.test_mode = False
+        self.banner_enabled = True
+        self.interstitial_enabled = True
         
         # Compteur pour interstitiels
         self._draw_count = 0
-        self._ads_frequency = int(cfg.get("ads_frequency", 3))
+        self._ads_frequency = int(self.cfg.get("ads_frequency", 3))
         
         # CORRECTIF: garder référence forte sur callbacks Java pour éviter GC
         self._banner_load_callback = None
@@ -134,16 +137,17 @@ class AdsManager:
         # Initialize AdMob — délégué après MobileAds.initialize via wait_mobile_ads_ready()
         # Pour l'instant, créer seulement l'instance KivMob
         try:
-            # App ID: préférer TestIds en mode test, sinon cfg puis fallback constant
-            if self.test_mode and TestIds:
-                app_id = getattr(TestIds, "APP", PROD_APP_ID)
-            else:
-                app_id = (self.cfg.get("admob_app_id") or PROD_APP_ID)
-
-            # 🔐 Activer NPA en production pour conformité RGPD
-            # En mode test, autoriser pubs personnalisées pour meilleur remplissage
-            enable_npa = not self.test_mode
+            # App ID forcé (production)
+            app_id = PROD_APP_ID
+            # 🔐 Activer NPA (Non-Personalized Ads) par défaut
+            enable_npa = True
             self.sdk = KivMob(app_id, enable_npa=enable_npa)
+            # Abonner des callbacks d'erreur pour debug visuel
+            try:
+                self.sdk.on_banner_error = self._on_banner_error
+                self.sdk.on_interstitial_error = self._on_interstitial_error
+            except Exception:
+                pass
             Logger.info(
                 "AdMob: KivMob instance created (app_id=%s, NPA=%s)",
                 app_id,
@@ -177,21 +181,10 @@ class AdsManager:
             Logger.error(f"AdMob: Failed to setup ads after SDK ready: {e}")
 
     def _initialize_admob(self):
-        """Initialize AdMob SDK with IDs from config (with PROD fallbacks)."""
-        # Lire depuis config et appliquer des fallbacks constants pour que
-        # les ID d'unités soient présents dans le bytecode (scan outillage).
-        banner_id = self.cfg.get("admob_banner_id") or None
-        inter_id = self.cfg.get("admob_inter_id") or None
-
-        # Use test IDs if in test mode; otherwise force PROD fallbacks si manquants
-        if self.test_mode:
-            Logger.info("AdMob: Using TEST IDs")
-            banner_id = getattr(TestIds, "BANNER", banner_id or "")
-            inter_id = getattr(TestIds, "INTERSTITIAL", inter_id or "")
-        else:
-            Logger.info("AdMob: Using PRODUCTION IDs")
-            banner_id = banner_id or PROD_BANNER_ID
-            inter_id = inter_id or PROD_INTER_ID
+        """Initialize AdMob SDK with hardcoded PRODUCTION IDs (no JSON)."""
+        Logger.info("AdMob: Using PRODUCTION IDs (hardcoded)")
+        banner_id = PROD_BANNER_ID
+        inter_id = PROD_INTER_ID
 
         try:
             # SDK instance déjà créée dans __init__, juste initialiser ici
@@ -216,6 +209,34 @@ class AdsManager:
         except Exception as e:
             Logger.error(f"AdMob: Initialization failed: {e}")
             self.enabled = False
+
+    # ------------------------------------------------------------------
+    # Diagnostic visuel en cas d'erreur pub
+    # ------------------------------------------------------------------
+    def _show_error_popup(self, message: str):
+        try:
+            popup = Popup(
+                title="Erreur publicité",
+                content=Label(text=message, halign="center", valign="middle"),
+                size_hint=(0.9, 0.25),
+                auto_dismiss=True,
+            )
+            # Ajuster le text_size pour retour à la ligne
+            try:
+                popup.content.bind(size=lambda i, v: setattr(i, "text_size", (v[0]*0.95, None)))
+            except Exception:
+                pass
+            popup.open()
+        except Exception:
+            pass
+
+    def _on_banner_error(self, code: int, message: str):
+        Logger.warning(f"AdMob: Banner error code={code} msg={message}")
+        self._show_error_popup(f"Bannière: erreur {code}\n{message}")
+
+    def _on_interstitial_error(self, code: int, message: str):
+        Logger.warning(f"AdMob: Interstitial error code={code} msg={message}")
+        self._show_error_popup(f"Interstitial: erreur {code}\n{message}")
 
 
     def _initialize_mediation_sdks(self):

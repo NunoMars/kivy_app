@@ -36,14 +36,9 @@ except Exception:  # pragma: no cover - import errors on non-Android env
         return func
 
 
-class TestIds:
-    """Official Google test identifiers."""
-
-    BANNER = "ca-app-pub-3940256099942544/6300978111"
-    INTERSTITIAL = "ca-app-pub-3940256099942544/1033173712"
-    REWARDED = "ca-app-pub-3940256099942544/5224354917"
-    REWARDED_INTERSTITIAL = "ca-app-pub-3940256099942544/5354046379"
-    APP_OPEN = "ca-app-pub-3940256099942544/3419835294"
+# NOTE: Toute référence aux IDs de test AdMob a été retirée volontairement
+# pour éviter l'affichage de bannières/interstitiels de test. Utilisez
+# exclusivement des IDs de production dans le reste de l'application.
 
 
 class KivMob:
@@ -58,6 +53,9 @@ class KivMob:
         self.interstitial_ad = None
         self._interstitial_unit_id: Optional[str] = None
         self.enable_npa = enable_npa  # Non-Personalized Ads (RGPD)
+        # Optional Python-level callbacks for diagnostics UI
+        self.on_banner_error = None  # type: Optional[callable]
+        self.on_interstitial_error = None  # type: Optional[callable]
 
         if platform != "android" or autoclass is None:
             Logger.warning("KivMob: Not running on Android, ads disabled")
@@ -117,20 +115,27 @@ class KivMob:
                 self._is_initialized = True
                 Logger.info("KivMob: MobileAds initialized")
                 
-                # Configurer NPA globalement si activé
-                if self.enable_npa and self.RequestConfiguration:
+                # Désactiver explicitement tout mode test au niveau de la config
+                # et appliquer NPA si demandé.
+                if self.RequestConfiguration:
                     try:
-                        config = (
-                            self.RequestConfiguration.Builder()
-                            .setMaxAdContentRating(
+                        Builder = self.RequestConfiguration.Builder
+                        # Construire une liste vide pour testDeviceIds
+                        ArrayList = autoclass("java.util.ArrayList")
+                        empty_list = ArrayList()
+                        builder = Builder()
+                        # Toujours effacer les devices de test
+                        builder = builder.setTestDeviceIds(empty_list)
+                        # Si NPA, limiter le contenu et autres options si besoin
+                        if self.enable_npa:
+                            builder = builder.setMaxAdContentRating(
                                 self.RequestConfiguration.MAX_AD_CONTENT_RATING_G
                             )
-                            .build()
-                        )
+                        config = builder.build()
                         self.MobileAds.setRequestConfiguration(config)
-                        Logger.info("KivMob: NPA (Non-Personalized Ads) enabled globally")
+                        Logger.info("KivMob: Test device ids cleared; NPA=%s" % ("on" if self.enable_npa else "off"))
                     except Exception as exc:
-                        Logger.warning(f"KivMob: Failed to set NPA config: {exc}")
+                        Logger.warning(f"KivMob: Failed to apply request configuration: {exc}")
             except Exception as exc:  # pragma: no cover
                 Logger.error(f"KivMob: MobileAds initialization failed: {exc}")
 
@@ -165,9 +170,10 @@ class KivMob:
     class _BannerListener(PythonJavaClass if PythonJavaClass else object):
         __javaclass__ = "com/google/android/gms/ads/AdListener"
 
-        def __init__(self) -> None:
+        def __init__(self, outer: "KivMob") -> None:
             if PythonJavaClass:
                 super().__init__()
+            self.outer = outer
 
         @java_method("()V")
         def onAdLoaded(self) -> None:  # pragma: no cover - Java call
@@ -181,6 +187,12 @@ class KivMob:
                     error.getCode(),
                     error.getMessage(),
                 )
+                # Propagate to Python callback if provided
+                try:
+                    if getattr(self.outer, "on_banner_error", None):
+                        self.outer.on_banner_error(int(error.getCode()), str(error.getMessage()))
+                except Exception:
+                    pass
             except Exception:
                 Logger.warning("KivMob: Banner failed to load")
 
@@ -205,7 +217,7 @@ class KivMob:
                 self.banner_ad.setAdUnitId(ad_unit_id)
                 # Attacher un listener pour logs détaillés
                 try:
-                    listener = KivMob._BannerListener()
+                    listener = KivMob._BannerListener(self)
                     self.banner_ad.setAdListener(listener)
                 except Exception as exc:
                     Logger.warning(f"KivMob: Failed to attach banner listener: {exc}")
@@ -310,6 +322,11 @@ class KivMob:
                     error.getCode(),
                     error.getMessage(),
                 )
+                try:
+                    if getattr(self.outer, "on_interstitial_error", None):
+                        self.outer.on_interstitial_error(int(error.getCode()), str(error.getMessage()))
+                except Exception:
+                    pass
             except Exception:
                 Logger.warning("KivMob: Interstitial failed to load")
 
@@ -423,4 +440,4 @@ class KivMob:
         _open()
 
 
-__all__ = ["KivMob", "TestIds"]
+__all__ = ["KivMob"]

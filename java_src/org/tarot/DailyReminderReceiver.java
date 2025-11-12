@@ -7,6 +7,10 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.os.Build;
+import android.content.SharedPreferences;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import androidx.core.app.NotificationCompat; // AndroidX support lib
 // NOTE: R reference requires resource merging; if p4a doesn't generate R, fallback to system icon.
 // We guard with try/catch; if R not resolved at runtime, system icon used.
@@ -22,6 +26,14 @@ public class DailyReminderReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         try {
+            // Ne pas notifier si déjà tiré aujourd'hui (préférence partagée par l'app Python)
+            SharedPreferences prefs = context.getSharedPreferences("tarot_prefs", Context.MODE_PRIVATE);
+            String last = prefs != null ? prefs.getString("last_draw_date", "") : "";
+            String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+            if (today.equals(last)) {
+                return; // déjà fait aujourd'hui
+            }
+
             NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             if (nm == null) return;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

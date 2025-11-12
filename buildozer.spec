@@ -6,8 +6,8 @@ package.name = macartedetarot
 package.domain = org.tarot
 source.dir = .
 
-version = 2.3
-android.numeric_version = 2300000
+version = 2.5
+android.numeric_version = 2500000
 author = © Nuno Marcelino
 
 # ───────────────────────────────
@@ -62,7 +62,7 @@ android.add_gradle_repositories =
     maven { url 'https://artifacts.applovin.com/android' }
 
 # Dépendances (Ads + Billing + Médiation) — format: liste séparée par des virgules
-android.gradle_dependencies = com.google.android.gms:play-services-ads:23.6.0, com.android.billingclient:billing-ktx:8.0.0, com.google.android.ump:user-messaging-platform:2.2.0, com.applovin:applovin-sdk:12.6.0, com.google.ads.mediation:applovin:12.6.0.0, com.ironsource.sdk:mediationsdk:8.1.0, com.google.ads.mediation:ironsource:8.1.0.0
+android.gradle_dependencies = com.google.android.gms:play-services-ads:23.6.0, com.android.billingclient:billing-ktx:8.0.0, com.google.android.ump:user-messaging-platform:2.2.0
 
 # ───────────────────────────────
 # 🧱 Formats de build
