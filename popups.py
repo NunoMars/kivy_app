@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Module des popups pour l'application Kivy.
-Contient toutes les classes de fenêtres modales (AdPopup, FullScreenCardPopup, LoadingPopup, MmeTChatPopup, AdsPopup).
+Contient les classes de fenêtres modales utilisées dans l'app (FullScreenCardPopup, LoadingPopup, MmeTChatPopup, etc.).
 """
 
 from __future__ import annotations
@@ -13,25 +13,37 @@ import uuid
 import json
 
 # Kivy imports
-from kivy.app import App
-from kivy.clock import Clock
-from kivy.graphics import Color, Rectangle, RoundedRectangle
-from kivy.metrics import dp
-from kivy.uix.anchorlayout import AnchorLayout
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.button import Button
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.image import Image
-from kivy.uix.label import Label
-from kivy.uix.popup import Popup
-from kivy.uix.scrollview import ScrollView
-from kivy.uix.textinput import TextInput
-from kivy.core.clipboard import Clipboard
-from kivy.animation import Animation
-from kivy.core.window import Window
+from kivy.app import App  # type: ignore
+from kivy.clock import Clock  # type: ignore
+from kivy.graphics import Color, Rectangle, RoundedRectangle, PushMatrix, PopMatrix, Rotate, Line  # type: ignore
+from kivy.properties import NumericProperty  # type: ignore
+from kivy.metrics import dp  # type: ignore
+from kivy.uix.anchorlayout import AnchorLayout  # type: ignore
+from kivy.uix.boxlayout import BoxLayout  # type: ignore
+from kivy.uix.button import Button  # type: ignore
+from kivy.uix.floatlayout import FloatLayout  # type: ignore
+from kivy.uix.image import Image  # type: ignore
+from kivy.uix.label import Label  # type: ignore
+from kivy.uix.popup import Popup  # type: ignore
+from kivy.uix.scrollview import ScrollView  # type: ignore
+from kivy.uix.textinput import TextInput  # type: ignore
+from kivy.core.clipboard import Clipboard  # type: ignore
+from kivy.animation import Animation  # type: ignore
+from kivy.core.window import Window  # type: ignore
+from kivy.utils import platform as kivy_platform  # type: ignore
+from kivy.uix.widget import Widget  # type: ignore
+try:
+    # Détection Android robuste (kivy + pyjnius)
+    from runtime import is_android_runtime  # type: ignore
+except Exception:
+    def is_android_runtime():  # type: ignore
+        try:
+            return kivy_platform == 'android'
+        except Exception:
+            return False
 
 # Third-party
-import requests
+import requests  # type: ignore
 
 
 # Ads manager (local) — import sécurisé car peut échouer en environnement non-Android
@@ -65,6 +77,38 @@ MME_T_DEFAULT_MODEL = os.environ.get("MME_T_DEFAULT_MODEL", "gpt-3.5-turbo")
 
 class ChatBubble(BoxLayout):
     """Simple chat bubble with rounded background."""
+
+    def _update_bg(self, *args):
+        if hasattr(self, '_bg_rect'):
+            self._bg_rect.pos = self.pos
+            self._bg_rect.size = self.size
+
+    def set_text(self, text: str) -> None:
+        self.label.text = text
+        self.label.texture_update()
+        self._refresh()
+
+    def set_max_width(self, width: float) -> None:
+        try:
+            width = float(width)
+        except Exception:
+            width = self.max_width
+        # Largeur max dynamique : 90% de la largeur du parent (ScrollView)
+        parent_width = self.parent.width if self.parent else width
+        self.max_width = max(dp(160), min(width, parent_width * 0.9))
+        self._refresh()
+
+    def _refresh(self) -> None:
+        # Retour à la ligne automatique dans le label
+        if hasattr(self, "label"):
+            self.label.text_size = (self.max_width, None)
+            self.label.texture_update()
+            w, h = self.label.texture_size
+            w = min(w, self.max_width)
+            self.label.size = (w, h)
+            self.size = (w + self.padding[0] + self.padding[2], h + self.padding[1] + self.padding[3])
+            if hasattr(self, '_bg_rect'):
+                self._bg_rect.size = self.size
 
     def __init__(self, text: str, from_user: bool = False, **kwargs):
         kwargs.setdefault("orientation", "vertical")
@@ -103,6 +147,58 @@ class ChatBubble(BoxLayout):
         self.bind(pos=self._update_bg, size=self._update_bg)
         self.set_text(text)
 
+
+class LoadingSpinner(Widget):
+    """Simple rotating spinner drawn with canvas and animated via Clock.
+
+    Lightweight and dependency-free: suitable for mobile.
+    """
+    angle = NumericProperty(0)
+
+    def __init__(self, size_dp: float = 24, **kwargs):
+        kwargs.setdefault('size_hint', (None, None))
+        kwargs.setdefault('size', (dp(size_dp), dp(size_dp)))
+        super().__init__(**kwargs)
+        self._anim_event = None
+        with self.canvas:
+            self._col = Color(1, 1, 1, 1)
+            PushMatrix()
+            self._rot = Rotate(angle=self.angle, origin=self.center)
+            # draw a ring using Line; uses local coords
+            self._line = Line(circle=(self.center_x, self.center_y, min(self.width, self.height) / 2 - dp(3), 0, 300), width=dp(2))
+            PopMatrix()
+        self.bind(pos=self._update_graphics, size=self._update_graphics)
+
+    def _update_graphics(self, *a):
+        try:
+            cx, cy = self.center
+            r = min(self.width, self.height) / 2 - dp(3)
+            self._rot.origin = (cx, cy)
+            # update circle path
+            self._line.circle = (cx, cy, r, 0, 300)
+        except Exception:
+            pass
+
+    def start(self):
+        if self._anim_event:
+            return
+        self._anim_event = Clock.schedule_interval(self._step, 1 / 30.0)
+
+    def stop(self):
+        if self._anim_event:
+            try:
+                self._anim_event.cancel()
+            except Exception:
+                pass
+            self._anim_event = None
+
+    def _step(self, dt):
+        try:
+            self.angle = (self.angle + 8) % 360
+            self._rot.angle = self.angle
+        except Exception:
+            pass
+
     def set_text(self, text: str) -> None:
         self.label.text = text
         self.label.texture_update()
@@ -117,137 +213,309 @@ class ChatBubble(BoxLayout):
         self._refresh()
 
     def _refresh(self) -> None:
-        self.label.text_size = (self.max_width, None)
-        self.label.texture_update()
-        label_width, label_height = self.label.texture_size
-        self.label.size = (min(label_width, self.max_width), label_height)
+        # Support labels or arbitrary widgets as content. If `self.label` is
+        # a Kivy Label we use its texture_size; otherwise we use the widget's
+        # size_hint/size to compute layout.
+        try:
+            if hasattr(self.label, 'text_size'):
+                self.label.text_size = (self.max_width, None)
+            if hasattr(self.label, 'texture_update'):
+                self.label.texture_update()
+            if hasattr(self.label, 'texture_size'):
+                label_width, label_height = self.label.texture_size
+                self.label.size = (min(label_width, self.max_width), label_height)
+            else:
+                # Fallback: rely on widget.size if available
+                lw = getattr(self.label, 'width', self.max_width)
+                lh = getattr(self.label, 'height', dp(24))
+                self.label.size = (min(lw, self.max_width), lh)
+        except Exception:
+            # As a last resort, ensure the label has a reasonable size
+            self.label.size = (min(self.max_width, dp(220)), dp(24))
         left, top, right, bottom = self.padding
         self.width = self.label.width + left + right
         self.height = self.label.height + top + bottom
         self._update_bg()
+
+    def set_widget(self, widget: 'Widget') -> None:
+        """Remplace le contenu par un widget arbitraire (spinner + texte, etc.)."""
+        print("[DEBUG] set_widget called with:", widget)
+        try:
+            self.clear_widgets()
+        except Exception:
+            pass
+        # Test : forcer un label visible avec fond
+        test_label = Label(text='[SPINNER TEST]', font_size='24sp', color=[1,0,0,1], size_hint=(None, None), width=220, height=48)
+        self._custom_widget = test_label
+        self.add_widget(test_label)
+        self.size = (test_label.width + self.padding[0] + self.padding[2], test_label.height + self.padding[1] + self.padding[3])
+        if hasattr(self, '_bg_rect'):
+            self._bg_rect.size = self.size
+            self._bg_color.rgba = [1, 0.9, 0.6, 1]  # fond jaune pâle
+        self._refresh()
+        if self.parent:
+            try:
+                self.parent.do_layout()
+            except Exception:
+                pass
+
+    def _refresh(self) -> None:
+        # Si on a un widget composite, on ajuste la taille sur ce widget
+        if hasattr(self, '_custom_widget') and self._custom_widget:
+            w = min(self.max_width, getattr(self._custom_widget, 'width', self.max_width))
+            h = getattr(self._custom_widget, 'height', dp(40))
+            self.size = (w + self.padding[0] + self.padding[2], h + self.padding[1] + self.padding[3])
+            if hasattr(self, '_bg_rect'):
+                self._bg_rect.size = self.size
+            return
+        # Sinon, comportement label classique
+        if hasattr(self, "label") and isinstance(self.label, Label):
+            self.label.text_size = (self.max_width, None)
+            self.label.texture_update()
+            w, h = self.label.texture_size
+            w = min(w, self.max_width)
+            self.label.size = (w, h)
+            self.size = (w + self.padding[0] + self.padding[2], h + self.padding[1] + self.padding[3])
+            if hasattr(self, '_bg_rect'):
+                self._bg_rect.size = self.size
 
     def _update_bg(self, *_args) -> None:
         self._bg_rect.pos = self.pos
         self._bg_rect.size = self.size
 
 
-class AdPopup(Popup):
-    """Popup de publicité"""
+class ConsentPopup(Popup):
+    """Popup de consentement pour les publicités personnalisées / non personnalisées.
 
-    def __init__(self, **kwargs):
-        super(AdPopup, self).__init__(**kwargs)
+    Texte et boutons sont multilingues via la fonction de traduction de l'app
+    (App.get_running_app().tr).
+    """
+
+    def __init__(self, on_choice, **kwargs):
+        """on_choice(personalized: bool) sera appelé avec le choix utilisateur."""
+        super().__init__(**kwargs)
         self.title = ""
-        self.size_hint = (1, 1)
+        self.size_hint = (0.96, 0.9)
         self.auto_dismiss = False
         self.separator_height = 0
 
-        layout = BoxLayout(orientation="vertical", spacing=20, padding=[20, 20, 20, 20])
-
-        # Background
-        with layout.canvas.before:
-            Color(0.1, 0.15, 0.3, 0.95)
-            self.bg_rect = RoundedRectangle(
-                pos=layout.pos,
-                size=layout.size,
-                radius=[15, 15, 15, 15]
-            )
-        layout.bind(pos=self.update_bg, size=self.update_bg)
-
-        # Titre publicité — utiliser la fonction de traduction centralisée si fournie par main
         app = App.get_running_app()
-        tr_func = kwargs.pop("tr", None) or getattr(app, "tr", None)
-        # exposer pour d'autres méthodes si besoin
-        self.tr_func = tr_func
-        ad_title = Label(
-            text=tr_func("messages.support_app") if callable(tr_func) else "Supportez l'application !",
-            font_size="20sp",
-            color=[0.9, 0.7, 0.3, 1],
-            size_hint_y=0.2,
-            bold=True,
-            halign='center',
-            valign='middle',
-        )
-        ad_title.bind(size=lambda inst, val: setattr(inst, 'text_size', (val[0] * 0.9, None)))
-        layout.add_widget(ad_title)
+        self.tr = getattr(app, "tr", lambda k, **kw: k)
 
-        # Message
-        ad_message = Label(
-            text=tr_func("messages.ad_message") if callable(tr_func) else "Merci de soutenir le développement.",
-            font_size="16sp",
-            color=[1, 1, 1, 1],
-            size_hint_y=0.4,
-            halign='center',
-            valign='middle',
+        layout = BoxLayout(orientation="vertical", spacing=dp(14), padding=[dp(14), dp(14), dp(14), dp(14)])
+
+        with layout.canvas.before:
+            Color(0.06, 0.04, 0.10, 0.98)
+            bg = RoundedRectangle(pos=layout.pos, size=layout.size, radius=[18, 18, 18, 18])
+        layout.bind(pos=lambda i, v: setattr(bg, "pos", v), size=lambda i, v: setattr(bg, "size", v))
+
+        # Titre
+        title_lbl = Label(
+            text=self.tr("messages.ads_consent_title"),
+            font_size="20sp",
+            bold=True,
+            color=[0.95, 0.85, 0.4, 1],
+            size_hint_y=None,
+            height=dp(40),
+            halign="center",
+            valign="middle",
         )
-        ad_message.bind(size=lambda inst, val: setattr(inst, 'text_size', (val[0] * 0.85, None)))
-        layout.add_widget(ad_message)
+        title_lbl.bind(size=lambda i, v: setattr(i, "text_size", (v[0] * 0.95, None)))
+        layout.add_widget(title_lbl)
+
+        # Texte scrollable
+        scroll = ScrollView(size_hint=(1, 1))
+        body_lbl = Label(
+            text=self.tr("messages.ads_consent_body"),
+            font_size="15sp",
+            color=[1, 1, 1, 1],
+            halign="left",
+            valign="top",
+            size_hint_y=None,
+        )
+        body_lbl.bind(
+            width=lambda i, v: setattr(i, "text_size", (v * 0.96, None)),
+            texture_size=lambda i, v: setattr(i, "height", v[1] + dp(10)),
+        )
+        scroll.add_widget(body_lbl)
+        layout.add_widget(scroll)
 
         # Zone boutons
-        button_layout = BoxLayout(orientation="horizontal", spacing=dp(16), size_hint_y=None, height=dp(50), pos_hint={'center_x': 0.5})
+        btn_box = BoxLayout(orientation="vertical", size_hint_y=None, height=dp(110), spacing=dp(8))
 
-        # Bouton "Plus tard"
-        later_btn = Button(
-            text=tr_func("messages.later") if callable(tr_func) else "Plus tard",
-            size_hint=(0.5, 1),
-            font_size="16sp",
-            background_normal='',
-            background_color=[0, 0, 0, 0],
-            color=[1, 1, 1, 1]
-        )
-        with later_btn.canvas.before:
-            Color(0.5, 0.5, 0.5, 0.8)
-            later_btn_bg = RoundedRectangle(pos=later_btn.pos, size=later_btn.size, radius=[25])
-        later_btn.bind(pos=lambda i, v: setattr(later_btn_bg, 'pos', v), size=lambda i, v: setattr(later_btn_bg, 'size', v))
-        later_btn.bind(on_press=self.close_ad)
-
-        # Bouton "Soutenir"
-        support_btn = Button(
-            text=tr_func("messages.support") if callable(tr_func) else "Soutenir",
-            size_hint=(0.5, 1),
-            font_size="16sp",
-            background_normal='',
+        # Bouton pubs personnalisées (aide l'app)
+        btn_yes = Button(
+            text=self.tr("messages.ads_personalized_button"),
+            size_hint=(1, None),
+            height=dp(44),
+            background_normal="",
             background_color=[0, 0, 0, 0],
             color=[1, 1, 1, 1],
-            bold=True
+            font_size="15sp",
+            bold=True,
         )
-        with support_btn.canvas.before:
-            Color(0.2, 0.7, 0.2, 1)
-            support_btn_bg = RoundedRectangle(pos=support_btn.pos, size=support_btn.size, radius=[25])
-        support_btn.bind(pos=lambda i, v: setattr(support_btn_bg, 'pos', v), size=lambda i, v: setattr(support_btn_bg, 'size', v))
-        support_btn.bind(on_press=self.open_support)
+        with btn_yes.canvas.before:
+            Color(0.25, 0.6, 0.3, 1)
+            yes_bg = RoundedRectangle(pos=btn_yes.pos, size=btn_yes.size, radius=[20, 20, 20, 20])
+        btn_yes.bind(pos=lambda i, v: setattr(yes_bg, "pos", v), size=lambda i, v: setattr(yes_bg, "size", v))
 
-        button_layout.add_widget(later_btn)
-        button_layout.add_widget(support_btn)
-        layout.add_widget(button_layout)
+        def _on_yes(*_):
+            try:
+                on_choice(True)
+            except Exception:
+                pass
+            self.dismiss()
+
+        btn_yes.bind(on_press=_on_yes)
+
+        # Bouton pubs non personnalisées (respect vie privée)
+        btn_no = Button(
+            text=self.tr("messages.ads_generic_button"),
+            size_hint=(1, None),
+            height=dp(44),
+            background_normal="",
+            background_color=[0, 0, 0, 0],
+            color=[1, 1, 1, 1],
+            font_size="15sp",
+        )
+        with btn_no.canvas.before:
+            Color(0.35, 0.35, 0.35, 1)
+            no_bg = RoundedRectangle(pos=btn_no.pos, size=btn_no.size, radius=[20, 20, 20, 20])
+        btn_no.bind(pos=lambda i, v: setattr(no_bg, "pos", v), size=lambda i, v: setattr(no_bg, "size", v))
+
+        def _on_no(*_):
+            try:
+                on_choice(False)
+            except Exception:
+                pass
+            self.dismiss()
+
+        btn_no.bind(on_press=_on_no)
+
+        btn_box.add_widget(btn_yes)
+        btn_box.add_widget(btn_no)
+        layout.add_widget(btn_box)
 
         self.content = layout
 
-        # Animation d'entrée
+
+
+class ConsentAdsPopup(Popup):
+    """Popup de premier lancement pour demander le consentement publicitaire.
+    Deux choix explicites:
+    - Pubs personnalisées (aide à soutenir l'app)
+    - Pubs génériques (moins pertinentes, toujours affichées)
+    Le choix est persistant via `set_user_consent()` dans l'application.
+    """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.title = ""
+        self.size_hint = (0.94, None)
+        self.height = dp(520)
+        self.auto_dismiss = False
+        self.separator_height = 0
+
+        app = App.get_running_app()
+        tr = getattr(app, 'tr', None)
+
+        root = BoxLayout(orientation='vertical', spacing=dp(18), padding=[dp(22), dp(26), dp(22), dp(26)])
+
+        with root.canvas.before:
+            Color(0.08, 0.06, 0.12, 0.98)
+            self._bg = RoundedRectangle(pos=root.pos, size=root.size, radius=[dp(28)]*4)
+        root.bind(pos=lambda i, v: setattr(self._bg, 'pos', v), size=lambda i, v: setattr(self._bg, 'size', v))
+
+        title_lbl = Label(
+            text=(tr('messages.ads_consent_title') if callable(tr) else 'Votre choix pour les publicités'),
+            font_size='22sp',
+            color=[1, 0.9, 0.65, 1],
+            halign='center', valign='middle', bold=True, size_hint=(1, None), height=dp(48)
+        )
+        title_lbl.bind(size=lambda i, v: setattr(i, 'text_size', (v[0]*0.96, None)))
+        root.add_widget(title_lbl)
+
+        body_text = (
+            tr('messages.ads_consent_body') if callable(tr) else (
+                "Choisissez le type de publicités que vous acceptez:\n\n"
+                "• Pubs personnalisées: utilisent votre identifiant publicitaire pour vous montrer des annonces plus pertinentes."
+                " Elles génèrent un peu plus de revenus et aident à garder l'application gratuite.\n\n"
+                "• Pubs génériques: aucune personnalisation, moins pertinentes, revenus légèrement réduits.\n\n"
+                "Vous pouvez changer d'avis plus tard. Merci de votre soutien ✨"
+            )
+        )
+        body_lbl = Label(text=body_text, font_size='16sp', color=[0.92,0.92,0.95,1], halign='left', valign='top', size_hint=(1, 1))
+        body_lbl.bind(size=lambda i, v: setattr(i, 'text_size', (v[0]*0.98, v[1])))
+
+        scroll = ScrollView(size_hint=(1, 1))
+        inner = BoxLayout(orientation='vertical', size_hint_y=None, padding=[0,0,0,0])
+        inner.bind(minimum_height=inner.setter('height'))
+        inner.add_widget(body_lbl)
+        scroll.add_widget(inner)
+        root.add_widget(scroll)
+
+        btn_box = BoxLayout(orientation='vertical', spacing=dp(12), size_hint=(1, None), height=dp(160))
+
+        def _style_btn(btn, color_rgba):
+            with btn.canvas.before:
+                Color(*color_rgba)
+                btn._bg = RoundedRectangle(pos=btn.pos, size=btn.size, radius=[dp(26)]*4)
+            btn.bind(pos=lambda i, v: setattr(btn._bg, 'pos', v), size=lambda i, v: setattr(btn._bg, 'size', v))
+
+        personalized_btn = Button(
+            text=(tr('messages.ads_personalized_button') if callable(tr) else '✅ Pubs personnalisées (recommandé – soutient l\'app)'),
+            size_hint=(1, None), height=dp(58), font_size='15sp', bold=True,
+            background_normal='', background_color=[0,0,0,0], color=[1,1,1,1]
+        )
+        _style_btn(personalized_btn, (0.25, 0.55, 0.25, 1))
+
+        generic_btn = Button(
+            text=(tr('messages.ads_generic_button') if callable(tr) else '🛡️ Pubs génériques'),
+            size_hint=(1, None), height=dp(58), font_size='15sp',
+            background_normal='', background_color=[0,0,0,0], color=[1,1,1,1]
+        )
+        _style_btn(generic_btn, (0.35, 0.25, 0.55, 1))
+
+        later_btn = Button(
+            text=(tr('messages.later') if callable(tr) else 'Plus tard'),
+            size_hint=(1, None), height=dp(46), font_size='14sp',
+            background_normal='', background_color=[0,0,0,0], color=[0.85,0.85,0.85,1]
+        )
+        _style_btn(later_btn, (0.25,0.25,0.25,0.7))
+
+        def _choose(personalized: bool | None):
+            try:
+                if personalized is not None:
+                    app.set_user_consent(bool(personalized))
+                else:
+                    print("ℹ️ Consentement différé (Plus tard)")
+                # Si SDK MobileAds déjà prêt et AdsManager absent → initialiser maintenant
+                if getattr(app, '_mobile_ads_ready', False) and not getattr(app, 'ads', None) and app.cfg.get('ads_enabled', False):
+                    try:
+                        from ads_manager import AdsManager
+                        app.ads = AdsManager(app.cfg)
+                        app.ads.setup_ads_after_sdk_ready()
+                        print("✅ AdsManager initialisé après consentement")
+                    except Exception as e:
+                        print(f"⚠️ Init AdsManager post consent raté: {e}")
+            finally:
+                self.dismiss()
+
+        personalized_btn.bind(on_release=lambda *_: _choose(True))
+        generic_btn.bind(on_release=lambda *_: _choose(False))
+        later_btn.bind(on_release=lambda *_: _choose(None))
+
+        btn_box.add_widget(personalized_btn)
+        btn_box.add_widget(generic_btn)
+        btn_box.add_widget(later_btn)
+        root.add_widget(btn_box)
+
+        self.content = root
+
+        # Animation d'apparition
         self.opacity = 0
-        entrance_anim = Animation(opacity=1, duration=0.3)
-        entrance_anim.start(self)
+        Animation(opacity=1, duration=0.3).start(self)
 
-        # Auto-fermeture après 5 secondes
-        Clock.schedule_once(self.auto_close, 5)
-
-    def update_bg(self, instance, value):
-        self.bg_rect.pos = instance.pos
-        self.bg_rect.size = instance.size
-
-    def close_ad(self, instance):
-        print("🎯 Publicité fermée")
-        exit_anim = Animation(opacity=0, duration=0.2)
-        exit_anim.bind(on_complete=lambda *args: self.dismiss())
-        exit_anim.start(self)
-
-    def open_support(self, instance):
-        print("💝 Ouverture page de soutien")
-        # Ici vous pouvez ajouter le lien vers votre page de soutien
-        self.close_ad(instance)
-
-    def auto_close(self, dt):
-        print("⏰ Auto-fermeture publicité")
-        self.close_ad(None)
 
 
 class FullScreenCardPopup(Popup):
@@ -268,25 +536,25 @@ class FullScreenCardPopup(Popup):
             self.bg_rect = Rectangle(pos=layout.pos, size=layout.size)
         layout.bind(pos=self.update_bg, size=self.update_bg)
 
-        # Bannière pub en haut
-        ad_banner = BoxLayout(orientation="vertical", size_hint_y=0.1, padding=[10, 5])
-        app = App.get_running_app()
-        trf = getattr(app, 'tr', None)
-        banner_text = random.choice([
-            (trf("messages.crystals_ad") if callable(trf) else "💎 Cristaux en promo !"),
-            (trf("messages.love_ad") if callable(trf) else "💕 Amour et tarot !"),
-            (trf("messages.tarot_course_ad") if callable(trf) else "📚 Cours de tarot !"),
-        ])
-        ad_banner_label = Label(
-            text=banner_text,
-            font_size="14sp",
-            color=[1, 0.85, 0.3, 1],
-            halign='center',
-            valign='middle',
-        )
-        ad_banner_label.bind(size=lambda inst, val: setattr(inst, "text_size", (val[0] * 0.95, None)))
-        ad_banner.add_widget(ad_banner_label)
-        layout.add_widget(ad_banner)
+        # En haut du plein écran :
+        # - sur Android: réserver l'espace pour l'overlay natif d'AdMob (bannière en top)
+        # - en desktop: afficher une bannière de DEV visible pour simuler le rendu
+        if kivy_platform == 'android':
+            top_spacer = BoxLayout(orientation="vertical", size_hint_y=0.10)
+            layout.add_widget(top_spacer)
+        else:
+            dev_banner = BoxLayout(orientation="vertical", size_hint_y=0.10, padding=[10, 6])
+            dev_label = Label(
+                text='[b]Ad banner (DEV)[/b]',
+                markup=True,
+                font_size='14sp',
+                color=[1, 0.85, 0.3, 1],
+                halign='center',
+                valign='middle',
+            )
+            dev_label.bind(size=lambda inst, val: setattr(inst, 'text_size', (val[0]*0.95, None)))
+            dev_banner.add_widget(dev_label)
+            layout.add_widget(dev_banner)
 
         # Header avec nom et état
         header = BoxLayout(orientation="vertical", size_hint_y=0.12, padding=[20, 10])
@@ -349,18 +617,30 @@ class FullScreenCardPopup(Popup):
         entrance_anim.start(self)
 
     def on_open(self):
-        """Masquer les bannières AdMob quand le popup s'ouvre"""
+        """Affiche ou repositionne la bannière AdMob en haut lors de l'ouverture."""
         super().on_open()
-        print("📱 FullScreenCardPopup: on_open - Affichage bannière AdMob en bas")
-
+        print("📱 FullScreenCardPopup: on_open - reposition bannière haut")
         app = App.get_running_app()
-        if hasattr(app, 'ads') and hasattr(app.ads, 'show_banner'):
-            app.ads.show_banner()
+        try:
+            if is_android_runtime() and hasattr(app, 'ads') and hasattr(app.ads, 'move_banner'):
+                app.ads.move_banner(top=True)
+            elif hasattr(app, 'ads') and hasattr(app.ads, 'show_banner'):
+                # Fallback si move_banner indisponible
+                if is_android_runtime():
+                    app.ads.show_banner()
+        except Exception as e:
+            print(f"⚠️ FullScreenCardPopup: move_banner failed: {e}")
 
     def on_dismiss(self):
-        """Garder la bannière visible sur ResponseScreen"""
+        """Rétablit la bannière en bas après fermeture du plein écran (confort UX)."""
         super().on_dismiss()
-        print("📱 FullScreenCardPopup: on_dismiss - Bannière reste visible")
+        print("📱 FullScreenCardPopup: on_dismiss - reposition bannière bas")
+        app = App.get_running_app()
+        try:
+            if is_android_runtime() and hasattr(app, 'ads') and hasattr(app.ads, 'move_banner'):
+                app.ads.move_banner(top=False)
+        except Exception:
+            pass
 
     def update_bg(self, instance, value):
         self.bg_rect.pos = instance.pos
@@ -445,22 +725,30 @@ class LoadingPopup(Popup):
         self.start_shuffle_animation()
 
         # Bannière publicitaire pendant le brassage
-        ad_choices = ["messages.crystals_ad", "messages.love_ad", "messages.tarot_course_ad"]
+        # - Android: on affiche la vraie bannière AdMob en bas (overlay), on ne montre pas le texte promo
+        # - Desktop: on garde un texte promo de dev pour visualiser l'emplacement
         tr_func = kwargs.pop("tr", None)
         trf = tr_func or getattr(App.get_running_app(), 'tr', None)
-        choice_key = random.choice(ad_choices)
-        chosen_ad = (trf(choice_key) if callable(trf) else ("Cristaux en promo !" if choice_key.endswith("crystals_ad") else ("Amour et tarot !" if choice_key.endswith("love_ad") else "Cours de tarot !")))
-        self.ad_banner = Label(
-            text=chosen_ad,
-            font_size="14sp",
-            color=[1, 0.82, 0.35, 1],
-            size_hint_y=None,
-            height=dp(40),
-            halign="center",
-            valign="middle",
-        )
-        self.ad_banner.bind(size=lambda inst, val: setattr(inst, "text_size", (val[0] * 0.95, None)))
-        layout.add_widget(self.ad_banner)
+        if is_android_runtime():
+            try:
+                app = App.get_running_app()
+            except Exception:
+                app = None
+            if app and hasattr(app, 'ads'):
+                # déplacer/montrer la bannière en bas
+                try:
+                    app.ads.move_banner(top=False)
+                except Exception:
+                    try:
+                        app.ads.show_banner()
+                    except Exception:
+                        pass
+            else:
+                # Pas d'ads dispo -> placeholder texte
+                self._add_loading_dev_banner(layout, trf)
+        else:
+            # Mode desktop: texte de dev
+            self._add_loading_dev_banner(layout, trf)
 
         Clock.schedule_once(lambda dt: self.update_message((trf("messages.preparing_arcana") if callable(trf) else "Préparation des arcanes...")), 1.5)
         Clock.schedule_once(lambda dt: self.update_message((trf("messages.drawing_card") if callable(trf) else "Tirage de la carte...")), 3)
@@ -488,6 +776,36 @@ class LoadingPopup(Popup):
         # Stoppe l'animation si besoin (optionnel)
         if self.shuffle_anim:
             self.shuffle_anim.cancel_all(self.animated_card)
+
+    def on_open(self):
+        """Assure la bannière en bas pendant l'animation (Android)."""
+        super().on_open()
+        try:
+            if is_android_runtime():
+                app = App.get_running_app()
+                if hasattr(app, 'ads'):
+                    # bottom par défaut pour ne pas gêner la zone de concentration
+                    app.ads.move_banner(top=False)
+        except Exception:
+            pass
+
+    # Helpers -----------------------------------------------------------------
+    def _add_loading_dev_banner(self, layout, trf):
+        """Ajoute un label placeholder pour la bannière en mode desktop/dev."""
+        ad_choices = ["messages.crystals_ad", "messages.love_ad", "messages.tarot_course_ad"]
+        choice_key = random.choice(ad_choices)
+        chosen_ad = (trf(choice_key) if callable(trf) else ("Cristaux en promo !" if choice_key.endswith("crystals_ad") else ("Amour et tarot !" if choice_key.endswith("love_ad") else "Cours de tarot !")))
+        self.ad_banner = Label(
+            text=chosen_ad,
+            font_size="14sp",
+            color=[1, 0.82, 0.35, 1],
+            size_hint_y=None,
+            height=dp(40),
+            halign="center",
+            valign="middle",
+        )
+        self.ad_banner.bind(size=lambda inst, val: setattr(inst, "text_size", (val[0] * 0.95, None)))
+        layout.add_widget(self.ad_banner)
 
 
 class MmeTChatPopup(Popup):
@@ -531,6 +849,8 @@ class MmeTChatPopup(Popup):
         self.on_session_complete = on_session_complete
         self._close_reason = None
         self.chat_bubbles = []  # type: list[ChatBubble]
+        self._exit_ad_shown = False  # Interstitielle de sortie: une seule fois par session
+        self._questions_count = 0  # Compteur de questions utilisateur pour pubs périodiques
 
         # Animation de chargement
         self._loading_event = None
@@ -539,7 +859,7 @@ class MmeTChatPopup(Popup):
 
         main_layout = BoxLayout(
             orientation="vertical",
-            padding=[dp(12), dp(12), dp(12), dp(12)],
+            padding=[dp(12), dp(12), dp(12), dp(18)],  # padding bas augmenté pour éviter le recouvrement par la bannière
             spacing=dp(10),
         )
 
@@ -736,8 +1056,8 @@ class MmeTChatPopup(Popup):
         input_container.add_widget(self.send_btn)
         main_layout.add_widget(input_container)
 
-        # Bouton de fermeture en bas
-        close_btn_container = BoxLayout(orientation="horizontal", size_hint_y=None, height=dp(45), padding=[dp(10), dp(4)])
+        # Bouton de fermeture en bas (remonté légèrement pour ne pas être sous la bannière)
+        close_btn_container = BoxLayout(orientation="horizontal", size_hint_y=None, height=dp(50), padding=[dp(10), dp(6)])
         self.close_btn = Button(
             text="✓ " + self._label("consultation_done"),
             size_hint=(1, None),
@@ -754,6 +1074,8 @@ class MmeTChatPopup(Popup):
         self.close_btn.bind(on_press=lambda *_: self.dismiss())
         close_btn_container.add_widget(self.close_btn)
         main_layout.add_widget(close_btn_container)
+        # Ajouter un petit espace sous le bouton pour le remonter visuellement
+        main_layout.add_widget(Widget(size_hint_y=None, height=dp(19)))
 
         self.content = main_layout
 
@@ -802,14 +1124,42 @@ class MmeTChatPopup(Popup):
         except Exception:
             print("[MME_T DEBUG] Failed to schedule _ensure_card_bar")
 
+        # Afficher la bannière en bas et ajouter un espace bas pour éviter la superposition
+        try:
+            app = App.get_running_app()
+            ads = getattr(app, 'ads', None)
+            if ads and hasattr(ads, 'show_banner_at_bottom'):
+                ads.show_banner_at_bottom()
+                # Ajouter un spacer bas si pas déjà ajouté
+                try:
+                    if not hasattr(self, '_ad_bottom_spacer'):
+                        from kivy.uix.widget import Widget  # type: ignore
+                        self._ad_bottom_spacer = Widget(size_hint_y=None, height=dp(54))
+                        # S'assurer que le spacer est tout en bas
+                        if isinstance(self.content, BoxLayout):
+                            self.content.add_widget(self._ad_bottom_spacer)
+                except Exception:
+                    pass
+        except Exception:
+            pass
+
     # Pas d'overlay fallback — card_anchor prend la largeur du contenu.
 
     # overlay fallback removed — centrer dans la popup via card_anchor
 
     def on_dismiss(self, *_args):
-        # appeler le on_dismiss original
+        # Appeler le on_dismiss original puis nettoyage bannière
         try:
             super().on_dismiss()
+        except Exception:
+            pass
+
+        # Cacher la bannière
+        try:
+            app = App.get_running_app()
+            ads = getattr(app, 'ads', None)
+            if ads and hasattr(ads, 'hide_banner'):
+                ads.hide_banner()
         except Exception:
             pass
 
@@ -1039,7 +1389,7 @@ class MmeTChatPopup(Popup):
         self._typewriter_index = 0
         self._typewriter_on_complete = on_complete
         self._active_bubble = self._create_message_bubble("", sender)
-        self._update_bubble_widths()
+        Clock.schedule_once(lambda dt: self._update_bubble_widths(), 0)
         # Do not scroll immediately; we'll scroll once when typing finishes.
         self._typewriter_scroll_throttle = 6
         if not self._typewriter_source:
@@ -1082,10 +1432,11 @@ class MmeTChatPopup(Popup):
         return False
 
     def _create_message_bubble(self, text: str, sender: str):
+        # Style Messenger : Mme T (assistant) à droite, utilisateur à gauche
         from_user = sender == "user"
         anchor = AnchorLayout(
             size_hint=(1, None),
-            anchor_x="right" if from_user else "left",
+            anchor_x="left" if from_user else "right",
             anchor_y="center",
             padding=[dp(6), 0, dp(6), 0],
         )
@@ -1131,8 +1482,32 @@ class MmeTChatPopup(Popup):
             "💫 Interpreting the arcana..."
         ]
 
-        # Créer la bulle de chargement
-        self._loading_bubble = self._create_message_bubble(loading_messages[0], sender="mme_t")
+        # Créer la bulle de chargement — remplaçons le texte par un spinner + label
+        self._loading_bubble = self._create_message_bubble("", sender="mme_t")
+        print("[DEBUG] Appel set_widget sur bulle d'attente", self._loading_bubble)
+        try:
+            # Layout contenant spinner et label
+            container = BoxLayout(orientation='horizontal', spacing=dp(8), padding=[dp(6), dp(6), dp(6), dp(6)], size_hint=(None, None))
+            spinner = Label(text='[SPINNER]', font_size='22sp', color=[0.35, 0.15, 0.55, 1], size_hint=(None, None))
+            # Animation de points sur le texte du label
+            loading_lbl = Label(text="⏳ Focusing on your question", halign='left', valign='middle', font_size='17sp', color=[0.2,0.2,0.2,1], size_hint=(None, None))
+            loading_lbl.bind(size=lambda inst, val: setattr(inst, 'text_size', (val[0]*0.95, None)))
+            self._loading_bubble.set_text(loading_lbl.text)
+            self._loading_label = loading_lbl
+            self._loading_spinner = None
+            # Animation des points
+            def animate_loading(dt):
+                if not self._loading_bubble or not self.awaiting_reply:
+                    return False
+                dots = (animate_loading.counter % 4) * '.'
+                self._loading_bubble.set_text(f"⏳ Focusing on your question{dots}")
+                animate_loading.counter += 1
+                return True
+            animate_loading.counter = 0
+            self._loading_event = Clock.schedule_interval(animate_loading, 0.5)
+        except Exception:
+            # Fallback: conserve simple texte si quelque chose échoue
+            self._loading_bubble.set_text(loading_messages[0])
 
         def _update_loading_message(dt):
             if not self._loading_bubble or not self.awaiting_reply:
@@ -1141,9 +1516,14 @@ class MmeTChatPopup(Popup):
             self._loading_index = (self._loading_index + 1) % len(loading_messages)
             new_text = loading_messages[self._loading_index]
 
-            # Mettre à jour le texte de la bulle
-            if hasattr(self._loading_bubble, 'label'):
-                self._loading_bubble.label.text = new_text
+            # Mettre à jour le texte du label de chargement si présent
+            try:
+                if hasattr(self, '_loading_label') and self._loading_label:
+                    self._loading_label.text = new_text
+                elif hasattr(self._loading_bubble, 'label'):
+                    self._loading_bubble.label.text = new_text
+            except Exception:
+                pass
 
             return True  # Continuer l'animation
 
@@ -1167,7 +1547,18 @@ class MmeTChatPopup(Popup):
                             if self._loading_bubble in self.chat_bubbles:
                                 self.chat_bubbles.remove(self._loading_bubble)
                             break
+            # stop spinner if present
+            try:
+                if hasattr(self, '_loading_spinner') and self._loading_spinner:
+                    try:
+                        self._loading_spinner.stop()
+                    except Exception:
+                        pass
+            except Exception:
+                pass
             self._loading_bubble = None
+            self._loading_label = None
+            self._loading_spinner = None
 
     def show_fullscreen_card(self, card_name, card_state):
         """Affiche la carte en plein écran avec nom localisé et image correcte"""
@@ -1205,6 +1596,20 @@ class MmeTChatPopup(Popup):
         question = self.question_input.text.strip()
         if not question:
             return
+
+        # Compter la question utilisateur et afficher une interstitielle toutes les 3 questions
+        try:
+            self._questions_count += 1
+            if self._questions_count % 3 == 0:
+                try:
+                    app = App.get_running_app()
+                    ads = getattr(app, 'ads', None)
+                    if ads and hasattr(ads, 'show_interstitial'):
+                        ads.show_interstitial()
+                except Exception:
+                    pass
+        except Exception:
+            pass
 
         # LOG: Afficher la question dans le terminal
         print(f"\n{'='*60}")
@@ -1244,12 +1649,23 @@ class MmeTChatPopup(Popup):
 
             print(f"[MME T DEBUG] Contexte envoyé (avec historique):\n{full_context}\n")
 
+            # Ensure the language is explicitly present at the top of the context
+            try:
+                lang_code = (self.language or "").strip().lower()
+            except Exception:
+                lang_code = ""
+            if lang_code and not (full_context or "").strip().lower().startswith("language="):
+                full_context = f"language={lang_code}\n{full_context or ''}"
+
+            # Provide both keys (`context` and French `contexte`) to maximize
+            # compatibility with different backend endpoints.
             payload = {
                 "message": question,
                 "language": self.language,
                 "session_id": self.session_id,
                 "model": self.model_id,
                 "context": full_context,
+                "contexte": full_context,
             }
             threading.Thread(target=self._perform_request, args=(payload,), daemon=False).start()
 
@@ -1328,10 +1744,14 @@ class MmeTChatPopup(Popup):
     def _call_gradio_backend(self, message: str, context_text: str) -> str:
         """Appelle le backend Gradio avec le client officiel ou REST en fallback"""
 
-        # Ajouter la langue dans le contexte si disponible
+        # Ajouter la langue en tête du contexte (toujours envoyé pour Gradio)
         full_context = context_text or ""
-        if self.language and self.language != "fr":
-            full_context = f"language={self.language}\n{full_context}"
+        try:
+            lang = (self.language or "").strip().lower() if hasattr(self, 'language') else ""
+        except Exception:
+            lang = ""
+        if lang:
+            full_context = f"language={lang}\n{full_context}"
 
         # LOG: Afficher les paramètres envoyés
         print(f"\n{'='*60}")
@@ -1502,141 +1922,3 @@ class MmeTChatPopup(Popup):
         if self._close_reason == "completed" and self.on_session_complete:
             Clock.schedule_once(lambda _dt: self.on_session_complete(), 0)
         self._close_reason = None
-
-
-class AdsPopup(Popup):
-    def __init__(self, on_close_callback, **kwargs):
-        # Retirer 'tr' des kwargs avant de passer à super().__init__
-        self.trf = kwargs.pop("tr", None)
-        
-        super().__init__(**kwargs)
-        self.title = ""
-        self.size_hint = (1, 1)  # Plein écran
-        self.auto_dismiss = False
-        self.separator_height = 0
-        self.on_close_callback = on_close_callback
-
-        layout = BoxLayout(orientation="vertical", spacing=dp(20), padding=dp(30))
-
-        # Fond sombre pour publicité
-        with layout.canvas.before:
-            Color(0.12, 0.08, 0.18, 0.98)
-            self.bg_rect = Rectangle(pos=layout.pos, size=layout.size)
-        layout.bind(pos=lambda i, v: setattr(self.bg_rect, 'pos', v), size=lambda i, v: setattr(self.bg_rect, 'size', v))
-
-        # Bandeau promotion traduit
-        trf = self.trf or getattr(App.get_running_app(), 'tr', None)
-        ad_choices = [
-            "messages.crystals_ad",
-            "messages.love_ad", 
-            "messages.tarot_course_ad",
-        ]
-        choice_key = random.choice(ad_choices)
-        chosen_ad = (trf(choice_key) if callable(trf) else ("💎 Cristaux en promo !" if "crystals" in choice_key else ("💕 Amour et tarot !" if "love" in choice_key else "📚 Cours de tarot !")))
-
-        promo = Label(
-            text=chosen_ad,
-            font_size="22sp",
-            color=[1, 0.88, 0.4, 1],
-            halign="center",
-            valign="middle",
-            size_hint=(1, 0.5),
-            bold=True,
-        )
-        promo.bind(
-            width=lambda inst, val: setattr(inst, "text_size", (val * 0.85, None))
-        )
-        layout.add_widget(promo)
-
-        self.countdown_seconds = 15
-        # Exposer la fonction de traduction pour méthodes ultérieures
-        btn_text = (self.trf("messages.new_reading_countdown", seconds=self.countdown_seconds) if callable(self.trf) else f"Nouvelle lecture dans {self.countdown_seconds}s")
-        self.next_btn = Button(
-            text=btn_text,
-            size_hint=(0.75, None),
-            height=dp(50),
-            pos_hint={'center_x': 0.5},
-            background_normal='',
-            background_color=[0, 0, 0, 0],
-            color=[1, 1, 1, 1],
-            font_size="17sp",
-            bold=True,
-            disabled=True
-        )
-        with self.next_btn.canvas.before:
-            Color(0.6, 0.4, 0.2, 1.0)
-            self.btn_bg = RoundedRectangle(
-                pos=self.next_btn.pos,
-                size=self.next_btn.size,
-                radius=[25, 25, 25, 25]
-            )
-        self.next_btn.bind(pos=self.update_btn_canvas, size=self.update_btn_canvas)
-        self.next_btn.bind(on_press=self.close_popup)
-        layout.add_widget(self.next_btn)
-
-        self.content = layout
-        # Démarrer le countdown immédiatement
-        self.update_countdown(0)
-
-    def update_btn_canvas(self, instance, value):
-        self.btn_bg.pos = instance.pos
-        self.btn_bg.size = instance.size
-
-    def update_countdown(self, dt):
-        if self.countdown_seconds > 0:
-            new_text = (self.trf("messages.new_reading_countdown", seconds=self.countdown_seconds) if callable(self.trf) else f"Nouvelle lecture dans {self.countdown_seconds}s")
-            self.next_btn.text = new_text
-            # Force refresh multiple ways
-            self.next_btn.canvas.ask_update()
-            self.next_btn._trigger_texture_update()
-            # Force layout update
-            if self.next_btn.parent:
-                self.next_btn.parent.do_layout()
-            
-            self.countdown_seconds -= 1
-            # Reprogrammer pour la prochaine seconde
-            Clock.schedule_once(self.update_countdown, 1)
-        else:
-            final_text = (self.trf("messages.new_reading") if callable(self.trf) else "Nouvelle lecture")
-            self.next_btn.text = final_text
-            self.next_btn.disabled = False
-            # Force refresh
-            self.next_btn.canvas.ask_update()
-            self.next_btn._trigger_texture_update()
-            if self.next_btn.parent:
-                self.next_btn.parent.do_layout()
-
-    def show_fullscreen_card(self, card_key, card_state):
-        """Affiche la carte en plein écran"""
-        try:
-            # Récupérer les données de la carte
-            from main import get_cards_signification
-            card_data = get_cards_signification(card_key)
-            
-            # Déterminer l'image à afficher
-            if card_state == "reversed":
-                image_path = card_data.get("image_reversed") or card_data.get("image")
-            else:
-                image_path = card_data.get("image")
-            
-            image_path = image_path or "tarot_img/Back.jpg"
-            
-            # Récupérer le nom de la carte
-            card_name = card_data.get("name", card_key)
-            
-            # Ouvrir le popup plein écran
-            fullscreen_popup = FullScreenCardPopup(
-                card_image_source=image_path,
-                card_name=card_name,
-
-                tr=self.tr
-            )
-            fullscreen_popup.open()
-            
-        except Exception as e:
-            print(f"Erreur lors de l'affichage de la carte plein écran: {e}")
-
-    def close_popup(self, instance):
-        self.dismiss()
-        if self.on_close_callback:
-            self.on_close_callback()

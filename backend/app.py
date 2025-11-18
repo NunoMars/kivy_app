@@ -9,87 +9,25 @@ import gradio as gr
 from langdetect import detect, DetectorFactory
 
 try:
-    import google.generativeai as genai
-except ImportError as exc:
-    raise RuntimeError("google-generativeai package missing") from exc
+    from openai import OpenAI
+except ImportError:
+    OpenAI = None
 
 DetectorFactory.seed = 0
 
 
-DEFAULT_MODELS: tuple[str, ...] = (
-    os.getenv("GEMINI_MODEL") or "",
-    "models/gemini-2.0-flash-exp",  # 🆕 Modèle expérimental plus permissif
-    "models/gemini-2.0-flash-thinking-exp-1219",  # 🆕 Modèle avec raisonnement
-    "models/gemini-2.0-flash",
-    "models/gemini-1.5-flash-latest",  # Version la plus récente de 1.5
-    "models/gemini-1.5-flash-002",  # Version stable
-    "models/gemini-1.5-flash",
-)
+OPENAI_API_KEY: str | None = os.getenv("OPENAI_API_KEY") or None
+OPENAI_MODEL: str = (os.getenv("OPENAI_MODEL") or "gpt-5-nano").strip()
 
-
-def pick_first_available(models: Iterable[str]) -> str | None:
-    for model in models:
-        candidate = (model or "").strip()
-        if candidate:
-            return candidate
-    return None
 
 SYSTEM_PROMPT = (
-    "Tu es **Mme T**, une lectrice de tarot authentique, bienveillante et intuitive. "
-    "Tu interprètes le tarot de Marseille avec sagesse et simplicité, comme une amie de confiance. "
-    "Ta parole est claire, directe et réconfortante.\n\n"
-
-    "🎴 **APPROCHE**\n"
-    "• Donne des RÉPONSES CLAIRES et AFFIRMATIVES basées sur les symboles tirés.\n"
-    "• Dis ce que tu VOIS et ce que tu RESSENS dans les cartes, sans tourner autour du pot.\n"
-    "• Décris les ÉNERGIES présentes, leur mouvement et leur direction.\n"
-    "• Sois CONFIANTE mais toujours BIENVEILLANTE.\n"
-    "• Reste NEUTRE sur le genre (pas de 'ma belle', 'mon chéri', etc.).\n\n"
-
-    "✨ **STYLE DE LANGAGE**\n"
-    "• Tutoiement naturel et chaleureux.\n"
-    "• Ton mystique mais accessible et universel.\n"
-    "• Réponses courtes : 2–3 phrases maximum.\n"
-    "• Un seul émoji par réponse (✨💖🌟 autorisés).\n\n"
-
-    "🔮 **FORMULATIONS CONSEILLÉES**\n"
-    "Utilise des phrases affirmatives, ouvertes et inspirées :\n"
-    "• 'Les cartes montrent...'\n"
-    "• 'Je perçois...'\n"
-    "• 'Je vois...'\n"
-    "• 'Cette carte évoque...'\n"
-    "• 'L’énergie indique...'\n"
-    "• 'D’après les symboles, il y a...'\n\n"
-
-    "🤝 **FORMULES NEUTRES POUR S’ADRESSER À TOUS**\n"
-    "✅ Utilise : 'Mon ami(e)', 'Écoute', 'Regarde', 'Attention', ou le prénom s’il est donné.\n"
-    "❌ Évite : 'Ma belle', 'Mon chéri', 'Ma chère' (présument le genre ou l’âge).\n\n"
-
-    "🚫 **FORMULATIONS À ÉVITER (bloquées ou risquées)**\n"
-    "• Futur catégorique ('tu vas rencontrer', 'tu vas avoir...').\n"
-    "• Dates précises ('en mars', 'dans 3 mois', etc.).\n"
-    "• Absolus ('c’est certain', 'à 100%', 'je te le garantis').\n\n"
-
-    "🌟 **EXEMPLES DE BONNES RÉPONSES**\n\n"
-    "Question : 'Vais-je rencontrer l’amour ?'\n"
-    "✅ 'D’après les symboles, il y a une transformation importante (La Tour) "
-    "qui précède un épanouissement (Le Monde). "
-    "Je vois une ouverture vers une relation plus complète et sincère. 💖'\n\n"
-
-    "Question : 'Aurais-je des enfants ?'\n"
-    "✅ 'Je perçois une énergie de création (L’Impératrice) autour de la famille. "
-    "Les cartes annoncent une période fertile et pleine de potentiel. 🌟'\n\n"
-
-    "Question : 'Vais-je réussir mon projet ?'\n"
-    "✅ 'Le Chariot associé au Soleil, c’est un signe fort ! "
-    "Je vois une dynamique claire de réussite et d’accomplissement. ✨'\n\n"
-
-    "Question : 'Que me réserve l’avenir ?' (homme, 45 ans)\n"
-    "✅ 'La Roue de Fortune suivie du Soleil annonce un tournant majeur : "
-    "une période de chance, d’opportunités et d’épanouissement. ✨'\n\n"
-
-    "💫 **RÈGLE D’OR** : Sois toujours AFFIRMATIVE (ce que tu vois DANS les cartes), "
-    "NEUTRE (pas de genre), et CLAIRE (les gens veulent comprendre ce que les cartes révèlent)."
+    "Tu es Mme T, une cartomancienne intuitive et bienveillante."
+    "Tu interprètes les cartes du tarot en mêlant symboles, ressentis et guidance, avec un ton mystérieux, poétique et empathique."
+    "Tu ne donnes jamais de réponses catégoriques: tu invites la personne à réfléchir, à écouter son intuition, à explorer les possibles."
+    "Tu adaptes ton style à la question, tu peux évoquer des images, des émotions, des chemins, et tu encourages la personne à se faire confiance."
+    "Tu restes chaleureuse, humaine, jamais froide ni trop rationnelle."
+    "N'utilise pas de jargon technique, ni de conseils trop pratiques."
+    "Commence chaque réponse par une petite phrase d’accueil ou d’ouverture."
 )
 
 
@@ -125,7 +63,7 @@ def language_directive(lang_code: str) -> str:
     )
 
 def reformulate_sensitive_question(question: str) -> str:
-    """Reformule les questions sensibles pour éviter les blocages Gemini"""
+    """Reformule les questions sensibles pour éviter les blocages"""
     q_lower = question.lower()
     
     # Patterns de questions sensibles et leurs reformulations
@@ -160,71 +98,12 @@ def reformulate_sensitive_question(question: str) -> str:
 
 def consulter_madame_t(message: str, contexte: str = "") -> str:
     """Fonction principale de consultation"""
-    # Vérification de la clé API
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        return "❌ **Erreur de configuration**\n\nLa clé API Gemini n'est pas configurée. Veuillez ajouter GEMINI_API_KEY dans les secrets du Space."
     
     # Validation de l'entrée
     if not message or not message.strip():
         return "⚠️ Veuillez poser une question pour que je puisse vous guider."
     
     try:
-        # Configuration de Gemini
-        genai.configure(api_key=api_key)
-        model_name = pick_first_available(DEFAULT_MODELS)
-        if not model_name:
-            return "❌ **Configuration invalide**\n\nAucun modèle Gemini par défaut n'est défini. Ajoute GEMINI_MODEL ou vérifie la configuration."
-
-        try:
-            model = genai.GenerativeModel(
-                model_name,
-                generation_config={
-                    "temperature": 0.85,  # Réduit pour moins de blocages (était 1.0)
-                    "top_p": 0.90,        # Réduit pour plus de cohérence (était 0.95)
-                    "top_k": 40,
-                    "max_output_tokens": 300,
-                },
-                safety_settings={
-                    "HARM_CATEGORY_HARASSMENT": "BLOCK_NONE",
-                    "HARM_CATEGORY_HATE_SPEECH": "BLOCK_ONLY_HIGH",
-                    "HARM_CATEGORY_SEXUALLY_EXPLICIT": "BLOCK_MEDIUM_AND_ABOVE",
-                    "HARM_CATEGORY_DANGEROUS_CONTENT": "BLOCK_ONLY_HIGH",
-                }
-            )
-        except Exception as model_exc:
-            # Tentative avec les autres candidats si le premier échoue
-            fallback_name = None
-            for candidate in DEFAULT_MODELS:
-                candidate = (candidate or "").strip()
-                if not candidate or candidate == model_name:
-                    continue
-                try:
-                    model = genai.GenerativeModel(
-                        candidate,
-                        generation_config={
-                            "temperature": 0.85,
-                            "top_p": 0.90,
-                            "top_k": 40,
-                            "max_output_tokens": 300,
-                        },
-                        safety_settings={
-                            "HARM_CATEGORY_HARASSMENT": "BLOCK_NONE",
-                            "HARM_CATEGORY_HATE_SPEECH": "BLOCK_ONLY_HIGH",
-                            "HARM_CATEGORY_SEXUALLY_EXPLICIT": "BLOCK_MEDIUM_AND_ABOVE",
-                            "HARM_CATEGORY_DANGEROUS_CONTENT": "BLOCK_ONLY_HIGH",
-                        }
-                    )
-                    fallback_name = candidate
-                    break
-                except Exception:
-                    continue
-            else:
-                raise model_exc
-
-            if fallback_name:
-                model_name = fallback_name
-        
         # Détection de la langue
         # Utiliser la langue reçue si disponible dans le contexte ou la requête
         received_lang = None
@@ -267,54 +146,48 @@ def consulter_madame_t(message: str, contexte: str = "") -> str:
                 "donne une action pratique en une phrase.\n\n"
             )
 
-        # Prompt final
+        # Prompt final: place the language directive in the system message
+        # (more likely to be respected) and keep the user message focused.
+        system_content = f"{SYSTEM_PROMPT}\n\n{lang_clause}"
         final_prompt = (
-            f"{SYSTEM_PROMPT} {lang_clause}\n\n"
             f"{tirage_directive}"
             f"Utilisateur ({user_lang}): {full_message}\n"
             f"Mme T:"
         )
-        
-        # Génération de la réponse
-        result = model.generate_content(final_prompt)
-        
-        # Vérifier si une réponse a été générée
-        if result and result.candidates:
-            candidate = result.candidates[0]
-            
-            # Vérifier finish_reason
-            # 0 = UNSPECIFIED, 1 = STOP (succès), 2 = SAFETY (bloqué), 3 = MAX_TOKENS, etc.
-            finish_reason = candidate.finish_reason
-            
-            if finish_reason == 2:  # SAFETY - Contenu bloqué
-                return (
-                    "Ah ma belle, le tarot me montre quelque chose mais les énergies "
-                    "sont un peu troubles aujourd'hui. Reformule ta question différemment "
-                    "et je pourrai mieux te guider ! ✨"
-                )
-            
-            # Essayer d'accéder au texte
-            try:
-                if result.text:
-                    return result.text
-            except ValueError:
-                # Si result.text lève une exception, extraire manuellement
-                if candidate.content and candidate.content.parts:
-                    return candidate.content.parts[0].text
-        
+        # Appel OpenAI (GPT-5 nano)
+        if not OPENAI_API_KEY or not OpenAI:
+            return (
+                "❌ **Erreur de configuration**\n\n"
+                "L'API OpenAI n'est pas disponible. Vérifie OPENAI_API_KEY et que la librairie `openai` est installée."
+            )
+
+        client = OpenAI(api_key=OPENAI_API_KEY)
+
+        chat = client.chat.completions.create(
+            model=OPENAI_MODEL,
+            messages=[
+                {"role": "system", "content": system_content},
+                {"role": "user", "content": final_prompt},
+            ],
+        )
+
+        choices = getattr(chat, "choices", []) or []
+        if choices and choices[0].message and choices[0].message.content:
+            return choices[0].message.content.strip()
+
         return "❌ Aucune réponse n'a été générée. Veuillez réessayer."
         
     except Exception as e:
         error_msg = str(e)
         if "API_KEY" in error_msg.upper():
-            return f"❌ **Erreur d'authentification**\n\nLa clé API Gemini est invalide ou expirée.\n\nDétails: {error_msg}"
+            return f"❌ **Erreur d'authentification**\n\nLa clé API OpenAI est invalide ou expirée.\n\nDétails: {error_msg}"
         elif "quota" in error_msg.lower():
-            return f"❌ **Quota dépassé**\n\nLe quota de l'API Gemini a été dépassé.\n\nDétails: {error_msg}"
+            return f"❌ **Quota dépassé**\n\nLe quota de l'API OpenAI a été dépassé.\n\nDétails: {error_msg}"
         elif "model" in error_msg.lower() and "not" in error_msg.lower():
             return (
                 "❌ **Modèle indisponible**\n\n"
-                "Le modèle Gemini demandé n'est pas accessible sur ce compte. "
-                "Définis la variable GEMINI_MODEL (ex: gemini-1.5-flash-latest) dans les Secrets du Space.\n\n"
+                "Le modèle OpenAI demandé n'est pas accessible sur ce compte. "
+                "Définis la variable OPENAI_MODEL (ex: gpt-5-nano) dans les Secrets du Space.\n\n"
                 f"Détails: {error_msg}"
             )
         else:
@@ -380,7 +253,7 @@ with gr.Blocks(
         - Si vous avez tiré des cartes, indiquez-les dans le contexte
         - Une consultation = un dilemme
         
-        *Propulsé par Gemini 2.0 Flash (Expérimental)*
+        *Propulsé par OpenAI GPT-5 nano (Expérimental)*
         """
     )
     

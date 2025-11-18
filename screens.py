@@ -1,15 +1,5 @@
 from __future__ import annotations
 # -*- coding: utf-8 -*-
-"""
-Module des écrans pour l'application Kivy.
-Contient les classes d'écrans (RootScreen, CardScreen, ResponseScreen) et leurs dépendances.
-"""
-# -*- coding: utf-8 -*-
-"""Écrans principaux de l'application Kivy: CardScreen et ResponseScreen.
-
-Cette version est une reconstruction propre adaptée à la nouvelle API i18n
-(utilisation de tr("messages.*") et get_cards_signification).
-"""
 
 import os
 import sys
@@ -17,25 +7,27 @@ import random
 import json
 from typing import Optional, List, Tuple
 
-from kivy.app import App
-from kivy.clock import Clock
-from kivy.graphics import Color, Rectangle, RoundedRectangle
-from kivy.metrics import dp
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.button import Button
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.image import Image
-from kivy.uix.label import Label
-from kivy.uix.popup import Popup
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.uix.scrollview import ScrollView
-from kivy.animation import Animation
-from kivy.logger import Logger
-from kivy.resources import resource_find
-from kivy.core.window import Window
+from kivy.app import App  # type: ignore
+from kivy.clock import Clock  # type: ignore
+from kivy.graphics import Color, Rectangle, RoundedRectangle  # type: ignore
+from kivy.metrics import dp  # type: ignore
+from kivy.uix.boxlayout import BoxLayout  # type: ignore
+from kivy.uix.button import Button  # type: ignore
+from kivy.uix.floatlayout import FloatLayout  # type: ignore
+from kivy.uix.image import Image  # type: ignore
+from kivy.uix.label import Label  # type: ignore
+from kivy.uix.popup import Popup  # type: ignore
+from kivy.uix.screenmanager import ScreenManager, Screen  # type: ignore
+from kivy.uix.scrollview import ScrollView  # type: ignore
+from kivy.factory import Factory  # type: ignore
+from kivy.animation import Animation  # type: ignore
+from kivy.logger import Logger  # type: ignore
+from kivy.resources import resource_find  # type: ignore
+from kivy.core.window import Window  # type: ignore
+from kivy.uix.widget import Widget  # type: ignore
 
 # Popups
-from popups import LoadingPopup, FullScreenCardPopup, MmeTChatPopup, AdPopup, AdsPopup
+from popups import LoadingPopup, FullScreenCardPopup, MmeTChatPopup
 
 
 READING_COUNT = 0
@@ -78,12 +70,6 @@ def resolve_lang() -> str:
     except Exception:
         pass
     return "fr"
-
-
-def should_show_ad() -> bool:
-    global READING_COUNT
-    READING_COUNT += 1
-    return READING_COUNT % 3 == 0
 
 
 class RootScreen(ScreenManager):
@@ -184,18 +170,13 @@ class CardScreen(Screen):
         self.instructions_label.bind(size=lambda inst, val: setattr(inst, 'text_size', val))
         layout.add_widget(self.instructions_label)
 
-        self.ad_banner = Label(
-            text=self.tr("messages.crystals_ad"),
-            font_size="16sp",
-            color=[1, 0.8, 0.2, 1],
-            size_hint_y=0.08,
-            halign='center',
-            valign='middle',
-            font_name="Body"
-        )
-        self.ad_banner.bind(size=lambda inst, val: setattr(inst, 'text_size', (val[0] * 0.95, None)))
-        self.ad_banner.opacity = 0
-        layout.add_widget(self.ad_banner)
+        # Placeholder léger pour garder espace si pas de bannière (remplacé par vraie bannière AdMob)
+        self.ad_banner_placeholder = BoxLayout(size_hint_y=0.08)
+        layout.add_widget(self.ad_banner_placeholder)
+
+        # Spacer pour remonter le bouton "À propos" et éviter qu'il soit recouvert par la pub
+        # On le positionne à la hauteur du conteneur du bouton (44dp)
+        layout.add_widget(Widget(size_hint_y=None, height=dp(44)))
 
         # --- Bouton "À propos" (disclaimer) en bas ---
         about_container = BoxLayout(orientation="horizontal", size_hint_y=None, height=dp(44), padding=[0, dp(4), 0, 0])
@@ -296,14 +277,7 @@ class CardScreen(Screen):
                 self.instructions_label.text = instr
         except Exception:
             pass
-        try:
-            adtxt = self.tr("messages.crystals_ad")
-            if hasattr(self, 'ids') and 'ad_banner' in self.ids:
-                self.ids['ad_banner'].text = adtxt
-            elif hasattr(self, 'ad_banner'):
-                self.ad_banner.text = adtxt
-        except Exception:
-            pass
+        # Retiré: plus de texte mock de bannière
         try:
             # mettre à jour visibilité du badge
             if hasattr(self, '_update_daily_badge'):
@@ -316,7 +290,9 @@ class CardScreen(Screen):
                 label = "Nouveau tirage"
             self.back_btn.text = label
         if hasattr(self, 'premium_btn'):
-            self.premium_btn.text = (self.tr("messages.chat_mme_t") or "Chat Mme T") + " (Achat in-app)"
+            # Bouton Mme T sans suffixe IAP (flux pubs)
+            label = self.tr("messages.chat_mme_t") if hasattr(self, 'tr') else None
+            self.premium_btn.text = (label or "Chat Mme T")
         # Also update KV back button text if present
         try:
             if hasattr(self, 'ids') and 'back_button' in self.ids:
@@ -392,25 +368,15 @@ class CardScreen(Screen):
                             pass
                     self.manager.current = "response_screen"
 
-            # 1) Essayer d'afficher un interstitiel AdMob (ne bloque pas la suite)
-            ad_shown = False
+            # Interstitielle AdMob (non bloquante)
             try:
                 app = App.get_running_app()
                 if hasattr(app, 'ads') and getattr(app.ads, 'enabled', False):
                     app.ads.on_card_drawn()
-                    ad_shown = True
             except Exception:
-                ad_shown = False
+                pass
 
-            # 2) Fallback UX ancien AdsPopup uniquement si AdMob indisponible
-            if not ad_shown and should_show_ad():
-                try:
-                    popup = AdsPopup(on_close_callback=lambda *a: _show(), tr=self.tr)
-                    popup.open()
-                except Exception:
-                    _show()
-            else:
-                _show()
+            _show()
         except Exception as exc:
             print(f"Erreur perform_card_draw: {exc}")
             if self.loading_popup:
@@ -440,7 +406,9 @@ class ResponseScreen(Screen):
             self.back_btn.text = label
         # Met à jour le bouton premium si besoin
         if hasattr(self, 'premium_btn'):
-            self.premium_btn.text = (self.tr("messages.chat_mme_t") or "Chat Mme T") + " (Achat in-app)"
+            # Rafraîchir le bouton Mme T sans mention d'achat
+            label = self.tr("messages.chat_mme_t") if hasattr(self, 'tr') else None
+            self.premium_btn.text = (label or "Chat Mme T")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -576,7 +544,20 @@ class ResponseScreen(Screen):
 
         # Signification avec scroll
         scroll = ScrollView(size_hint_y=1)
-        self.signification_label = Label(
+        # Utilise AutoScrollLabel si disponible (défini dans main.py)
+        try:
+            self.signification_label = Factory.AutoScrollLabel(
+                text=self.tr("messages.loading"),
+                font_size="20sp",
+                color=[1, 1, 1, 1],
+                halign='left',
+                valign='top',
+                size_hint_y=None,
+                padding=[dp(10), dp(5)],
+                font_name="Body"
+            )
+        except Exception:
+            self.signification_label = Label(
             text=self.tr("messages.loading"),
             font_size="20sp",
             color=[1, 1, 1, 1],
@@ -585,7 +566,7 @@ class ResponseScreen(Screen):
             size_hint_y=None,
             padding=[dp(10), dp(5)],
             font_name="Body"
-        )
+            )
         self.signification_label.bind(
             width=lambda inst, val: setattr(inst, 'text_size', (val * 0.92, None))
         )
@@ -625,7 +606,8 @@ class ResponseScreen(Screen):
                 radius=[20, 20, 20, 20]
             )
         self.premium_btn.opacity = 0.5
-        self.premium_btn.bind(on_press=self.purchase_chat_luna)
+        # Remplace l'IAP par le flux publicitaire Mme T
+        self.premium_btn.bind(on_press=self.open_mme_t_entry)
         self.premium_btn.bind(pos=self.update_premium_btn_canvas, size=self.update_premium_btn_canvas)
         bottom_container.add_widget(self.premium_btn)
 
@@ -700,12 +682,61 @@ class ResponseScreen(Screen):
         # debug overlay removed
 
     # ------------------------------------------------------------
+    # Gestion des achats in-app (bouton premium)
+    # ------------------------------------------------------------
+
+    def on_billing_state_change(self, *args):
+        """Callback appelé quand l'état Billing change (prêt / non prêt).
+
+        Met à jour l'UI (texte + opacité du bouton premium).
+        """
+        try:
+            app = App.get_running_app()
+            billing = getattr(app, 'billing', None)
+            if billing is None:
+                self.premium_status_label.text = "Store indisponible"
+                self.premium_btn.opacity = 0.5
+                return
+
+            if billing.is_ready():
+                price = billing.get_product_price()
+                self.premium_status_label.text = f"Disponible : {price}"
+                self.premium_btn.opacity = 1.0
+            else:
+                self.premium_status_label.text = self.tr("messages.store_preparing")
+                self.premium_btn.opacity = 0.5
+        except Exception as e:
+            Logger.warning(f"ResponseScreen.on_billing_state_change error: {e}")
+
+    def purchase_chat_luna(self, *_):
+        """Lance l'achat in-app via InAppPurchaseManager.
+
+        Utilise le produit par défaut "premium_features" configuré
+        dans billing.py.
+        """
+        try:
+            app = App.get_running_app()
+            # On passe par le bridge natif plutôt que directement par InAppPurchaseManager
+            try:
+                from native_billing import is_ready as native_billing_ready, purchase_premium
+            except Exception:
+                native_billing_ready = lambda: False
+                purchase_premium = lambda: None
+
+            if not native_billing_ready():
+                Logger.info("IAP: Billing natif non prêt")
+                return
+
+            purchase_premium()
+        except Exception as e:
+            Logger.warning(f"ResponseScreen.purchase_chat_luna error: {e}")
+
+    # ------------------------------------------------------------
     def on_kv_post(self, base_widget):
         # Widgets from KV are ready; schedule application of i18n/fonts
         Logger.info("ResponseScreen: on_kv_post")
         app = App.get_running_app()
         Clock.schedule_once(lambda dt: self._apply_all(app), 0)
-
     def on_pre_enter(self, *args):
         Logger.info("ResponseScreen: on_pre_enter")
         app = App.get_running_app()
@@ -733,6 +764,30 @@ class ResponseScreen(Screen):
             Logger.info("ResponseScreen: i18n + fonts applied")
         except Exception as e:
             Logger.exception(f"ResponseScreen: _apply_all fatal: {e}")
+
+    def on_enter(self, *args):
+        """Afficher la bannière AdMob en bas sur l'écran de résultat.
+
+        La bannière est gérée côté Java (AdManager) et ancrée en bas
+        de l'Activity; ici on ne fait qu'en demander l'affichage.
+        """
+        try:
+            app = App.get_running_app()
+            ads = getattr(app, 'ads', None)
+            if ads and hasattr(ads, 'show_banner'):
+                ads.show_banner()
+        except Exception:
+            pass
+
+    def on_leave(self, *args):
+        """Cacher la bannière lorsqu'on quitte l'écran de résultat."""
+        try:
+            app = App.get_running_app()
+            ads = getattr(app, 'ads', None)
+            if ads and hasattr(ads, 'hide_banner'):
+                ads.hide_banner()
+        except Exception:
+            pass
 
     def update_bg(self, instance, value):
         self.bg.pos = instance.pos
@@ -804,6 +859,11 @@ class ResponseScreen(Screen):
             self.start_typewriter(str(detail))
         else:
             self.signification_label.text = self.tr("messages.no_description")
+            try:
+                if hasattr(self.signification_label, 'start_auto_scroll'):
+                    Clock.schedule_once(lambda dt: self.signification_label.start_auto_scroll(reset=True), 0.1)
+            except Exception:
+                pass
 
         # Ajuste le wrapping après un petit délai pour que les layouts soient évalués
         try:
@@ -838,7 +898,24 @@ class ResponseScreen(Screen):
             self.card_state_label.text = self.tr("messages.upright")
         self.keywords_label.text = ""
         if hasattr(self, 'signification_label'):
-            self.signification_label.text = self.tr("messages.loading")
+            # Ne pas écraser le texte de signification si le typewriter est en cours
+            try:
+                loading_text = self.tr("messages.loading")
+            except Exception:
+                loading_text = "Chargement..."
+            cur_text = (getattr(self, 'signification_label').text or "").strip()
+            typewriter_active = bool(getattr(self, 'typewriter_event', None))
+            if not typewriter_active:
+                # On ne remplace que si le label est vide ou déjà en état de chargement
+                if not cur_text or cur_text == loading_text:
+                    self.signification_label.text = loading_text
+                    try:
+                        if hasattr(self.signification_label, 'stop_auto_scroll'):
+                            self.signification_label.stop_auto_scroll()
+                            if self.signification_label.parent:
+                                Clock.schedule_once(lambda dt: setattr(self.signification_label.parent, 'scroll_y', 1), 0)
+                    except Exception:
+                        pass
         if hasattr(self, 'back_btn'):
             self.back_btn.text = self.tr("messages.new_reading")
 
@@ -870,6 +947,12 @@ class ResponseScreen(Screen):
                 except Exception:
                     pass
                 self.typewriter_event = None
+            # Démarrer l'auto-scroll quand tout le texte est affiché
+            try:
+                if hasattr(self.signification_label, 'start_auto_scroll'):
+                    Clock.schedule_once(lambda dt: self.signification_label.start_auto_scroll(reset=True), 0.1)
+            except Exception:
+                pass
             return False
 
     def go_back(self, *_):
@@ -951,45 +1034,141 @@ class ResponseScreen(Screen):
             pass
 
     def update_premium_button(self, available, price_text, mode):
-        self.mode = mode  # Stocker le mode pour simulation
-        # Toujours afficher "Chat Mme T (Achat in-app)" en simulation/desktop, sans prix
-        if mode == "simulation":
-            button_text = (self.tr("messages.chat_mme_t") or "Chat Mme T") + " (Achat in-app)"
-            available = True  # Toujours activé en simulation
-        else:
-            button_text = (self.tr("messages.chat_mme_t") or "Chat Mme T") + (f" ({price_text})" if price_text else " (Achat in-app)")
-
+        # Refonte: bouton devient l'entrée gratuite vers Mme T (monétisation pubs)
         try:
-            self.premium_btn.text = button_text
-            self.premium_btn.disabled = not bool(available)
-            self.premium_btn.opacity = 1 if available else 0.5
+            label = self.tr("messages.chat_mme_t") if hasattr(self, 'tr') else None
+            text = (label or "Discuter avec Mme T")
+            self.premium_btn.text = text
+            self.premium_btn.disabled = False
+            self.premium_btn.opacity = 1.0
             if hasattr(self, 'premium_btn_color'):
-                active_color = (0.45, 0.25, 0.65, 1)
-                inactive_color = (0.25, 0.15, 0.35, 1)
-                self.premium_btn_color.rgba = active_color if available else inactive_color
-
-            if available:
-                if hasattr(self, 'premium_status_label'):
-                    self.premium_status_label.text = ""
-                    self.premium_status_label.opacity = 0
-                    self.premium_status_label.height = 0
-            else:
-                if hasattr(self, 'premium_status_label'):
-                    self.premium_status_label.opacity = 1
-                    self.premium_status_label.height = dp(20)
-                    # Choix du message en fonction de la plateforme et du mode
-                    on_android = hasattr(sys, 'getandroidapilevel')
-                    if mode == "disabled":
-                        # Sur Android: boutique en préparation; sur desktop: mobile uniquement
-                        if on_android:
-                            self.premium_status_label.text = self.tr("messages.store_preparing") if self.tr else "Preparing store"
-                        else:
-                            self.premium_status_label.text = self.tr("messages.store_mobile_only") if self.tr else "Mobile only"
-                    else:
-                        # Par défaut, indiquer préparation
-                        self.premium_status_label.text = self.tr("messages.store_preparing") if self.tr else "Preparing store"
+                self.premium_btn_color.rgba = (0.45, 0.25, 0.65, 1)
+            if hasattr(self, 'premium_status_label'):
+                self.premium_status_label.text = ""
+                self.premium_status_label.opacity = 0
+                self.premium_status_label.height = 0
         except Exception:
             pass
+
+    # ------------------------------------------------------------
+    # Flux Mme T basé pubs: popup d'information + interstitielle d'entrée
+    # ------------------------------------------------------------
+    def open_mme_t_entry(self, *_):
+        try:
+            self._open_mme_t_info_popup()
+        except Exception as e:
+            # En cas d'échec, ouvrir directement le chat
+            try:
+                self.open_mme_t_chat(provider="ads")
+            except Exception:
+                Logger.warning(f"open_mme_t_entry fallback error: {e}")
+
+    def _open_mme_t_info_popup(self):
+        from kivy.uix.popup import Popup  # type: ignore
+        # Build a themed, rounded popup (no native title bar) so it matches the app
+        title = "Mme T – Soutenir le projet"
+        # Corps localisé si disponible
+        body = None
+        try:
+            if hasattr(self, 'tr') and callable(self.tr):
+                body = self.tr("messages.mme_t_ads_info")
+        except Exception:
+            pass
+        if not body:
+            body = (
+                "Discutez avec Mme T et posez-lui toutes vos questions.\n"
+                "Pour garder cette application gratuite et sans abonnement,\n"
+                "une courte publicité sera affichée avant le chat, puis une publicité\n"
+                "plein écran toutes les 3 questions posées.\n\n"
+                "Merci de votre soutien 💜"
+            )
+        try:
+            # Localisation si possible
+            if hasattr(self, 'tr') and callable(self.tr):
+                title = "Mme T – " + (self.tr("messages.support_app") or "Soutenir le projet")
+        except Exception:
+            pass
+
+        # Root container with rounded background so popup looks integrated
+        layout = BoxLayout(orientation='vertical', spacing=dp(12), padding=[dp(18), dp(14), dp(18), dp(18)])
+        with layout.canvas.before:
+            Color(0.06, 0.03, 0.09, 0.98)
+            bg = RoundedRectangle(pos=layout.pos, size=layout.size, radius=[14, 14, 14, 14])
+        layout.bind(pos=lambda i, v: setattr(bg, 'pos', v), size=lambda i, v: setattr(bg, 'size', v))
+
+        # Custom title bar (integrated) to match theme
+        title_lbl = Label(text=title, size_hint_y=None, height=dp(36), bold=True, font_size='18sp')
+        title_lbl.color = (0.92, 0.78, 0.4, 1)
+        title_lbl.halign = 'center'
+        title_lbl.valign = 'middle'
+        title_lbl.bind(size=lambda i, v: setattr(i, 'text_size', (v[0]*0.95, None)))
+
+        # Thin divider under title
+        divider = Widget(size_hint_y=None, height=dp(1))
+        with divider.canvas:
+            Color(0.25, 0.12, 0.35, 1)
+            dr = RoundedRectangle(pos=divider.pos, size=divider.size, radius=[1, 1, 1, 1])
+        divider.bind(pos=lambda i, v: setattr(dr, 'pos', v), size=lambda i, v: setattr(dr, 'size', v))
+
+        # Body message
+        lbl = Label(text=body, halign='center', valign='middle', font_size='15sp')
+        lbl.bind(size=lambda i, v: setattr(i, 'text_size', (v[0]*0.95, None)))
+
+        # Buttons row
+        btns = BoxLayout(orientation='horizontal', size_hint_y=None, height=dp(48), spacing=dp(12))
+
+        # Cancel button (muted)
+        btn_cancel = Button(text=(self.tr("messages.cancel") if hasattr(self, 'tr') and callable(self.tr) else "Annuler"),
+                            background_normal='', background_color=[0, 0, 0, 0], color=[1,1,1,1])
+        with btn_cancel.canvas.before:
+            Color(0.18, 0.18, 0.2, 1)
+            cancel_bg = RoundedRectangle(pos=btn_cancel.pos, size=btn_cancel.size, radius=[10, 10, 10, 10])
+        btn_cancel.bind(pos=lambda i, v: setattr(cancel_bg, 'pos', v), size=lambda i, v: setattr(cancel_bg, 'size', v))
+
+        # Continue button (accent)
+        btn_ok = Button(text=(self.tr("messages.continue") if hasattr(self, 'tr') and callable(self.tr) else "Continuer"),
+                        background_normal='', background_color=[0, 0, 0, 0], color=[1,1,1,1])
+        with btn_ok.canvas.before:
+            Color(0.40, 0.15, 0.55, 1)
+            ok_bg = RoundedRectangle(pos=btn_ok.pos, size=btn_ok.size, radius=[10, 10, 10, 10])
+        btn_ok.bind(pos=lambda i, v: setattr(ok_bg, 'pos', v), size=lambda i, v: setattr(ok_bg, 'size', v))
+
+        # Assemble
+        layout.add_widget(title_lbl)
+        layout.add_widget(divider)
+        layout.add_widget(lbl)
+        btns.add_widget(btn_cancel)
+        btns.add_widget(btn_ok)
+        layout.add_widget(btns)
+
+        popup = Popup(title='', content=layout, size_hint=(0.92, None), height=dp(300), auto_dismiss=False)
+        btn_cancel.bind(on_release=lambda *_: popup.dismiss())
+        btn_ok.bind(on_release=lambda *_: (popup.dismiss(), self._start_mme_t_with_ad()))
+        popup.open()
+
+    def _start_mme_t_with_ad(self):
+        try:
+            app = App.get_running_app()
+            ads = getattr(app, 'ads', None)
+        except Exception:
+            ads = None
+
+        def _open_chat():
+            try:
+                # schedule on the main loop to avoid race with activity focus changes
+                Clock.schedule_once(lambda dt: self.open_mme_t_chat(provider="ads"), 0.06)
+            except Exception:
+                pass
+
+        if ads and hasattr(ads, 'show_interstitial'):
+            # Ne pas bloquer la navigation: on ouvre derrière
+            try:
+                ads.show_interstitial(callback=_open_chat)
+            except Exception:
+                # ensure consistent scheduling even if show_interstitial fails
+                Clock.schedule_once(lambda dt: self.open_mme_t_chat(provider="ads"), 0.06)
+        else:
+            _open_chat()
 
     def show_purchase_success(self, provider="google", price_text=None):
         # Si pas de backend Mme T configuré, afficher un message remerciant le soutien
@@ -1072,6 +1251,15 @@ class ResponseScreen(Screen):
     def _on_chat_complete(self):
         if not self.manager:
             return
+        # Afficher une interstitielle quand on quitte Mme T
+        try:
+            app = App.get_running_app()
+            ads = getattr(app, 'ads', None)
+            if ads and hasattr(ads, 'show_interstitial'):
+                ads.show_interstitial()
+        except Exception:
+            pass
+
         def _switch(_dt):
             try:
                 self.manager.current = "card_screen"
@@ -1259,11 +1447,15 @@ class AboutScreen(Screen):
                 print(f"Erreur nouveau tirage depuis À propos: {e}")
 
         def _open_support(*_):
+            """Tente d'afficher une interstitielle native (AdMob)."""
             try:
-                popup = AdsPopup(on_close_callback=_start_new_reading, tr=self.tr)
-                popup.open()
+                app = App.get_running_app()
+                if hasattr(app, 'ads') and hasattr(app.ads, 'show_interstitial'):
+                    app.ads.show_interstitial(callback=_start_new_reading)
+                    return
             except Exception as e:
-                print(f"Erreur ouverture AdsPopup: {e}")
+                print(f"⚠️ Interstitiel indisponible: {e}")
+            _start_new_reading()
         support_btn.bind(on_press=_open_support)
         bottom.add_widget(support_btn)
 
@@ -1287,4 +1479,9 @@ class AboutScreen(Screen):
         bottom.add_widget(new_btn)
 
         root.add_widget(bottom)
+        # Espace ajouté sous la barre de boutons pour la remonter d'environ
+        # la hauteur du conteneur (augmenté pour éviter le recouvrement par la bannière)
+        # Espace sous la barre de boutons pour remonter le bouton About au-dessus de la pub
+        # Espace sous la barre de boutons pour remonter le bouton About au-dessus de la pub (valeur augmentée)
+        root.add_widget(Widget(size_hint_y=None, height=dp(100)))
         self.add_widget(root)

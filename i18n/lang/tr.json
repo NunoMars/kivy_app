@@ -58,9 +58,20 @@
     "thanks_title": "Teşekkürler!",
     "touch_to_enlarge": "🔍 Büyütmek için dokunun",
     "upright": "⬆ DÜZ ⬆",
-    "your_card": "Kartınız",
-    "about": "Hakkında"
+      "your_card": "Kartınız",
+      "about": "Hakkında",
+      "ads_consent_title": "Reklam tercihiniz",
+      "ads_consent_body": "İzin vereceğiniz reklam türünü seçin:\n\n• Kişiselleştirilmiş reklamlar: Reklam kimliğinizi kullanarak daha alakalı içerik gösterir. Biraz daha fazla gelir sağlar ve uygulamanın ücretsiz kalmasına yardımcı olur.\n\n• Genel reklamlar: Kişiselleştirme yok (daha az alakalı), gelir biraz daha düşük.\n\nBu tercihi daha sonra ayarlardan değiştirebilirsiniz. Desteğiniz için teşekkürler ✨",
+        "ads_personalized_button": "✅ Kişiselleştirilmiş reklamlar (önerilir – uygulamayı destekler)",
+        "ads_generic_button": "🛡️ Genel reklamlar (kişiselleştirme yok)",
+        "cancel": "İptal",
+        "continue": "Devam et",
+        "mme_t_ads_info": "Mme T ile sohbet edin ve sorularınızı sorun.\nBu uygulamanın ücretsiz ve aboneliksiz kalması için,\nsohbetten önce kısa bir reklam ve ardından her 3 sorunuzdan sonra\ntam ekran bir reklam gösterilecektir.\n\nDesteğiniz için teşekkürler 💜"
   },
+  "ads_consent_title": "Reklam tercihlerin",
+  "ads_consent_body": "Hangi reklam türünü kabul edeceğini seç:\n\n• Kişiselleştirilmiş reklamlar: reklam kimliğini kullanarak daha ilgili içerik gösterir. Biraz daha fazla gelir sağlar ve uygulamanın ücretsiz kalmasına yardım eder.\n\n• Genel reklamlar: kişiselleştirme yok (daha az ilgili), gelir biraz azalır.\n\nBunu daha sonra ayarlardan değiştirebilirsin. Desteğin için teşekkürler ✨",
+  "ads_personalized_button": "✅ Kişiselleştirilmiş reklamlar (önerilir – uygulamayı destekler)",
+  "ads_generic_button": "🛡️ Genel reklamlar (kişiselleştirme yok)",
   "about": {
     "title": "Uygulama Hakkında",
     "disclaimer": "Bu uygulama yalnızca eğlence amaçlıdır. Açılımlar rastgeledir ve profesyonel tavsiye ya da yüz yüze danışmanlığın yerine geçmez. Önemli kararlar için yetkin bir uzmana danışın.\n\nYolunuz, yaptığınız seçimlerle şekillenir. Kartlar bakış açıları sunar, ancak hayatınızın yazarı yine sizsiniz. Sezginize güvenin, adım adım ilerleyin ve kendinize iyi bakın."

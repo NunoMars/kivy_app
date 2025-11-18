@@ -59,7 +59,14 @@
     "touch_to_enlarge": "🔍 Touch to enlarge",
     "upright": "⬆ UPRIGHT ⬆",
     "your_card": "Your card",
-    "about": "About"
+    "about": "About",
+    "ads_consent_title": "Your ad preferences",
+    "ads_consent_body": "Choose which type of ads you allow:\n\n• Personalized ads: use your advertising ID to show more relevant ads. They usually earn a little more and help keep the app free.\n\n• Generic ads: no personalization (less relevant), slightly lower revenue.\n\nYou can change this later in settings. Thank you for supporting the app ✨",
+    "ads_personalized_button": "✅ Personalized ads (recommended – supports the app)",
+    "ads_generic_button": "🛡️ Generic ads (no personalization)",
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "mme_t_ads_info": "Chat with Mme T and ask any question.\nTo keep this app free and without subscriptions,\na short ad will be shown before the chat, then a full-screen ad\nafter every 3 questions you ask.\n\nThank you for your support 💜"
   },
   "about": {
     "title": "About",

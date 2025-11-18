@@ -58,8 +58,15 @@
     "thanks_title": "谢谢！",
     "touch_to_enlarge": "🔍 点击放大",
     "upright": "⬆ 正位 ⬆",
-    "your_card": "您的牌",
-    "about": "关于"
+  "your_card": "您的牌",
+  "about": "关于",
+    "ads_consent_title": "您的广告偏好",
+    "ads_consent_body": "请选择允许的广告类型:\n\n• 个性化广告：使用您的广告ID显示更相关的内容。通常收益稍高，有助于保持应用免费。\n\n• 通用广告：不做个性化（相关性较低），收益略低。\n\n以后可以在设置中更改。感谢您的支持 ✨",
+    "ads_personalized_button": "✅ 个性化广告（推荐 – 支持应用）",
+    "ads_generic_button": "🛡️ 通用广告（无个性化）",
+    "cancel": "取消",
+    "continue": "继续",
+    "mme_t_ads_info": "与 Mme T 聊天并提出您的问题。\n为保持本应用免费且无需订阅，\n在聊天前会显示一条短广告，之后每提出 3 个问题\n会显示一次全屏广告。\n\n感谢您的支持 💜"
   },
   "about": {
     "title": "关于",

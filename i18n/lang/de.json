@@ -59,7 +59,14 @@
     "touch_to_enlarge": "🔍 Zum Vergrößern tippen",
     "upright": "⬆ AUFRECHT ⬆",
     "your_card": "Deine Karte",
-    "about": "Über"
+    "about": "Über",
+    "ads_consent_title": "Deine Anzeigen-Einstellungen",
+    "ads_consent_body": "Wähle welche Art von Werbung du zulässt:\n\n• Personalisierte Werbung: nutzt deine Advertising-ID für relevantere Anzeigen. Erzielt etwas mehr Einnahmen und hilft die App kostenlos zu halten.\n\n• Generische Werbung: keine Personalisierung (weniger relevant), leicht geringere Einnahmen.\n\nDu kannst dies später in den Einstellungen ändern. Danke für deine Unterstützung ✨",
+    "ads_personalized_button": "✅ Personalisierte Werbung (empfohlen – unterstützt die App)",
+    "ads_generic_button": "🛡️ Generische Werbung (ohne Personalisierung)",
+    "cancel": "Abbrechen",
+    "continue": "Fortsetzen",
+    "mme_t_ads_info": "Chatte mit Mme T und stelle deine Fragen.\nUm diese App kostenlos und ohne Abonnement zu halten,\nwird vor dem Chat eine kurze Werbung angezeigt und anschließend\nnach jeweils 3 Fragen eine Vollbild-Anzeige eingeblendet.\n\nDanke für deine Unterstützung 💜"
   },
   "about": {
     "title": "Über diese App",

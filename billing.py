@@ -19,6 +19,7 @@ ATTENTES CÔTÉ APP:
 """
 
 from __future__ import annotations
+import os
 
 # ──────────────────────────────────────────────────────────────────────────────
 # JNI / Android (pyjnius) — optional with robust fallback
@@ -432,6 +433,15 @@ class InAppPurchaseManager:
         # Reconnexion Billing
         self._reconnect_attempts = 0
         self._max_reconnect_attempts = 5
+
+        # Permettre un override simple via variable d'environnement (diagnostic)
+        try:
+            override_pid = os.environ.get("IAP_PRODUCT_ID")
+            if override_pid and isinstance(override_pid, str) and override_pid.strip():
+                InAppPurchaseManager.GOOGLE_INAPP_PRODUCT_ID = override_pid.strip()
+                print(f"🔧 IAP override: GOOGLE_INAPP_PRODUCT_ID='{InAppPurchaseManager.GOOGLE_INAPP_PRODUCT_ID}'")
+        except Exception:
+            pass
 
         # Lance l'initialisation des services Billing (Google / Amazon)
         self._init_billing_services()

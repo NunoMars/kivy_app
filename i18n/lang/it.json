@@ -59,7 +59,14 @@
     "touch_to_enlarge": "🔍 Tocca per ingrandire",
     "upright": "⬆ DRITTA ⬆",
     "your_card": "La tua carta",
-    "about": "Informazioni"
+    "about": "Informazioni",
+    "ads_consent_title": "Le tue preferenze sugli annunci",
+    "ads_consent_body": "Scegli che tipo di annunci accetti:\n\n• Annunci personalizzati: usano il tuo ID pubblicitario per mostrarti inserzioni più pertinenti. Generano un po' più entrate e aiutano a mantenere l'app gratuita.\n\n• Annunci generici: nessuna personalizzazione (meno pertinenti), entrate leggermente ridotte.\n\nPuoi cambiare scelta più tardi nelle impostazioni. Grazie per il tuo sostegno ✨",
+    "ads_personalized_button": "✅ Annunci personalizzati (consigliato – sostiene l'app)",
+    "ads_generic_button": "🛡️ Annunci generici (senza personalizzazione)",
+    "cancel": "Annulla",
+    "continue": "Continua",
+    "mme_t_ads_info": "Chatta con Mme T e fai le tue domande.\nPer mantenere l’app gratuita e senza abbonamenti,\nverrà mostrata una breve pubblicità prima della chat e poi una\npubblicità a schermo intero ogni 3 domande che farai.\n\nGrazie per il tuo supporto 💜"
   },
   "about": {
     "title": "Informazioni",

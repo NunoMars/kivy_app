@@ -59,7 +59,14 @@
     "thanks_for_support_via": "Obrigada pelo apoio via {provider}!",
     "configure_backend_hint": "Configure MME_T_BACKEND_URL para ativar a consulta da Mme T.",
     "purchase_error_title": "Compra não realizada",
-    "thanks_title": "Obrigada!"
+    "thanks_title": "Obrigada!",
+    "ads_consent_title": "Suas preferências de anúncios",
+    "ads_consent_body": "Escolha o tipo de anúncios que aceita:\n\n• Anúncios personalizados: usam seu ID de publicidade para mostrar conteúdos mais relevantes. Geram um pouco mais de receita e ajudam a manter o app gratuito.\n\n• Anúncios genéricos: sem personalização (menos relevantes), receita ligeiramente menor.\n\nVocê pode mudar depois nas configurações. Obrigada pelo apoio ✨",
+    "ads_personalized_button": "✅ Anúncios personalizados (recomendado – apoia o app)",
+    "ads_generic_button": "🛡️ Anúncios genéricos (sem personalização)",
+    "cancel": "Cancelar",
+    "continue": "Continuar",
+    "mme_t_ads_info": "Converse com a Mme T e faça suas perguntas.\nPara manter o app gratuito e sem assinatura,\nserá exibido um anúncio curto antes do chat, e depois um anúncio\nem ecrã inteiro a cada 3 perguntas que você fizer.\n\nObrigado pelo seu apoio 💜"
   },
   "about": {
     "title": "Sobre",

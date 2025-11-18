@@ -54,7 +54,14 @@
       "✨ Les énergies s'alignent...",
       "🌙 Consultation des astres...",
       "💫 Interprétation des arcanes..."
-    ]
+    ],
+    "ads_consent_title": "Votre choix publicitaire",
+    "ads_consent_body": "Choisissez le type de publicités que vous acceptez:\n\n• Pubs personnalisées : utilisent votre identifiant publicitaire pour des annonces plus pertinentes. Elles génèrent un peu plus de revenus et aident à garder l'application gratuite.\n\n• Pubs génériques : aucune personnalisation (moins pertinentes), revenus légèrement réduits.\n\nVous pouvez changer d'avis plus tard dans les paramètres. Merci pour votre soutien ✨",
+    "ads_personalized_button": "✅ Pubs personnalisées (recommandé – soutient l'app)",
+    "ads_generic_button": "🛡️ Pubs génériques",
+    "cancel": "Annuler",
+    "continue": "Continuer",
+    "mme_t_ads_info": "Discutez avec Mme T et posez-lui toutes vos questions.\nPour garder cette application gratuite et sans abonnement,\nune courte publicité sera affichée avant le chat, puis une publicité\nplein écran toutes les 3 questions posées.\n\nMerci de votre soutien 💜"
   },
   "about": {
     "title": "À propos",
@@ -156,7 +163,7 @@
       "reversed": "faiblesse, manque de contrôle, violence, brutalité, lâcheté",
       "signification upright": "La Force représente la maîtrise de ses instincts par la douceur plutôt que par la violence. Cette carte évoque la force intérieure, le courage moral et la capacité à surmonter les obstacles par la persuasion et la patience. Elle symbolise l'intelligence émotionnelle, la compassion ferme et la victoire de l'esprit sur la matière. C'est dominer ses pulsions destructrices par l'amour et la sagesse.",
       "signification reversed": "La Force inversée indique un manque de maîtrise de soi, l'usage de la violence là où la douceur serait plus efficace, ou inversement, une faiblesse excessive face aux défis. Cette position peut révéler la lâcheté, l'incapacité à se défendre ou l'usage abusif de son pouvoir sur autrui.",
-      "image": "tarot_img/MajorArcanaCards/La Force.gif",
+      "image": "tarot_img/MajorArcanaCards/La Force.jpg",
       "image_reversed": "tarot_img/MajorArcanaCards/La Force a l'envers.jpg",
       "name": "La Force"
     },

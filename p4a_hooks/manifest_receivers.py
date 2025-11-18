@@ -1,4 +1,6 @@
 from pathlib import Path
+import os
+import re
 
 def _find_manifest_path(toolchain):
   # Most reliable: when hook runs inside dist dir (cwd = .../dists/<name>)
@@ -65,5 +67,92 @@ def before_apk_assemble(toolchain):
   # Ensure receivers are present right before Gradle assemble
   try:
     before_apk_build(toolchain)
+  except Exception:
+    pass
+
+
+def _patch_file_append_once(path: Path, lines_to_append: str, marker_regex: str) -> bool:
+  try:
+    if not path.exists():
+      return False
+    txt = path.read_text(encoding='utf-8', errors='ignore')
+    if re.search(marker_regex, txt):
+      return False
+    with path.open('a', encoding='utf-8') as f:
+      f.write("\n# INJECTED_P4A_FLAGS: NDK flags injected by hook (idempotent)\n")
+      f.write(lines_to_append)
+      if not lines_to_append.endswith("\n"):
+        f.write("\n")
+    return True
+  except Exception:
+    return False
+
+
+def before_build(toolchain):
+  """
+  Inject extra C/C++ flags for NDK modules (SDL2_ttf/harfbuzz) to avoid
+  -Wcast-function-type-strict being treated as an error with NDK r26b.
+
+  We patch the Application.mk of the SDL2 bootstrap so flags apply to all
+  ndk-build modules, including harfbuzz. Idempotent and safe if files
+  are regenerated between builds.
+  """
+  # Try to resolve absolute bootstrap paths using p4a storage_dir, which is
+  # reliable across p4a versions. Fall back to cwd rglob if unavailable.
+  candidates = []
+  storage_dir = None
+  try:
+    storage_dir = getattr(toolchain, 'storage_dir', None) or getattr(toolchain.args, 'storage_dir', None)
+  except Exception:
+    storage_dir = None
+  if storage_dir:
+    storage_dir = Path(storage_dir)
+    candidates.append(storage_dir / 'build' / 'bootstrap_builds' / 'sdl2' / 'jni' / 'Application.mk')
+  # CWD fallback scanning (slower, less reliable but keeps backward compat)
+  try:
+    candidates.extend(Path('.').rglob('bootstrap_builds/sdl2/jni/Application.mk'))
+  except Exception:
+    pass
+
+  flags_line = (
+    'APP_CPPFLAGS += -Wno-cast-function-type-strict -Wno-error=cast-function-type-strict\n'
+    'APP_CFLAGS += -Wno-cast-function-type-strict -Wno-error=cast-function-type-strict\n'
+    'APP_LDFLAGS += -Wl,-z,max-page-size=16384 -Wl,-z,common-page-size=4096 -Wl,--page-size=16384\n'
+  )
+  # Accept earlier injections too (backwards compatibility)
+  marker = r"(cast-function-type-strict|INJECTED_P4A_FLAGS|max-page-size=16384|--page-size=16384)"
+
+  for app_mk in candidates:
+    _patch_file_append_once(app_mk, flags_line, marker)
+
+  # Additionally, set env LDFLAGS so non-ndk-build recipes (e.g. python, openssl)
+  # also link with 16KB max page size. Keep additive and idempotent.
+  try:
+    existing = os.environ.get('LDFLAGS', '')
+    add_flags = ['-Wl,-z,max-page-size=16384', '-Wl,-z,common-page-size=4096', '-Wl,--page-size=16384']
+    for f in add_flags:
+      if f not in existing:
+        existing = (existing + ' ' + f).strip()
+    os.environ['LDFLAGS'] = existing
+  except Exception:
+    pass
+
+  # As a fallback, try patching module-specific Android.mk for SDL2_ttf
+  try:
+    mk_candidates = []
+    if storage_dir:
+      mk_candidates.append(storage_dir / 'build' / 'bootstrap_builds' / 'sdl2' / 'jni' / 'SDL2_ttf' / 'Android.mk')
+      mk_candidates.append(storage_dir / 'build' / 'bootstrap_builds' / 'sdl2' / 'jni' / 'Android.mk')
+    # Also try generic rglob fallbacks
+    mk_candidates += list(Path('.').rglob('bootstrap_builds/sdl2/jni/SDL2_ttf/Android.mk'))
+    # Also try the main module Android.mk if present
+    for mk in mk_candidates:
+      _patch_file_append_once(
+        mk,
+        'LOCAL_CPPFLAGS += -Wno-cast-function-type-strict -Wno-error=cast-function-type-strict\n'
+        'LOCAL_CFLAGS += -Wno-cast-function-type-strict -Wno-error=cast-function-type-strict\n'
+        'LOCAL_LDFLAGS += -Wl,-z,max-page-size=16384 -Wl,-z,common-page-size=4096 -Wl,--page-size=16384\n',
+        marker,
+      )
   except Exception:
     pass

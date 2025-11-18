@@ -1,13 +1,13 @@
 [app]
 # ───────────────────────────────
-# 🔮 Informations générales
+# 🔮 Infos générales
 title = Ma Carte De Tarot
 package.name = macartedetarot
 package.domain = org.tarot
 source.dir = .
 
-version = 2.5
-android.numeric_version = 2500000
+version = 2.26
+android.numeric_version = 2926000
 author = © Nuno Marcelino
 
 # ───────────────────────────────
@@ -20,7 +20,8 @@ android.add_assets = i18n/lang:i18n/lang,tarot_img:tarot_img,fonts:fonts
 
 # ───────────────────────────────
 # 🐍 Dépendances Python
-requirements = python3==3.11.5, kivy==2.3.1, filetype==1.2.0, requests==2.32.3, certifi, pyjnius, plyer, kivmob
+# Python 3.11.x = combo stable avec Kivy 2.3.1
+requirements = python3==3.11.5, kivy==2.3.1, filetype==1.2.0, requests==2.32.3, certifi, pyjnius, plyer
 
 # ───────────────────────────────
 # 🖼️ UI
@@ -33,13 +34,26 @@ fullscreen = 0
 # 📱 Android SDK / Build
 android.api = 35
 android.minapi = 21
+android.ndk = 25c
 android.ndk_api = 21
 android.accept_sdk_license = True
 android.enable_androidx = True
 android.allow_backup = True
 android.copy_libs = 1
-p4a.branch = develop
-# NOTE: testé OK Python 3.11 + API 35 (branch develop conservée pour cette release)
+
+# 👉 IMPORTANT : une seule arch pour simplifier
+android.archs = arm64-v8a
+
+# p4a
+p4a.branch = master
+
+# Fix Google Play 16KB page-size + harfbuzz strict cast
+# Flags injectés via le hook NDK (voir p4a_hooks/manifest_receivers.py)
+# p4a.extra_args laissé vide pour éviter erreurs d'arguments p4a
+p4a.extra_args =
+
+# (NE PAS mettre android.extra_cflags ici, ça ne sert à rien dans ton cas)
+# android.extra_cflags = ...
 
 # ───────────────────────────────
 # 🪄 Logs
@@ -61,14 +75,13 @@ android.add_gradle_repositories =
     maven { url 'https://android-sdk.is.com/' }
     maven { url 'https://artifacts.applovin.com/android' }
 
-# Dépendances (Ads + Billing + Médiation) — format: liste séparée par des virgules
+# Dépendances (Ads + Billing + Médiation)
 android.gradle_dependencies = com.google.android.gms:play-services-ads:23.6.0, com.android.billingclient:billing-ktx:8.0.0, com.google.android.ump:user-messaging-platform:2.2.0
 
 # ───────────────────────────────
 # 🧱 Formats de build
 android.release_artifact = aab
 android.debug_artifact = aab
-android.archs = arm64-v8a, armeabi-v7a
 
 # ───────────────────────────────
 # ⚙️ Packaging
@@ -77,8 +90,7 @@ android.extra_args = --release
 android.exclude_patterns = *.bak,*.tmp,*.log,__pycache__/,*.spec
 
 # ───────────────────────────────
-# 🔏 Signature
-# WARNING: garder des mdp keystore en clair est dangereux. L’owner l’assume pour cette release.
+# 🔏 Signature (⚠ tu assumes les mdp en clair)
 android.release_keystore = googleplay.keystore
 android.release_keystore_password = nunotheboss
 android.release_keyalias = upload
@@ -86,39 +98,8 @@ android.release_keyalias_password = nunotheboss
 
 # ───────────────────────────────
 # 🧩 ProGuard / R8 - Optimisation + Symboles de débogage
-# NOTE: Les règles ProGuard sont dans proguard-rules.pro
-# Les symboles natifs et mapping.txt seront générés automatiquement
-# et disponibles dans .buildozer/android/platform/build.../build/outputs/
-
-android.add_proguard_rules = """
- # Conserver les classes AdMob/Play Services
- -keep class com.google.android.gms.** { *; }
- -keep class com.google.ads.** { *; }
- -dontwarn com.google.android.gms.**
- 
- # Conserver les classes Billing
- -keep class com.android.billingclient.** { *; }
- -dontwarn com.android.billingclient.**
- 
- # Conserver les classes de médiation
- -keep class com.applovin.** { *; }
- -keep class com.ironsource.** { *; }
- -dontwarn com.applovin.**
- -dontwarn com.ironsource.**
- 
- # UMP (consentement) – conserver toutes les classes pour éviter obfuscation problématique
- -keep class com.google.android.ump.** { *; }
- -dontwarn com.google.android.ump.**
- 
- # Conserver les noms de fichiers sources pour stack traces lisibles
- -keepattributes SourceFile,LineNumberTable
- 
- # Optimisations R8
- -optimizationpasses 5
- -dontusemixedcaseclassnames
- -dontskipnonpubliclibraryclasses
- -verbose
- """
+# (External rules file to avoid parser issues)
+android.add_proguard_rules = proguard-rules.pro
 
 # ───────────────────────────────
 # Manifest XML — receivers (injectés dans <application>)
@@ -132,7 +113,7 @@ android.add_manifest_xml = """
     </receiver>
 """
 
-# Inclure sources Java custom (éviter doublons)
+# Inclure sources Java custom
 android.add_src = java_src
 android.add_resources = res
 p4a.hook = p4a_hooks/manifest_receivers.py
