@@ -6,8 +6,8 @@ package.name = macartedetarot
 package.domain = org.tarot
 source.dir = .
 
-version = 2.31
-android.numeric_version = 2931000
+version = 2.32
+android.numeric_version = 2932000
 author = © Nuno Marcelino
 
 # ───────────────────────────────
@@ -32,7 +32,7 @@ fullscreen = 0
 
 # ───────────────────────────────
 # 📱 Android SDK / Build
-android.api = 35
+android.api = 34
 android.minapi = 21
 android.ndk = 25c
 android.ndk_api = 21
@@ -75,8 +75,8 @@ android.add_gradle_repositories =
     maven { url 'https://android-sdk.is.com/' }
     maven { url 'https://artifacts.applovin.com/android' }
 
-# Dépendances (Ads + Billing + Médiation)
-android.gradle_dependencies = com.google.android.gms:play-services-ads:23.6.0, com.android.billingclient:billing-ktx:8.0.0, com.google.android.ump:user-messaging-platform:2.2.0
+# Dépendances (Ads + Billing + Médiation) - Versions stables pour NDK 25c
+android.gradle_dependencies = com.google.android.gms:play-services-ads:23.0.0, com.android.billingclient:billing-ktx:6.2.1, com.google.android.ump:user-messaging-platform:2.2.0
 
 # ───────────────────────────────
 # 🧱 Formats de build
