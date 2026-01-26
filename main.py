@@ -143,6 +143,7 @@ from screens import (
     CardScreen,
     ResponseScreen,
     AboutScreen,
+    IntentionScreen,
 )
 from ads_manager import load_config, AdsManager, maybe_fetch_remote_config
 try:
@@ -152,7 +153,7 @@ except Exception:
         return
 
 
-DEFAULT_MME_T_SPACE = "https://huggingface.co/spaces/Loupy222/mme_t"
+DEFAULT_MME_T_SPACE = "http://ec2-15-188-119-128.eu-west-3.compute.amazonaws.com/predict"
 
 
 def debug_check_i18n():
@@ -174,17 +175,10 @@ def _normalize_mme_t_backend_url(raw_url: str) -> str:
     url = (raw_url or "").strip()
     if not url:
         return ""
-    url = url.rstrip("/")
-    if "huggingface.co/spaces/" in url:
-        suffix = url.split("huggingface.co/spaces/")[-1].strip("/")
-        if suffix:
-            parts = suffix.split("/")
-            if len(parts) >= 2:
-                owner, space = parts[:2]
-                owner_slug = re.sub(r"[^a-z0-9-]", "-", owner.lower()).strip("-") or owner.lower()
-                space_slug = re.sub(r"[^a-z0-9-]", "-", space.lower()).strip("-") or space.lower()
-                return f"https://{owner_slug}-{space_slug}.hf.space"
-    return url
+    # Simple normalization: ensure scheme and strip trailing slash
+    if not url.startswith(("http://", "https://")):
+        url = "https://" + url
+    return url.rstrip("/")
 
 
 MME_T_BACKEND_URL = _normalize_mme_t_backend_url(os.environ.get("MME_T_BACKEND_URL", DEFAULT_MME_T_SPACE))
@@ -236,6 +230,16 @@ class TarotApp(App):
         self.tr = self._tr
         self.get_cards_signification = self._get_cards_signification
         self.enable_premium = False
+        
+        # Initialise le gestionnaire de rituel quotidien
+        try:
+            from daily_ritual import DailyRitualManager
+            self.ritual_manager = DailyRitualManager(self.user_data_dir)
+            self.ritual_manager.reset_today_if_needed()
+            print(f"✅ DailyRitualManager initialisé (streak: {self.ritual_manager.get_streak()})")
+        except Exception as e:
+            print(f"⚠️ Erreur init DailyRitualManager: {e}")
+            self.ritual_manager = None
 
         try:
             self.cfg = load_config()
@@ -385,9 +389,11 @@ class TarotApp(App):
         try:
             root_screen = RootScreen()
             card_screen = CardScreen(name="card_screen")
+            intention_screen = IntentionScreen(name="intention_screen")
             response_screen = ResponseScreen(name="response_screen")
             about_screen = AboutScreen(name="about_screen")
             root_screen.add_widget(card_screen)
+            root_screen.add_widget(intention_screen)
             root_screen.add_widget(response_screen)
             root_screen.add_widget(about_screen)
             self.response_screen = response_screen
@@ -536,16 +542,40 @@ class TarotApp(App):
         Clock.schedule_once(_fire, delay)
 
     def _maybe_notify_draw_reminder(self):
+        """
+        Envoie une notification douce si le tirage n'a pas été fait aujourd'hui.
+        Vérifie également si une notification a déjà été envoyée aujourd'hui.
+        """
         try:
-            today = self._today_str()
-            if self._last_draw_date == today:
-                return
+            ritual_mgr = getattr(self, 'ritual_manager', None)
+            if not ritual_mgr:
+                # Fallback vers l'ancien système
+                today = self._today_str()
+                if self._last_draw_date == today:
+                    return
+            else:
+                # Nouveau système : vérifie via le ritual manager
+                if ritual_mgr.is_draw_completed_today():
+                    return
+                
+                # Vérifie qu'on n'a pas déjà notifié aujourd'hui
+                last_notif = ritual_mgr.data.get("last_notification_date")
+                if last_notif == self._today_str():
+                    return
+            
+            # Messages doux et introspectifs
             title = self.tr("messages.app_title") if callable(getattr(self, 'tr', None)) else "Ma Carte de Tarot"
-            body = self.tr("messages.daily_reminder") if callable(getattr(self, 'tr', None)) else "Votre carte du jour vous attend ✨"
+            body = self.tr("messages.daily_reminder") if callable(getattr(self, 'tr', None)) else "Une carte vous attend aujourd'hui ✨"
+            
             if plyer_notification:
                 try:
                     plyer_notification.notify(title=title, message=body, app_name="Tarot", timeout=10)
                     print("🔔 Notification tirage envoyée")
+                    
+                    # Enregistre qu'on a notifié aujourd'hui
+                    if ritual_mgr:
+                        ritual_mgr.data["last_notification_date"] = self._today_str()
+                        ritual_mgr._save_data()
                 except Exception as e:
                     print(f"⚠️ Notification failed: {e}")
         except Exception as e:

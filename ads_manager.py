@@ -226,6 +226,61 @@ class AdsManager:
         _show()
 
     # -----------------------------
+    # REWARDED VIDEO
+    # -----------------------------
+    def show_rewarded_video(self, on_reward=None, on_dismiss=None):
+        """
+        Affiche une vidéo rewarded (récompensée).
+        
+        Args:
+            on_reward: Callback appelé si l'utilisateur regarde la vidéo complètement
+            on_dismiss: Callback appelé si la pub est fermée sans récompense
+        """
+        if not self.enabled or platform != "android" or not PYJNIUS_AVAILABLE:
+            Logger.info("AdsManager: rewarded video non disponible (mode dev) → simulation récompense")
+            # En mode dev, on simule que la pub a été vue avec succès
+            if on_reward:
+                try:
+                    Clock.schedule_once(lambda dt: on_reward(), 0.5)
+                except Exception as e:
+                    Logger.error(f"AdsManager: callback rewarded (dev mode) failed: {e}")
+            return
+
+        activity = _get_activity()
+        if activity is None:
+            Logger.warning("AdsManager: rewarded video impossible (no activity)")
+            if on_dismiss:
+                try:
+                    on_dismiss()
+                except Exception as e:
+                    Logger.error(f"AdsManager: callback rewarded dismiss (no-activity) failed: {e}")
+            return
+
+        @run_on_ui_thread
+        def _show():
+            try:
+                # Vérifier si le rewarded est prêt
+                if self._AdManager.isRewardedReady():
+                    Logger.info("AdsManager: rewarded video READY → show")
+                    self._AdManager.showRewarded(activity)
+                    # On simule la récompense après un délai (en prod, utiliser un listener Java)
+                    if on_reward:
+                        Clock.schedule_once(lambda dt: on_reward(), 2.0)
+                else:
+                    Logger.info("AdsManager: rewarded video NOT READY")
+                    if on_dismiss:
+                        Clock.schedule_once(lambda dt: on_dismiss(), 0.1)
+            except Exception as e:
+                Logger.error(f"AdsManager: show_rewarded_video failed: {e}")
+                if on_dismiss:
+                    try:
+                        on_dismiss()
+                    except Exception:
+                        pass
+
+        _show()
+
+    # -----------------------------
     # Compteur pour les tirages
     # -----------------------------
     def on_card_drawn(self):

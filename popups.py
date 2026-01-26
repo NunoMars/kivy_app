@@ -24,6 +24,11 @@ from kivy.uix.button import Button  # type: ignore
 from kivy.uix.floatlayout import FloatLayout  # type: ignore
 from kivy.uix.image import Image  # type: ignore
 from kivy.uix.label import Label  # type: ignore
+import time
+
+# Backend slow threshold in seconds. If request takes longer, show a friendly message.
+BACKEND_SLOW_THRESHOLD = int(os.environ.get("MME_T_BACKEND_SLOW_THRESHOLD", "30"))
+from urllib.parse import urlparse  # used for backend URL parsing
 from kivy.uix.popup import Popup  # type: ignore
 from kivy.uix.scrollview import ScrollView  # type: ignore
 from kivy.uix.textinput import TextInput  # type: ignore
@@ -60,8 +65,7 @@ except Exception:
     def maybe_fetch_remote_config(cfg):
         return None
 
-# Gradio client removed for mobile optimization; always use REST fallback via requests
-GRADIO_CLIENT_AVAILABLE = False
+# Gradio client support removed for mobile optimization; always use REST POST fallback via requests
 
 # Billing manager
 try:
@@ -70,7 +74,7 @@ except ImportError:
     InAppPurchaseManager = None
 
 # Constants
-DEFAULT_MME_T_SPACE = "https://loupy222-mme-t.hf.space"
+DEFAULT_MME_T_SPACE = "http://ec2-15-188-119-128.eu-west-3.compute.amazonaws.com/predict"
 MME_T_BACKEND_URL = os.environ.get("MME_T_BACKEND_URL", DEFAULT_MME_T_SPACE)
 MME_T_DEFAULT_MODEL = os.environ.get("MME_T_DEFAULT_MODEL", "gpt-3.5-turbo")
 
@@ -86,6 +90,9 @@ class ChatBubble(BoxLayout):
     def set_text(self, text: str) -> None:
         self.label.text = text
         self.label.texture_update()
+        t_start = time.time()
+        self.label.texture_update()
+        t_update = time.time() - t_start
         self._refresh()
 
     def set_max_width(self, width: float) -> None:
@@ -102,10 +109,41 @@ class ChatBubble(BoxLayout):
         # Retour à la ligne automatique dans le label
         if hasattr(self, "label"):
             self.label.text_size = (self.max_width, None)
+            t_start = time.time()
+            self.label.texture_update()
+            t_refresh = time.time() - t_start
             self.label.texture_update()
             w, h = self.label.texture_size
             w = min(w, self.max_width)
+            # Prendre aussi en compte la largeur des autres enfants (par ex. animation box)
+            try:
+                other_max = 0
+                for child in self.children:
+                    if child is self.label:
+                        continue
+                    try:
+                        cw = child.width if hasattr(child, 'width') else 0
+                        other_max = max(other_max, cw)
+                    except Exception:
+                        pass
+                w = max(w, other_max)
+            except Exception:
+                pass
             self.label.size = (w, h)
+            # Prendre en compte la hauteur des autres enfants (par ex. animation box)
+            try:
+                other_max_h = 0
+                for child in self.children:
+                    if child is self.label:
+                        continue
+                    try:
+                        ch = child.height if hasattr(child, 'height') else 0
+                        other_max_h = max(other_max_h, ch)
+                    except Exception:
+                        pass
+                h = max(h, other_max_h)
+            except Exception:
+                pass
             self.size = (w + self.padding[0] + self.padding[2], h + self.padding[1] + self.padding[3])
             if hasattr(self, '_bg_rect'):
                 self._bg_rect.size = self.size
@@ -122,12 +160,12 @@ class ChatBubble(BoxLayout):
             [dp(14), dp(9), dp(10), dp(9)] if from_user else [dp(10), dp(9), dp(14), dp(9)]
         )
 
-        # Couleurs style Messenger
-        bubble_color = [0.92, 0.92, 0.95, 1]  # Gris clair pour Mme T
-        text_color = [0.2, 0.2, 0.2, 1]  # Texte noir
+        # Couleurs modernes style 2026
+        bubble_color = [0.20, 0.15, 0.28, 1]  # Violet foncé élégant pour Mme T
+        text_color = [0.95, 0.90, 1, 1]  # Texte clair lavande
         if from_user:
-            bubble_color = [0.35, 0.15, 0.55, 1]  # Violet pour utilisateur
-            text_color = [1, 1, 1, 1]  # Texte blanc
+            bubble_color = [0.45, 0.25, 0.65, 1]  # Violet premium pour utilisateur
+            text_color = [1, 1, 1, 1]  # Texte blanc pur
 
         with self.canvas.before:
             self._bg_color = Color(*bubble_color)
@@ -135,7 +173,7 @@ class ChatBubble(BoxLayout):
 
         self.label = Label(
             text="",
-            font_size="19sp",  # Agrandir la police des messages
+            font_size="15sp",  # Taille moderne optimale
             color=text_color,
             halign="left",
             valign="top",
@@ -660,6 +698,10 @@ class LoadingPopup(Popup):
         self.size_hint = (0.7, 0.5)
         self.auto_dismiss = False
         self.separator_height = 0
+        t_start = time.time()
+        print("LoadingPopup initialized")
+        t_init = time.time() - t_start
+        print(f"⏱️ Initialization elapsed: {t_init:.2f}s")
 
         layout = BoxLayout(orientation="vertical", spacing=10, padding=[20, 20, 20, 20])
 
@@ -678,7 +720,7 @@ class LoadingPopup(Popup):
 
         # Label fixe pour indiquer le tirage
         fixed_label = Label(
-            text=(trf("messages.drawing_card") if callable(trf) else "Tirando cartas..."),
+            text=(trf("messages.reading_in_progress") if callable(trf) else "Je lis votre tirage, je reviens vers toi..."),
             font_size="16sp",
             color=[0.9, 0.7, 0.3, 1],
             size_hint_y=0.1,
@@ -751,7 +793,7 @@ class LoadingPopup(Popup):
             self._add_loading_dev_banner(layout, trf)
 
         Clock.schedule_once(lambda dt: self.update_message((trf("messages.preparing_arcana") if callable(trf) else "Préparation des arcanes...")), 1.5)
-        Clock.schedule_once(lambda dt: self.update_message((trf("messages.drawing_card") if callable(trf) else "Tirage de la carte...")), 3)
+        Clock.schedule_once(lambda dt: self.update_message((trf("messages.reading_in_progress") if callable(trf) else "Je lis votre tirage, je reviens vers toi...")), 3)
 
     def start_shuffle_animation(self):
         # Animation de gauche à droite ou droite à gauche
@@ -811,6 +853,19 @@ class LoadingPopup(Popup):
 class MmeTChatPopup(Popup):
     """Fenetre modale modernisée pour la consultation premium avec Mme T."""
 
+    def add_to_history(self, role, content):
+        """Ajoute une entrée structurée à l'historique de la session."""
+        self.chat_history.append({"role": role, "content": content})
+
+    def reset_history(self):
+        """Réinitialise l'historique de la session."""
+        self.chat_history = []
+
+    def send_user_message(self, message):
+        """Méthode helper pour enregistrer le message utilisateur avant envoi."""
+        self.add_to_history("user", message)
+        # L'appel réseau / logique de génération de réponse doit ajouter
+        # ensuite la réponse via `self.add_to_history("assistant", reponse)`.
 
     def __init__(
         self,
@@ -836,9 +891,10 @@ class MmeTChatPopup(Popup):
         self.price_text = price_text
         self.session_id = str(uuid.uuid4())
         self.backend_url = self._normalize_mme_t_backend_url(MME_T_BACKEND_URL or DEFAULT_MME_T_SPACE)
-        self.is_gradio_space = "hf.space" in (self.backend_url or "")
         self.context_text = context_text or ""
-        self.conversation_history = []  # Historique [{"role": "user"/"assistant", "content": "..."}]
+        self.chat_history = []  # Historique propre à la session utilisateur
+        # Compatibilité rétro : ancienne variable utilisée ailleurs dans le code
+        self.conversation_history = []
         self.model_id = MME_T_DEFAULT_MODEL
         self.awaiting_reply = False
         self.typewriter_event = None
@@ -856,6 +912,7 @@ class MmeTChatPopup(Popup):
         self._loading_event = None
         self._loading_index = 0
         self._loading_bubble = None
+        self._loading_active = False
 
         main_layout = BoxLayout(
             orientation="vertical",
@@ -863,14 +920,15 @@ class MmeTChatPopup(Popup):
             spacing=dp(10),
         )
 
+        # Fond dégradé moderne (violet foncé)
         with main_layout.canvas.before:
-            Color(0.95, 0.95, 0.98, 1)  # Fond blanc/gris clair comme Messenger
+            Color(0.08, 0.05, 0.12, 1)  # Fond violet très foncé moderne
             self._panel_bg = RoundedRectangle(radius=[dp(20)] * 4)
         main_layout.bind(pos=self._update_panel_bg, size=self._update_panel_bg)
 
         header = BoxLayout(size_hint_y=None, height=dp(50), spacing=dp(8), padding=[dp(8), dp(4)])
 
-        # Bouton retour (gauche)
+        # Bouton retour (gauche) - couleur moderne
         back_btn = Button(
             text="←",
             size_hint=(None, None),
@@ -878,16 +936,16 @@ class MmeTChatPopup(Popup):
             height=dp(44),
             background_normal='',
             background_color=[0, 0, 0, 0],
-            color=[0.35, 0.15, 0.55, 1],
+            color=[0.95, 0.85, 0.50, 1],  # Or doux
             font_size="26sp",
             bold=True,
         )
         back_btn.bind(on_release=self._manual_close)
 
         title_label = Label(
-            text="Mme T",
-            font_size="17sp",
-            color=[0.2, 0.2, 0.2, 1],
+            text="🔮 Mme T",
+            font_size="19sp",
+            color=[0.95, 0.85, 0.50, 1],  # Or doux pour le titre
             halign="center",
             valign="middle",
             bold=True,
@@ -1028,9 +1086,9 @@ class MmeTChatPopup(Popup):
             height=dp(40),
             multiline=False,
             background_normal='',
-            background_color=[0.94, 0.94, 0.96, 1],
-            foreground_color=[0.2, 0.2, 0.2, 1],
-            cursor_color=[0.35, 0.15, 0.55, 1],
+            background_color=[0.15, 0.10, 0.20, 0.8],  # Fond violet foncé semi-transparent
+            foreground_color=[0.95, 0.95, 1, 1],  # Texte clair
+            cursor_color=[0.95, 0.85, 0.50, 1],  # Curseur or
             padding=[dp(14), dp(10)],
             font_size="15sp",
         )
@@ -1047,7 +1105,7 @@ class MmeTChatPopup(Popup):
             bold=True,
         )
         with self.send_btn.canvas.before:
-            Color(0.35, 0.15, 0.55, 1)
+            Color(0.45, 0.25, 0.65, 1)  # Violet premium moderne
             self.send_btn_bg = RoundedRectangle(pos=self.send_btn.pos, size=self.send_btn.size, radius=[20])
         self.send_btn.bind(pos=lambda i, v: setattr(self.send_btn_bg, 'pos', v), size=lambda i, v: setattr(self.send_btn_bg, 'size', v))
         self.send_btn.bind(on_press=self.on_send_question)
@@ -1068,7 +1126,7 @@ class MmeTChatPopup(Popup):
             font_size="13sp",
         )
         with self.close_btn.canvas.before:
-            Color(0.2, 0.6, 0.3, 1)
+            Color(0.25, 0.65, 0.35, 1)  # Vert moderne éclatant
             self.close_btn_bg = RoundedRectangle(pos=self.close_btn.pos, size=self.close_btn.size, radius=[20])
         self.close_btn.bind(pos=lambda i, v: setattr(self.close_btn_bg, 'pos', v), size=lambda i, v: setattr(self.close_btn_bg, 'size', v))
         self.close_btn.bind(on_press=lambda *_: self.dismiss())
@@ -1283,6 +1341,30 @@ class MmeTChatPopup(Popup):
                 pass
 
         labels = {
+            "drawing_card": {
+                "fr": "Je tire une carte...",
+                "en": "I'm drawing a card...",
+                "es": "Estoy sacando una carta...",
+                "pt": "Estou a tirar uma carta...",
+                "de": "Ich ziehe eine Karte...",
+                "it": "Sto pescando una carta...",
+            },
+            "analyzing_cards": {
+                "fr": "J'analyse les cartes...",
+                "en": "I'm analyzing the cards...",
+                "es": "Estoy analizando las cartas...",
+                "pt": "Estou a analisar as cartas...",
+                "de": "Ich analysiere die Karten...",
+                "it": "Analizzo le carte...",
+            },
+            "focusing_on_question": {
+                "fr": "Je me concentre sur ta question, je te réponds quand je serai prête !",
+                "en": "I'm focusing on your question, I'll answer when I'm ready!",
+                "es": "Me concentro en tu pregunta, ¡te responderé cuando esté lista!",
+                "pt": "Estou a concentrar-me na tua questão, respondo-te quando estiver pronta!",
+                "de": "Ich konzentriere mich auf deine Frage, ich antworte dir, wenn ich bereit bin!",
+                "it": "Mi concentro sulla tua domanda, ti risponderò quando sarò pronta!",
+            },
             # 'send' short label kept below; long variant removed to avoid duplication
             "ask_hint": {
                 "fr": "Ta question...",
@@ -1362,6 +1444,131 @@ class MmeTChatPopup(Popup):
     def _manual_close(self, *_args):
         self._close_reason = "manual"
         self.dismiss()
+
+    def _show_periodic_ad(self):
+        """Affiche une pub interstitielle toutes les 3 questions (ou popup de simulation en dev)."""
+        try:
+            from kivy.utils import platform
+            app = App.get_running_app()
+            ads = getattr(app, 'ads', None)
+            
+            # En production (Android), afficher la vraie pub
+            if platform == "android" and ads and hasattr(ads, 'show_interstitial'):
+                # La pub s'affiche, la conversation continue automatiquement après
+                ads.show_interstitial(callback=None)
+            else:
+                # En mode dev, afficher un popup de simulation
+                self._show_ad_simulation_popup()
+                
+        except Exception as e:
+            print(f"⚠️ Erreur affichage pub périodique: {e}")
+    
+    def _show_ad_simulation_popup(self):
+        """Affiche un popup simulant une pub plein écran en mode dev."""
+        try:
+            from kivy.uix.popup import Popup as KivyPopup
+            from kivy.uix.boxlayout import BoxLayout
+            from kivy.uix.label import Label
+            from kivy.uix.button import Button
+            from kivy.graphics import Color, RoundedRectangle
+            from kivy.metrics import dp
+            
+            layout = BoxLayout(
+                orientation='vertical',
+                padding=dp(30),
+                spacing=dp(20)
+            )
+            with layout.canvas.before:
+                Color(0.1, 0.1, 0.1, 0.95)
+                bg = RoundedRectangle(
+                    pos=layout.pos,
+                    size=layout.size,
+                    radius=[20, 20, 20, 20]
+                )
+            layout.bind(
+                pos=lambda i, v: setattr(bg, 'pos', v),
+                size=lambda i, v: setattr(bg, 'size', v)
+            )
+            
+            # Titre
+            title_lbl = Label(
+                text="📺 PUBLICITÉ (Simulation Dev)",
+                font_size='22sp',
+                bold=True,
+                color=[1, 1, 0.2, 1],
+                size_hint_y=None,
+                height=dp(40),
+                halign='center'
+            )
+            layout.add_widget(title_lbl)
+            
+            # Message
+            msg_lbl = Label(
+                text="En production, une publicité\nplein écran serait affichée ici.\n\nLa conversation reprendra après.",
+                font_size='16sp',
+                color=[0.95, 0.95, 0.95, 1],
+                size_hint_y=None,
+                height=dp(120),
+                halign='center',
+                valign='middle'
+            )
+            msg_lbl.bind(
+                size=lambda inst, val: setattr(inst, 'text_size', (val[0] * 0.9, None))
+            )
+            layout.add_widget(msg_lbl)
+            
+            # Compteur
+            count_lbl = Label(
+                text=f"Question n°{self._questions_count}",
+                font_size='14sp',
+                color=[0.7, 0.7, 0.7, 1],
+                size_hint_y=None,
+                height=dp(30),
+                halign='center'
+            )
+            layout.add_widget(count_lbl)
+            
+            # Bouton fermer
+            close_btn = Button(
+                text="Continuer",
+                size_hint=(None, None),
+                size=(dp(180), dp(50)),
+                pos_hint={'center_x': 0.5},
+                background_normal='',
+                background_color=[0, 0, 0, 0],
+                color=[1, 1, 1, 1],
+                font_size='16sp',
+                bold=True
+            )
+            with close_btn.canvas.before:
+                Color(0.2, 0.6, 0.2, 1)
+                close_bg = RoundedRectangle(
+                    pos=close_btn.pos,
+                    size=close_btn.size,
+                    radius=[25, 25, 25, 25]
+                )
+            close_btn.bind(
+                pos=lambda i, v: setattr(close_bg, 'pos', v),
+                size=lambda i, v: setattr(close_bg, 'size', v)
+            )
+            layout.add_widget(close_btn)
+            
+            # Popup
+            ad_popup = KivyPopup(
+                title='',
+                content=layout,
+                size_hint=(0.85, None),
+                height=dp(360),
+                background='',
+                separator_height=0,
+                auto_dismiss=False
+            )
+            
+            close_btn.bind(on_press=ad_popup.dismiss)
+            ad_popup.open()
+            
+        except Exception as e:
+            print(f"⚠️ Erreur popup simulation pub: {e}")
 
     def _update_panel_bg(self, instance, _value):
         if hasattr(self, "_panel_bg") and self._panel_bg:
@@ -1470,65 +1677,133 @@ class MmeTChatPopup(Popup):
                 pass
 
     def _start_loading_animation(self):
-        """Démarre l'animation de chargement avec messages rotatifs"""
+        """Affiche l'animation de tirage avec 3 messages multilingues et l'animation des cartes."""
         self._loading_index = 0
-
-        # Récupérer les messages de chargement selon la langue
-        loading_messages = self.tr("messages.loading_messages") if self.tr else [
-            "🔮 Concentrating on your question...",
-            "🃏 Shuffling cards...",
-            "✨ Energies are aligning...",
-            "🌙 Consulting the stars...",
-            "💫 Interpreting the arcana..."
+        loading_steps = [
+            self._label("reading_in_progress"),
+            self._label("analyzing_cards"),
+            self._label("focusing_on_question"),
         ]
-
-        # Créer la bulle de chargement — remplaçons le texte par un spinner + label
-        self._loading_bubble = self._create_message_bubble("", sender="mme_t")
-        print("[DEBUG] Appel set_widget sur bulle d'attente", self._loading_bubble)
+        # Marqueur d'animation en cours (indépendant de awaiting_reply)
+        self._loading_active = True
+        # Marquer awaiting_reply True tout de suite pour démarrer l'animation
+        if not self.awaiting_reply:
+            self.awaiting_reply = True
+        # Créer une vraie bulle de chat Mme T pour l'animation
+        # Crée la bulle via la méthode centrale (gestion scroll, largeur, etc.)
+        # Create a centered chat bubble for the animation (anchor_x='center')
+        anchor = AnchorLayout(
+            size_hint=(1, None),
+            anchor_x='center',
+            anchor_y='center',
+            padding=[dp(6), 0, dp(6), 0],
+        )
+        bubble = ChatBubble("", from_user=False)
+        bubble.set_max_width(self._bubble_max_width())
+        anchor.add_widget(bubble)
+        anchor.height = bubble.height + dp(4)
+        bubble.bind(size=lambda _inst, val: setattr(anchor, 'height', val[1] + dp(4)))
+        self.chat_container.add_widget(anchor)
+        self.chat_bubbles.append(bubble)
+        self._loading_bubble = bubble
+        self._scroll_to_widget(bubble)
+        # Animation de 3 cartes façon LoadingPopup
         try:
-            # Layout contenant spinner et label
-            container = BoxLayout(orientation='horizontal', spacing=dp(8), padding=[dp(6), dp(6), dp(6), dp(6)], size_hint=(None, None))
-            spinner = Label(text='[SPINNER]', font_size='22sp', color=[0.35, 0.15, 0.55, 1], size_hint=(None, None))
-            # Animation de points sur le texte du label
-            loading_lbl = Label(text="⏳ Focusing on your question", halign='left', valign='middle', font_size='17sp', color=[0.2,0.2,0.2,1], size_hint=(None, None))
-            loading_lbl.bind(size=lambda inst, val: setattr(inst, 'text_size', (val[0]*0.95, None)))
-            self._loading_bubble.set_text(loading_lbl.text)
-            self._loading_label = loading_lbl
-            self._loading_spinner = None
-            # Animation des points
-            def animate_loading(dt):
-                if not self._loading_bubble or not self.awaiting_reply:
-                    return False
-                dots = (animate_loading.counter % 4) * '.'
-                self._loading_bubble.set_text(f"⏳ Focusing on your question{dots}")
-                animate_loading.counter += 1
-                return True
-            animate_loading.counter = 0
-            self._loading_event = Clock.schedule_interval(animate_loading, 0.5)
-        except Exception:
-            # Fallback: conserve simple texte si quelque chose échoue
-            self._loading_bubble.set_text(loading_messages[0])
-
-        def _update_loading_message(dt):
-            if not self._loading_bubble or not self.awaiting_reply:
-                return False  # Arrêter l'animation
-
-            self._loading_index = (self._loading_index + 1) % len(loading_messages)
-            new_text = loading_messages[self._loading_index]
-
-            # Mettre à jour le texte du label de chargement si présent
+            anim_zone = FloatLayout(size_hint=(None, None), height=dp(80), width=dp(240))
+            left_stack = Image(source="tarot_img/Back.jpg", size_hint=(None, None), size=(dp(48), dp(70)), pos_hint={'x': 0.05, 'center_y': 0.5}, opacity=1)
+            right_stack = Image(source="tarot_img/Back.jpg", size_hint=(None, None), size=(dp(48), dp(70)), pos_hint={'x': 0.7, 'center_y': 0.5}, opacity=1)
+            animated_card = Image(source="tarot_img/Back.jpg", size_hint=(None, None), size=(dp(48), dp(70)), opacity=1)
+            anim_zone.add_widget(left_stack)
+            anim_zone.add_widget(right_stack)
+            anim_zone.add_widget(animated_card)
+            # Label pour le message
+            loading_lbl = Label(text=loading_steps[0], font_size='16sp', color=[0.2,0.2,0.2,1], halign='center', valign='middle', size_hint=(1, None), height=dp(32))
+            # Anchor pour centrer l'anim_zone horizontalement
+            anim_anchor = AnchorLayout(size_hint=(1, None), height=dp(80), anchor_x='center', anchor_y='center')
+            anim_anchor.add_widget(anim_zone)
+            box = BoxLayout(orientation='vertical', size_hint=(1, None), height=dp(120))
+            box.add_widget(anim_anchor)
+            box.add_widget(loading_lbl)
+            # Ajouter le contenu animé dans la bulle (laisser le label intact pour le sizing)
+            bubble.set_text("")
+            # Forcer largeur du container d'animation pour que la bulle s'ajuste
+            box.size_hint = (None, None)
+            # Set box width based on bubble's max width minus padding
             try:
-                if hasattr(self, '_loading_label') and self._loading_label:
-                    self._loading_label.text = new_text
-                elif hasattr(self._loading_bubble, 'label'):
-                    self._loading_bubble.label.text = new_text
+                bubble.set_max_width(self._bubble_max_width())
+                box.width = max(dp(120), bubble.max_width - (bubble.padding[0] + bubble.padding[2]))
+            except Exception:
+                box.width = dp(240)
+            bubble.add_widget(box)
+            try:
+                bubble._refresh()
             except Exception:
                 pass
-
-            return True  # Continuer l'animation
-
-        # Changer le message toutes les 2 secondes
-        self._loading_event = Clock.schedule_interval(_update_loading_message, 2.0)
+            # Recompute layout widths and scroll to the bubble
+            self._update_bubble_widths()
+            self._scroll_to_widget(bubble)
+            self._loading_label = loading_lbl
+            # Forcer le scroll sur la bulle d'animation après ajout du contenu
+            self._scroll_to_widget(bubble)
+            # Animation gauche-droite
+            # Alternate starting direction (left or right), so animation zigzags
+            import random
+            self._shuffle_direction = random.choice(["right", "left"])
+            def shuffle_anim(*_):
+                # Ensure animated_card uses absolute positioning (x/y), not pos_hint
+                try:
+                    if hasattr(left_stack, 'x') and hasattr(left_stack, 'y'):
+                        animated_card.pos = (left_stack.x, left_stack.y)
+                except Exception:
+                    pass
+                # Suivre le flag _loading_active plutôt que awaiting_reply uniquement
+                if not getattr(self, '_loading_active', True):
+                    return False
+                try:
+                    if self._shuffle_direction == "right":
+                        # start at left_stack, go to right_stack
+                        animated_card.center_x = left_stack.center_x
+                        animated_card.center_y = left_stack.center_y
+                        anim = Animation(center_x=right_stack.center_x, duration=0.45)
+                    else:
+                        # start at right_stack, go to left_stack
+                        animated_card.center_x = right_stack.center_x
+                        animated_card.center_y = right_stack.center_y
+                        anim = Animation(center_x=left_stack.center_x, duration=0.45)
+                    from kivy.logger import Logger
+                    Logger.debug(f"[MME_T ANIM] from {self._shuffle_direction} start:{animated_card.center_x} -> target:{right_stack.center_x if self._shuffle_direction == 'right' else left_stack.center_x}")
+                    anim.bind(on_complete=lambda *_: switch_dir())
+                    anim.start(animated_card)
+                except Exception:
+                    # Graceful fallback to pos_hint animation
+                    if self._shuffle_direction == "right":
+                        anim = Animation(pos_hint={'x': 0.7, 'center_y': 0.5}, duration=0.45)
+                    else:
+                        anim = Animation(pos_hint={'x': 0.05, 'center_y': 0.5}, duration=0.45)
+                    anim.bind(on_complete=lambda *_: switch_dir())
+                    anim.start(animated_card)
+                return True
+            def switch_dir():
+                self._shuffle_direction = "left" if self._shuffle_direction == "right" else "right"
+                if getattr(self, '_loading_active', True):
+                    Clock.schedule_once(lambda dt: shuffle_anim(), 0)
+            Clock.schedule_once(lambda dt: shuffle_anim(), 0)
+            # Changement de message toutes les 2.2s
+            def update_loading(dt):
+                if not getattr(self, '_loading_active', True):
+                    return False
+                self._loading_index = (self._loading_index + 1) % len(loading_steps)
+                loading_lbl.text = loading_steps[self._loading_index]
+                return True
+            # Ajuster la largeur de l'anim_zone en fonction de la largeur finale du box
+            try:
+                anim_zone.width = max(dp(120), box.width - dp(16))
+            except Exception:
+                pass
+            self._loading_event = Clock.schedule_interval(update_loading, 2.2)
+        except Exception as e:
+            # Fallback texte simple
+            bubble.set_text(loading_steps[0])
 
     def _stop_loading_animation(self):
         """Arrête et supprime l'animation de chargement"""
@@ -1559,6 +1834,11 @@ class MmeTChatPopup(Popup):
             self._loading_bubble = None
             self._loading_label = None
             self._loading_spinner = None
+        # Désactiver le flag d'animation
+        try:
+            self._loading_active = False
+        except Exception:
+            pass
 
     def show_fullscreen_card(self, card_name, card_state):
         """Affiche la carte en plein écran avec nom localisé et image correcte"""
@@ -1601,13 +1881,7 @@ class MmeTChatPopup(Popup):
         try:
             self._questions_count += 1
             if self._questions_count % 3 == 0:
-                try:
-                    app = App.get_running_app()
-                    ads = getattr(app, 'ads', None)
-                    if ads and hasattr(ads, 'show_interstitial'):
-                        ads.show_interstitial()
-                except Exception:
-                    pass
+                self._show_periodic_ad()
         except Exception:
             pass
 
@@ -1634,8 +1908,13 @@ class MmeTChatPopup(Popup):
             self.awaiting_reply = True
             self.send_btn.text = "..."
 
-            # Ajouter la question à l'historique
+            # Ajouter la question à l'historique (conversation_history pour compatibilité
+            # + chat_history structuré pour usage interne)
             self.conversation_history.append({"role": "user", "content": question})
+            try:
+                self.add_to_history("user", question)
+            except Exception:
+                pass
 
             # Construire le contexte complet avec l'historique
             full_context = self.context_text
@@ -1666,30 +1945,177 @@ class MmeTChatPopup(Popup):
                 "model": self.model_id,
                 "context": full_context,
                 "contexte": full_context,
+                # Envoyer l'historique structuré côté client si présent (backend gère l'absence)
+                "client_history": list(self.chat_history) if hasattr(self, 'chat_history') else [],
+                # Hints pour réduire les répétitions côté serveur
+                "avoid_repetition": True,
+                "last_assistant_message": (
+                    next((e.get('content') for e in reversed(self.conversation_history) if e.get('role') == 'assistant'), None)
+                    if hasattr(self, 'conversation_history') else None
+                ),
             }
             threading.Thread(target=self._perform_request, args=(payload,), daemon=False).start()
 
         Clock.schedule_once(lambda dt: _delayed_send(), 2.5)
 
     def _perform_request(self, payload):
+        """Perform a standard REST POST to the backend, trying several common payload shapes.
+
+        Accepts a `payload` with keys: message, context/contexte, session_id, model, client_history, avoid_repetition, last_assistant_message
+        and returns the assistant's reply text via the existing success/error callbacks.
+        """
         try:
-            if self.is_gradio_space:
-                reply = self._call_gradio_backend(payload["message"], payload.get("context") or "")
+            b = (self.backend_url or "").rstrip("/")
+            if b.endswith("/predict") or "/gradio_api/" in b or b.endswith("/chat"):
+                url = b
             else:
-                url = self.backend_url.rstrip("/") + "/chat"
-                response = requests.post(url, json=payload, timeout=15)  # Réduit de 25 à 15s
+                url = b + "/chat"
+
+            print(f"📡 Requête POST vers: {url}")
+
+            message = payload.get("message")
+            full_context = payload.get("context") or payload.get("contexte") or ""
+            session_id = payload.get("session_id")
+
+            def _extract_reply_from_response(resp):
+                try:
+                    data = resp.json()
+                except Exception:
+                    return (resp.text or "").strip()
+                # If it's a string
+                if isinstance(data, str):
+                    return data.strip()
+                if isinstance(data, dict):
+                    # Common keys
+                    for k in ["reply", "response", "result", "output", "message", "text", "answer"]:
+                        if k in data and isinstance(data[k], str) and data[k].strip():
+                            return data[k].strip()
+                    if "data" in data and isinstance(data["data"], list) and data["data"]:
+                        first = data["data"][0]
+                        if isinstance(first, str):
+                            return first.strip()
+                        if isinstance(first, dict):
+                            for sk in ["reply", "text", "message"]:
+                                if sk in first and isinstance(first[sk], str) and first[sk].strip():
+                                    return first[sk].strip()
+                    if "choices" in data and isinstance(data["choices"], list) and data["choices"]:
+                        c = data["choices"][0]
+                        if isinstance(c, dict) and "text" in c and isinstance(c["text"], str):
+                            return c["text"].strip()
+                    return json.dumps(data, ensure_ascii=False)
+                if isinstance(data, list) and data:
+                    if isinstance(data[0], str):
+                        return data[0].strip()
+                return (resp.text or "").strip()
+
+            # Primary attempt: use /predict shape if endpoint suggests it's a predict endpoint
+            parsed = urlparse(url)
+            try:
+                if parsed.path.endswith("/predict") or "/predict" in parsed.path:
+                    predict_payload = {"data": [message, full_context or ""]}
+                    if session_id:
+                        predict_payload["session_id"] = session_id
+                    # add client hints if present to the predict payload
+                    try:
+                        if hasattr(self, 'chat_history') and self.chat_history:
+                            predict_payload["client_history"] = list(self.chat_history[-20:])
+                    except Exception:
+                        pass
+                    try:
+                        predict_payload["avoid_repetition"] = bool(payload.get("avoid_repetition"))
+                        last_assist = payload.get("last_assistant_message")
+                        if isinstance(last_assist, str) and last_assist:
+                            predict_payload["last_assistant_message"] = last_assist
+                    except Exception:
+                        pass
+                    print(f"📡 Sending predict payload: keys={list(predict_payload.keys())}")
+                    t_post_start = time.time()
+                    response = requests.post(url, json=predict_payload, timeout=60)
+                    t_post = time.time() - t_post_start
+                    print(f"⏱️ Predict POST elapsed: {t_post:.2f}s")
+                    if t_post > BACKEND_SLOW_THRESHOLD:
+                        try:
+                            self.status_label.text = self._label("backend_slow")
+                        except Exception:
+                            pass
+                    try:
+                        if response.status_code >= 400:
+                            print(f"🔴 Predict response status {response.status_code}: {response.text[:300]}")
+                    except Exception:
+                        pass
+                else:
+                    t_post_start = time.time()
+                    response = requests.post(url, json=payload, timeout=15)
+                    t_post = time.time() - t_post_start
+                    print(f"⏱️ POST elapsed: {t_post:.2f}s")
+                    if t_post > BACKEND_SLOW_THRESHOLD:
+                        try:
+                            self.status_label.text = self._label("backend_slow")
+                        except Exception:
+                            pass
                 response.raise_for_status()
-                data = response.json()
-                reply = (data.get("reply") or "").strip()
-                if not reply:
-                    raise ValueError("Réponse vide")
+            except Exception as primary_exc:
+                print(f"⚠️ POST primary payload failed: {primary_exc}")
+                if parsed.path.endswith("/predict") or "/predict" in parsed.path:
+                    print("⚠️ /predict endpoint failed on single payload; aborting fallbacks.")
+                    if isinstance(primary_exc, requests.exceptions.ReadTimeout):
+                        raise requests.exceptions.ReadTimeout("Backend /predict timed out (slow or offline).")
+                    raise primary_exc
+                # Fallback candidates
+                fallback_payloads = []
+                fallback_payloads.append({"data": [message, full_context or ""]})
+                fallback_payloads.append({"inputs": message})
+                fallback_payloads.append({"inputs": {"message": message, "context": full_context or ""}})
+                fallback_payloads.append({"instances": [message]})
+                fallback_payloads.append({"instances": [{"message": message, "context": full_context or ""}]})
+                fallback_payloads.append({"prompt": message})
+                fallback_payloads.append({"prompt": f"{message}\n\n{full_context or ''}"})
+                fallback_payloads.append({"message": message, "context": full_context or ""})
+
+                response = None
+                last_exc = primary_exc
+                for idx, cand in enumerate(fallback_payloads):
+                    if session_id and isinstance(cand, dict) and "session_id" not in cand:
+                        cand["session_id"] = session_id
+                    try:
+                        print(f"🔁 Trying fallback payload #{idx + 1}: keys={list(cand.keys())}")
+                        try:
+                            print("📣 Fallback payload (truncated):", json.dumps(cand, ensure_ascii=False)[:200])
+                        except Exception:
+                            pass
+                        t_fb_start = time.time()
+                        resp = requests.post(url, json=cand, timeout=15)
+                        t_fb = time.time() - t_fb_start
+                        print(f"⏱️ Fallback #{idx + 1} POST elapsed: {t_fb:.2f}s")
+                        if t_fb > BACKEND_SLOW_THRESHOLD:
+                            try:
+                                self.status_label.text = self._label("backend_slow")
+                            except Exception:
+                                pass
+                        try:
+                            if resp.status_code >= 400:
+                                print(f"🔴 Fallback response {resp.status_code}: {resp.text[:300]}")
+                        except Exception:
+                            pass
+                        resp.raise_for_status()
+                        response = resp
+                        print(f"✅ Fallback payload #{idx + 1} worked (status {resp.status_code})")
+                        break
+                    except Exception as e:
+                        print(f"⚠️ Fallback #{idx + 1} failed: {e}")
+                        last_exc = e
+                if not response:
+                    raise last_exc
+            # Extract the reply
+            reply = _extract_reply_from_response(response)
+            if not (reply or "").strip():
+                raise ValueError("Réponse vide")
 
             # LOG: Afficher la réponse dans le terminal
             print(f"\n{'='*60}")
             print("🔮 RÉPONSE MME T:")
             print(f"   {reply}")
             print(f"{'='*60}\n")
-
             Clock.schedule_once(lambda dt: self._on_success(reply), 0)
         except Exception as e:
             print(f"\n{'='*60}")
@@ -1704,6 +2130,10 @@ class MmeTChatPopup(Popup):
 
         # Ajouter la réponse à l'historique
         self.conversation_history.append({"role": "assistant", "content": reply_text})
+        try:
+            self.add_to_history("assistant", reply_text)
+        except Exception:
+            pass
 
         self.awaiting_reply = False
         # Réactiver les champs pour permettre la conversation continue
@@ -1741,167 +2171,9 @@ class MmeTChatPopup(Popup):
         self.status_label.text = self._label("error")
         self.start_typewriter(self._label("error"), sender="mme_t")
 
-    def _call_gradio_backend(self, message: str, context_text: str) -> str:
-        """Appelle le backend Gradio avec le client officiel ou REST en fallback"""
+    # <deprecated> _call_gradio_backend was removed. Use REST /predict paths only.
 
-        # Ajouter la langue en tête du contexte (toujours envoyé pour Gradio)
-        full_context = context_text or ""
-        try:
-            lang = (self.language or "").strip().lower() if hasattr(self, 'language') else ""
-        except Exception:
-            lang = ""
-        if lang:
-            full_context = f"language={lang}\n{full_context}"
-
-        # LOG: Afficher les paramètres envoyés
-        print(f"\n{'='*60}")
-        print("📤 ENVOI AU BACKEND:")
-        print(f"   Message: {message}")
-        print(f"   Contexte: {full_context or '(vide)'}")
-        print(f"   URL: {self.backend_url}")
-        print(f"{'='*60}\n")
-
-        # Méthode 1: REST API (Gradio moderne avec SSE)
-        base_url = (self.backend_url or "").rstrip("/")
-        print(f"🔗 Tentative de connexion REST à: {base_url}")
-
-        # Réveil du backend (requis pour Hugging Face Spaces)
-        try:
-            wake_response = requests.get(base_url, timeout=15)
-            print(f"✅ Backend réveillé : {wake_response.status_code}")
-        except Exception as wake_exc:
-            print(f"⚠️ Réveil backend échoué: {wake_exc}")
-
-        # Payload Gradio pour la fonction consulter_madame_t(message, contexte)
-        payload = {
-            "data": [message, full_context or ""]
-        }
-
-        print("🔄 Utilisation de l'API Gradio moderne avec SSE...")
-
-        try:
-            # Endpoint Gradio moderne
-            api_url = f"{base_url}/gradio_api/call/predict"
-            print(f"📡 Requête vers: {api_url}")
-
-            # Envoyer la requête
-            response = requests.post(api_url, json=payload, timeout=30)
-            response.raise_for_status()
-
-            event_data = response.json()
-            event_id = event_data.get("event_id")
-            if not event_id:
-                raise ValueError("Aucun event_id reçu")
-
-            print(f"📋 Event ID: {event_id}")
-
-            # Écouter les événements SSE
-            sse_url = f"{api_url}/{event_id}"
-            print(f"🎧 Écoute SSE: {sse_url}")
-
-            sse_response = requests.get(sse_url, stream=True, timeout=60)
-
-            full_response = ""
-            for line in sse_response.iter_lines():
-                if line:
-                    line_str = line.decode('utf-8')
-                    print(f"SSE: {line_str}")  # Debug
-                    if line_str.startswith('data: '):
-                        try:
-                            data = json.loads(line_str[6:])  # Enlever 'data: '
-                            if isinstance(data, list) and data:
-                                result = data[0]
-                                if isinstance(result, str) and result.strip():
-                                    full_response = result.strip()
-                                    print(f"✅ Réponse SSE reçue ({len(full_response)} caractères)")
-                                    return full_response
-                        except json.JSONDecodeError:
-                            continue
-                    elif line_str == 'event: complete':
-                        print("🔄 Événement complete reçu, attente de données...")
-                        continue  # Continue reading for data
-
-            if full_response:
-                return full_response
-            else:
-                raise ValueError("Aucune réponse valide reçue via SSE")
-
-        except Exception as sse_exc:
-            print(f"⚠️ Échec SSE: {sse_exc}")
-            print("🔄 Basculement vers anciens endpoints REST...")
-
-        # Méthode 3: Anciens endpoints REST (fallback)
-        endpoints = [
-            "/predict",
-            "/call/consulter_btn",
-            "/api/consulter_madame_t",
-            "/api/predict",
-            "/run/predict",
-        ]
-
-        for endpoint in endpoints:
-            try:
-                full_url = f"{base_url}{endpoint}"
-                print(f"📡 Tentative {endpoint}: {full_url}")
-
-                response = requests.post(full_url, json=payload, timeout=20)
-                print(f"📊 Status: {response.status_code}")
-
-                if response.status_code == 404:
-                    print(f"❌ Endpoint {endpoint} non trouvé, passage au suivant...")
-                    continue
-
-                response.raise_for_status()
-                data = response.json()
-                print(f"📥 Réponse reçue: {str(data)[:300]}")
-
-                # Gradio retourne {"data": [result]}
-                if isinstance(data, dict):
-                    outputs = data.get("data")
-                    if isinstance(outputs, list) and outputs:
-                        result = outputs[0]
-                        if isinstance(result, str) and result.strip():
-                            print(f"✅ Réponse valide de Mme T ({len(result)} caractères)")
-                            return result.strip()
-
-                print(f"⚠️ Format de réponse inattendu: {type(data)}")
-
-            except requests.exceptions.Timeout:
-                print(f"⏰ Timeout sur {endpoint} après 20s, passage au suivant...")
-                continue
-            except requests.exceptions.ConnectionError:
-                print(f"🌐 Erreur de connexion sur {endpoint}, passage au suivant...")
-                continue
-            except requests.exceptions.HTTPError as http_err:
-                print(f"✗ HTTP Error sur {endpoint}: {http_err}")
-                if response.status_code != 404:
-                    raise
-            except Exception as exc:
-                print(f"✗ Erreur sur {endpoint}: {type(exc).__name__}: {exc}")
-                if endpoint == endpoints[-1]:  # Dernier essai
-                    raise
-
-        raise RuntimeError(f"Aucun endpoint Gradio valide trouvé sur {base_url}")
-
-    def _extract_space_id(self, url: str) -> str:
-        """Extrait l'ID du Space depuis l'URL (ex: Loupy222/mme_t)"""
-        if not url:
-            return ""
-
-        # Format: https://loupy222-mme-t.hf.space -> Loupy222/mme_t
-        if ".hf.space" in url:
-            domain = url.split("//")[-1].split(".hf.space")[0]
-            parts = domain.split("-", 1)
-            if len(parts) >= 2:
-                owner = parts[0].capitalize()
-                space = parts[1].replace("-", "_")
-                return f"{owner}/{space}"
-
-        # Format direct: Loupy222/mme_t
-        if "/" in url and "http" not in url:
-            return url.strip()
-
-        return ""
+    # <deprecated> _extract_space_id removed; Hugging Face specific logic eliminated
 
     def _normalize_mme_t_backend_url(self, url: str) -> str:
         """Normalise l'URL du backend Mme T"""

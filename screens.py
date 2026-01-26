@@ -13,12 +13,14 @@ from kivy.graphics import Color, Rectangle, RoundedRectangle  # type: ignore
 from kivy.metrics import dp  # type: ignore
 from kivy.uix.boxlayout import BoxLayout  # type: ignore
 from kivy.uix.button import Button  # type: ignore
+from kivy.uix.behaviors import ButtonBehavior  # type: ignore
 from kivy.uix.floatlayout import FloatLayout  # type: ignore
 from kivy.uix.image import Image  # type: ignore
 from kivy.uix.label import Label  # type: ignore
 from kivy.uix.popup import Popup  # type: ignore
 from kivy.uix.screenmanager import ScreenManager, Screen  # type: ignore
 from kivy.uix.scrollview import ScrollView  # type: ignore
+from kivy.uix.textinput import TextInput  # type: ignore
 from kivy.factory import Factory  # type: ignore
 from kivy.animation import Animation  # type: ignore
 from kivy.logger import Logger  # type: ignore
@@ -87,6 +89,8 @@ class CardScreen(Screen):
         self.tr = getattr(app, 'tr', lambda k: k)
         self.lang = getattr(app, 'lang', 'fr')
         self.font_body = getattr(app, 'font_body', 'Body')
+        # Utiliser font_body pour les titres également si font_title n'existe pas
+        self.font_title = getattr(app, 'font_title', self.font_body)
         # Bind pour rafraîchir dynamiquement si l'app met à jour la police ou la fonction tr
         try:
             app.fbind('font_body', self._refresh_fonts)
@@ -141,65 +145,153 @@ class CardScreen(Screen):
         except Exception:
             pass
 
-        card_container = FloatLayout(size_hint_y=0.7)
-        self.card_image = Image(
-            source="tarot_img/Back.jpg",
-            size_hint=(0.8, 0.9),
-            pos_hint={'center_x': 0.5, 'center_y': 0.5},
+        # === ZONE PRINCIPALE : CONSULTATION MME T EN PRIORITÉ + TIRAGE ===
+        main_choices_container = BoxLayout(
+            orientation='vertical',
+            size_hint_y=0.7,
+            spacing=dp(12),
+            padding=[dp(20), dp(10), dp(20), dp(10)]
         )
-        self.draw_button = Button(
-            text="",
-            background_color=[0, 0, 0, 0],
-            size_hint=(0.8, 0.9),
-            pos_hint={'center_x': 0.5, 'center_y': 0.5},
+        
+        # --- BOUTON MME T EN PREMIER (PRIORITÉ) ---
+        mme_t_container = FloatLayout(size_hint=(1, 0.32))
+        
+        # Bouton icône Mme T cliquable (comme la carte)
+        self.mme_t_icon_button = Button(
+            size_hint=(None, None),
+            size=(dp(180), dp(180)),
+            pos_hint={'center_x': 0.5, 'center_y': 0.58},
+            background_normal='tarot_img/icon.png',
+            background_down='tarot_img/icon.png',
+            border=(0, 0, 0, 0)
         )
-        self.draw_button.bind(on_press=self.draw_card)
-        card_container.add_widget(self.card_image)
-        card_container.add_widget(self.draw_button)
-        layout.add_widget(card_container)
-
-        self.instructions_label = Label(
-            text=self.tr("messages.draw_instruction"),
-            font_size="18sp",
-            color=[0.7, 0.5, 0.3, 1],
-            size_hint_y=0.15,
+        self.mme_t_icon_button.bind(on_press=self.open_mme_t_entry)
+        
+        # Titre principal sous l'icône
+        mme_t_instruction = Label(
+            text=self.tr("messages.consultation_mme_t"),
+            font_size='16sp',
+            bold=True,
+            color=[0.9, 0.8, 0.4, 1],
+            size_hint=(1, None),
+            height=dp(24),
+            pos_hint={'center_x': 0.5, 'y': 0.12},
             halign='center',
             valign='middle',
-            font_name="Body"
+            font_name=self.font_title
         )
-        self.instructions_label.bind(size=lambda inst, val: setattr(inst, 'text_size', val))
-        layout.add_widget(self.instructions_label)
+        mme_t_instruction.bind(size=lambda i, v: setattr(i, 'text_size', (v[0], None)))
+        
+        # Sous-titre descriptif
+        mme_t_subtitle = Label(
+            text=self.tr("messages.consultation_mme_t_desc"),
+            font_size='12sp',
+            color=[0.85, 0.75, 0.95, 0.9],
+            size_hint=(0.9, None),
+            height=dp(32),
+            pos_hint={'center_x': 0.5, 'y': 0.0},
+            halign='center',
+            valign='top',
+            font_name=self.font_body
+        )
+        mme_t_subtitle.bind(size=lambda i, v: setattr(i, 'text_size', (v[0], None)))
+        
+        mme_t_container.add_widget(self.mme_t_icon_button)
+        mme_t_container.add_widget(mme_t_instruction)
+        mme_t_container.add_widget(mme_t_subtitle)
+        main_choices_container.add_widget(mme_t_container)
+        
+        # --- CARTE CENTRALE POUR TIRAGE (EN DESSOUS) ---
+        card_container = FloatLayout(size_hint=(1, 0.65))
+        
+        # Bouton transparent avec image de carte en fond
+        self.card_button = Button(
+            size_hint=(None, None),
+            size=(dp(180), dp(310)),
+            pos_hint={'center_x': 0.5, 'center_y': 0.52},
+            background_normal='tarot_img/Back.jpg',
+            background_down='tarot_img/Back.jpg',
+            border=(0, 0, 0, 0)
+        )
+        self.card_button.bind(on_press=self.draw_card)
+        
+        # Titre principal sous la carte
+        card_instruction = Label(
+            text=self.tr("messages.card_reading"),
+            font_size='16sp',
+            bold=True,
+            color=[0.9, 0.8, 0.4, 1],
+            size_hint=(1, None),
+            height=dp(24),
+            pos_hint={'center_x': 0.5, 'y': 0.09},
+            halign='center',
+            valign='middle',
+            font_name=self.font_title
+        )
+        card_instruction.bind(size=lambda i, v: setattr(i, 'text_size', (v[0], None)))
+        
+        # Sous-titre descriptif
+        card_subtitle = Label(
+            text=self.tr("messages.card_reading_desc"),
+            font_size='12sp',
+            color=[0.85, 0.75, 0.95, 0.9],
+            size_hint=(0.9, None),
+            height=dp(32),
+            pos_hint={'center_x': 0.5, 'y': 0.0},
+            halign='center',
+            valign='top',
+            font_name=self.font_body
+        )
+        card_subtitle.bind(size=lambda i, v: setattr(i, 'text_size', (v[0], None)))
+        
+        card_container.add_widget(self.card_button)
+        card_container.add_widget(card_instruction)
+        card_container.add_widget(card_subtitle)
+        main_choices_container.add_widget(card_container)
+        
+        layout.add_widget(main_choices_container)
 
-        # Placeholder léger pour garder espace si pas de bannière (remplacé par vraie bannière AdMob)
+        # === ESPACE POUR BANNIÈRE PUB ===
         self.ad_banner_placeholder = BoxLayout(size_hint_y=0.08)
         layout.add_widget(self.ad_banner_placeholder)
 
-        # Spacer pour remonter le bouton "À propos" et éviter qu'il soit recouvert par la pub
-        # On le positionne à la hauteur du conteneur du bouton (44dp)
-        layout.add_widget(Widget(size_hint_y=None, height=dp(44)))
+        # === SPACER ===
+        layout.add_widget(Widget(size_hint_y=None, height=dp(8)))
 
-        # --- Bouton "À propos" (disclaimer) en bas ---
-        about_container = BoxLayout(orientation="horizontal", size_hint_y=None, height=dp(44), padding=[0, dp(4), 0, 0])
+        # === PETIT BOUTON "À PROPOS" EN BAS (DISCRET) ===
+        about_container = BoxLayout(
+            orientation='horizontal',
+            size_hint_y=None,
+            height=dp(40),
+            padding=[dp(20), dp(0), dp(20), dp(4)]
+        )
+        
         about_btn = Button(
             text=self.tr("messages.about") if callable(self.tr) else "À propos",
-            size_hint=(0.5, 1),
-            pos_hint={'center_x': 0.5},
+            size_hint=(1, 1),
             background_normal='',
             background_color=[0, 0, 0, 0],
-            color=[1, 1, 1, 1],
-            font_size="14sp",
-            font_name=self.font_body,
+            color=[0.7, 0.6, 0.5, 0.8],
+            font_size="13sp",
+            font_name=self.font_body
         )
-        # Style arrondi pour s'aligner avec les autres boutons
         with about_btn.canvas.before:
-            Color(0.6, 0.4, 0.2, 1.0)
-            about_bg = RoundedRectangle(pos=about_btn.pos, size=about_btn.size, radius=[20, 20, 20, 20])
-        about_btn.bind(pos=lambda i, v: setattr(about_bg, 'pos', v), size=lambda i, v: setattr(about_bg, 'size', v))
+            Color(0.25, 0.18, 0.15, 0.5)  # Brun très discret
+            about_bg = RoundedRectangle(
+                pos=about_btn.pos,
+                size=about_btn.size,
+                radius=[20, 20, 20, 20]
+            )
+        about_btn.bind(
+            pos=lambda i, v: setattr(about_bg, 'pos', v),
+            size=lambda i, v: setattr(about_bg, 'size', v)
+        )
         def _go_about(*_):
             if self.manager:
                 self.manager.current = "about_screen"
         about_btn.bind(on_press=_go_about)
         about_container.add_widget(about_btn)
+        
         layout.add_widget(about_container)
 
         self.add_widget(layout)
@@ -214,10 +306,582 @@ class CardScreen(Screen):
             pass
 
     def draw_card(self, _instance):
-        Animation(opacity=0.3, duration=0.08) + Animation(opacity=1, duration=0.08)
-        self.loading_popup = LoadingPopup()
-        self.loading_popup.open()
-        Clock.schedule_once(self.perform_card_draw, 5.0)
+        """
+        Gère le tirage de carte avec vérification du tirage unique quotidien.
+        Si le tirage a déjà été fait aujourd'hui, affiche un message.
+        Sinon, redirige vers l'écran de sélection d'intention.
+        """
+        try:
+            app = App.get_running_app()
+            ritual_mgr = getattr(app, 'ritual_manager', None)
+            
+            Logger.info("CardScreen: draw_card() appelé")
+            
+            # Vérifier si le tirage unique est déjà fait
+            if ritual_mgr and not ritual_mgr.can_draw_today():
+                Logger.info("CardScreen: tirage déjà effectué aujourd'hui")
+                self._show_already_drawn_message()
+                return
+            
+            # Si on peut tirer, on va vers l'écran d'intention
+            Logger.info("CardScreen: transition vers IntentionScreen")
+            self._transition_to_intention_screen()
+        except Exception as e:
+            Logger.error(f"CardScreen: erreur dans draw_card - {e}")
+            import traceback
+            traceback.print_exc()
+    
+    def _show_already_drawn_message(self):
+        """Affiche un message moderne indiquant que le tirage du jour a été effectué, avec option de déblocage."""
+        try:
+            from kivy.uix.popup import Popup
+            from kivy.uix.boxlayout import BoxLayout
+            from kivy.uix.label import Label
+            from kivy.uix.button import Button
+            from kivy.graphics import Color, RoundedRectangle
+            from kivy.metrics import dp
+            from kivy.clock import Clock
+            
+            app = App.get_running_app()
+            ritual_mgr = getattr(app, 'ritual_manager', None)
+            
+            # Traductions
+            title = self.tr("messages.daily_draw_done_title")
+            message = self.tr("messages.daily_draw_done_message")
+            unlock_btn_text = self.tr("messages.unlock_extra_draw")
+            unlock_info = self.tr("messages.unlock_draw_info")
+            close_text = self.tr("messages.close")
+            
+            # Ajoute info sur le streak si disponible
+            streak_display = ""
+            if ritual_mgr:
+                streak = ritual_mgr.get_streak()
+                if streak > 0:
+                    streak_display = f"\\n\\n🔥 Série actuelle : {streak} jour{'s' if streak > 1 else ''}"
+            
+            # Layout principal avec fond moderne arrondi
+            layout = BoxLayout(
+                orientation='vertical',
+                spacing=dp(16),
+                padding=[dp(20), dp(18), dp(20), dp(20)]
+            )
+            with layout.canvas.before:
+                Color(0.08, 0.04, 0.12, 0.98)  # Fond violet foncé moderne
+                bg = RoundedRectangle(
+                    pos=layout.pos,
+                    size=layout.size,
+                    radius=[18, 18, 18, 18]
+                )
+            layout.bind(
+                pos=lambda i, v: setattr(bg, 'pos', v),
+                size=lambda i, v: setattr(bg, 'size', v)
+            )
+            
+            # Titre élégant
+            title_lbl = Label(
+                text=title,
+                size_hint_y=None,
+                height=dp(40),
+                bold=True,
+                font_size='20sp',
+                color=(0.95, 0.85, 0.50, 1),  # Or doux
+                halign='center',
+                font_name=self.font_title
+            )
+            layout.add_widget(title_lbl)
+            
+            # Message principal avec streak
+            main_msg = message + streak_display
+            msg_lbl = Label(
+                text=main_msg,
+                size_hint_y=None,
+                height=dp(80),
+                font_size='15sp',
+                color=(0.95, 0.95, 0.95, 1),
+                halign='center',
+                valign='middle',
+                font_name=self.font_body
+            )
+            msg_lbl.bind(
+                size=lambda inst, val: setattr(inst, 'text_size', (val[0] * 0.92, None))
+            )
+            layout.add_widget(msg_lbl)
+            
+            # Séparateur visuel
+            separator = BoxLayout(size_hint_y=None, height=dp(1))
+            with separator.canvas.before:
+                Color(0.3, 0.2, 0.4, 0.5)
+                sep_rect = RoundedRectangle(pos=separator.pos, size=separator.size)
+            separator.bind(
+                pos=lambda i, v: setattr(sep_rect, 'pos', v),
+                size=lambda i, v: setattr(sep_rect, 'size', v)
+            )
+            layout.add_widget(separator)
+            
+            # Info déblocage
+            info_lbl = Label(
+                text=unlock_info,
+                size_hint_y=None,
+                height=dp(70),
+                font_size='13sp',
+                color=(0.85, 0.75, 0.90, 1),
+                halign='center',
+                valign='middle',
+                font_name=self.font_body
+            )
+            info_lbl.bind(
+                size=lambda inst, val: setattr(inst, 'text_size', (val[0] * 0.92, None))
+            )
+            layout.add_widget(info_lbl)
+            
+            # Conteneur pour les boutons
+            btn_container = BoxLayout(
+                orientation='vertical',
+                spacing=dp(10),
+                size_hint_y=None,
+                height=dp(100)
+            )
+            
+            # Bouton "Débloquer" moderne
+            unlock_btn = Button(
+                text=unlock_btn_text,
+                size_hint=(1, None),
+                height=dp(48),
+                background_normal='',
+                background_color=[0, 0, 0, 0],
+                color=[1, 1, 1, 1],
+                font_size='16sp',
+                bold=True,
+                font_name=self.font_body
+            )
+            with unlock_btn.canvas.before:
+                Color(0.45, 0.25, 0.65, 1)  # Violet premium
+                unlock_bg = RoundedRectangle(
+                    pos=unlock_btn.pos,
+                    size=unlock_btn.size,
+                    radius=[24, 24, 24, 24]
+                )
+            unlock_btn.bind(
+                pos=lambda i, v: setattr(unlock_bg, 'pos', v),
+                size=lambda i, v: setattr(unlock_bg, 'size', v)
+            )
+            
+            # Bouton "Fermer" discret
+            close_btn = Button(
+                text=close_text,
+                size_hint=(1, None),
+                height=dp(42),
+                background_normal='',
+                background_color=[0, 0, 0, 0],
+                color=[0.7, 0.7, 0.7, 1],
+                font_size='14sp',
+                font_name=self.font_body
+            )
+            with close_btn.canvas.before:
+                Color(0.15, 0.1, 0.2, 0.6)  # Gris foncé
+                close_bg = RoundedRectangle(
+                    pos=close_btn.pos,
+                    size=close_btn.size,
+                    radius=[21, 21, 21, 21]
+                )
+            close_btn.bind(
+                pos=lambda i, v: setattr(close_bg, 'pos', v),
+                size=lambda i, v: setattr(close_bg, 'size', v)
+            )
+            
+            btn_container.add_widget(unlock_btn)
+            btn_container.add_widget(close_btn)
+            layout.add_widget(btn_container)
+            
+            # Création du popup sans titre (titre intégré)
+            popup = Popup(
+                title='',
+                content=layout,
+                size_hint=(0.90, None),
+                height=dp(420),
+                background='',
+                separator_height=0,
+                auto_dismiss=True
+            )
+            
+            # Callback déblocage
+            def on_unlock(*_):
+                popup.dismiss()
+                self._unlock_bonus_draw_with_ad()
+            
+            unlock_btn.bind(on_press=on_unlock)
+            close_btn.bind(on_press=popup.dismiss)
+            
+            popup.open()
+            Logger.info("CardScreen: popup moderne 'déjà tiré' affiché avec option déblocage")
+            
+        except Exception as e:
+            Logger.error(f"CardScreen: erreur affichage popup moderne - {e}")
+            import traceback
+            traceback.print_exc()
+    
+    def _unlock_bonus_draw_with_ad(self):
+        """Lance une rewarded video pour débloquer un tirage bonus."""
+        try:
+            from kivy.uix.popup import Popup
+            from kivy.uix.boxlayout import BoxLayout
+            from kivy.uix.label import Label
+            from kivy.graphics import Color, RoundedRectangle
+            from kivy.metrics import dp
+            from kivy.clock import Clock
+            
+            app = App.get_running_app()
+            ads_mgr = getattr(app, 'ads', None)
+            ritual_mgr = getattr(app, 'ritual_manager', None)
+            
+            if not ads_mgr or not ritual_mgr:
+                Logger.warning("CardScreen: ads_mgr ou ritual_mgr non disponible")
+                return
+            
+            # Popup de chargement
+            loading_layout = BoxLayout(
+                orientation='vertical',
+                padding=dp(20),
+                spacing=dp(12)
+            )
+            with loading_layout.canvas.before:
+                Color(0.08, 0.04, 0.12, 0.98)
+                loading_bg = RoundedRectangle(
+                    pos=loading_layout.pos,
+                    size=loading_layout.size,
+                    radius=[18, 18, 18, 18]
+                )
+            loading_layout.bind(
+                pos=lambda i, v: setattr(loading_bg, 'pos', v),
+                size=lambda i, v: setattr(loading_bg, 'size', v)
+            )
+            
+            loading_lbl = Label(
+                text=self.tr("messages.unlocking_draw"),
+                font_size='16sp',
+                color=(0.95, 0.85, 0.50, 1),
+                font_name=self.font_body
+            )
+            loading_layout.add_widget(loading_lbl)
+            
+            loading_popup = Popup(
+                title='',
+                content=loading_layout,
+                size_hint=(0.7, None),
+                height=dp(120),
+                background='',
+                separator_height=0,
+                auto_dismiss=False
+            )
+            loading_popup.open()
+            
+            def on_reward_received():
+                """Appelé quand la vidéo est complétée."""
+                try:
+                    loading_popup.dismiss()
+                    
+                    # Débloquer le tirage
+                    if ritual_mgr.unlock_bonus_draw():
+                        # Popup de succès
+                        self._show_success_popup(
+                            self.tr("messages.draw_unlocked"),
+                            self.tr("messages.draw_unlocked_message")
+                        )
+                        # Mettre à jour le badge
+                        self._update_daily_badge()
+                        # Rediriger vers l'écran d'intention après 1.5 seconde
+                        Clock.schedule_once(lambda dt: self._transition_to_intention_screen(), 1.5)
+                    else:
+                        Logger.error("CardScreen: échec déblocage tirage")
+                        
+                except Exception as e:
+                    Logger.error(f"CardScreen: erreur callback reward - {e}")
+            
+            def on_ad_dismiss():
+                """Appelé si la pub n'est pas disponible ou fermée."""
+                try:
+                    loading_popup.dismiss()
+                    self._show_error_popup(
+                        self.tr("messages.ad_not_ready"),
+                        self.tr("messages.ad_not_ready_message")
+                    )
+                except Exception as e:
+                    Logger.error(f"CardScreen: erreur callback dismiss - {e}")
+            
+            # Lancer la rewarded video
+            Clock.schedule_once(
+                lambda dt: ads_mgr.show_rewarded_video(
+                    on_reward=on_reward_received,
+                    on_dismiss=on_ad_dismiss
+                ),
+                0.5
+            )
+            
+        except Exception as e:
+            Logger.error(f"CardScreen: erreur _unlock_bonus_draw_with_ad - {e}")
+            import traceback
+            traceback.print_exc()
+    
+    def _show_success_popup(self, title, message):
+        """Affiche un popup de succès moderne."""
+        try:
+            from kivy.uix.popup import Popup
+            from kivy.uix.boxlayout import BoxLayout
+            from kivy.uix.label import Label
+            from kivy.uix.button import Button
+            from kivy.graphics import Color, RoundedRectangle
+            from kivy.metrics import dp
+            
+            layout = BoxLayout(
+                orientation='vertical',
+                padding=dp(20),
+                spacing=dp(15)
+            )
+            with layout.canvas.before:
+                Color(0.08, 0.15, 0.08, 0.98)  # Vert foncé
+                bg = RoundedRectangle(
+                    pos=layout.pos,
+                    size=layout.size,
+                    radius=[18, 18, 18, 18]
+                )
+            layout.bind(
+                pos=lambda i, v: setattr(bg, 'pos', v),
+                size=lambda i, v: setattr(bg, 'size', v)
+            )
+            
+            title_lbl = Label(
+                text=title,
+                size_hint_y=None,
+                height=dp(40),
+                bold=True,
+                font_size='20sp',
+                color=(0.4, 0.95, 0.4, 1),
+                halign='center',
+                font_name=self.font_title
+            )
+            layout.add_widget(title_lbl)
+            
+            msg_lbl = Label(
+                text=message,
+                size_hint_y=None,
+                height=dp(60),
+                font_size='15sp',
+                color=(0.95, 0.95, 0.95, 1),
+                halign='center',
+                valign='middle',
+                font_name=self.font_body
+            )
+            msg_lbl.bind(
+                size=lambda inst, val: setattr(inst, 'text_size', (val[0] * 0.92, None))
+            )
+            layout.add_widget(msg_lbl)
+            
+            ok_btn = Button(
+                text=self.tr("messages.ok"),
+                size_hint=(None, None),
+                size=(dp(140), dp(44)),
+                pos_hint={'center_x': 0.5},
+                background_normal='',
+                background_color=[0, 0, 0, 0],
+                color=[1, 1, 1, 1],
+                font_size='16sp',
+                bold=True,
+                font_name=self.font_body
+            )
+            with ok_btn.canvas.before:
+                Color(0.3, 0.7, 0.3, 1)
+                ok_bg = RoundedRectangle(
+                    pos=ok_btn.pos,
+                    size=ok_btn.size,
+                    radius=[22, 22, 22, 22]
+                )
+            ok_btn.bind(
+                pos=lambda i, v: setattr(ok_bg, 'pos', v),
+                size=lambda i, v: setattr(ok_bg, 'size', v)
+            )
+            layout.add_widget(ok_btn)
+            
+            popup = Popup(
+                title='',
+                content=layout,
+                size_hint=(0.80, None),
+                height=dp(220),
+                background='',
+                separator_height=0,
+                auto_dismiss=True
+            )
+            
+            ok_btn.bind(on_press=popup.dismiss)
+            popup.open()
+            
+        except Exception as e:
+            Logger.error(f"CardScreen: erreur _show_success_popup - {e}")
+    
+    def _show_error_popup(self, title, message):
+        """Affiche un popup d'erreur moderne."""
+        try:
+            from kivy.uix.popup import Popup
+            from kivy.uix.boxlayout import BoxLayout
+            from kivy.uix.label import Label
+            from kivy.uix.button import Button
+            from kivy.graphics import Color, RoundedRectangle
+            from kivy.metrics import dp
+            
+            layout = BoxLayout(
+                orientation='vertical',
+                padding=dp(20),
+                spacing=dp(15)
+            )
+            with layout.canvas.before:
+                Color(0.15, 0.05, 0.05, 0.98)  # Rouge foncé
+                bg = RoundedRectangle(
+                    pos=layout.pos,
+                    size=layout.size,
+                    radius=[18, 18, 18, 18]
+                )
+            layout.bind(
+                pos=lambda i, v: setattr(bg, 'pos', v),
+                size=lambda i, v: setattr(bg, 'size', v)
+            )
+            
+            title_lbl = Label(
+                text=title,
+                size_hint_y=None,
+                height=dp(40),
+                bold=True,
+                font_size='18sp',
+                color=(0.95, 0.5, 0.5, 1),
+                halign='center',
+                font_name=self.font_title
+            )
+            layout.add_widget(title_lbl)
+            
+            msg_lbl = Label(
+                text=message,
+                size_hint_y=None,
+                height=dp(60),
+                font_size='14sp',
+                color=(0.95, 0.95, 0.95, 1),
+                halign='center',
+                valign='middle',
+                font_name=self.font_body
+            )
+            msg_lbl.bind(
+                size=lambda inst, val: setattr(inst, 'text_size', (val[0] * 0.92, None))
+            )
+            layout.add_widget(msg_lbl)
+            
+            ok_btn = Button(
+                text=self.tr("messages.ok"),
+                size_hint=(None, None),
+                size=(dp(140), dp(44)),
+                pos_hint={'center_x': 0.5},
+                background_normal='',
+                background_color=[0, 0, 0, 0],
+                color=[1, 1, 1, 1],
+                font_size='16sp',
+                bold=True,
+                font_name=self.font_body
+            )
+            with ok_btn.canvas.before:
+                Color(0.7, 0.3, 0.3, 1)
+                ok_bg = RoundedRectangle(
+                    pos=ok_btn.pos,
+                    size=ok_btn.size,
+                    radius=[22, 22, 22, 22]
+                )
+            ok_btn.bind(
+                pos=lambda i, v: setattr(ok_bg, 'pos', v),
+                size=lambda i, v: setattr(ok_bg, 'size', v)
+            )
+            layout.add_widget(ok_btn)
+            
+            popup = Popup(
+                title='',
+                content=layout,
+                size_hint=(0.80, None),
+                height=dp(220),
+                background='',
+                separator_height=0,
+                auto_dismiss=True
+            )
+            
+            ok_btn.bind(on_press=popup.dismiss)
+            popup.open()
+            
+        except Exception as e:
+            Logger.error(f"CardScreen: erreur _show_error_popup - {e}")
+
+    
+    def _transition_to_intention_screen(self):
+        """Transition fluide et rituelle vers l'écran d'intention."""
+        try:
+            if not self.manager:
+                Logger.error("CardScreen: manager non disponible pour transition")
+                return
+            
+            # Animation de fade out
+            anim = Animation(opacity=0, duration=0.7)
+            
+            def _switch_screen(dt):
+                try:
+                    self.manager.current = "intention_screen"
+                    # Fade in de l'écran suivant
+                    intention_screen = self.manager.get_screen("intention_screen")
+                    intention_screen.opacity = 0
+                    Animation(opacity=1, duration=0.7).start(intention_screen)
+                except Exception as e:
+                    Logger.error(f"CardScreen: erreur switch vers IntentionScreen - {e}")
+                    # Restaurer l'écran en cas d'erreur
+                    self.opacity = 1
+            
+            anim.bind(on_complete=lambda *args: Clock.schedule_once(_switch_screen, 0))
+            anim.start(self)
+        except Exception as e:
+            Logger.error(f"CardScreen: erreur transition - {e}")
+            import traceback
+            traceback.print_exc()
+        anim.start(self)
+    
+    def _update_daily_badge(self):
+        """Met à jour l'affichage du badge quotidien avec le streak."""
+        try:
+            app = App.get_running_app()
+            ritual_mgr = getattr(app, 'ritual_manager', None)
+            
+            if not ritual_mgr:
+                self.daily_badge.opacity = 0
+                return
+            
+            # Vérifie si le tirage a été complété aujourd'hui
+            if ritual_mgr.is_draw_completed_today():
+                # Tirage déjà fait : afficher le streak
+                streak = ritual_mgr.get_streak()
+                if streak > 0:
+                    self.daily_badge.text = self.tr("messages.streak_badge").format(days=streak)
+                    self.daily_badge.color = [0.2, 1, 0.4, 1]  # Vert
+                    self.daily_badge.opacity = 1
+                else:
+                    self.daily_badge.opacity = 0
+            else:
+                # Tirage non fait : message d'invitation
+                self.daily_badge.text = self.tr("messages.daily_badge")
+                self.daily_badge.color = [1, 0.85, 0.2, 1]  # Or
+                self.daily_badge.opacity = 1
+        except Exception as e:
+            Logger.warning(f"CardScreen: erreur _update_daily_badge - {e}")
+            self.daily_badge.opacity = 0
+    
+    def on_enter(self):
+        """Appelé quand l'écran devient visible."""
+        # Restaurer l'opacity au cas où elle serait à 0 après une animation
+        self.opacity = 1
+        
+        # Met à jour le badge à chaque entrée sur l'écran
+        try:
+            self._update_daily_badge()
+        except Exception:
+            pass
 
     def _refresh_fonts(self, *args):
         # Prefer KV ids when present (macartedetarot.kv)
@@ -312,6 +976,7 @@ class CardScreen(Screen):
             pass
 
     def perform_card_draw(self, _dt):
+        """Effectue le tirage de carte et enregistre dans le système de rituel."""
         try:
             # Tirage basé directement sur les clés fournies par la langue courante
             app = App.get_running_app()
@@ -348,8 +1013,14 @@ class CardScreen(Screen):
             try:
                 app = App.get_running_app()
                 app.last_drawn_cards = drawn
-            except Exception:
-                pass
+                
+                # Enregistre le tirage dans le système de rituel
+                ritual_mgr = getattr(app, 'ritual_manager', None)
+                if ritual_mgr:
+                    ritual_mgr.record_draw(drawn[0][0])
+                    Logger.info(f"CardScreen: tirage enregistré - {drawn[0][0]}")
+            except Exception as e:
+                Logger.warning(f"CardScreen: erreur enregistrement tirage - {e}")
 
             if self.loading_popup:
                 try:
@@ -357,7 +1028,8 @@ class CardScreen(Screen):
                 except Exception:
                     pass
 
-            def _show():
+            def _show_with_transition():
+                """Transition animée vers l'écran de révélation."""
                 if self.manager:
                     resp = self.manager.get_screen("response_screen")
                     resp.setup_card(drawn[0][0], drawn[0][1])
@@ -366,7 +1038,11 @@ class CardScreen(Screen):
                             resp.set_full_draw(drawn)
                         except Exception:
                             pass
+                    
+                    # Animation de fade vers ResponseScreen
+                    resp.opacity = 0
                     self.manager.current = "response_screen"
+                    Animation(opacity=1, duration=0.8).start(resp)
 
             # Interstitielle AdMob (non bloquante)
             try:
@@ -376,7 +1052,7 @@ class CardScreen(Screen):
             except Exception:
                 pass
 
-            _show()
+            _show_with_transition()
         except Exception as exc:
             print(f"Erreur perform_card_draw: {exc}")
             if self.loading_popup:
@@ -384,6 +1060,177 @@ class CardScreen(Screen):
                     self.loading_popup.dismiss()
                 except Exception:
                     pass
+
+    def open_mme_t_entry(self, *_):
+        """Ouvre le chat Mme T avec popup d'info publicitaire."""
+        try:
+            from kivy.uix.popup import Popup
+            from kivy.uix.boxlayout import BoxLayout
+            from kivy.uix.label import Label
+            from kivy.uix.button import Button
+            from kivy.graphics import Color, RoundedRectangle
+            from kivy.metrics import dp
+            
+            # Titre et corps du popup
+            title = "Mme T – Soutenir le projet"
+            body = (
+                "Discutez avec Mme T et posez-lui toutes vos questions.\n"
+                "Pour garder cette application gratuite et sans abonnement,\n"
+                "une courte publicité sera affichée avant le chat, puis une publicité\n"
+                "plein écran toutes les 3 questions posées.\n\n"
+                "Merci de votre soutien 💜"
+            )
+            
+            # Localisation si possible
+            try:
+                if hasattr(self, 'tr') and callable(self.tr):
+                    title = "Mme T – " + (self.tr("messages.support_app") or "Soutenir le projet")
+                    body = self.tr("messages.mme_t_ads_info") or body
+            except Exception:
+                pass
+            
+            # Layout principal avec fond arrondi
+            layout = BoxLayout(
+                orientation='vertical', 
+                spacing=dp(12), 
+                padding=[dp(18), dp(14), dp(18), dp(18)]
+            )
+            with layout.canvas.before:
+                Color(0.06, 0.03, 0.09, 0.98)
+                bg = RoundedRectangle(
+                    pos=layout.pos, 
+                    size=layout.size, 
+                    radius=[14, 14, 14, 14]
+                )
+            layout.bind(
+                pos=lambda i, v: setattr(bg, 'pos', v),
+                size=lambda i, v: setattr(bg, 'size', v)
+            )
+            
+            # Titre
+            title_lbl = Label(
+                text=title,
+                size_hint_y=None,
+                height=dp(36),
+                bold=True,
+                font_size='18sp',
+                color=(0.92, 0.78, 0.4, 1),
+                halign='center'
+            )
+            layout.add_widget(title_lbl)
+            
+            # Corps du message
+            body_lbl = Label(
+                text=body,
+                size_hint_y=None,
+                height=dp(160),
+                font_size='14sp',
+                color=(0.95, 0.95, 0.95, 1),
+                halign='center',
+                valign='middle'
+            )
+            body_lbl.bind(
+                size=lambda inst, val: setattr(inst, 'text_size', (val[0] * 0.92, None))
+            )
+            layout.add_widget(body_lbl)
+            
+            # Bouton de confirmation
+            confirm_btn = Button(
+                text="Continuer",
+                size_hint=(None, None),
+                size=(dp(160), dp(44)),
+                pos_hint={'center_x': 0.5},
+                background_normal='',
+                background_color=[0, 0, 0, 0],
+                color=[1, 1, 1, 1],
+                font_size='16sp',
+                bold=True
+            )
+            with confirm_btn.canvas.before:
+                Color(0.35, 0.15, 0.55, 1)
+                confirm_bg = RoundedRectangle(
+                    pos=confirm_btn.pos,
+                    size=confirm_btn.size,
+                    radius=[22, 22, 22, 22]
+                )
+            confirm_btn.bind(
+                pos=lambda i, v: setattr(confirm_bg, 'pos', v),
+                size=lambda i, v: setattr(confirm_bg, 'size', v)
+            )
+            
+            # Création du popup
+            popup = Popup(
+                title='',
+                content=layout,
+                size_hint=(0.88, None),
+                height=dp(340),
+                background='',
+                separator_height=0,
+                auto_dismiss=True
+            )
+            
+            def on_confirm(*_):
+                popup.dismiss()
+                # D'abord tirer les 3 cartes, puis ouvrir le chat
+                self._draw_cards_for_mme_t()
+            
+            confirm_btn.bind(on_press=on_confirm)
+            layout.add_widget(confirm_btn)
+            
+            popup.open()
+            
+        except Exception as e:
+            Logger.error(f"Erreur open_mme_t_entry (CardScreen): {e}")
+            # Fallback : tirer les cartes et ouvrir directement
+            self._draw_cards_for_mme_t()
+    
+    def _draw_cards_for_mme_t(self):
+        """Tire 3 cartes puis ouvre le chat Mme T."""
+        try:
+            from kivy.clock import Clock
+            
+            # Tirage des 3 cartes (même logique que perform_card_draw)
+            app = App.get_running_app()
+            if app and hasattr(app, 'get_cards_signification'):
+                cards_signification = app.get_cards_signification() or {}
+            else:
+                cards_signification = {}
+            
+            cards = list(cards_signification.keys()) if isinstance(cards_signification, dict) else []
+            
+            if not cards:
+                Logger.error("CardScreen: Aucune carte disponible pour le tirage Mme T")
+                return
+            
+            # Tirer 3 cartes
+            count = 3
+            drawn: List[Tuple[str, str]] = []
+            pool = list(cards)
+            for _ in range(count):
+                if not pool:
+                    pool = list(cards)
+                pick = random.choice(pool)
+                pool.remove(pick)
+                state = random.choice(["upright", "reversed"])
+                drawn.append((pick, state))
+            
+            # Sauvegarder les cartes dans l'app
+            app.last_drawn_cards = drawn
+            Logger.info(f"CardScreen: 3 cartes tirées pour Mme T: {[c[0] for c in drawn]}")
+            
+            # Ouvrir le chat Mme T après un court délai
+            def delayed_open(*_):
+                if self.manager:
+                    resp = self.manager.get_screen("response_screen")
+                    if hasattr(resp, 'open_mme_t_chat'):
+                        resp.open_mme_t_chat(provider="ads")
+            
+            Clock.schedule_once(delayed_open, 0.3)
+            
+        except Exception as e:
+            Logger.error(f"CardScreen: erreur _draw_cards_for_mme_t - {e}")
+            import traceback
+            traceback.print_exc()
 
 
 class ResponseScreen(Screen):
@@ -855,8 +1702,11 @@ class ResponseScreen(Screen):
         detail = info.get(f"signification upright") if self.current_card_state == "upright" else info.get(f"signification reversed")
 
         self.keywords_label.text = f"💫 {str(keywords).upper()} 💫" if keywords else ""
+        
+        # Personnaliser le message selon l'intention
         if detail:
-            self.start_typewriter(str(detail))
+            personalized_detail = self._personalize_message_by_intention(str(detail))
+            self.start_typewriter(personalized_detail)
         else:
             self.signification_label.text = self.tr("messages.no_description")
             try:
@@ -870,6 +1720,46 @@ class ResponseScreen(Screen):
             Clock.schedule_once(self.setup_text_wrapping, 0.05)
         except Exception:
             pass
+    
+    def _personalize_message_by_intention(self, original_message: str) -> str:
+        """
+        Personnalise le message de la carte en fonction de l'intention choisie.
+        Ajoute une phrase d'introduction contextuelle.
+        """
+        try:
+            app = App.get_running_app()
+            ritual_mgr = getattr(app, 'ritual_manager', None)
+            
+            if not ritual_mgr:
+                return original_message
+            
+            intention_type, custom_text = ritual_mgr.get_intention()
+            
+            if not intention_type:
+                return original_message
+            
+            # Phrases d'introduction selon l'intention
+            intro_phrases = {
+                "love": self.tr("messages.intention_intro_love"),
+                "work": self.tr("messages.intention_intro_work"),
+                "inner": self.tr("messages.intention_intro_inner"),
+                "custom": self.tr("messages.intention_intro_custom")
+            }
+            
+            intro = intro_phrases.get(intention_type, "")
+            
+            # Si question personnalisée, on l'inclut
+            if intention_type == "custom" and custom_text:
+                intro = intro.format(question=custom_text)
+            
+            # Combine l'introduction avec le message original
+            if intro:
+                return f"{intro}\n\n{original_message}"
+            
+            return original_message
+        except Exception as e:
+            Logger.warning(f"ResponseScreen: erreur personnalisation message - {e}")
+            return original_message
 
     def _refresh_fonts(self, *args):
         self.card_name_label.font_name = self.font_body
@@ -1485,3 +2375,293 @@ class AboutScreen(Screen):
         # Espace sous la barre de boutons pour remonter le bouton About au-dessus de la pub (valeur augmentée)
         root.add_widget(Widget(size_hint_y=None, height=dp(100)))
         self.add_widget(root)
+
+
+class IntentionScreen(Screen):
+    """
+    Écran de sélection de l'intention avant le tirage quotidien.
+    L'utilisateur choisit parmi : Amour, Travail, Intérieur, ou Question libre.
+    """
+    def __init__(self, **kwargs):
+        super(IntentionScreen, self).__init__(**kwargs)
+        self.name = "intention_screen"
+        
+        app = App.get_running_app()
+        self.tr = getattr(app, 'tr', lambda k: k)
+        self.font_body = getattr(app, 'font_body', 'Body')
+        self.selected_intention = None
+        self.custom_text = None
+        
+        # Bind pour rafraîchir dynamiquement
+        try:
+            app.fbind('font_body', self._refresh_fonts)
+        except Exception:
+            pass
+        try:
+            app.fbind('tr', self.apply_i18n)
+        except Exception:
+            pass
+        
+        self._build_ui()
+    
+    def _build_ui(self):
+        """Construit l'interface de l'écran d'intention."""
+        layout = BoxLayout(orientation="vertical", padding=dp(20), spacing=dp(15))
+        
+        # Fond
+        with layout.canvas.before:
+            bg_path = resource_find("tarot_img/bg.jpg")
+            if bg_path:
+                self.bg = Rectangle(pos=layout.pos, size=layout.size, source=bg_path)
+            else:
+                Color(0.2, 0.1, 0.3, 1)
+                self.bg = Rectangle(pos=layout.pos, size=layout.size)
+        layout.bind(pos=self._update_bg, size=self._update_bg)
+        
+        # Titre principal
+        self.title_label = Label(
+            text=self.tr("messages.choose_draw_type"),
+            font_size="24sp",
+            color=[0.9, 0.7, 0.3, 1],
+            size_hint_y=None,
+            height=dp(70),
+            bold=True,
+            halign='center',
+            valign='middle',
+            font_name=self.font_body
+        )
+        self.title_label.bind(size=lambda inst, val: setattr(inst, 'text_size', (val[0] * 0.92, None)))
+        layout.add_widget(self.title_label)
+        
+        # Sous-titre explicatif
+        self.subtitle_label = Label(
+            text=self.tr("messages.intention_subtitle"),
+            font_size="14sp",
+            color=[0.95, 0.95, 0.95, 0.9],
+            size_hint_y=None,
+            height=dp(50),
+            halign='center',
+            valign='middle',
+            font_name=self.font_body
+        )
+        self.subtitle_label.bind(size=lambda inst, val: setattr(inst, 'text_size', (val[0] * 0.92, None)))
+        layout.add_widget(self.subtitle_label)
+        
+        # Espace
+        layout.add_widget(Widget(size_hint_y=None, height=dp(30)))
+        
+        # Conteneur centré pour les boutons d'intention (colonne unique)
+        from kivy.uix.gridlayout import GridLayout
+        from kivy.uix.anchorlayout import AnchorLayout
+        
+        buttons_anchor = AnchorLayout(
+            anchor_x='center',
+            anchor_y='top',
+            size_hint_y=None,
+            height=dp(350)
+        )
+        
+        buttons_container = GridLayout(
+            cols=1,
+            spacing=dp(15),
+            size_hint=(None, None),
+            width=dp(320),
+            height=dp(350)
+        )
+        
+        # Boutons d'intention (exécution directe)
+        self.love_btn = self._create_intention_button("love", self.tr("messages.intention_love"), direct=True)
+        self.work_btn = self._create_intention_button("work", self.tr("messages.intention_work"), direct=True)
+        self.inner_btn = self._create_intention_button("inner", self.tr("messages.intention_inner"), direct=True)
+        self.custom_btn = self._create_intention_button("custom", self.tr("messages.intention_custom"), direct=False)
+        
+        buttons_container.add_widget(self.love_btn)
+        buttons_container.add_widget(self.work_btn)
+        buttons_container.add_widget(self.inner_btn)
+        buttons_container.add_widget(self.custom_btn)
+        
+        buttons_anchor.add_widget(buttons_container)
+        layout.add_widget(buttons_anchor)
+        
+        # Champ texte pour question libre (initialement caché)
+        self.custom_input = TextInput(
+            hint_text=self.tr("messages.intention_custom_hint"),
+            font_size="16sp",
+            multiline=True,
+            size_hint_y=None,
+            height=dp(100),
+            font_name=self.font_body,
+            opacity=0,
+            disabled=True,
+            background_color=[0.2, 0.2, 0.25, 0.95]
+        )
+        layout.add_widget(self.custom_input)
+        
+        # Bouton de validation (uniquement pour custom)
+        self.validate_btn = Button(
+            text=self.tr("messages.intention_validate"),
+            font_size="18sp",
+            size_hint_y=None,
+            height=dp(60),
+            font_name=self.font_body,
+            background_color=[0.45, 0.25, 0.65, 1],
+            disabled=True,
+            opacity=0
+        )
+        self.validate_btn.bind(on_press=self._on_validate)
+        layout.add_widget(self.validate_btn)
+        
+        # Espace flexible
+        layout.add_widget(Widget(size_hint_y=0.2))
+        
+        # Espace pour la bannière pub
+        layout.add_widget(Widget(size_hint_y=None, height=dp(60)))
+        
+        self.add_widget(layout)
+    
+    def _create_intention_button(self, intention_type: str, text: str, direct: bool = True) -> Button:
+        """Crée un bouton d'intention avec le style approprié.
+        
+        Args:
+            intention_type: Type d'intention (love, work, inner, custom)
+            text: Texte affiché sur le bouton
+            direct: Si True, exécute directement le tirage au clic
+        """
+        btn = Button(
+            text=text,
+            font_size="17sp",
+            size_hint=(None, None),
+            size=(dp(290), dp(70)),
+            font_name=self.font_body,
+            background_color=[0.3, 0.2, 0.4, 0.95],
+            color=[1, 1, 1, 1]
+        )
+        btn.intention_type = intention_type
+        btn.direct_execute = direct
+        btn.bind(on_press=self._on_intention_select)
+        return btn
+    
+    def _on_intention_select(self, instance):
+        """Gère la sélection d'une intention."""
+        from kivy.animation import Animation
+        
+        # Réinitialise l'apparence de tous les boutons
+        for btn in [self.love_btn, self.work_btn, self.inner_btn, self.custom_btn]:
+            btn.background_color = [0.3, 0.2, 0.4, 0.95]
+        
+        # Met en évidence le bouton sélectionné
+        instance.background_color = [0.5, 0.3, 0.7, 1]
+        self.selected_intention = instance.intention_type
+        
+        # Si custom, affiche le champ texte + bouton validation
+        if instance.intention_type == "custom":
+            Animation(opacity=1, duration=0.3).start(self.custom_input)
+            self.custom_input.disabled = False
+            self.custom_input.focus = True
+            
+            # Active le bouton de validation pour custom
+            self.validate_btn.disabled = False
+            Animation(opacity=1, duration=0.3).start(self.validate_btn)
+        else:
+            # Pour les intentions prédéfinies : exécution directe
+            Animation(opacity=0, duration=0.2).start(self.custom_input)
+            self.custom_input.disabled = True
+            Animation(opacity=0, duration=0.2).start(self.validate_btn)
+            self.custom_text = None
+            
+            # Exécute immédiatement le tirage
+            if hasattr(instance, 'direct_execute') and instance.direct_execute:
+                Clock.schedule_once(lambda dt: self._on_validate(instance), 0.4)
+    
+    def _on_validate(self, instance):
+        """Valide l'intention et lance le tirage de carte."""
+        app = App.get_running_app()
+        ritual_mgr = getattr(app, 'ritual_manager', None)
+        
+        if not ritual_mgr:
+            Logger.warning("IntentionScreen: ritual_manager non disponible")
+            return
+        
+        # Récupère le texte personnalisé si applicable
+        custom_text = None
+        if self.selected_intention == "custom":
+            custom_text = self.custom_input.text.strip() or None
+        
+        # Enregistre l'intention
+        ritual_mgr.set_intention(self.selected_intention, custom_text)
+        Logger.info(f"IntentionScreen: intention enregistrée - {self.selected_intention}")
+        
+        # Ouvre le popup de chargement
+        self.loading_popup = LoadingPopup()
+        self.loading_popup.open()
+        
+        # Lance le tirage après une animation de transition
+        Clock.schedule_once(self._perform_draw, 0.8)
+    
+    def _perform_draw(self, dt):
+        """Effectue le tirage de carte via CardScreen."""
+        try:
+            card_screen = self.manager.get_screen("card_screen")
+            card_screen.loading_popup = self.loading_popup
+            card_screen.perform_card_draw(dt)
+        except Exception as e:
+            Logger.error(f"IntentionScreen: erreur lors du tirage - {e}")
+            if hasattr(self, 'loading_popup') and self.loading_popup:
+                try:
+                    self.loading_popup.dismiss()
+                except Exception:
+                    pass
+    
+    def _update_bg(self, instance, value):
+        """Met à jour la position du fond."""
+        try:
+            self.bg.pos = instance.pos
+            self.bg.size = instance.size
+        except Exception:
+            pass
+    
+    def _refresh_fonts(self, *args):
+        """Actualise les polices."""
+        try:
+            self.title_label.font_name = self.font_body
+            self.subtitle_label.font_name = self.font_body
+            self.love_btn.font_name = self.font_body
+            self.work_btn.font_name = self.font_body
+            self.inner_btn.font_name = self.font_body
+            self.custom_btn.font_name = self.font_body
+            self.custom_input.font_name = self.font_body
+            self.validate_btn.font_name = self.font_body
+        except Exception:
+            pass
+    
+    def apply_i18n(self, *args):
+        """Applique les traductions."""
+        try:
+            self.title_label.text = self.tr("messages.intention_title")
+            self.subtitle_label.text = self.tr("messages.intention_subtitle")
+            self.love_btn.text = self.tr("messages.intention_love")
+            self.work_btn.text = self.tr("messages.intention_work")
+            self.inner_btn.text = self.tr("messages.intention_inner")
+            self.custom_btn.text = self.tr("messages.intention_custom")
+            self.custom_input.hint_text = self.tr("messages.intention_custom_hint")
+            self.validate_btn.text = self.tr("messages.intention_validate")
+        except Exception:
+            pass
+    
+    def on_enter(self):
+        """Appelé quand l'écran devient visible."""
+        # Réinitialise l'écran à chaque visite
+        self.selected_intention = None
+        self.custom_text = None
+        self.custom_input.text = ""
+        self.custom_input.opacity = 0
+        self.custom_input.disabled = True
+        self.validate_btn.disabled = True
+        self.validate_btn.opacity = 0.5
+        
+        # Réinitialise l'apparence des boutons
+        for btn in [self.love_btn, self.work_btn, self.inner_btn, self.custom_btn]:
+            btn.background_color = [0.3, 0.2, 0.4, 0.9]
+        
+        # Animation d'entrée
+        self.opacity = 1
