@@ -6,8 +6,8 @@ package.name = macartedetarot
 package.domain = org.tarot
 source.dir = .
 
-version = 2.32
-android.numeric_version = 2932000
+version = 2.41
+android.numeric_version = 2941000
 author = © Nuno Marcelino
 
 # ───────────────────────────────
@@ -15,26 +15,25 @@ author = © Nuno Marcelino
 source.include_exts = py,kv,png,jpg,ttf,otf,mp3,mp4,json,ini
 source.exclude_exts = spec,md
 source.exclude_dirs = tests, bin, venv, .github, __pycache__, .git, .vscode, guides, backend, docs, play_store_screenshots, tarot_img/MajorArcanaCards_backup, scripts
-source.include_patterns = libs/*.py, fonts/*.ttf, fonts/*.otf, i18n/lang/*.json, tarot_img/*, main.py, app.py, billing.py, ads_manager.py
+source.include_patterns = libs/*.py, fonts/*.ttf, fonts/*.otf, i18n/lang/*.json, tarot_img/*, main.py, app.py, ads_manager.py
 android.add_assets = i18n/lang:i18n/lang,tarot_img:tarot_img,fonts:fonts
 
 # ───────────────────────────────
 # 🐍 Dépendances Python
 # Python 3.11.x = combo stable avec Kivy 2.3.1
-requirements = python3==3.11.5, kivy==2.3.1, filetype==1.2.0, requests==2.32.3, certifi, pyjnius, plyer
+requirements = python3==3.11.5, kivy==2.3.1, requests==2.32.3, certifi, pyjnius, plyer
 
 # ───────────────────────────────
 # 🖼️ UI
 icon.filename = %(source.dir)s/tarot_img/icon.png
 presplash.filename = %(source.dir)s/tarot_img/MajorArcanaCards/La Mort.jpg
-orientation = portrait
 fullscreen = 0
 
 # ───────────────────────────────
 # 📱 Android SDK / Build
-android.api = 34
+android.api = 35
 android.minapi = 21
-android.ndk = 25c
+android.ndk = 26c
 android.ndk_api = 21
 android.accept_sdk_license = True
 android.enable_androidx = True
@@ -46,14 +45,12 @@ android.archs = arm64-v8a
 
 # p4a
 p4a.branch = master
+p4a.local_recipes = p4a_recipes
 
 # Fix Google Play 16KB page-size + harfbuzz strict cast
-# Flags injectés via le hook NDK (voir p4a_hooks/manifest_receivers.py)
-# p4a.extra_args laissé vide pour éviter erreurs d'arguments p4a
-p4a.extra_args =
-
-# (NE PAS mettre android.extra_cflags ici, ça ne sert à rien dans ton cas)
-# android.extra_cflags = ...
+# Flags 16KB injectés automatiquement via le hook p4a (voir p4a_hooks/manifest_receivers.py)
+# Le hook modifie Application.mk, LDFLAGS, CFLAGS et CXXFLAGS pour TOUTES les recettes
+p4a.extra_args = 
 
 # ───────────────────────────────
 # 🪄 Logs
@@ -75,8 +72,8 @@ android.add_gradle_repositories =
     maven { url 'https://android-sdk.is.com/' }
     maven { url 'https://artifacts.applovin.com/android' }
 
-# Dépendances (Ads + Billing + Médiation) - Versions stables pour NDK 25c
-android.gradle_dependencies = com.google.android.gms:play-services-ads:23.0.0, com.android.billingclient:billing-ktx:6.2.1, com.google.android.ump:user-messaging-platform:2.2.0
+# Dépendances (Ads + Médiation uniquement, plus d'achats in-app)
+android.gradle_dependencies = com.google.android.gms:play-services-ads:23.0.0, com.google.android.ump:user-messaging-platform:2.2.0, androidx.fragment:fragment:1.8.5
 
 # ───────────────────────────────
 # 🧱 Formats de build
@@ -100,6 +97,19 @@ android.release_keyalias_password = nunotheboss
 # 🧩 ProGuard / R8 - Optimisation + Symboles de débogage
 # (External rules file to avoid parser issues)
 android.add_proguard_rules = proguard-rules.pro
+
+# Enable R8 minification and resource shrinking for release builds
+android.gradle_app_settings = 
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            ndk {
+                debugSymbolLevel 'FULL'
+            }
+        }
+    }
 
 # ───────────────────────────────
 # Manifest XML — receivers (injectés dans <application>)

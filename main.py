@@ -124,14 +124,6 @@ except Exception:
 
 
 # === Imports des modules refactorisés ===
-from billing import (
-    GooglePurchasesUpdatedListener,
-    GoogleBillingStateListener,
-    GoogleProductDetailsListener,
-    LaunchBillingRunnable,
-    AmazonPurchasingListener,
-    InAppPurchaseManager,
-)
 from popups import (
     ChatBubble,
     FullScreenCardPopup,
@@ -265,13 +257,6 @@ class TarotApp(App):
         # AdsManager sera instancié dans on_start
         self.ads = None
         self._mobile_ads_ready = False
-
-        try:
-            self.billing = InAppPurchaseManager()
-            print("✅ Système de facturation initialisé")
-        except Exception as e:
-            print(f"⚠️ Erreur facturation: {e}")
-            self.billing = None
 
     # ------------------------------------------------------------------
     # Langue & i18n
@@ -427,6 +412,17 @@ class TarotApp(App):
                     AlarmScheduler = _autoclass('org.tarot.AlarmScheduler')
                     AlarmScheduler.scheduleDaily(ctx)
                     print("⏰ AlarmManager: rappel quotidien planifié (natif)")
+                    
+                    # Enregistrer le timestamp d'ouverture de l'app pour la logique de notification
+                    try:
+                        System = _autoclass('java.lang.System')
+                        prefs = ctx.getSharedPreferences('tarot_prefs', 0)
+                        editor = prefs.edit()
+                        editor.putLong('last_open_timestamp', System.currentTimeMillis())
+                        editor.apply()
+                        print("📱 Timestamp d'ouverture enregistré")
+                    except Exception as ex:
+                        print(f"⚠️ Enregistrement last_open_timestamp failed: {ex}")
         except Exception as e:
             print(f"⚠️ AlarmManager schedule failed: {e}")
 

@@ -1,0 +1,16 @@
+--- a/src/main/java/org/kivy/android/PythonActivity.java
++++ b/src/main/java/org/kivy/android/PythonActivity.java
+@@ -139,12 +139,7 @@
+                 SDLActivity.nativeSetenv("ANDROID_ARGUMENT", p.dir);
+                 SDLActivity.nativeSetenv("ANDROID_APP_PATH", p.dir);
+ 
+-                if (p != null) {
+-                    if (p.landscape) {
+-                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+-                    } else {
+-                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+-                    }
+-                }
++                // Orientation restrictions removed for Android 16+ large screen support
+ 
+                 // Let old apps know they started.

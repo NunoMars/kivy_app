@@ -8,7 +8,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.os.Build;
 import android.content.SharedPreferences;
+import android.util.Log;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import androidx.core.app.NotificationCompat; // AndroidX support lib
@@ -17,21 +19,44 @@ import androidx.core.app.NotificationCompat; // AndroidX support lib
 
 /**
  * DailyReminderReceiver
- * Déclenché par AlarmManager pour rappeler à l'utilisateur de faire son tirage quotidien.
+ * Déclenché par AlarmManager à 11h pour rappeler à l'utilisateur de faire son tirage quotidien.
+ * 
+ * Logique:
+ * - Ne notifie PAS si l'app a été ouverte avant 11h aujourd'hui
+ * - Ne notifie PAS si le tirage a déjà été fait aujourd'hui
+ * - Ne notifie PAS si une notification a déjà été envoyée aujourd'hui (anti-spam)
  */
 public class DailyReminderReceiver extends BroadcastReceiver {
+    private static final String TAG = "TAROT_NOTIF";
     public static final String CHANNEL_ID = "tarot_daily_channel";
     public static final int NOTIF_ID = 11101;
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.d(TAG, "DailyReminderReceiver.onReceive() déclenché à 11h");
+        
         try {
-            // Ne pas notifier si déjà tiré aujourd'hui (préférence partagée par l'app Python)
             SharedPreferences prefs = context.getSharedPreferences("tarot_prefs", Context.MODE_PRIVATE);
-            String last = prefs != null ? prefs.getString("last_draw_date", "") : "";
             String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-            if (today.equals(last)) {
-                return; // déjà fait aujourd'hui
+            
+            // 1. Vérifier si tirage déjà fait aujourd'hui
+            String lastDrawDate = prefs != null ? prefs.getString("last_draw_date", "") : "";
+            if (today.equals(lastDrawDate)) {
+                Log.d(TAG, "✅ Tirage déjà fait aujourd'hui → pas de notification");
+                return;
+            }
+            
+            // 2. Vérifier si app ouverte avant 11h aujourd'hui
+            if (wasAppOpenedBeforeElevenToday(prefs)) {
+                Log.d(TAG, "✅ App ouverte avant 11h aujourd'hui → pas de notification");
+                return;
+            }
+            
+            // 3. Vérifier si notification déjà envoyée aujourd'hui (anti-spam)
+            String lastNotifiedDate = prefs != null ? prefs.getString("last_notified_date", "") : "";
+            if (today.equals(lastNotifiedDate)) {
+                Log.d(TAG, "✅ Notification déjà envoyée aujourd'hui → pas de notification");
+                return;
             }
 
             NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -76,7 +101,69 @@ public class DailyReminderReceiver extends BroadcastReceiver {
                 b.setContentIntent(pi);
             }
             nm.notify(NOTIF_ID, b.build());
-        } catch (Exception ignored) {
+            Log.d(TAG, "🔔 Notification envoyée avec succès");
+            
+            // Enregistrer qu'on a notifié aujourd'hui (anti-spam)
+            if (prefs != null) {
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("last_notified_date", today);
+                editor.apply();
+                Log.d(TAG, "📝 last_notified_date enregistré: " + today);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "❌ Erreur lors de l'envoi de la notification: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Vérifie si l'app a été ouverte avant 11h aujourd'hui.
+     * 
+     * @param prefs SharedPreferences contenant last_open_timestamp
+     * @return true si l'app a été ouverte aujourd'hui avant 11h, false sinon
+     */
+    private boolean wasAppOpenedBeforeElevenToday(SharedPreferences prefs) {
+        if (prefs == null) {
+            Log.d(TAG, "⚠️ SharedPreferences null, assume pas d'ouverture");
+            return false;
+        }
+        
+        try {
+            long lastOpenTimestamp = prefs.getLong("last_open_timestamp", 0L);
+            
+            if (lastOpenTimestamp == 0L) {
+                Log.d(TAG, "ℹ️ Aucun last_open_timestamp trouvé");
+                return false;
+            }
+            
+            // Calculer le timestamp de aujourd'hui à 00:00:00
+            Calendar todayMidnight = Calendar.getInstance();
+            todayMidnight.set(Calendar.HOUR_OF_DAY, 0);
+            todayMidnight.set(Calendar.MINUTE, 0);
+            todayMidnight.set(Calendar.SECOND, 0);
+            todayMidnight.set(Calendar.MILLISECOND, 0);
+            long todayMidnightMs = todayMidnight.getTimeInMillis();
+            
+            // Calculer le timestamp de aujourd'hui à 11:00:00
+            Calendar todayEleven = Calendar.getInstance();
+            todayEleven.set(Calendar.HOUR_OF_DAY, 11);
+            todayEleven.set(Calendar.MINUTE, 0);
+            todayEleven.set(Calendar.SECOND, 0);
+            todayEleven.set(Calendar.MILLISECOND, 0);
+            long todayElevenMs = todayEleven.getTimeInMillis();
+            
+            // Vérifier si last_open est aujourd'hui ET avant 11h
+            boolean isToday = lastOpenTimestamp >= todayMidnightMs;
+            boolean isBefore11 = lastOpenTimestamp < todayElevenMs;
+            
+            Log.d(TAG, String.format("🔍 last_open=%d, today_midnight=%d, today_11h=%d",
+                    lastOpenTimestamp, todayMidnightMs, todayElevenMs));
+            Log.d(TAG, String.format("🔍 isToday=%b, isBefore11=%b", isToday, isBefore11));
+            
+            return isToday && isBefore11;
+            
+        } catch (Exception e) {
+            Log.e(TAG, "❌ Erreur vérification last_open_timestamp: " + e.getMessage());
+            return false;
         }
     }
 }

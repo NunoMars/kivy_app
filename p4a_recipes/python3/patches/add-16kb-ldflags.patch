@@ -1,0 +1,12 @@
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -89,7 +89,7 @@
+ # Both CPPFLAGS and LDFLAGS need to contain the shell's value for setup.py to
+ # be able to build extension modules using the directories specified in the
+ # environment variables
+ PY_CPPFLAGS=$(BASECPPFLAGS) -I. -I$(srcdir)/Include $(CONFIGURE_CPPFLAGS) $(CPPFLAGS)
+-PY_LDFLAGS=$(CONFIGURE_LDFLAGS) $(LDFLAGS)
++PY_LDFLAGS=$(CONFIGURE_LDFLAGS) $(LDFLAGS) -Wl,-z,max-page-size=16384 -Wl,-z,common-page-size=16384
+ PY_LDFLAGS_NODIST=@LDFLAGS_NODIST@
+ NO_AS_NEEDED=@NO_AS_NEEDED@
+ CCSHARED=@CCSHARED@

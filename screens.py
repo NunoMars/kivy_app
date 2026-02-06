@@ -1517,66 +1517,7 @@ class ResponseScreen(Screen):
 
         self.add_widget(main_layout)
 
-        # --- écoute des changements de l'état Billing pour mettre à jour le bouton ---
-        try:
-            app = App.get_running_app()
-            billing = getattr(app, 'billing', None)
-            if billing and hasattr(billing, "add_listener"):
-                billing.add_listener(self.on_billing_state_change)
-        except Exception:
-            pass
-
-        # debug overlay removed
-
-    # ------------------------------------------------------------
-    # Gestion des achats in-app (bouton premium)
-    # ------------------------------------------------------------
-
-    def on_billing_state_change(self, *args):
-        """Callback appelé quand l'état Billing change (prêt / non prêt).
-
-        Met à jour l'UI (texte + opacité du bouton premium).
-        """
-        try:
-            app = App.get_running_app()
-            billing = getattr(app, 'billing', None)
-            if billing is None:
-                self.premium_status_label.text = "Store indisponible"
-                self.premium_btn.opacity = 0.5
-                return
-
-            if billing.is_ready():
-                price = billing.get_product_price()
-                self.premium_status_label.text = f"Disponible : {price}"
-                self.premium_btn.opacity = 1.0
-            else:
-                self.premium_status_label.text = self.tr("messages.store_preparing")
-                self.premium_btn.opacity = 0.5
-        except Exception as e:
-            Logger.warning(f"ResponseScreen.on_billing_state_change error: {e}")
-
-    def purchase_chat_luna(self, *_):
-        """Lance l'achat in-app via InAppPurchaseManager.
-
-        Utilise le produit par défaut "premium_features" configuré
-        dans billing.py.
-        """
-        try:
-            app = App.get_running_app()
-            # On passe par le bridge natif plutôt que directement par InAppPurchaseManager
-            try:
-                from native_billing import is_ready as native_billing_ready, purchase_premium
-            except Exception:
-                native_billing_ready = lambda: False
-                purchase_premium = lambda: None
-
-            if not native_billing_ready():
-                Logger.info("IAP: Billing natif non prêt")
-                return
-
-            purchase_premium()
-        except Exception as e:
-            Logger.warning(f"ResponseScreen.purchase_chat_luna error: {e}")
+    # Méthodes suivantes...
 
     # ------------------------------------------------------------
     def on_kv_post(self, base_widget):
